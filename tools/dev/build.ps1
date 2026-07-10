@@ -1,3 +1,3 @@
 . "$PSScriptRoot/_Common.ps1"
 & "$PSScriptRoot/restore.ps1"
-& $DotnetBin build Igorogue.sln -c Release --no-restore
+Invoke-CheckedNative -FilePath $DotnetBin -ArgumentList @("build", "Igorogue.sln", "-c", "Release", "--no-restore") -FailureMessage "Release build failed"

@@ -6,7 +6,7 @@ project: Igorogue
 milestone: M0
 priority: P0
 dependencies: [TASK-0019]
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # TASK-0001 Decide Engine and Repository
 
@@ -69,6 +69,12 @@ updated: 2026-07-10
 - static repository checkerとPython unit testsを追加
 - generated content snapshotを作成
 
+2026-07-11:
+
+- pinned macOS hostで8個のauthentic lockを生成・review・commit
+- task worktreeとdetached clean worktreeの双方でlocked restore、Release build、xUnit 11件、simulator、Godot smoke、Windows managed exportを確認
+- Godot managed exportのbootstrap defectを最小修正し、native executableだけのfalse greenをCIとwrapperで拒否
+
 ## Evidence
 
 ### Packaging environment — passed
@@ -84,11 +90,11 @@ bash -n tools/dev/* tools/ci/install_godot.sh
 
 The exact command log and package hash are recorded in the v0.2.9 patch report.
 
-### Configured host or CI — pending
+### Configured host and clean checkout — passed; final CI pending
 
-The packaging environment did not contain `dotnet` or a Godot .NET editor. Acceptance criteria 1 and 3–7 are not claimed complete. Package locks also require first restore with SDK 8.0.422.
+TASK-0022 supplied pinned-host and detached clean-worktree evidence for acceptance criteria 1–9. All eight lock files are committed. See [[TASK-0022 macOS Runtime Evidence]] for the redacted command log and artifact hashes.
 
-Run in this order:
+The verified sequence was:
 
 ```text
 tools/dev/update-locks
@@ -99,12 +105,11 @@ GODOT_BIN=/absolute/path/to/godot-mono tools/dev/godot-smoke
 GODOT_BIN=/absolute/path/to/godot-mono tools/dev/export-windows
 ```
 
-Commit every generated `packages.lock.json`, then re-run `tools/dev/restore` to prove locked restore from a clean checkout.
+CI run `29127755203` passed governance, pure .NET build/test/simulator, PowerShell native fail-fast, Godot .NET smoke, and the complete Windows managed export on prior head `794588c`. The final review-correction commit must pass its associated CI check before closure.
 
 ## Known issues
 
-- Runtime evidence is pending because the packaging host has neither .NET SDK nor Godot installed.
-- `packages.lock.json` files are intentionally not fabricated. CI generates an artifact until a configured host commits authentic lock files.
+- Final review-correction CI, independent closeout approval, and the human `review → done`/merge decisions remain.
 - The Godot smoke scene is a bootstrap integration test, not gameplay.
 
 ## Exit decision

@@ -20,6 +20,9 @@ jobs:
           python-version: '3.12'
       - name: Run repository governance checks
         run: python3 tools/check_all.py
+      - name: Verify PowerShell native fail-fast behavior
+        shell: pwsh
+        run: tools/tests/test_powershell_native_failure.ps1
       - name: Verify committed runtime content snapshot
         run: python3 tools/content_sync.py --check
 
@@ -88,16 +91,19 @@ jobs:
           "$GODOT_BIN" --headless --path game/Igorogue.Godot --quit-after 120
       - name: Export Windows debug build
         run: |
+          rm -rf build/exports/windows
           mkdir -p build/exports/windows
           "$GODOT_BIN" --headless --path game/Igorogue.Godot \
             --export-debug "Windows Debug" \
             "$GITHUB_WORKSPACE/build/exports/windows/Igorogue.exe"
+          git diff --exit-code -- ':(glob)**/packages.lock.json'
+          test -f build/exports/windows/Igorogue.exe
+          test -d build/exports/windows/data_Igorogue.Godot_windows_x86_64
+          test -f build/exports/windows/data_Igorogue.Godot_windows_x86_64/Igorogue.Godot.dll
           python3 tools/hash_artifact.py build/exports/windows/Igorogue.exe
       - name: Archive Windows debug build
         uses: actions/upload-artifact@v4
         with:
           name: Igorogue-Windows-Debug
-          path: |
-            build/exports/windows/Igorogue.exe
-            build/exports/windows/Igorogue.exe.sha256
+          path: build/exports/windows/
           if-no-files-found: error

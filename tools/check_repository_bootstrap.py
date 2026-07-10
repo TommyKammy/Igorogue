@@ -21,8 +21,10 @@ REQUIRED_FILES = [
     "src/Igorogue.Application/Igorogue.Application.csproj",
     "src/Igorogue.Content/Igorogue.Content.csproj",
     "game/Igorogue.Godot/Igorogue.Godot.csproj",
+    "game/Igorogue.Godot/Igorogue.Godot.sln",
     "game/Igorogue.Godot/project.godot",
     "game/Igorogue.Godot/export_presets.cfg",
+    "game/Igorogue.Godot/Smoke/BootstrapSmoke.cs.uid",
     "game/Igorogue.Godot/Smoke/BootstrapSmoke.tscn",
     "tests/Igorogue.Domain.Tests/Igorogue.Domain.Tests.csproj",
     "tests/Igorogue.Application.Tests/Igorogue.Application.Tests.csproj",
@@ -122,6 +124,9 @@ def main() -> int:
     expected_godot_sdk = f"Godot.NET.Sdk/{manifest['godot']['package_version']}"
     if project_sdk(ROOT / "game/Igorogue.Godot/Igorogue.Godot.csproj") != expected_godot_sdk:
         errors.append("Godot project SDK differs from bootstrap manifest")
+    godot_solution = (ROOT / "game/Igorogue.Godot/Igorogue.Godot.sln").read_text(encoding="utf-8")
+    if "Igorogue.Godot.csproj" not in godot_solution:
+        errors.append("Godot-local solution does not include Igorogue.Godot.csproj")
     for project in PROJECTS:
         if property_value(ROOT / project, "TargetFramework") != manifest["dotnet"]["target_framework"]:
             errors.append(f"target framework differs from bootstrap manifest: {project}")

@@ -1,6 +1,6 @@
 . "$PSScriptRoot/_Common.ps1"
-& $PythonBin tools/verify_toolchain.py --skip-godot
-& $PythonBin tools/content_sync.py --write
-& $DotnetBin restore Igorogue.sln --use-lock-file --force-evaluate
-& $PythonBin tools/check_repository_bootstrap.py --strict-locks
+Invoke-CheckedNative -FilePath $PythonBin -ArgumentList @("tools/verify_toolchain.py", "--skip-godot") -FailureMessage "Toolchain verification failed"
+Invoke-CheckedNative -FilePath $PythonBin -ArgumentList @("tools/content_sync.py", "--write") -FailureMessage "Content synchronization failed"
+Invoke-CheckedNative -FilePath $DotnetBin -ArgumentList @("restore", "Igorogue.sln", "--use-lock-file", "--force-evaluate") -FailureMessage "NuGet lock generation failed"
+Invoke-CheckedNative -FilePath $PythonBin -ArgumentList @("tools/check_repository_bootstrap.py", "--strict-locks") -FailureMessage "Generated lock verification failed"
 Write-Host "Lock files generated. Review and commit every packages.lock.json before using locked restore."

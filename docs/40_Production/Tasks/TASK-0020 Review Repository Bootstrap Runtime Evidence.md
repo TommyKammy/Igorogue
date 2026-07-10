@@ -6,7 +6,7 @@ project: Igorogue
 milestone: M0
 priority: P0
 dependencies: [TASK-0001]
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # TASK-0020 Review Repository Bootstrap Runtime Evidence
 
@@ -32,3 +32,23 @@ No gameplay code or design changes.
 ## Operational execution
 
 The macOS handoff uses [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]] as the ready host-execution wrapper for this evidence review. TASK-0020 remains blocked until TASK-0022 supplies local, clean-checkout, export, and CI evidence.
+
+## Execution log
+
+2026-07-11:
+
+- All eight authentic NuGet locks were reviewed and committed.
+- Local and detached clean-worktree governance, locked restore, xUnit, repeated simulator checksum, Godot .NET smoke, and managed Windows export passed.
+- The approved managed-export bootstrap defect was corrected and verified without changing version pins or package versions.
+
+## Evidence
+
+- [[TASK-0022 macOS Runtime Evidence]]
+- Runtime implementation commit: `c1e1998d34f7e9abbb8962b7cc34897ebd9675a1`
+- Lock-file commit: `70f0eec`
+- Prior-head CI run `29127755203`: passed at `794588c8a643e670b7b49deb212bc5e6171e9e9e`
+- Final review-correction commit CI: pending
+
+## Known issues
+
+- Keep this task `blocked` until final review-correction CI, independent closeout approval, and the human `review → done`/merge decisions close TASK-0022 and TASK-0001.

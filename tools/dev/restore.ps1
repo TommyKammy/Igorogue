@@ -1,4 +1,4 @@
 . "$PSScriptRoot/_Common.ps1"
-& $PythonBin tools/verify_toolchain.py --skip-godot
-& $PythonBin tools/check_repository_bootstrap.py --strict-locks
-& $DotnetBin restore Igorogue.sln --locked-mode
+Invoke-CheckedNative -FilePath $PythonBin -ArgumentList @("tools/verify_toolchain.py", "--skip-godot") -FailureMessage "Toolchain verification failed"
+Invoke-CheckedNative -FilePath $PythonBin -ArgumentList @("tools/check_repository_bootstrap.py", "--strict-locks") -FailureMessage "Repository bootstrap verification failed"
+Invoke-CheckedNative -FilePath $DotnetBin -ArgumentList @("restore", "Igorogue.sln", "--locked-mode") -FailureMessage "Locked restore failed"

@@ -44,6 +44,38 @@ def frontmatter_value(path: Path, key: str) -> str | None:
     return None
 
 
+def validate_gate_statuses(
+    task_22_status: str | None,
+    task_1_status: str | None,
+    task_20_status: str | None,
+    task_2_status: str | None,
+) -> list[str]:
+    errors: list[str] = []
+    if task_22_status not in {"ready", "review", "done"}:
+        errors.append(
+            "TASK-0022 must be ready, review, or done during the macOS handoff lifecycle"
+        )
+
+    runtime_gate_closed = (
+        task_22_status == "done"
+        and task_1_status == "done"
+        and task_20_status == "done"
+    )
+    allowed_task_2_statuses = (
+        {"ready", "in_progress", "review", "done"}
+        if runtime_gate_closed
+        else {"blocked"}
+    )
+    if task_2_status not in allowed_task_2_statuses:
+        expected = ", ".join(sorted(allowed_task_2_statuses))
+        errors.append(
+            f"TASK-0002 must be one of [{expected}] while TASK-0022 is "
+            f"{task_22_status!r}, TASK-0001 is {task_1_status!r}, and "
+            f"TASK-0020 is {task_20_status!r}"
+        )
+    return errors
+
+
 def main() -> int:
     errors: list[str] = []
     for relative in REQUIRED:
@@ -65,12 +97,18 @@ def main() -> int:
                 errors.append(f"handoff manifest {key}: expected {value!r}, got {manifest.get(key)!r}")
 
     task_22 = ROOT / "docs/40_Production/Tasks/TASK-0022 Bootstrap macOS Host and Close Runtime Evidence.md"
-    if task_22.is_file() and frontmatter_value(task_22, "status") != "ready":
-        errors.append("TASK-0022 must be ready in the handoff package")
-
+    task_1 = ROOT / "docs/40_Production/Tasks/TASK-0001 Decide Engine and Repository.md"
+    task_20 = ROOT / "docs/40_Production/Tasks/TASK-0020 Review Repository Bootstrap Runtime Evidence.md"
     task_2 = ROOT / "docs/40_Production/Tasks/TASK-0002 Deterministic RNG and Command Log.md"
-    if task_2.is_file() and frontmatter_value(task_2, "status") != "blocked":
-        errors.append("TASK-0002 must remain blocked until runtime evidence closes")
+    if task_22.is_file() and task_1.is_file() and task_20.is_file() and task_2.is_file():
+        errors.extend(
+            validate_gate_statuses(
+                frontmatter_value(task_22, "status"),
+                frontmatter_value(task_1, "status"),
+                frontmatter_value(task_20, "status"),
+                frontmatter_value(task_2, "status"),
+            )
+        )
 
     root_agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8") if (ROOT / "AGENTS.md").is_file() else ""
     for required_text in ("CODEX_MAC_HANDOFF.md", "CODE_REVIEW.md", "TASK-0022"):
@@ -90,7 +128,12 @@ def main() -> int:
             print(f"- {error}")
         return 1
 
-    print(f"Codex handoff checks passed — {len(REQUIRED)} required files, TASK-0022 ready, TASK-0002 blocked")
+    task_22_status = frontmatter_value(task_22, "status")
+    task_2_status = frontmatter_value(task_2, "status")
+    print(
+        f"Codex handoff checks passed — {len(REQUIRED)} required files, "
+        f"TASK-0022 {task_22_status}, TASK-0002 {task_2_status}"
+    )
     return 0
 
 

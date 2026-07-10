@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net8.0": {
+      "Godot.SourceGenerators": {
+        "type": "Direct",
+        "requested": "[4.7.0, )",
+        "resolved": "4.7.0",
+        "contentHash": "sDnUhwO7Fazpen67047kqYDKMgO7/1/yXHTfxMhNvmh5sm51bwfJp96/GY/VoCR2GiYr4xIyC6S5jjliwJiJpQ=="
+      },
+      "GodotSharp": {
+        "type": "Direct",
+        "requested": "[4.7.0, )",
+        "resolved": "4.7.0",
+        "contentHash": "cSlT7ziWnORTOxRz0LpmQNM+ZHBt5CWgegreJXiTinj37XucRZSQ65GIloblaozOju21L/FCBs4Y35WteHfQrw=="
+      },
+      "GodotSharpEditor": {
+        "type": "Direct",
+        "requested": "[4.7.0, )",
+        "resolved": "4.7.0",
+        "contentHash": "vXYw6PXzKVCTQCgPeGxLnw5Qlub8SY43yQYEPZNYlDN1/OOiLnaaKxJvLf2Wk5D+8/+K/pxRQXGPqj65bnWohQ==",
+        "dependencies": {
+          "GodotSharp": "4.7.0"
+        }
+      },
+      "igorogue.application": {
+        "type": "Project",
+        "dependencies": {
+          "Igorogue.Domain": "[1.0.0, )"
+        }
+      },
+      "igorogue.content": {
+        "type": "Project"
+      },
+      "igorogue.domain": {
+        "type": "Project"
+      }
+    }
+  }
+}
