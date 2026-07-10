@@ -1,2 +1,3 @@
 . "$PSScriptRoot/_Common.ps1"
-& $PythonBin tools/verify_toolchain.py @args
+$arguments = @("tools/verify_toolchain.py") + @($args)
+Invoke-CheckedNative -FilePath $PythonBin -ArgumentList $arguments -FailureMessage "Toolchain verification failed"

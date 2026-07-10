@@ -11,7 +11,7 @@ updated: 2026-07-11
 
 ## Verdict
 
-The pinned bootstrap succeeds both in the task worktree and from a detached clean worktree at implementation commit `c1e1998d34f7e9abbb8962b7cc34897ebd9675a1`. Authentic lock files are committed at `70f0eec`. Local, clean-checkout, PowerShell fail-fast, and all three CI gates pass. The tasks remain in review pending independent closeout approval and human merge judgment.
+The pinned bootstrap succeeds both in the task worktree and from a detached clean worktree at implementation commit `c1e1998d34f7e9abbb8962b7cc34897ebd9675a1`. Authentic lock files are committed at `70f0eec`. Local and clean-checkout gates pass. CI passed on the previous PR head, but the final review-correction commit has not run yet; Stage 4 therefore remains pending.
 
 ## Identity
 
@@ -52,7 +52,7 @@ Private host paths are represented as `<REPO_ROOT>`, `<CLEAN_WORKTREE>`, and `<G
 | SHA-256 sidecar | present | present |
 | Tracked-file cleanliness | clean | clean |
 
-CI run [`29127553564`](https://github.com/TommyKammy/Igorogue/actions/runs/29127553564) passed at `d47cc671bf2a650570c47612e8a026a7c3e0b748`:
+The latest completed CI before the final review corrections was run [`29127755203`](https://github.com/TommyKammy/Igorogue/actions/runs/29127755203) at `794588c8a643e670b7b49deb212bc5e6171e9e9e`:
 
 - Governance and generated content — pass, including a real PowerShell native exit-17 fail-fast probe;
 - Pure .NET build, tests, and simulator smoke — pass;
@@ -87,6 +87,6 @@ No gameplay code, package version, version pin, accepted rule, scene, resource, 
 
 ## Remaining gate
 
-All automated acceptance gates pass. This report remains `review` until the independent review accepts the final correction and a human makes the `review → done` and merge decisions required by the repository operating model.
+Stage 4 is pending for the commit that contains the final review corrections. The associated GitHub check on that commit is the authoritative final-CI evidence; this committed file does not claim success for an unexecuted future run. The report remains `review` until that check is green and a human makes the `review → done` and merge decisions.
 
 The Windows debug export is integrity-hashed but bit-for-bit reproducible export output is not a TASK-0022 acceptance criterion. Separate local and clean-worktree exports produced different executable hashes; runtime state determinism continues to be covered by the identical simulator and Godot smoke checksums.

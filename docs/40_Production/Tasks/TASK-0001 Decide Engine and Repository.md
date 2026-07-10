@@ -90,7 +90,7 @@ bash -n tools/dev/* tools/ci/install_godot.sh
 
 The exact command log and package hash are recorded in the v0.2.9 patch report.
 
-### Configured host, clean checkout, and CI — passed
+### Configured host and clean checkout — passed; final CI pending
 
 TASK-0022 supplied pinned-host and detached clean-worktree evidence for acceptance criteria 1–9. All eight lock files are committed. See [[TASK-0022 macOS Runtime Evidence]] for the redacted command log and artifact hashes.
 
@@ -105,11 +105,11 @@ GODOT_BIN=/absolute/path/to/godot-mono tools/dev/godot-smoke
 GODOT_BIN=/absolute/path/to/godot-mono tools/dev/export-windows
 ```
 
-CI run `29127553564` passed governance, pure .NET build/test/simulator, PowerShell native fail-fast, Godot .NET smoke, and the complete Windows managed export at `d47cc671bf2a650570c47612e8a026a7c3e0b748`.
+CI run `29127755203` passed governance, pure .NET build/test/simulator, PowerShell native fail-fast, Godot .NET smoke, and the complete Windows managed export on prior head `794588c`. The final review-correction commit must pass its associated CI check before closure.
 
 ## Known issues
 
-- Automated acceptance criteria are satisfied. Independent closeout approval and the human `review → done`/merge decisions remain.
+- Final review-correction CI, independent closeout approval, and the human `review → done`/merge decisions remain.
 - The Godot smoke scene is a bootstrap integration test, not gameplay.
 
 ## Exit decision

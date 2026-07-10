@@ -46,8 +46,9 @@ The macOS handoff uses [[TASK-0022 Bootstrap macOS Host and Close Runtime Eviden
 - [[TASK-0022 macOS Runtime Evidence]]
 - Runtime implementation commit: `c1e1998d34f7e9abbb8962b7cc34897ebd9675a1`
 - Lock-file commit: `70f0eec`
-- CI run `29127553564`: passed at `d47cc671bf2a650570c47612e8a026a7c3e0b748`
+- Prior-head CI run `29127755203`: passed at `794588c8a643e670b7b49deb212bc5e6171e9e9e`
+- Final review-correction commit CI: pending
 
 ## Known issues
 
-- Automated runtime evidence is complete. Keep this task `blocked` until independent closeout approval and the human `review → done`/merge decisions close TASK-0022 and TASK-0001.
+- Keep this task `blocked` until final review-correction CI, independent closeout approval, and the human `review → done`/merge decisions close TASK-0022 and TASK-0001.

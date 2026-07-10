@@ -47,6 +47,7 @@ def frontmatter_value(path: Path, key: str) -> str | None:
 def validate_gate_statuses(
     task_22_status: str | None,
     task_1_status: str | None,
+    task_20_status: str | None,
     task_2_status: str | None,
 ) -> list[str]:
     errors: list[str] = []
@@ -55,12 +56,22 @@ def validate_gate_statuses(
             "TASK-0022 must be ready, review, or done during the macOS handoff lifecycle"
         )
 
-    runtime_gate_closed = task_22_status == "done" and task_1_status == "done"
-    expected_task_2_status = "ready" if runtime_gate_closed else "blocked"
-    if task_2_status != expected_task_2_status:
+    runtime_gate_closed = (
+        task_22_status == "done"
+        and task_1_status == "done"
+        and task_20_status == "done"
+    )
+    allowed_task_2_statuses = (
+        {"ready", "in_progress", "review", "done"}
+        if runtime_gate_closed
+        else {"blocked"}
+    )
+    if task_2_status not in allowed_task_2_statuses:
+        expected = ", ".join(sorted(allowed_task_2_statuses))
         errors.append(
-            f"TASK-0002 must be {expected_task_2_status} while TASK-0022 is "
-            f"{task_22_status!r} and TASK-0001 is {task_1_status!r}"
+            f"TASK-0002 must be one of [{expected}] while TASK-0022 is "
+            f"{task_22_status!r}, TASK-0001 is {task_1_status!r}, and "
+            f"TASK-0020 is {task_20_status!r}"
         )
     return errors
 
@@ -87,12 +98,14 @@ def main() -> int:
 
     task_22 = ROOT / "docs/40_Production/Tasks/TASK-0022 Bootstrap macOS Host and Close Runtime Evidence.md"
     task_1 = ROOT / "docs/40_Production/Tasks/TASK-0001 Decide Engine and Repository.md"
+    task_20 = ROOT / "docs/40_Production/Tasks/TASK-0020 Review Repository Bootstrap Runtime Evidence.md"
     task_2 = ROOT / "docs/40_Production/Tasks/TASK-0002 Deterministic RNG and Command Log.md"
-    if task_22.is_file() and task_1.is_file() and task_2.is_file():
+    if task_22.is_file() and task_1.is_file() and task_20.is_file() and task_2.is_file():
         errors.extend(
             validate_gate_statuses(
                 frontmatter_value(task_22, "status"),
                 frontmatter_value(task_1, "status"),
+                frontmatter_value(task_20, "status"),
                 frontmatter_value(task_2, "status"),
             )
         )
