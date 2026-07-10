@@ -62,7 +62,7 @@ cssclasses:
 - [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]] — done
 - [[TASK-0001 Decide Engine and Repository]] — done
 - [[TASK-0020 Review Repository Bootstrap Runtime Evidence]] — done
-- [[TASK-0002 Deterministic RNG and Command Log]] — ready／current
+- [[TASK-0002 Deterministic RNG and Command Log]] — review／current
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

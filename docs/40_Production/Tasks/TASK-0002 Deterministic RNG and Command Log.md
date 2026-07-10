@@ -50,6 +50,7 @@ seed付きRNGと順序付きコマンドログの最小実装。
 - Command-log compatibility vector — seed 99のheader checksum `c0a290eb2ba7b0ae92c7140b073a3f667667e5b47aa72e46b4cf0cec75f6a62b`、先頭entry後`aaf2170b88e577d39f4345f1fce8676ee0830036426ec691e706c3c455ed67fd`。
 - `tests/Igorogue.Application.Tests/OrderedCommandLogTests.cs` — 同一seed＋同一ordered commandsでoutput、canonical RNG state、state checksum、log checksumが一致。seed差とcommand順序差で期待する結果／log checksumが分岐し、malformed checksum、unknown command schema、null payloadの拒否でlogが不変。
 - `tests/Igorogue.Domain.Tests/DeterministicRngTests.cs` — named stream隔離、cosmetic 100 drawがauthoritative state/checksumへ影響しないこと、invalid boundがRNG stateを消費しないことを確認。
+- 独立Codex review — コードfindingなし。Project HubのTASK status driftのみLOW follow-upとして検出し、`review／current`へ同期した。
 
 ## Known issues
 
