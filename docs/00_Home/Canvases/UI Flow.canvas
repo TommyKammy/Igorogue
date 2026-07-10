@@ -1,0 +1,86 @@
+{
+  "nodes": [
+    {
+      "id": "prep",
+      "type": "file",
+      "file": "25_UIUX/Run Preparation Screen.md",
+      "x": 0,
+      "y": 0,
+      "width": 300,
+      "height": 180
+    },
+    {
+      "id": "map",
+      "type": "file",
+      "file": "25_UIUX/Act Map Screen.md",
+      "x": 400,
+      "y": 0,
+      "width": 300,
+      "height": 180
+    },
+    {
+      "id": "battle",
+      "type": "file",
+      "file": "25_UIUX/Battle Screen Specification.md",
+      "x": 800,
+      "y": 0,
+      "width": 320,
+      "height": 180
+    },
+    {
+      "id": "reward",
+      "type": "file",
+      "file": "25_UIUX/Reward and Shop Screen.md",
+      "x": 800,
+      "y": 280,
+      "width": 320,
+      "height": 180
+    },
+    {
+      "id": "meta",
+      "type": "file",
+      "file": "25_UIUX/Meta Hub Screen.md",
+      "x": 0,
+      "y": 280,
+      "width": 300,
+      "height": 180
+    }
+  ],
+  "edges": [
+    {
+      "id": "u1",
+      "fromNode": "prep",
+      "fromSide": "right",
+      "toNode": "map",
+      "toSide": "left"
+    },
+    {
+      "id": "u2",
+      "fromNode": "map",
+      "fromSide": "right",
+      "toNode": "battle",
+      "toSide": "left"
+    },
+    {
+      "id": "u3",
+      "fromNode": "battle",
+      "fromSide": "bottom",
+      "toNode": "reward",
+      "toSide": "top"
+    },
+    {
+      "id": "u4",
+      "fromNode": "reward",
+      "fromSide": "left",
+      "toNode": "map",
+      "toSide": "bottom"
+    },
+    {
+      "id": "u5",
+      "fromNode": "map",
+      "fromSide": "left",
+      "toNode": "meta",
+      "toSide": "top"
+    }
+  ]
+}

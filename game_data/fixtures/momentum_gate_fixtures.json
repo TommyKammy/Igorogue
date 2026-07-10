@@ -1,0 +1,495 @@
+{
+  "schema_version": "1.0.0",
+  "feature": "FEAT-002",
+  "fixtures": [
+    {
+      "id": "MOM-01",
+      "operation": "generate",
+      "start_amount": 0,
+      "style_id": "style_attack",
+      "source": {
+        "kind": "black_territory_established",
+        "source_owner": "black",
+        "new_black_points": 3,
+        "new_black_regions": 1
+      },
+      "expected": {
+        "end_amount": 1,
+        "applied": 1,
+        "overflow": 0
+      }
+    },
+    {
+      "id": "MOM-02",
+      "operation": "generate",
+      "start_amount": 0,
+      "style_id": "style_thickness",
+      "source": {
+        "kind": "black_territory_established",
+        "source_owner": "black",
+        "new_black_points": 6,
+        "new_black_regions": 2
+      },
+      "expected": {
+        "end_amount": 1,
+        "applied": 1,
+        "overflow": 0
+      }
+    },
+    {
+      "id": "MOM-03",
+      "operation": "generate",
+      "start_amount": 0,
+      "style_id": "style_territory",
+      "source": {
+        "kind": "black_territory_established",
+        "source_owner": "white",
+        "new_black_points": 2,
+        "new_black_regions": 1
+      },
+      "expected": {
+        "end_amount": 0,
+        "applied": 0,
+        "overflow": 0
+      }
+    },
+    {
+      "id": "MOM-04",
+      "operation": "generate",
+      "start_amount": 0,
+      "style_id": "style_attack",
+      "source": {
+        "kind": "facility_built",
+        "owner": "black",
+        "successful": true
+      },
+      "expected": {
+        "end_amount": 0,
+        "applied": 0,
+        "overflow": 0
+      }
+    },
+    {
+      "id": "MOM-05",
+      "operation": "generate",
+      "start_amount": 0,
+      "style_id": "style_territory",
+      "source": {
+        "kind": "facility_built",
+        "owner": "black",
+        "successful": true
+      },
+      "expected": {
+        "end_amount": 1,
+        "applied": 1,
+        "overflow": 0
+      }
+    },
+    {
+      "id": "MOM-06",
+      "operation": "generate",
+      "start_amount": 2,
+      "style_id": "style_attack",
+      "source": {
+        "kind": "black_territory_established",
+        "source_owner": "black",
+        "new_black_points": 1,
+        "new_black_regions": 1
+      },
+      "expected": {
+        "end_amount": 2,
+        "applied": 0,
+        "overflow": 1
+      }
+    },
+    {
+      "id": "MOM-07",
+      "operation": "player_turn_start",
+      "start_amount": 2,
+      "approach_draw_used": true,
+      "expected": {
+        "end_amount": 2,
+        "approach_draw_used": false
+      }
+    },
+    {
+      "id": "MOM-08",
+      "operation": "battle_start",
+      "start_amount": 2,
+      "approach_draw_used": true,
+      "expected": {
+        "end_amount": 0,
+        "approach_draw_used": false
+      }
+    },
+    {
+      "id": "MOM-09",
+      "operation": "validate_reach",
+      "board": [
+        ".......",
+        ".....Q.",
+        ".......",
+        ".......",
+        ".......",
+        ".B.....",
+        "......."
+      ],
+      "facilities": [],
+      "card": {
+        "type": "stone",
+        "placement_tags": [
+          "frontline"
+        ],
+        "black_place_stone_effect_count": 1
+      },
+      "target": [
+        4,
+        2
+      ],
+      "full_legality": true,
+      "expected": {
+        "mode": "momentum_reach",
+        "legal": true,
+        "reason": "legal",
+        "momentum_cost": 1,
+        "source_points": [
+          [
+            2,
+            2
+          ]
+        ],
+        "midpoint": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "id": "MOM-10",
+      "operation": "validate_reach",
+      "board": [
+        ".......",
+        ".....Q.",
+        ".......",
+        ".......",
+        ".......",
+        ".BW....",
+        "......."
+      ],
+      "facilities": [],
+      "card": {
+        "type": "stone",
+        "placement_tags": [
+          "frontline"
+        ],
+        "black_place_stone_effect_count": 1
+      },
+      "target": [
+        4,
+        2
+      ],
+      "full_legality": true,
+      "expected": {
+        "mode": "none",
+        "legal": false,
+        "reason": "momentum_midpoint_blocked",
+        "momentum_cost": 0
+      }
+    },
+    {
+      "id": "MOM-11",
+      "operation": "validate_reach",
+      "board": [
+        ".......",
+        ".....Q.",
+        ".......",
+        ".......",
+        ".......",
+        ".B.....",
+        "......."
+      ],
+      "facilities": [],
+      "card": {
+        "type": "stone",
+        "placement_tags": [
+          "contact"
+        ],
+        "black_place_stone_effect_count": 1
+      },
+      "target": [
+        4,
+        2
+      ],
+      "full_legality": true,
+      "expected": {
+        "mode": "none",
+        "legal": false,
+        "reason": "card_not_momentum_eligible",
+        "momentum_cost": 0
+      }
+    },
+    {
+      "id": "MOM-12",
+      "operation": "validate_reach",
+      "board": [
+        ".......",
+        ".....Q.",
+        ".......",
+        ".......",
+        "...B...",
+        ".B.....",
+        "......."
+      ],
+      "facilities": [],
+      "card": {
+        "type": "stone",
+        "placement_tags": [
+          "frontline"
+        ],
+        "black_place_stone_effect_count": 1
+      },
+      "target": [
+        4,
+        2
+      ],
+      "full_legality": true,
+      "expected": {
+        "mode": "normal",
+        "legal": true,
+        "reason": "printed_placement_legal",
+        "momentum_cost": 0
+      }
+    },
+    {
+      "id": "MOM-13",
+      "operation": "resolve_reach",
+      "board": [
+        ".......",
+        ".....Q.",
+        ".......",
+        ".......",
+        ".......",
+        ".B.....",
+        "......."
+      ],
+      "facilities": [],
+      "card": {
+        "type": "stone",
+        "placement_tags": [
+          "frontline"
+        ],
+        "black_place_stone_effect_count": 1,
+        "qi_cost": 1
+      },
+      "target": [
+        4,
+        2
+      ],
+      "start_momentum": 1,
+      "start_qi": 3,
+      "card_zone": "hand",
+      "full_legality": false,
+      "full_legality_reason": "stone_topology_repetition",
+      "expected": {
+        "accepted": false,
+        "end_momentum": 1,
+        "end_qi": 3,
+        "card_zone": "hand",
+        "reason": "stone_topology_repetition"
+      }
+    },
+    {
+      "id": "MOM-14",
+      "operation": "resolve_reach",
+      "board": [
+        ".......",
+        ".....Q.",
+        ".......",
+        ".......",
+        ".......",
+        ".B.....",
+        "......."
+      ],
+      "facilities": [],
+      "card": {
+        "type": "stone",
+        "placement_tags": [
+          "frontline"
+        ],
+        "black_place_stone_effect_count": 1,
+        "qi_cost": 1
+      },
+      "target": [
+        4,
+        2
+      ],
+      "start_momentum": 2,
+      "start_qi": 3,
+      "card_zone": "hand",
+      "full_legality": true,
+      "expected": {
+        "accepted": true,
+        "end_momentum": 1,
+        "end_qi": 2,
+        "card_zone": "used",
+        "reason": "legal"
+      }
+    },
+    {
+      "id": "MOM-15",
+      "operation": "approach_draw",
+      "before_board": [
+        ".......",
+        ".......",
+        ".......",
+        ".......",
+        ".......",
+        ".B....Q",
+        "......."
+      ],
+      "after_added_black": [
+        4,
+        2
+      ],
+      "projected_black_income": 4,
+      "approach_draw_used": false,
+      "battle_ended": false,
+      "expected": {
+        "front_distance_before": 5,
+        "front_distance_after": 3,
+        "draw": 1,
+        "approach_draw_used": true
+      }
+    },
+    {
+      "id": "MOM-16",
+      "operation": "approach_draw",
+      "before_board": [
+        ".......",
+        ".......",
+        ".......",
+        ".......",
+        ".......",
+        ".B..B.Q",
+        "......."
+      ],
+      "after_added_black": [
+        4,
+        2
+      ],
+      "projected_black_income": 6,
+      "approach_draw_used": false,
+      "battle_ended": false,
+      "expected": {
+        "front_distance_before": 2,
+        "front_distance_after": 2,
+        "draw": 0,
+        "approach_draw_used": false
+      }
+    },
+    {
+      "id": "MOM-17",
+      "operation": "approach_draw",
+      "before_board": [
+        ".......",
+        ".......",
+        ".......",
+        ".......",
+        ".......",
+        ".B....Q",
+        "......."
+      ],
+      "after_added_black": [
+        4,
+        2
+      ],
+      "projected_black_income": 3,
+      "approach_draw_used": false,
+      "battle_ended": false,
+      "expected": {
+        "front_distance_before": 5,
+        "front_distance_after": 3,
+        "draw": 0,
+        "approach_draw_used": false
+      }
+    },
+    {
+      "id": "MOM-18",
+      "operation": "approach_draw",
+      "before_board": [
+        ".......",
+        ".......",
+        ".......",
+        ".......",
+        ".......",
+        ".B....Q",
+        "......."
+      ],
+      "after_added_black": [
+        4,
+        2
+      ],
+      "projected_black_income": 7,
+      "approach_draw_used": true,
+      "battle_ended": false,
+      "expected": {
+        "front_distance_before": 5,
+        "front_distance_after": 3,
+        "draw": 0,
+        "approach_draw_used": true
+      }
+    },
+    {
+      "id": "MOM-19",
+      "operation": "validate_reach",
+      "board": [
+        ".......",
+        ".....Q.",
+        ".......",
+        ".......",
+        ".......",
+        ".B.....",
+        "......."
+      ],
+      "facilities": [
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ]
+      ],
+      "card": {
+        "type": "stone",
+        "placement_tags": [
+          "frontline"
+        ],
+        "black_place_stone_effect_count": 1
+      },
+      "target": [
+        4,
+        2
+      ],
+      "full_legality": true,
+      "expected": {
+        "mode": "momentum_reach",
+        "legal": true,
+        "reason": "legal",
+        "momentum_cost": 1,
+        "source_points": [
+          [
+            2,
+            2
+          ]
+        ],
+        "midpoint": [
+          3,
+          2
+        ],
+        "target_facility_destroyed_on_commit": true
+      }
+    }
+  ]
+}

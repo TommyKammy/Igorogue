@@ -1,0 +1,60 @@
+[
+  {
+    "id": "style_territory",
+    "name_ja": "地合い流",
+    "starting_swap": {
+      "remove": "card_lure_stone",
+      "add": "card_development"
+    },
+    "rules": [
+      "facility_build_grants_momentum"
+    ],
+    "drawback": "enemy_invasion_weight_up",
+    "momentum_bonus_source": {
+      "event": "facility_built",
+      "owner": "black",
+      "amount": 1,
+      "per_atomic_command_cap": 1,
+      "requires_successful_build": true
+    }
+  },
+  {
+    "id": "style_attack",
+    "name_ja": "攻め碁流",
+    "starting_swap": {
+      "remove": "card_development",
+      "add": "card_contact"
+    },
+    "rules": [
+      "first_contact_free",
+      "first_capture_draw",
+      "overextension_counterattack"
+    ],
+    "drawback": "territory_income_minus_1"
+  },
+  {
+    "id": "style_thickness",
+    "name_ja": "厚み流",
+    "starting_swap": {
+      "remove": "card_lure_stone",
+      "add": "card_one_space_jump"
+    },
+    "rules": [
+      "first_center_play_draw"
+    ],
+    "drawback": "corner_income_minus_1"
+  },
+  {
+    "id": "style_sacrifice",
+    "name_ja": "捨て石流",
+    "starting_swap": {
+      "remove": "card_reinforce",
+      "add": "card_blood_stone"
+    },
+    "rules": [
+      "first_friendly_capture_bonus",
+      "sacrifice_counterattack"
+    ],
+    "drawback": "sacrifice_counterattack"
+  }
+]

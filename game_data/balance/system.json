@@ -1,0 +1,239 @@
+{
+  "board_size": 7,
+  "coordinate_system": {
+    "display_min": 1,
+    "display_max": 7,
+    "display_x_direction": "left_to_right",
+    "display_y_direction": "bottom_to_top",
+    "internal_min": 0,
+    "internal_max": 6,
+    "diagram_row_order": "y_descending",
+    "canonical_point_order": "y_ascending_then_x_ascending",
+    "canonical_index_formula": "(y-1)*board_size+(x-1)",
+    "point_reflection_formula": "(board_size+1-x,board_size+1-y)",
+    "center": [
+      4,
+      4
+    ]
+  },
+  "initial_position": {
+    "id": "standard_v0_2",
+    "symmetry": "point_reflection_with_color_and_role_swap",
+    "stones": [
+      {
+        "color": "black",
+        "role": "king",
+        "point": [
+          2,
+          2
+        ]
+      },
+      {
+        "color": "black",
+        "role": "guard",
+        "point": [
+          2,
+          3
+        ]
+      },
+      {
+        "color": "black",
+        "role": "guard",
+        "point": [
+          3,
+          2
+        ]
+      },
+      {
+        "color": "white",
+        "role": "king",
+        "point": [
+          6,
+          6
+        ]
+      },
+      {
+        "color": "white",
+        "role": "guard",
+        "point": [
+          5,
+          6
+        ]
+      },
+      {
+        "color": "white",
+        "role": "guard",
+        "point": [
+          6,
+          5
+        ]
+      }
+    ]
+  },
+  "base_qi": 3,
+  "base_draw": 5,
+  "turn_limit": 20,
+  "momentum": {
+    "scope": "global_player_battle_resource",
+    "start_amount": 0,
+    "cap": 2,
+    "persist_across_turns": true,
+    "reset_at_battle_start": true,
+    "reset_at_battle_end": true,
+    "universal_source": {
+      "id": "black_territory_established",
+      "amount": 1,
+      "per_atomic_command_cap": 1,
+      "requires_source_owner": "black",
+      "requires_newly_black_owned_point": true
+    },
+    "eligible_card": {
+      "type": "stone",
+      "required_printed_placement_tag": "frontline",
+      "required_black_place_stone_effect_count": 1
+    },
+    "reach": {
+      "distance": 2,
+      "alignment": "orthogonal",
+      "midpoint_stone_layer": "empty",
+      "target_stone_layer": "empty",
+      "normal_printed_legality_takes_precedence": true,
+      "facilities_count_as_empty": true,
+      "cost": 1
+    },
+    "approach_draw": {
+      "cards": 1,
+      "per_player_turn_cap": 1,
+      "projected_black_income_threshold": 4,
+      "distance_metric": "minimum_black_stone_to_white_king_manhattan",
+      "requires_strict_distance_reduction": true,
+      "evaluate_after_atomic_resolution": true,
+      "suppressed_after_battle_end": true
+    }
+  },
+  "max_relics": 5,
+  "max_seals": 3,
+  "territory_income_divisor": 3,
+  "facility_capacity": [
+    {
+      "min": 1,
+      "max": 3,
+      "slots": 1
+    },
+    {
+      "min": 4,
+      "max": 7,
+      "slots": 2
+    },
+    {
+      "min": 8,
+      "max": 12,
+      "slots": 3
+    },
+    {
+      "min": 13,
+      "max": 49,
+      "slots": 4
+    }
+  ],
+  "facility_slot_cap": 5,
+  "facility_type_limits_per_region": {
+    "development": 2,
+    "furnace": 2,
+    "default": 1
+  },
+  "counterattack": {
+    "version": "1.0.0",
+    "scope": "battle",
+    "gauge_unit_scale": 2,
+    "display_threshold_points": 100,
+    "threshold_units": 200,
+    "battle_start": {
+      "base_units": 20,
+      "per_komi_units": 4,
+      "formula_points": "10 + 2 * komi"
+    },
+    "enemy_turn_end_gain": {
+      "base_units": 12,
+      "per_komi_units": 1,
+      "formula_points": "6 + 0.5 * komi",
+      "apply_after_all_enemy_actions": true
+    },
+    "heat": {
+      "enabled_for_all_komi": true,
+      "brilliant_crossing_threshold": 3.0,
+      "base_units": 48,
+      "per_komi_units": 4,
+      "formula_points": "24 + 2 * komi",
+      "per_player_turn_cap": 1,
+      "apply_on_first_threshold_crossing": true,
+      "suppress_after_battle_end": true
+    },
+    "overextension": {
+      "style_id": "style_attack",
+      "card_tag": "attack",
+      "free_successful_cards_per_player_turn": 1,
+      "gain_units_per_excess_card": 16,
+      "gain_points_per_excess_card": 8,
+      "per_player_turn_cap_units": 48,
+      "per_player_turn_cap_points": 24,
+      "count_rejected_commands": false
+    },
+    "sacrifice": {
+      "style_id": "style_sacrifice",
+      "non_king_black_stones_per_batch": 3,
+      "gain_units_per_batch": 30,
+      "gain_points_per_batch": 15,
+      "remainder_persists_within_battle": true,
+      "reset_at_battle_boundary": true,
+      "suppress_after_battle_end": true
+    },
+    "scheduling": {
+      "max_bonus_actions_per_enemy_turn": 1,
+      "max_pending_counterattacks": 1,
+      "subtract_threshold_when_pending_is_created": true,
+      "preserve_overflow_units": true,
+      "normal_action_before_bonus_action": true,
+      "crossed_during_player_turn_executes_upcoming_enemy_turn": true,
+      "crossed_at_enemy_turn_end_executes_following_enemy_turn": true,
+      "reschedule_overflow_after_pending_resolution": true
+    },
+    "battle_boundary": {
+      "reset_gauge_from_komi_at_battle_start": true,
+      "clear_pending_at_battle_start": true,
+      "clear_pending_at_battle_end": true,
+      "do_not_carry_between_battles": true
+    }
+  },
+  "brilliant": {
+    "start": 1.0,
+    "territory": 0.5,
+    "enemy_atari": 0.3,
+    "capture": 0.7,
+    "save_from_atari": 0.5,
+    "territory_and_capture_multiplier": 1.5
+  },
+  "temporary_liberties": {
+    "version": "1.0.0",
+    "timed_duration_kind": "enemy_turn_end",
+    "grant_anchor": "minimum_canonical_point_stone_instance_in_target_group",
+    "stacking": "additive_per_effect_instance",
+    "expire_all_due_simultaneously": true,
+    "capture_all_zero_effective_liberty_groups_simultaneously": true,
+    "expiry_phase_after": "all_enemy_actions_and_current_pending_resolution",
+    "expiry_phase_before": "enemy_turn_end_counterattack_gain",
+    "terminal_priority": [
+      "black_king_capture_loss",
+      "white_king_capture_win"
+    ],
+    "closed_player_window": {
+      "draw": "reserve_next_player_turn",
+      "qi": "reserve_next_player_turn",
+      "choice": "defer_to_next_player_turn_start",
+      "soul": "immediate"
+    },
+    "expiry_territory_implicit_momentum": false,
+    "expiry_capture_brilliant_multiplier": false,
+    "mandatory_topology_mutation_ignores_repetition_legality": true
+  }
+}

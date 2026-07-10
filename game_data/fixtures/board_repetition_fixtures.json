@@ -1,0 +1,448 @@
+[
+  {
+    "id": "KO-01",
+    "title": "initial ko capture is legal",
+    "history_boards": [
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".BWB...",
+        ".W.W...",
+        "..W...."
+      ]
+    ],
+    "current_board": [
+      ".......",
+      ".......",
+      ".......",
+      "..B....",
+      ".BWB...",
+      ".W.W...",
+      "..W...."
+    ],
+    "actor": "black",
+    "point": [
+      3,
+      2
+    ],
+    "stone_kind": "basic",
+    "expected": {
+      "legal": true,
+      "reason": "legal",
+      "captured": [
+        [
+          3,
+          3
+        ]
+      ],
+      "result_board": [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".B.B...",
+        ".WBW...",
+        "..W...."
+      ]
+    }
+  },
+  {
+    "id": "KO-02",
+    "title": "immediate ko recapture repeats P0",
+    "history_boards": [
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".BWB...",
+        ".W.W...",
+        "..W...."
+      ],
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".B.B...",
+        ".WBW...",
+        "..W...."
+      ]
+    ],
+    "current_board": [
+      ".......",
+      ".......",
+      ".......",
+      "..B....",
+      ".B.B...",
+      ".WBW...",
+      "..W...."
+    ],
+    "actor": "white",
+    "point": [
+      3,
+      3
+    ],
+    "stone_kind": "basic",
+    "expected": {
+      "legal": false,
+      "reason": "stone_topology_repetition",
+      "captured": [
+        [
+          3,
+          2
+        ]
+      ],
+      "result_board": [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".BWB...",
+        ".W.W...",
+        "..W...."
+      ]
+    }
+  },
+  {
+    "id": "KO-03",
+    "title": "special stone kind does not bypass repetition",
+    "history_boards": [
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".BWB...",
+        ".W.W...",
+        "..W...."
+      ],
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".B.B...",
+        ".WBW...",
+        "..W...."
+      ]
+    ],
+    "current_board": [
+      ".......",
+      ".......",
+      ".......",
+      "..B....",
+      ".B.B...",
+      ".WBW...",
+      "..W...."
+    ],
+    "actor": "white",
+    "point": [
+      3,
+      3
+    ],
+    "stone_kind": "infiltrator",
+    "expected": {
+      "legal": false,
+      "reason": "stone_topology_repetition",
+      "captured": [
+        [
+          3,
+          2
+        ]
+      ],
+      "result_board": [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".BWB...",
+        ".W.W...",
+        "..W...."
+      ]
+    }
+  },
+  {
+    "id": "KO-04",
+    "title": "non-stone state changes do not bypass repetition",
+    "history_boards": [
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".BWB...",
+        ".W.W...",
+        "..W...."
+      ],
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".B.B...",
+        ".WBW...",
+        "..W...."
+      ]
+    ],
+    "current_board": [
+      ".......",
+      ".......",
+      ".......",
+      "..B....",
+      ".B.B...",
+      ".WBW...",
+      "..W...."
+    ],
+    "actor": "white",
+    "point": [
+      3,
+      3
+    ],
+    "stone_kind": "basic",
+    "non_stone_state_changes": {
+      "facility_destroyed": "facility_market_01",
+      "qi_delta": 3,
+      "cards_drawn": 2,
+      "brilliant_multiplier": 2.5
+    },
+    "expected": {
+      "legal": false,
+      "reason": "stone_topology_repetition",
+      "captured": [
+        [
+          3,
+          2
+        ]
+      ],
+      "result_board": [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".BWB...",
+        ".W.W...",
+        "..W...."
+      ]
+    }
+  },
+  {
+    "id": "KO-05",
+    "title": "recapture after a new elsewhere stone creates unseen topology",
+    "history_boards": [
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".BWB...",
+        ".W.W...",
+        "..W...."
+      ],
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".B.B...",
+        ".WBW...",
+        "..W...."
+      ],
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".B.B...",
+        "WWBW...",
+        "..W...."
+      ]
+    ],
+    "current_board": [
+      ".......",
+      ".......",
+      ".......",
+      "..B....",
+      ".B.B...",
+      "WWBW...",
+      "..W...."
+    ],
+    "actor": "white",
+    "point": [
+      3,
+      3
+    ],
+    "stone_kind": "basic",
+    "expected": {
+      "legal": true,
+      "reason": "legal",
+      "captured": [
+        [
+          3,
+          2
+        ]
+      ],
+      "result_board": [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".BWB...",
+        "WW.W...",
+        "..W...."
+      ]
+    }
+  },
+  {
+    "id": "KO-06",
+    "title": "return to an intermediate topology remains illegal",
+    "history_boards": [
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".BWB...",
+        ".W.W...",
+        "..W...."
+      ],
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".B.B...",
+        ".WBW...",
+        "..W...."
+      ],
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".B.B...",
+        "WWBW...",
+        "..W...."
+      ],
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".BWB...",
+        "WW.W...",
+        "..W...."
+      ]
+    ],
+    "current_board": [
+      ".......",
+      ".......",
+      ".......",
+      "..B....",
+      ".BWB...",
+      "WW.W...",
+      "..W...."
+    ],
+    "actor": "black",
+    "point": [
+      3,
+      2
+    ],
+    "stone_kind": "blood",
+    "expected": {
+      "legal": false,
+      "reason": "stone_topology_repetition",
+      "captured": [
+        [
+          3,
+          3
+        ]
+      ],
+      "result_board": [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".B.B...",
+        "WWBW...",
+        "..W...."
+      ]
+    }
+  },
+  {
+    "id": "KO-07",
+    "title": "enemy candidate filtering skips a repeating primary point",
+    "history_boards": [
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".BWB...",
+        ".W.W...",
+        "..W...."
+      ],
+      [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".B.B...",
+        ".WBW...",
+        "..W...."
+      ]
+    ],
+    "current_board": [
+      ".......",
+      ".......",
+      ".......",
+      "..B....",
+      ".B.B...",
+      ".WBW...",
+      "..W...."
+    ],
+    "actor": "white",
+    "candidate_points": [
+      {
+        "point": [
+          3,
+          3
+        ],
+        "stone_kind": "basic"
+      },
+      {
+        "point": [
+          1,
+          2
+        ],
+        "stone_kind": "basic"
+      }
+    ],
+    "expected": {
+      "chosen_point": [
+        1,
+        2
+      ],
+      "rejected": [
+        {
+          "point": [
+            3,
+            3
+          ],
+          "reason": "stone_topology_repetition"
+        }
+      ],
+      "result_board": [
+        ".......",
+        ".......",
+        ".......",
+        "..B....",
+        ".B.B...",
+        "WWBW...",
+        "..W...."
+      ]
+    }
+  }
+]

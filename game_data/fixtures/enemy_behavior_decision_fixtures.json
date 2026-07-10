@@ -1,0 +1,146 @@
+[
+  {
+    "id": "F09-01",
+    "enemy_id": "enemy_bandit",
+    "execution_priority": [
+      "capture_black_king",
+      "defend_white_king",
+      "capture_non_king",
+      "pressure_black_king",
+      "advance_toward_black_king"
+    ],
+    "candidates": {
+      "advance_toward_black_king": [
+        {"point": [6, 4], "sort_key": [4, -9, 2, 4, 6]},
+        {"point": [4, 6], "sort_key": [4, -9, 2, 6, 4]},
+        {"point": [5, 5], "sort_key": [4, -8, 2, 5, 5]}
+      ]
+    },
+    "expected": {"intent_id": "advance_toward_black_king", "point": [6, 4]}
+  },
+  {
+    "id": "F09-02",
+    "enemy_id": "enemy_bandit",
+    "execution_priority": [
+      "capture_black_king",
+      "defend_white_king",
+      "capture_non_king",
+      "pressure_black_king",
+      "advance_toward_black_king"
+    ],
+    "candidates": {
+      "capture_non_king": [
+        {"point": [4, 3], "sort_key": [-2, 1, -3, 3, 4]},
+        {"point": [5, 4], "sort_key": [-1, 0, -4, 4, 5]}
+      ],
+      "pressure_black_king": [
+        {"point": [3, 2], "sort_key": [2, -4, -1, 2, 3]}
+      ]
+    },
+    "expected": {"intent_id": "capture_non_king", "point": [4, 3]}
+  },
+  {
+    "id": "F09-03",
+    "enemy_id": "enemy_bandit",
+    "execution_priority": [
+      "capture_black_king",
+      "defend_white_king",
+      "advance_toward_black_king"
+    ],
+    "candidates": {
+      "capture_black_king": [
+        {"point": [2, 3], "sort_key": [-3, -2, 3, 2]}
+      ],
+      "advance_toward_black_king": [
+        {"point": [5, 4], "sort_key": [2, -5, 1, 4, 5]}
+      ]
+    },
+    "expected": {"intent_id": "capture_black_king", "point": [2, 3]}
+  },
+  {
+    "id": "F09-04",
+    "enemy_id": "enemy_invader",
+    "execution_priority": [
+      "capture_black_king",
+      "defend_white_king",
+      "escape_active_invasion",
+      "trample_facility",
+      "capture_non_king",
+      "invade_largest_territory",
+      "pressure_black_king",
+      "advance_toward_black_king"
+    ],
+    "candidates": {
+      "trample_facility": [
+        {"point": [3, 3], "sort_key": [-4, -2, -6, -3, 3, 3]},
+        {"point": [6, 2], "sort_key": [-3, -1, -8, -4, 2, 6]}
+      ],
+      "invade_largest_territory": [
+        {"point": [4, 4], "sort_key": [-4, -2, -6, -4, -2, 0, 4, 4]}
+      ]
+    },
+    "expected": {"intent_id": "trample_facility", "point": [3, 3]}
+  },
+  {
+    "id": "F09-05",
+    "enemy_id": "enemy_invader",
+    "execution_priority": [
+      "capture_black_king",
+      "defend_white_king",
+      "escape_active_invasion",
+      "trample_facility",
+      "capture_non_king",
+      "invade_largest_territory",
+      "pressure_black_king",
+      "advance_toward_black_king"
+    ],
+    "candidates": {
+      "escape_active_invasion": [
+        {"point": [4, 5], "sort_key": [-4, 1, 0, 5, 4]},
+        {"point": [5, 4], "sort_key": [-3, 0, 0, 4, 5]}
+      ],
+      "trample_facility": [
+        {"point": [2, 6], "sort_key": [-5, -2, -7, -3, 6, 2]}
+      ]
+    },
+    "expected": {"intent_id": "escape_active_invasion", "point": [4, 5]}
+  },
+  {
+    "id": "F09-06",
+    "enemy_id": "enemy_invader",
+    "execution_priority": [
+      "capture_black_king",
+      "defend_white_king",
+      "escape_active_invasion",
+      "trample_facility",
+      "capture_non_king",
+      "invade_largest_territory",
+      "pressure_black_king",
+      "advance_toward_black_king"
+    ],
+    "candidates": {
+      "invade_largest_territory": [
+        {"point": [5, 3], "sort_key": [-4, -1, -5, -4, -2, 0, 3, 5]}
+      ]
+    },
+    "expected": {"intent_id": "invade_largest_territory", "point": [5, 3]}
+  },
+  {
+    "id": "F09-07",
+    "enemy_id": "enemy_invader",
+    "execution_priority": ["trample_facility", "capture_non_king", "invade_largest_territory"],
+    "candidates": {
+      "trample_facility": [
+        {"point": [6, 2], "sort_key": [-3, -1, -8, -4, 2, 6]}
+      ]
+    },
+    "expected": {"intent_id": "trample_facility", "point": [6, 2]}
+  },
+  {
+    "id": "F09-08",
+    "enemy_id": "enemy_bandit",
+    "execution_priority": ["pressure_black_king", "advance_toward_black_king"],
+    "candidates": {},
+    "expected": {"intent_id": "pass", "point": null}
+  }
+]

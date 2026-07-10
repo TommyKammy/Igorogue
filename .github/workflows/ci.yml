@@ -1,0 +1,103 @@
+name: Igorogue CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  governance:
+    name: Governance and generated content
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run repository governance checks
+        run: python3 tools/check_all.py
+      - name: Verify committed runtime content snapshot
+        run: python3 tools/content_sync.py --check
+
+  dotnet:
+    name: Pure .NET build, tests, and simulator smoke
+    runs-on: ubuntu-latest
+    needs: governance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Verify pinned .NET SDK
+        run: python3 tools/verify_toolchain.py --skip-godot
+      - name: Generate canonical runtime content
+        run: python3 tools/content_sync.py --write
+      - name: Generate package locks for bootstrap validation
+        run: dotnet restore Igorogue.sln --use-lock-file --force-evaluate
+      - name: Prove locked restore
+        run: dotnet restore Igorogue.sln --locked-mode
+      - name: Build
+        run: dotnet build Igorogue.sln -c Release --no-restore
+      - name: Test
+        run: dotnet test Igorogue.sln -c Release --no-build --no-restore
+      - name: Formal simulator smoke
+        run: >-
+          dotnet run --project tools/Igorogue.Sim.Cli/Igorogue.Sim.Cli.csproj
+          -c Release --no-build --no-restore --
+          --smoke --content-manifest build/generated_content/content_manifest.json
+      - name: Archive generated package locks until committed
+        uses: actions/upload-artifact@v4
+        with:
+          name: bootstrap-package-locks
+          path: '**/packages.lock.json'
+          if-no-files-found: error
+
+  godot:
+    name: Godot .NET headless smoke and Windows debug export
+    runs-on: ubuntu-latest
+    needs: dotnet
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Install pinned Godot .NET editor and templates
+        run: tools/ci/install_godot.sh
+      - name: Verify exact tools
+        run: python3 tools/verify_toolchain.py
+      - name: Generate content and package locks
+        run: |
+          python3 tools/content_sync.py --write
+          dotnet restore Igorogue.sln --use-lock-file --force-evaluate
+      - name: Build Godot C# solution headlessly
+        run: >-
+          "$GODOT_BIN" --headless --path game/Igorogue.Godot
+          --editor --build-solutions --quit
+      - name: Run Godot bootstrap smoke scene
+        run: |
+          "$GODOT_BIN" --headless --path game/Igorogue.Godot --quit-after 120
+      - name: Export Windows debug build
+        run: |
+          mkdir -p build/exports/windows
+          "$GODOT_BIN" --headless --path game/Igorogue.Godot \
+            --export-debug "Windows Debug" \
+            "$GITHUB_WORKSPACE/build/exports/windows/Igorogue.exe"
+          python3 tools/hash_artifact.py build/exports/windows/Igorogue.exe
+      - name: Archive Windows debug build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Igorogue-Windows-Debug
+          path: |
+            build/exports/windows/Igorogue.exe
+            build/exports/windows/Igorogue.exe.sha256
+          if-no-files-found: error

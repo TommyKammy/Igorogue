@@ -1,0 +1,111 @@
+{
+  "nodes": [
+    {
+      "id": "hub",
+      "type": "file",
+      "file": "00_Home/Igorogue Project Hub.md",
+      "x": 0,
+      "y": 0,
+      "width": 320,
+      "height": 180
+    },
+    {
+      "id": "product",
+      "type": "file",
+      "file": "10_Product/Design Pillars.md",
+      "x": -420,
+      "y": -220,
+      "width": 300,
+      "height": 180
+    },
+    {
+      "id": "design",
+      "type": "file",
+      "file": "20_Design/Rules Canon.md",
+      "x": -420,
+      "y": 100,
+      "width": 300,
+      "height": 220
+    },
+    {
+      "id": "ui",
+      "type": "file",
+      "file": "25_UIUX/UI UX Overview.md",
+      "x": 400,
+      "y": -220,
+      "width": 300,
+      "height": 180
+    },
+    {
+      "id": "tech",
+      "type": "file",
+      "file": "30_Technical/Architecture.md",
+      "x": 400,
+      "y": 100,
+      "width": 300,
+      "height": 180
+    },
+    {
+      "id": "prod",
+      "type": "file",
+      "file": "40_Production/Development Plan.md",
+      "x": 0,
+      "y": 300,
+      "width": 320,
+      "height": 180
+    },
+    {
+      "id": "valid",
+      "type": "file",
+      "file": "50_Validation/Validation Strategy.md",
+      "x": 0,
+      "y": 560,
+      "width": 320,
+      "height": 180
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "fromNode": "hub",
+      "fromSide": "left",
+      "toNode": "product",
+      "toSide": "right"
+    },
+    {
+      "id": "e2",
+      "fromNode": "hub",
+      "fromSide": "left",
+      "toNode": "design",
+      "toSide": "right"
+    },
+    {
+      "id": "e3",
+      "fromNode": "hub",
+      "fromSide": "right",
+      "toNode": "ui",
+      "toSide": "left"
+    },
+    {
+      "id": "e4",
+      "fromNode": "hub",
+      "fromSide": "right",
+      "toNode": "tech",
+      "toSide": "left"
+    },
+    {
+      "id": "e5",
+      "fromNode": "hub",
+      "fromSide": "bottom",
+      "toNode": "prod",
+      "toSide": "top"
+    },
+    {
+      "id": "e6",
+      "fromNode": "prod",
+      "fromSide": "bottom",
+      "toNode": "valid",
+      "toSide": "top"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "project": "Igorogue",
+  "handoff_version": "v0.2.10_CODEX_MAC_HANDOFF",
+  "baseline_version": "v0.2.9_REPOSITORY_BOOTSTRAP",
+  "date": "2026-07-10",
+  "host": "macOS",
+  "agent": "Codex app",
+  "current_gate_task": "TASK-0022",
+  "blocked_gameplay_task": "TASK-0002",
+  "first_prompt": "handoff/FIRST_PROMPT.txt",
+  "root_instruction": "AGENTS.md",
+  "handoff_document": "CODEX_MAC_HANDOFF.md",
+  "runtime_evidence_required": true,
+  "product_rules_kernel_implemented": false,
+  "abstract_proxy_evidence_level": "E2"
+}

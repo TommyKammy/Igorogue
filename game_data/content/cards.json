@@ -1,0 +1,286 @@
+[
+  {
+    "id": "card_basic_stone",
+    "name_ja": "打石",
+    "rarity": "starter",
+    "cost": 1,
+    "type": "stone",
+    "placement_tags": [
+      "frontline",
+      "terminal"
+    ],
+    "effects": [
+      {
+        "op": "place_stone",
+        "stone": "basic"
+      }
+    ]
+  },
+  {
+    "id": "card_extend",
+    "name_ja": "ノビ",
+    "rarity": "starter",
+    "cost": 1,
+    "type": "stone",
+    "placement_tags": [
+      "frontline"
+    ],
+    "effects": [
+      {
+        "op": "place_stone",
+        "stone": "basic"
+      },
+      {
+        "op": "draw_if_real_liberties_at_least",
+        "value": 3,
+        "cards": 1
+      }
+    ]
+  },
+  {
+    "id": "card_contact",
+    "name_ja": "ツケ",
+    "rarity": "starter",
+    "cost": 1,
+    "type": "stone",
+    "placement_tags": [
+      "contact",
+      "terminal"
+    ],
+    "effects": [
+      {
+        "op": "place_stone",
+        "stone": "basic"
+      },
+      {
+        "op": "gain_qi_if_enemy_atari",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "card_reinforce",
+    "name_ja": "補強",
+    "rarity": "starter",
+    "cost": 1,
+    "type": "technique",
+    "target": "friendly_group",
+    "effects": [
+      {
+        "op": "temporary_liberty",
+        "value": 1,
+        "duration": {
+          "kind": "enemy_turn_end",
+          "timing": "first_enemy_turn_end_at_or_after_grant"
+        },
+        "stacking": "additive_per_effect_instance"
+      },
+      {
+        "op": "draw_if_target_atari",
+        "cards": 1
+      }
+    ]
+  },
+  {
+    "id": "card_development",
+    "name_ja": "開拓",
+    "rarity": "starter",
+    "cost": 2,
+    "type": "territory",
+    "target": "black_territory_empty",
+    "effects": [
+      {
+        "op": "build_facility",
+        "facility": "development"
+      }
+    ]
+  },
+  {
+    "id": "card_lure_stone",
+    "name_ja": "囮石",
+    "rarity": "starter",
+    "cost": 0,
+    "type": "stone",
+    "placement_tags": [
+      "contact"
+    ],
+    "effects": [
+      {
+        "op": "place_stone",
+        "stone": "lure"
+      },
+      {
+        "op": "reserve_draw",
+        "cards": 1
+      }
+    ],
+    "on_captured": [
+      {
+        "op": "reserve_draw",
+        "cards": 2
+      }
+    ]
+  },
+  {
+    "id": "card_one_space_jump",
+    "name_ja": "一間トビ",
+    "rarity": "common",
+    "cost": 1,
+    "type": "stone",
+    "placement_tags": [
+      "jump"
+    ],
+    "effects": [
+      {
+        "op": "place_stone",
+        "stone": "basic"
+      }
+    ]
+  },
+  {
+    "id": "card_edge_crawl",
+    "name_ja": "辺這い",
+    "rarity": "common",
+    "cost": 2,
+    "type": "stone",
+    "placement_tags": [
+      "edge"
+    ],
+    "effects": [
+      {
+        "op": "place_stone",
+        "stone": "basic"
+      },
+      {
+        "op": "gain_qi_if_territory_created",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "card_infiltrate",
+    "name_ja": "忍び",
+    "rarity": "uncommon",
+    "cost": 2,
+    "type": "stone",
+    "placement_tags": [
+      "invasion"
+    ],
+    "effects": [
+      {
+        "op": "place_stone",
+        "stone": "infiltrator"
+      }
+    ],
+    "on_survive_to_next_turn": [
+      {
+        "op": "draw",
+        "cards": 1
+      }
+    ]
+  },
+  {
+    "id": "card_blood_stone",
+    "name_ja": "血石",
+    "rarity": "common",
+    "cost": 1,
+    "type": "stone",
+    "placement_tags": [
+      "frontline"
+    ],
+    "effects": [
+      {
+        "op": "place_stone",
+        "stone": "blood"
+      }
+    ],
+    "on_captured": [
+      {
+        "op": "reserve_draw",
+        "cards": 1
+      },
+      {
+        "op": "gain_soul",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "card_seed_stone",
+    "name_ja": "種石",
+    "rarity": "common",
+    "cost": 1,
+    "type": "stone",
+    "placement_tags": [
+      "frontline"
+    ],
+    "effects": [
+      {
+        "op": "place_stone",
+        "stone": "seed"
+      },
+      {
+        "op": "schedule_growth",
+        "turns": 1
+      }
+    ]
+  },
+  {
+    "id": "card_furnace",
+    "name_ja": "炉",
+    "rarity": "uncommon",
+    "cost": 2,
+    "type": "territory",
+    "target": "black_territory_empty",
+    "effects": [
+      {
+        "op": "build_facility",
+        "facility": "furnace"
+      }
+    ]
+  },
+  {
+    "id": "card_market",
+    "name_ja": "市場",
+    "rarity": "rare",
+    "cost": 2,
+    "type": "territory",
+    "target": "black_territory_empty",
+    "effects": [
+      {
+        "op": "build_facility",
+        "facility": "market"
+      }
+    ]
+  },
+  {
+    "id": "card_capture_chain",
+    "name_ja": "連続捕獲",
+    "rarity": "rare",
+    "cost": 2,
+    "type": "catalyst",
+    "effects": [
+      {
+        "op": "arm_next_capture",
+        "gain_qi": 1,
+        "draw": 2
+      }
+    ]
+  },
+  {
+    "id": "card_large_framework",
+    "name_ja": "大模様",
+    "rarity": "rare",
+    "cost": 3,
+    "type": "catalyst",
+    "target": "center_region",
+    "effects": [
+      {
+        "op": "schedule_framework_conversion",
+        "turns": 2,
+        "gain_qi": 1,
+        "draw": 1
+      }
+    ]
+  }
+]

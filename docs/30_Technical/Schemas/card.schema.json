@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igorogue.local/schema/card.json",
+  "title": "Igorogue Card",
+  "type": "object",
+  "required": [
+    "id",
+    "name_ja",
+    "rarity",
+    "cost",
+    "type",
+    "effects"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^card_[a-z0-9_]+$"
+    },
+    "name_ja": {
+      "type": "string"
+    },
+    "rarity": {
+      "enum": [
+        "starter",
+        "common",
+        "uncommon",
+        "rare",
+        "curse"
+      ]
+    },
+    "cost": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9
+    },
+    "type": {
+      "enum": [
+        "stone",
+        "technique",
+        "territory",
+        "catalyst",
+        "curse"
+      ]
+    },
+    "placement_tags": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "frontline",
+          "contact",
+          "jump",
+          "edge",
+          "invasion",
+          "terminal"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "target": {
+      "type": "string"
+    },
+    "effects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "op"
+        ],
+        "properties": {
+          "op": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+set -eu
+. "$(dirname "$0")/_common.sh"
+"$PYTHON_BIN" tools/verify_toolchain.py --skip-godot
+"$PYTHON_BIN" tools/check_repository_bootstrap.py --strict-locks
+"$DOTNET_BIN" restore Igorogue.sln --locked-mode

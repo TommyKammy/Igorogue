@@ -1,0 +1,12 @@
+<Project Sdk="Godot.NET.Sdk/4.7.0">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace>Igorogue.Godot</RootNamespace>
+    <AssemblyName>Igorogue.Godot</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Igorogue.Application/Igorogue.Application.csproj" />
+    <ProjectReference Include="../../src/Igorogue.Content/Igorogue.Content.csproj" />
+  </ItemGroup>
+</Project>

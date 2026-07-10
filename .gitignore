@@ -1,0 +1,38 @@
+.DS_Store
+Thumbs.db
+*.log
+
+# Obsidian local UI state
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# .NET
+.nuget/
+**/bin/
+**/obj/
+TestResults/
+
+# Godot import/editor state
+.godot/
+.mono/
+
+# Build and export outputs. build/generated_content is force-included below.
+build/*
+!build/generated_content/
+!build/generated_content/**
+builds/
+outputs/
+
+# Local caches
+.cache/
+
+# Codex local state
+.codex/
+*.local
+

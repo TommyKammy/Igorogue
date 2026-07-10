@@ -1,0 +1,40 @@
+---
+type: backlog
+status: active
+project: Igorogue
+updated: 2026-07-10
+---
+# Backlog
+
+## Handoff and M0 gate
+
+- [[TASK-0021 Prepare macOS Codex App Handoff]] — done
+- [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]] — ready／next
+- [[TASK-0001 Decide Engine and Repository]] — review; static bootstrap complete
+- [[TASK-0020 Review Repository Bootstrap Runtime Evidence]] — blocked; TASK-0022 operationally closes it
+- [[TASK-0002 Deterministic RNG and Command Log]] — blocked until runtime gate closes
+
+## M-1 remaining review
+
+- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — two-person paper sign-off pending
+- TASK-0013 through TASK-0019 — done
+- A-6 style data/document synchronization checker — P1
+- A-8 content reference validation expansion — P1
+
+## M1 ordered queue
+
+- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
+- [[TASK-0004 Stone Groups and Unique Liberty Sets]]
+- [[TASK-0005 Hypothetical Placement and Capture Resolution]]
+- [[TASK-0006 Suicide Legality and Terminal Capture]]
+- [[TASK-0007 King Capture and Battle Result]]
+- [[TASK-0008 Territory Region Calculation]]
+- [[TASK-0009 Golden Board Fixtures]]
+- [[TASK-0010 Headless Battle State Machine]]
+- [[TASK-0011 Replay Round Trip Verification]]
+
+See [[Codex Task Queue]] for gate order and concurrency rules.
+
+## M2 and later
+
+Do not mark tasks ready until M1 exit evidence exists. Do not expand the full card/relic/meta content before Core Duel and Acceleration Lab validation.

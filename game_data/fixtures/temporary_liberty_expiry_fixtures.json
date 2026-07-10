@@ -1,0 +1,684 @@
+{
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "TLE-01",
+      "operation": "expiry_sweep",
+      "title": "single protected black stone dies when +1 expires",
+      "enemy_turn_index": 1,
+      "board": [
+        ".......",
+        ".......",
+        "...W...",
+        "..WBW..",
+        "...W...",
+        ".......",
+        "......."
+      ],
+      "effects": [
+        {
+          "id": "effect_01",
+          "anchor_point": [
+            4,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 1,
+          "source_id": "card_reinforce"
+        }
+      ],
+      "expected": {
+        "expired_effect_ids": [
+          "effect_01"
+        ],
+        "captured_groups": [
+          {
+            "color": "black",
+            "anchor": [
+              4,
+              4
+            ],
+            "count": 1,
+            "contains_king": false
+          }
+        ],
+        "battle_result": "ongoing",
+        "topology_first_seen": true
+      }
+    },
+    {
+      "id": "TLE-02",
+      "operation": "expiry_sweep",
+      "title": "two effects expire together and capture group once",
+      "enemy_turn_index": 2,
+      "board": [
+        ".......",
+        ".......",
+        "...W...",
+        "..WBW..",
+        "...W...",
+        ".......",
+        "......."
+      ],
+      "effects": [
+        {
+          "id": "effect_b",
+          "anchor_point": [
+            4,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 2,
+          "expires_after_enemy_turn_index": 2,
+          "source_id": "test"
+        },
+        {
+          "id": "effect_a",
+          "anchor_point": [
+            4,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 2,
+          "source_id": "test"
+        }
+      ],
+      "expected": {
+        "expired_effect_ids": [
+          "effect_a",
+          "effect_b"
+        ],
+        "captured_groups": [
+          {
+            "color": "black",
+            "anchor": [
+              4,
+              4
+            ],
+            "count": 1,
+            "contains_king": false
+          }
+        ],
+        "group_capture_event_count": 1
+      }
+    },
+    {
+      "id": "TLE-03",
+      "operation": "expiry_sweep",
+      "title": "two separate groups die from one snapshot in anchor order",
+      "enemy_turn_index": 3,
+      "board": [
+        ".....W.",
+        "....WBW",
+        ".....W.",
+        ".......",
+        ".W.....",
+        "WBW....",
+        ".W....."
+      ],
+      "effects": [
+        {
+          "id": "low",
+          "anchor_point": [
+            2,
+            2
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 3,
+          "source_id": "test"
+        },
+        {
+          "id": "high",
+          "anchor_point": [
+            6,
+            6
+          ],
+          "amount": 1,
+          "created_sequence": 2,
+          "expires_after_enemy_turn_index": 3,
+          "source_id": "test"
+        }
+      ],
+      "expected": {
+        "captured_groups": [
+          {
+            "color": "black",
+            "anchor": [
+              2,
+              2
+            ],
+            "count": 1,
+            "contains_king": false
+          },
+          {
+            "color": "black",
+            "anchor": [
+              6,
+              6
+            ],
+            "count": 1,
+            "contains_king": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "TLE-04",
+      "operation": "expiry_sweep",
+      "title": "future timed effect keeps group alive",
+      "enemy_turn_index": 4,
+      "board": [
+        ".......",
+        ".......",
+        "...W...",
+        "..WBW..",
+        "...W...",
+        ".......",
+        "......."
+      ],
+      "effects": [
+        {
+          "id": "due",
+          "anchor_point": [
+            4,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 4,
+          "source_id": "test"
+        },
+        {
+          "id": "future",
+          "anchor_point": [
+            4,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 2,
+          "expires_after_enemy_turn_index": 5,
+          "source_id": "test"
+        }
+      ],
+      "expected": {
+        "expired_effect_ids": [
+          "due"
+        ],
+        "remaining_effect_ids": [
+          "future"
+        ],
+        "captured_groups": [],
+        "battle_result": "ongoing"
+      }
+    },
+    {
+      "id": "TLE-05",
+      "operation": "expiry_sweep",
+      "title": "continuous spring modifier survives timed expiry",
+      "enemy_turn_index": 5,
+      "board": [
+        ".......",
+        ".......",
+        "...W...",
+        "..WBW..",
+        "...W...",
+        ".......",
+        "......."
+      ],
+      "effects": [
+        {
+          "id": "due",
+          "anchor_point": [
+            4,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 5,
+          "source_id": "test"
+        }
+      ],
+      "continuous_modifiers": [
+        {
+          "id": "spring",
+          "anchor_point": [
+            4,
+            4
+          ],
+          "amount": 1,
+          "source_id": "board_spirit_spring"
+        }
+      ],
+      "expected": {
+        "captured_groups": [],
+        "continuous_modifier_ids": [
+          "spring"
+        ]
+      }
+    },
+    {
+      "id": "TLE-06",
+      "operation": "expiry_sweep",
+      "title": "anchor effect follows a merged group",
+      "enemy_turn_index": 6,
+      "board": [
+        ".......",
+        ".......",
+        ".......",
+        "..BB...",
+        ".......",
+        ".......",
+        "......."
+      ],
+      "effects": [
+        {
+          "id": "merged",
+          "anchor_point": [
+            3,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 6,
+          "source_id": "test"
+        }
+      ],
+      "expected": {
+        "pre_expiry_anchor_group": {
+          "anchor": [
+            3,
+            4
+          ],
+          "count": 2,
+          "temporary_bonus": 1
+        },
+        "captured_groups": []
+      }
+    },
+    {
+      "id": "TLE-07",
+      "operation": "expiry_sweep",
+      "title": "black king death loses before benefit triggers",
+      "enemy_turn_index": 7,
+      "board": [
+        ".......",
+        ".......",
+        "...W...",
+        "..WKW..",
+        "...W...",
+        ".......",
+        "......."
+      ],
+      "effects": [
+        {
+          "id": "king_guard",
+          "anchor_point": [
+            4,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 7,
+          "source_id": "card_reinforce"
+        }
+      ],
+      "equipped_seals": [
+        "seal_sacrifice"
+      ],
+      "style_id": "style_sacrifice",
+      "expected": {
+        "battle_result": "loss",
+        "benefits_suppressed": true,
+        "reserved_draw_delta": 0,
+        "soul_delta": 0,
+        "counterattack_delta_units": 0
+      }
+    },
+    {
+      "id": "TLE-08",
+      "operation": "expiry_sweep",
+      "title": "simultaneous king deaths are a player loss",
+      "enemy_turn_index": 8,
+      "board": [
+        ".....B.",
+        "....BQB",
+        ".....B.",
+        ".......",
+        ".W.....",
+        "WKW....",
+        ".W....."
+      ],
+      "effects": [
+        {
+          "id": "black_king",
+          "anchor_point": [
+            2,
+            2
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 8,
+          "source_id": "test"
+        },
+        {
+          "id": "white_king",
+          "anchor_point": [
+            6,
+            6
+          ],
+          "amount": 1,
+          "created_sequence": 2,
+          "expires_after_enemy_turn_index": 8,
+          "source_id": "test"
+        }
+      ],
+      "expected": {
+        "battle_result": "loss",
+        "captured_king_colors": [
+          "black",
+          "white"
+        ],
+        "benefits_suppressed": true
+      }
+    },
+    {
+      "id": "TLE-09",
+      "operation": "expiry_sweep",
+      "title": "lure blood style and seal triggers use stable closed-window order",
+      "enemy_turn_index": 9,
+      "board": [
+        ".......",
+        ".......",
+        "..WW...",
+        ".WBBW..",
+        "..WW...",
+        ".......",
+        "......."
+      ],
+      "effects": [
+        {
+          "id": "group_guard",
+          "anchor_point": [
+            3,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 9,
+          "source_id": "test"
+        }
+      ],
+      "stone_overrides": [
+        {
+          "point": [
+            3,
+            4
+          ],
+          "instance_id": "stone_lure",
+          "kind": "lure"
+        },
+        {
+          "point": [
+            4,
+            4
+          ],
+          "instance_id": "stone_blood",
+          "kind": "blood"
+        }
+      ],
+      "style_id": "style_sacrifice",
+      "style_first_capture_used": false,
+      "equipped_seals": [
+        "seal_sacrifice"
+      ],
+      "seal_first_capture_used": false,
+      "expected": {
+        "reserved_draw_delta": 7,
+        "soul_delta": 1,
+        "counterattack_delta_units": 0,
+        "sacrifice_remainder": 2,
+        "benefit_event_order": [
+          "lure:stone_lure:reserve_draw_2",
+          "blood:stone_blood:reserve_draw_1",
+          "blood:stone_blood:soul_1",
+          "style_sacrifice:first_capture:reserve_draw_2",
+          "seal_sacrifice:first_capture:reserve_draw_2"
+        ]
+      }
+    },
+    {
+      "id": "TLE-10",
+      "operation": "expiry_sweep",
+      "title": "white expiry capture credits black and defers closed-window rewards",
+      "enemy_turn_index": 10,
+      "board": [
+        ".......",
+        ".......",
+        "...B...",
+        "..BWB..",
+        "...B...",
+        ".......",
+        "......."
+      ],
+      "effects": [
+        {
+          "id": "white_guard",
+          "anchor_point": [
+            4,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 10,
+          "source_id": "test"
+        }
+      ],
+      "armed_capture_chain": true,
+      "equipped_relics": [
+        "relic_hungry_furnace"
+      ],
+      "equipped_seals": [
+        "seal_bone"
+      ],
+      "expected": {
+        "capturing_colors": [
+          "black"
+        ],
+        "soul_delta": 1,
+        "reserved_draw_delta": 2,
+        "reserved_qi_delta": 3,
+        "deferred_choices": [
+          "seal_bone:qi_or_draw"
+        ]
+      }
+    },
+    {
+      "id": "TLE-11",
+      "operation": "expiry_sweep",
+      "title": "mandatory expiry capture may revisit a seen topology",
+      "enemy_turn_index": 11,
+      "board": [
+        ".......",
+        ".......",
+        "...W...",
+        "..WBW..",
+        "...W...",
+        ".......",
+        "......."
+      ],
+      "effects": [
+        {
+          "id": "repeat_guard",
+          "anchor_point": [
+            4,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 11,
+          "source_id": "test"
+        }
+      ],
+      "result_topology_seen_before": true,
+      "expected": {
+        "captured_groups": [
+          {
+            "color": "black",
+            "anchor": [
+              4,
+              4
+            ],
+            "count": 1,
+            "contains_king": false
+          }
+        ],
+        "topology_first_seen": false,
+        "capture_was_blocked_by_repetition": false
+      }
+    },
+    {
+      "id": "TLE-12",
+      "operation": "expiry_sweep",
+      "title": "expiry capture creates income territory without implicit momentum or brilliant",
+      "enemy_turn_index": 12,
+      "board": [
+        ".......",
+        ".......",
+        "...B...",
+        "..BWB..",
+        "...B...",
+        ".......",
+        "......."
+      ],
+      "effects": [
+        {
+          "id": "territory_guard",
+          "anchor_point": [
+            4,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 12,
+          "source_id": "test"
+        }
+      ],
+      "territory_queries": [
+        [
+          4,
+          4
+        ]
+      ],
+      "expected": {
+        "territories": {
+          "4,4": {
+            "owner": "black",
+            "size": 1,
+            "basic_income": 1
+          }
+        },
+        "momentum_delta": 0,
+        "brilliant_delta": 0.0
+      }
+    },
+    {
+      "id": "TLE-13",
+      "operation": "expiry_sweep",
+      "title": "no due effects produces no expiry sweep events",
+      "enemy_turn_index": 13,
+      "board": [
+        ".......",
+        ".......",
+        "...W...",
+        "..WBW..",
+        "...W...",
+        ".......",
+        "......."
+      ],
+      "effects": [
+        {
+          "id": "future",
+          "anchor_point": [
+            4,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 14,
+          "source_id": "test"
+        }
+      ],
+      "expected": {
+        "expired_effect_ids": [],
+        "captured_groups": [],
+        "event_order": []
+      }
+    },
+    {
+      "id": "TLE-14",
+      "operation": "phase_order",
+      "title": "normal and counterattack actions precede expiry and base gain follows it",
+      "pending_at_enemy_turn_start": true,
+      "expected": {
+        "phase_order": [
+          "enemy_normal_action",
+          "enemy_counterattack_action",
+          "consume_current_pending_and_reprime_overflow",
+          "temporary_liberty_expiry_sweep",
+          "enemy_turn_end_counterattack_gain",
+          "plan_next_intents"
+        ]
+      }
+    },
+    {
+      "id": "TLE-15",
+      "operation": "expiry_sweep",
+      "title": "sacrifice pressure from expiry precedes natural enemy-turn gain",
+      "enemy_turn_index": 15,
+      "komi": 0,
+      "start_counterattack_units": 160,
+      "board": [
+        ".......",
+        ".......",
+        "..WWW..",
+        ".WBBBW.",
+        "..WWW..",
+        ".......",
+        "......."
+      ],
+      "effects": [
+        {
+          "id": "three_guard",
+          "anchor_point": [
+            3,
+            4
+          ],
+          "amount": 1,
+          "created_sequence": 1,
+          "expires_after_enemy_turn_index": 15,
+          "source_id": "test"
+        }
+      ],
+      "style_id": "style_sacrifice",
+      "style_first_capture_used": true,
+      "expected": {
+        "counterattack_advances": [
+          {
+            "reason": "sacrifice_batch",
+            "delta_units": 30
+          },
+          {
+            "reason": "enemy_turn_end",
+            "delta_units": 12
+          }
+        ],
+        "end_counterattack_units": 2,
+        "pending": true,
+        "sacrifice_remainder": 0
+      }
+    }
+  ]
+}

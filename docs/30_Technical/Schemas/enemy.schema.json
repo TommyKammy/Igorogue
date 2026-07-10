@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igorogue.local/schemas/enemy.schema.json",
+  "title": "Igorogue Enemy Content",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "name_ja", "role", "implementation_status", "intents"],
+    "properties": {
+      "id": {"type": "string", "pattern": "^(enemy|boss)_[a-z0-9_]+$"},
+      "name_ja": {"type": "string", "minLength": 1},
+      "role": {"type": "string", "minLength": 1},
+      "implementation_status": {"enum": ["specified", "placeholder"]},
+      "behavior_spec": {"type": "string"},
+      "behavior_version": {"type": "string"},
+      "action_budget": {
+        "type": "object",
+        "required": ["normal_actions", "counterattack_bonus_actions", "max_actions_per_enemy_turn"],
+        "properties": {
+          "normal_actions": {"const": 1},
+          "counterattack_bonus_actions": {"const": 1},
+          "max_actions_per_enemy_turn": {"const": 2}
+        },
+        "additionalProperties": false
+      },
+      "intents": {"type": "array"}
+    },
+    "allOf": [
+      {
+        "if": {"properties": {"implementation_status": {"const": "specified"}}},
+        "then": {
+          "required": ["behavior_spec", "behavior_version", "action_budget", "placement_permissions", "parameters", "mandatory_overrides", "plan_priority", "counterattack_priority", "tie_break"]
+        }
+      }
+    ],
+    "additionalProperties": true
+  }
+}
