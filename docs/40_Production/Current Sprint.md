@@ -13,10 +13,12 @@ Begin Gate 1 by implementing deterministic RNG streams and the ordered command-l
 
 ## Ready
 
-- [[TASK-0002 Deterministic RNG and Command Log]]
+- なし
 
 ## In review
 
+- [[TASK-0002 Deterministic RNG and Command Log]]
+  - implementation evidence complete; independent review and CI pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
