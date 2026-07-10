@@ -151,12 +151,25 @@ Do not record username, machine serial, tokens, or private absolute paths.
 
 ## Execution log
 
-Not started.
+2026-07-10 — CI preflight only; the macOS host evidence sequence has not started:
+
+- Draft PR #1 imported the v0.2.10 bootstrap baseline and started the repository CI.
+- The first run exposed `CS0120` in the bootstrap application test fixture because a nested instance property shadowed the outer test constant.
+- After human approval, commit `14cf9c3` qualified the constant reference without changing test expectations or production behavior.
+- The rerun completed governance, pure .NET build/test/simulator, Godot .NET headless smoke, and Windows debug export successfully.
 
 ## Evidence
 
-Not created.
+- Pull request: `https://github.com/TommyKammy/Igorogue/pull/1`
+- Successful CI run: `https://github.com/TommyKammy/Igorogue/actions/runs/29098393726`
+- Reviewed fix commit: `14cf9c3a38a1946c5cbc3888e447cff3e43b86ba`
+- Governance and generated content: passed.
+- Pinned .NET verification, lock generation, locked restore, build, xUnit, and simulator smoke: passed.
+- Pinned Godot .NET verification, C# headless build, bootstrap scene, Windows debug export, and artifact upload: passed.
 
 ## Known issues
 
-Windows export on macOS requires the matching Godot export templates. CI remains a mandatory final gate.
+- Authentic `packages.lock.json` files were generated and archived by CI but are not yet reviewed or committed.
+- The macOS host shell used for this preflight does not currently expose the pinned .NET SDK or Godot .NET editor, so local and clean-checkout runtime evidence remains outstanding.
+- CI reports non-blocking Node.js 20 deprecation warnings for current action versions.
+- Windows export on macOS still requires the matching Godot export templates.
