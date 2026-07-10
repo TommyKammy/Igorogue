@@ -74,7 +74,7 @@ public sealed class BootstrapApplicationTests
             var bytes = new UTF8Encoding(false).GetBytes(content);
             File.WriteAllBytes(contentPath, bytes);
             var fileHash = $"sha256:{Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant()}";
-            var aggregateHash = ContentHash;
+            var aggregateHash = BootstrapApplicationTests.ContentHash;
             File.WriteAllText(
                 manifestPath,
                 $$"""
