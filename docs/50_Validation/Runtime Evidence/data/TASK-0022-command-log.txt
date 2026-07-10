@@ -1,0 +1,128 @@
+TASK-0022 macOS runtime command log
+Date: 2026-07-11
+Paths: <REPO_ROOT>, <CLEAN_WORKTREE>, and <GODOT_BIN> are redacted placeholders.
+Runtime implementation commit: c1e1998d34f7e9abbb8962b7cc34897ebd9675a1
+
+[Host]
+$ sw_vers
+ProductName: macOS
+ProductVersion: 26.5.1
+BuildVersion: 25F80
+exit=0
+
+$ uname -m
+arm64
+exit=0
+
+$ dotnet --version
+8.0.422
+exit=0
+
+$ <GODOT_BIN> --version
+4.7.stable.mono.official.5b4e0cb0f
+exit=0
+
+[Stage 1 — authentic locks]
+$ tools/dev/check
+All checks passed.
+exit=0
+
+$ tools/dev/update-locks
+Repository bootstrap checks passed — 8 projects, 10 wrapper pairs
+Lock files generated. Review and commit every packages.lock.json before using locked restore.
+exit=0
+
+$ tools/dev/update-locks
+Repository bootstrap checks passed — 8 projects, 10 wrapper pairs
+Lock files generated. Review and commit every packages.lock.json before using locked restore.
+exit=0
+
+$ git diff -- ':(glob)**/packages.lock.json' Directory.Packages.props NuGet.Config
+<no output after second generation>
+exit=0
+
+[Stage 2 — task worktree]
+$ tools/dev/restore
+Toolchain verification passed.
+Repository bootstrap checks passed — 8 projects, 10 wrapper pairs
+Restore succeeded for 8 projects in locked mode.
+exit=0
+
+$ tools/dev/build
+Build succeeded.
+0 Warning(s)
+0 Error(s)
+exit=0
+
+$ tools/dev/test
+Igorogue.Application.Tests: passed 4, failed 0, skipped 0
+Igorogue.Architecture.Tests: passed 5, failed 0, skipped 0
+Igorogue.Domain.Tests: passed 2, failed 0, skipped 0
+exit=0
+
+$ tools/dev/sim-smoke
+IGOROGUE_SIM_SMOKE checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd content=sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06 files=7
+exit=0
+
+$ tools/dev/sim-smoke
+IGOROGUE_SIM_SMOKE checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd content=sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06 files=7
+exit=0
+
+$ GODOT_BIN=<GODOT_BIN> tools/dev/godot-smoke
+Toolchain verification passed.
+IGOROGUE_GODOT_SMOKE checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd content=sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06 files=7
+exit=0
+
+$ GODOT_BIN=<GODOT_BIN> tools/dev/export-windows
+Toolchain verification passed.
+IGOROGUE_GODOT_SMOKE checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd content=sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06 files=7
+Managed publish completed.
+Igorogue.exe, managed data directory, Igorogue.Godot.dll, and SHA-256 sidecar verified.
+Committed NuGet lock files unchanged.
+exit=0
+
+[Stage 3 — detached clean worktree at c1e1998]
+$ tools/dev/check
+All checks passed.
+exit=0
+
+$ tools/dev/restore
+Toolchain verification passed.
+Repository bootstrap checks passed — 8 projects, 10 wrapper pairs
+Restore succeeded for 8 projects in locked mode.
+exit=0
+
+$ tools/dev/test
+Build succeeded with 0 warnings and 0 errors.
+Igorogue.Application.Tests: passed 4, failed 0, skipped 0
+Igorogue.Architecture.Tests: passed 5, failed 0, skipped 0
+Igorogue.Domain.Tests: passed 2, failed 0, skipped 0
+exit=0
+
+$ tools/dev/sim-smoke
+IGOROGUE_SIM_SMOKE checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd content=sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06 files=7
+exit=0
+
+$ tools/dev/sim-smoke
+IGOROGUE_SIM_SMOKE checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd content=sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06 files=7
+exit=0
+
+$ GODOT_BIN=<GODOT_BIN> tools/dev/godot-smoke
+Toolchain verification passed.
+IGOROGUE_GODOT_SMOKE checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd content=sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06 files=7
+exit=0
+
+$ GODOT_BIN=<GODOT_BIN> tools/dev/export-windows
+Toolchain verification passed.
+IGOROGUE_GODOT_SMOKE checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd content=sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06 files=7
+sha256:0aeded8aaf1b7398549906215aa5ec1cbc16262055b3dba555d036b69fe71d5a  <CLEAN_WORKTREE>/build/exports/windows/Igorogue.exe
+Igorogue.Godot.dll verified in data_Igorogue.Godot_windows_x86_64.
+Committed NuGet lock files unchanged.
+exit=0
+
+$ git status --short
+<no output>
+exit=0
+
+[Stage 4 — CI]
+pending

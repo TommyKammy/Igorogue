@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "task": "TASK-0022",
+  "runtime_implementation_commit": "c1e1998d34f7e9abbb8962b7cc34897ebd9675a1",
+  "content_hash": "sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06",
+  "simulator_checksum": "sha256:3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd",
+  "clean_checkout_windows_export": {
+    "path": "build/exports/windows/Igorogue.exe",
+    "sha256": "0aeded8aaf1b7398549906215aa5ec1cbc16262055b3dba555d036b69fe71d5a"
+  },
+  "nuget_locks": [
+    {
+      "path": "game/Igorogue.Godot/packages.lock.json",
+      "sha256": "57c7f4c6df77b1baa308b59962e1ffdba971af85dc8436930681dd79d84b1020"
+    },
+    {
+      "path": "src/Igorogue.Application/packages.lock.json",
+      "sha256": "d7edbdb8726c80e09fa297bb5b864e9050f4d0477e9e1d3016f8426be26dde4e"
+    },
+    {
+      "path": "src/Igorogue.Content/packages.lock.json",
+      "sha256": "837b83c78b6d4b45fce71a24d0a5ac40740ee2408c4723533d9938d650c8f249"
+    },
+    {
+      "path": "src/Igorogue.Domain/packages.lock.json",
+      "sha256": "837b83c78b6d4b45fce71a24d0a5ac40740ee2408c4723533d9938d650c8f249"
+    },
+    {
+      "path": "tests/Igorogue.Application.Tests/packages.lock.json",
+      "sha256": "7852b3aea153a18141fad6ed2ebb055e61aca09f91b7a2aba52f7e2a858cf0d1"
+    },
+    {
+      "path": "tests/Igorogue.Architecture.Tests/packages.lock.json",
+      "sha256": "7852b3aea153a18141fad6ed2ebb055e61aca09f91b7a2aba52f7e2a858cf0d1"
+    },
+    {
+      "path": "tests/Igorogue.Domain.Tests/packages.lock.json",
+      "sha256": "cb2373f9343a81bdd80211522fd108c40da6163f0c7f8eeebf96e7bd8b4928be"
+    },
+    {
+      "path": "tools/Igorogue.Sim.Cli/packages.lock.json",
+      "sha256": "b603be737588ddb1deb50129ec4a7736d84258bf553490071894174bef439781"
+    }
+  ],
+  "ci": {
+    "status": "pending",
+    "run_url": null
+  }
+}

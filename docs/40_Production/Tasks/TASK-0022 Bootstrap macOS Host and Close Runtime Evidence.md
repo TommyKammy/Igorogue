@@ -1,12 +1,12 @@
 ---
 type: task
 id: TASK-0022
-status: ready
+status: review
 project: Igorogue
 milestone: M0
 priority: P0
 dependencies: [TASK-0019]
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # TASK-0022 Bootstrap macOS Host and Close Runtime Evidence
 
@@ -151,6 +151,14 @@ Do not record username, machine serial, tokens, or private absolute paths.
 
 ## Execution log
 
+2026-07-11 — local and clean-checkout runtime gates passed; CI pending:
+
+- Installed and verified .NET SDK 8.0.422 arm64 and Godot 4.7 stable .NET with matching export templates.
+- Generated all eight authentic NuGet lock files twice; the second generation was stable. Human review preceded commit `70f0eec`.
+- Passed governance, locked restore, Release build, 11 xUnit tests, repeated simulator smoke, Godot .NET smoke, and Windows debug export in the task worktree.
+- Fixed an approved bootstrap defect in `c1e1998`: Godot now has its required local solution/UID; export must contain the managed assembly; platform restore locks cannot rewrite committed locks; CI archives the complete export.
+- Repeated the full required sequence from a detached clean worktree at `c1e1998` with no tracked or untracked prerequisite.
+
 2026-07-10 — CI preflight only; the macOS host evidence sequence has not started:
 
 - Draft PR #1 imported the v0.2.10 bootstrap baseline and started the repository CI.
@@ -159,6 +167,17 @@ Do not record username, machine serial, tokens, or private absolute paths.
 - The rerun completed governance, pure .NET build/test/simulator, Godot .NET headless smoke, and Windows debug export successfully.
 
 ## Evidence
+
+- Runtime report: [[TASK-0022 macOS Runtime Evidence]]
+- Runtime implementation commit: `c1e1998d34f7e9abbb8962b7cc34897ebd9675a1`
+- Authentic lock commit: `70f0eec`
+- Local and clean-checkout governance, locked restore, build, xUnit, simulator, Godot smoke, and managed Windows export: passed.
+- Simulator checksum: `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd` on both runs.
+- Content hash: `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`.
+- Clean-checkout Windows executable SHA-256: `0aeded8aaf1b7398549906215aa5ec1cbc16262055b3dba555d036b69fe71d5a`.
+- Stage 4 CI: pending.
+
+### Prior CI preflight
 
 - Pull request: `https://github.com/TommyKammy/Igorogue/pull/1`
 - Successful CI run: `https://github.com/TommyKammy/Igorogue/actions/runs/29098393726`
@@ -169,7 +188,7 @@ Do not record username, machine serial, tokens, or private absolute paths.
 
 ## Known issues
 
-- Authentic `packages.lock.json` files were generated and archived by CI but are not yet reviewed or committed.
-- The macOS host shell used for this preflight does not currently expose the pinned .NET SDK or Godot .NET editor, so local and clean-checkout runtime evidence remains outstanding.
+- Stage 4 CI has not yet run on the branch containing the committed locks and managed-export validation. TASK-0022 remains `review` until all three jobs are green.
+- PowerShell wrapper parity was reviewed statically on macOS; `pwsh` is not installed on this host, so the PowerShell wrapper was not executed locally.
+- Separate Windows debug exports were not byte-identical. TASK-0022 requires an integrity sidecar, not reproducible build bytes; simulator and Godot runtime checksums remained identical.
 - CI reports non-blocking Node.js 20 deprecation warnings for current action versions.
-- Windows export on macOS still requires the matching Godot export templates.
