@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -eu
+. "$(dirname "$0")/_common.sh"
+"$PYTHON_BIN" tools/check_all.py
+"$PYTHON_BIN" tools/content_sync.py --check

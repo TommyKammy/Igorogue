@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "decision_id": "ADR-0001",
+  "status": "accepted",
+  "reviewed_on": "2026-07-10",
+  "selected_candidate": "godot_4_7_dotnet",
+  "selected": {
+    "engine": "Godot",
+    "engine_line": "4.7-stable",
+    "edition": ".NET",
+    "renderer": "gl_compatibility",
+    "production_language": "C#",
+    "csharp_language_version": "12.0",
+    "dotnet_target_framework": "net8.0",
+    "dotnet_sdk_policy": "pin exact .NET 8 patch in global.json during TASK-0001",
+    "test_framework": "xUnit",
+    "repository": "Git",
+    "repository_host": "GitHub",
+    "repository_visibility": "private_until_demo_decision",
+    "primary_platform": "windows-x86_64",
+    "secondary_platforms": [
+      "linux-x86_64",
+      "macos-universal"
+    ],
+    "logical_resolution": [
+      480,
+      270
+    ],
+    "stretch_mode": "viewport",
+    "stretch_scale_mode": "integer"
+  },
+  "criteria": [
+    {
+      "id": "domain_isolation_headless",
+      "label": "Engine-independent Domain and headless execution",
+      "weight": 22
+    },
+    {
+      "id": "deterministic_test_sim",
+      "label": "Deterministic tests, replay, and formal simulation",
+      "weight": 16
+    },
+    {
+      "id": "pixel_ui_iteration",
+      "label": "2D UI and pixel-art iteration speed",
+      "weight": 18
+    },
+    {
+      "id": "ci_build_export",
+      "label": "Command-line CI, build, and export",
+      "weight": 12
+    },
+    {
+      "id": "codex_git_worktree",
+      "label": "Codex, Git diff, and worktree friendliness",
+      "weight": 12
+    },
+    {
+      "id": "desktop_distribution",
+      "label": "Desktop distribution coverage",
+      "weight": 8
+    },
+    {
+      "id": "licensing_lockin",
+      "label": "Licensing, cost predictability, and lock-in",
+      "weight": 8
+    },
+    {
+      "id": "debugging_tooling",
+      "label": "Debugging and editor tooling",
+      "weight": 4
+    }
+  ],
+  "candidates": {
+    "godot_4_7_dotnet": {
+      "label": "Godot 4.7 stable .NET",
+      "scores": {
+        "domain_isolation_headless": 5,
+        "deterministic_test_sim": 5,
+        "pixel_ui_iteration": 5,
+        "ci_build_export": 4,
+        "codex_git_worktree": 4,
+        "desktop_distribution": 4,
+        "licensing_lockin": 5,
+        "debugging_tooling": 4
+      },
+      "weighted_total": 92.8
+    },
+    "unity_6": {
+      "label": "Unity 6",
+      "scores": {
+        "domain_isolation_headless": 4,
+        "deterministic_test_sim": 4,
+        "pixel_ui_iteration": 5,
+        "ci_build_export": 4,
+        "codex_git_worktree": 3,
+        "desktop_distribution": 5,
+        "licensing_lockin": 2,
+        "debugging_tooling": 5
+      },
+      "weighted_total": 80.4
+    },
+    "monogame_3_8_4": {
+      "label": "MonoGame 3.8.4",
+      "scores": {
+        "domain_isolation_headless": 5,
+        "deterministic_test_sim": 5,
+        "pixel_ui_iteration": 2,
+        "ci_build_export": 5,
+        "codex_git_worktree": 5,
+        "desktop_distribution": 4,
+        "licensing_lockin": 5,
+        "debugging_tooling": 3
+      },
+      "weighted_total": 86.0
+    }
+  },
+  "hard_constraints": [
+    "one_rules_kernel_for_game_replay_and_formal_simulator",
+    "domain_tests_run_without_engine_process",
+    "no_engine_types_in_domain_public_api",
+    "deterministic_seed_command_and_content_hash_replay",
+    "desktop_pc_first",
+    "text_reviewable_source_control"
+  ],
+  "version_policy": {
+    "allow_on_main": "official_stable_only",
+    "maintenance_patch": "toolchain_task_plus_full_regression",
+    "minor_or_major": "successor_adr_required",
+    "prerelease": "prohibited"
+  },
+  "official_sources_note": "docs/80_References/Official Engine Evaluation Sources.md"
+}

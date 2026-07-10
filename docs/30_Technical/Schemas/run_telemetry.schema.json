@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Igorogue Run Telemetry",
+  "type": "object",
+  "required": [
+    "build_id",
+    "content_hash",
+    "seed",
+    "events"
+  ],
+  "properties": {
+    "build_id": {
+      "type": "string"
+    },
+    "content_hash": {
+      "type": "string"
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "rules_kernel_version": {
+      "type": "string"
+    },
+    "policy_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "explosion_classifier_version": {
+      "type": "string"
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "sequence"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "turn": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "payload": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

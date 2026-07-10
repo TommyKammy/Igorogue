@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -eu
+. "$(dirname "$0")/_common.sh"
+"$(dirname "$0")/build"
+"$DOTNET_BIN" run --project tools/Igorogue.Sim.Cli/Igorogue.Sim.Cli.csproj -c Release --no-build --no-restore -- --smoke --content-manifest build/generated_content/content_manifest.json

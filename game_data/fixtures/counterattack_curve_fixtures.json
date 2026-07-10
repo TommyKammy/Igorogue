@@ -1,0 +1,313 @@
+{
+  "schema_version": "1.0.0",
+  "feature": "FEAT-003",
+  "gauge_unit_scale": 2,
+  "komi_curve": [
+    {
+      "id": "CTR-01",
+      "komi": 0,
+      "expected_start_units": 20,
+      "expected_start_points": 10.0,
+      "expected_enemy_turn_end_gain_units": 12,
+      "expected_enemy_turn_end_gain_points": 6.0,
+      "expected_threshold_cross_after_enemy_turn_end": 15,
+      "expected_first_bonus_enemy_turn": 16
+    },
+    {
+      "id": "CTR-02",
+      "komi": 1,
+      "expected_start_units": 24,
+      "expected_start_points": 12.0,
+      "expected_enemy_turn_end_gain_units": 13,
+      "expected_enemy_turn_end_gain_points": 6.5,
+      "expected_threshold_cross_after_enemy_turn_end": 14,
+      "expected_first_bonus_enemy_turn": 15
+    },
+    {
+      "id": "CTR-03",
+      "komi": 2,
+      "expected_start_units": 28,
+      "expected_start_points": 14.0,
+      "expected_enemy_turn_end_gain_units": 14,
+      "expected_enemy_turn_end_gain_points": 7.0,
+      "expected_threshold_cross_after_enemy_turn_end": 13,
+      "expected_first_bonus_enemy_turn": 14
+    },
+    {
+      "id": "CTR-04",
+      "komi": 3,
+      "expected_start_units": 32,
+      "expected_start_points": 16.0,
+      "expected_enemy_turn_end_gain_units": 15,
+      "expected_enemy_turn_end_gain_points": 7.5,
+      "expected_threshold_cross_after_enemy_turn_end": 12,
+      "expected_first_bonus_enemy_turn": 13
+    },
+    {
+      "id": "CTR-05",
+      "komi": 4,
+      "expected_start_units": 36,
+      "expected_start_points": 18.0,
+      "expected_enemy_turn_end_gain_units": 16,
+      "expected_enemy_turn_end_gain_points": 8.0,
+      "expected_threshold_cross_after_enemy_turn_end": 11,
+      "expected_first_bonus_enemy_turn": 12
+    },
+    {
+      "id": "CTR-06",
+      "komi": 5,
+      "expected_start_units": 40,
+      "expected_start_points": 20.0,
+      "expected_enemy_turn_end_gain_units": 17,
+      "expected_enemy_turn_end_gain_points": 8.5,
+      "expected_threshold_cross_after_enemy_turn_end": 10,
+      "expected_first_bonus_enemy_turn": 11
+    },
+    {
+      "id": "CTR-07",
+      "komi": 6,
+      "expected_start_units": 44,
+      "expected_start_points": 22.0,
+      "expected_enemy_turn_end_gain_units": 18,
+      "expected_enemy_turn_end_gain_points": 9.0,
+      "expected_threshold_cross_after_enemy_turn_end": 9,
+      "expected_first_bonus_enemy_turn": 10
+    },
+    {
+      "id": "CTR-08",
+      "komi": 7,
+      "expected_start_units": 48,
+      "expected_start_points": 24.0,
+      "expected_enemy_turn_end_gain_units": 19,
+      "expected_enemy_turn_end_gain_points": 9.5,
+      "expected_threshold_cross_after_enemy_turn_end": 8,
+      "expected_first_bonus_enemy_turn": 9
+    },
+    {
+      "id": "CTR-09",
+      "komi": 8,
+      "expected_start_units": 52,
+      "expected_start_points": 26.0,
+      "expected_enemy_turn_end_gain_units": 20,
+      "expected_enemy_turn_end_gain_points": 10.0,
+      "expected_threshold_cross_after_enemy_turn_end": 8,
+      "expected_first_bonus_enemy_turn": 9
+    },
+    {
+      "id": "CTR-10",
+      "komi": 9,
+      "expected_start_units": 56,
+      "expected_start_points": 28.0,
+      "expected_enemy_turn_end_gain_units": 21,
+      "expected_enemy_turn_end_gain_points": 10.5,
+      "expected_threshold_cross_after_enemy_turn_end": 7,
+      "expected_first_bonus_enemy_turn": 8
+    }
+  ],
+  "event_fixtures": [
+    {
+      "id": "CTR-11",
+      "operation": "heat_crossing",
+      "komi": 0,
+      "start_gauge_units": 40,
+      "pending": false,
+      "multiplier_before": 2.8,
+      "multiplier_after": 3.1,
+      "heat_used": false,
+      "expected": {
+        "delta_units": 48,
+        "end_gauge_units": 88,
+        "pending": false,
+        "heat_used": true
+      }
+    },
+    {
+      "id": "CTR-12",
+      "operation": "heat_crossing",
+      "komi": 9,
+      "start_gauge_units": 120,
+      "pending": false,
+      "multiplier_before": 2.9,
+      "multiplier_after": 3.0,
+      "heat_used": false,
+      "expected": {
+        "delta_units": 84,
+        "end_gauge_units": 4,
+        "pending": true,
+        "heat_used": true
+      }
+    },
+    {
+      "id": "CTR-13",
+      "operation": "heat_crossing",
+      "komi": 4,
+      "start_gauge_units": 50,
+      "pending": false,
+      "multiplier_before": 3.1,
+      "multiplier_after": 3.8,
+      "heat_used": true,
+      "expected": {
+        "delta_units": 0,
+        "end_gauge_units": 50,
+        "pending": false,
+        "heat_used": true
+      }
+    },
+    {
+      "id": "CTR-14",
+      "operation": "heat_crossing",
+      "komi": 4,
+      "start_gauge_units": 50,
+      "pending": false,
+      "multiplier_before": 2.7,
+      "multiplier_after": 2.9,
+      "heat_used": false,
+      "expected": {
+        "delta_units": 0,
+        "end_gauge_units": 50,
+        "pending": false,
+        "heat_used": false
+      }
+    },
+    {
+      "id": "CTR-15",
+      "operation": "attack_sequence",
+      "style_id": "style_attack",
+      "successful_attack_cards": 5,
+      "expected": {
+        "total_delta_units": 48,
+        "counted_cards": 5,
+        "capped": true
+      }
+    },
+    {
+      "id": "CTR-16",
+      "operation": "attack_sequence",
+      "style_id": "style_thickness",
+      "successful_attack_cards": 5,
+      "expected": {
+        "total_delta_units": 0,
+        "counted_cards": 0,
+        "capped": false
+      }
+    },
+    {
+      "id": "CTR-17",
+      "operation": "sacrifice_capture",
+      "style_id": "style_sacrifice",
+      "start_remainder": 0,
+      "captured_non_king_black_stones": 2,
+      "expected": {
+        "delta_units": 0,
+        "end_remainder": 2,
+        "batches": 0
+      }
+    },
+    {
+      "id": "CTR-18",
+      "operation": "sacrifice_capture",
+      "style_id": "style_sacrifice",
+      "start_remainder": 2,
+      "captured_non_king_black_stones": 1,
+      "expected": {
+        "delta_units": 30,
+        "end_remainder": 0,
+        "batches": 1
+      }
+    },
+    {
+      "id": "CTR-19",
+      "operation": "sacrifice_capture",
+      "style_id": "style_sacrifice",
+      "start_remainder": 0,
+      "captured_non_king_black_stones": 7,
+      "expected": {
+        "delta_units": 60,
+        "end_remainder": 1,
+        "batches": 2
+      }
+    },
+    {
+      "id": "CTR-20",
+      "operation": "advance",
+      "start_gauge_units": 190,
+      "pending": false,
+      "delta_units": 16,
+      "expected": {
+        "end_gauge_units": 6,
+        "pending": true,
+        "pending_created": true
+      }
+    },
+    {
+      "id": "CTR-21",
+      "operation": "advance",
+      "start_gauge_units": 190,
+      "pending": true,
+      "delta_units": 30,
+      "expected": {
+        "end_gauge_units": 220,
+        "pending": true,
+        "pending_created": false
+      }
+    },
+    {
+      "id": "CTR-22",
+      "operation": "resolve_pending",
+      "start_gauge_units": 220,
+      "pending": true,
+      "expected": {
+        "end_gauge_units": 20,
+        "pending": true,
+        "next_turn_pending_created": true,
+        "bonus_actions_this_enemy_turn": 1
+      }
+    },
+    {
+      "id": "CTR-23",
+      "operation": "enemy_turn_end",
+      "komi": 0,
+      "start_gauge_units": 190,
+      "pending": false,
+      "battle_active": true,
+      "expected": {
+        "delta_units": 12,
+        "end_gauge_units": 2,
+        "pending": true,
+        "pending_created": true
+      }
+    },
+    {
+      "id": "CTR-24",
+      "operation": "battle_start",
+      "komi": 7,
+      "start_gauge_units": 178,
+      "pending": true,
+      "heat_used": true,
+      "attack_cards_counted": 4,
+      "overextension_units_this_turn": 48,
+      "sacrifice_remainder": 2,
+      "expected": {
+        "end_gauge_units": 48,
+        "pending": false,
+        "heat_used": false,
+        "attack_cards_counted": 0,
+        "overextension_units_this_turn": 0,
+        "sacrifice_remainder": 0
+      }
+    },
+    {
+      "id": "CTR-25",
+      "operation": "advance",
+      "start_gauge_units": 190,
+      "pending": false,
+      "delta_units": 48,
+      "battle_active": false,
+      "expected": {
+        "end_gauge_units": 190,
+        "pending": false,
+        "pending_created": false
+      }
+    }
+  ]
+}

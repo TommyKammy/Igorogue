@@ -1,0 +1,1 @@
+[{"count":2,"effect":"blocked_intersections","id":"board_mountains","name_ja":"山盤"},{"amount":1,"count":1,"duration_kind":"continuous_while_adjacent","effect":"adjacent_continuous_virtual_liberty","id":"board_spirit_spring","name_ja":"霊泉盤"},{"count":1,"effect":"capture_nearby_soul_trigger","id":"board_old_battlefield","name_ja":"古戦場"}]

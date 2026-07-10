@@ -1,0 +1,81 @@
+[
+  {
+    "id": "seal_mycelium",
+    "name_ja": "菌糸の心得",
+    "komi": 1,
+    "tags": [
+      "delayed",
+      "growth"
+    ],
+    "effect": "first_territory_spawn_seed"
+  },
+  {
+    "id": "seal_corner",
+    "name_ja": "隅の心得",
+    "komi": 2,
+    "tags": [
+      "territory",
+      "corner"
+    ],
+    "effect": "first_corner_territory_income_plus_1"
+  },
+  {
+    "id": "seal_development",
+    "name_ja": "開拓の心得",
+    "komi": 2,
+    "tags": [
+      "territory",
+      "facility"
+    ],
+    "effect": "first_development_cost_zero"
+  },
+  {
+    "id": "seal_tengen",
+    "name_ja": "天元の心得",
+    "komi": 2,
+    "tags": [
+      "center",
+      "tempo"
+    ],
+    "effect": "first_center_stone_refund_qi"
+  },
+  {
+    "id": "seal_deathline",
+    "name_ja": "死線の心得",
+    "komi": 2,
+    "tags": [
+      "atari",
+      "draw"
+    ],
+    "effect": "first_atari_use_discount_draw"
+  },
+  {
+    "id": "seal_sacrifice",
+    "name_ja": "捨て石の心得",
+    "komi": 2,
+    "tags": [
+      "sacrifice",
+      "draw"
+    ],
+    "effect": "first_friendly_capture_next_draw_2"
+  },
+  {
+    "id": "seal_invasion",
+    "name_ja": "忍びの心得",
+    "komi": 3,
+    "tags": [
+      "invasion"
+    ],
+    "effect": "once_per_battle_off_frontline_contact"
+  },
+  {
+    "id": "seal_bone",
+    "name_ja": "白骨の心得",
+    "komi": 4,
+    "tags": [
+      "capture",
+      "tempo"
+    ],
+    "effect": "first_capture_choose_qi_or_draw"
+  }
+]

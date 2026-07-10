@@ -1,0 +1,29 @@
+{
+  "dotnet": {
+    "allow_prerelease": false,
+    "csharp_language_version": "12.0",
+    "roll_forward": "disable",
+    "sdk_version": "8.0.422",
+    "target_framework": "net8.0"
+  },
+  "godot": {
+    "dotnet_templates_url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_mono_export_templates.tpz",
+    "edition": "dotnet",
+    "linux_dotnet_url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_mono_linux_x86_64.zip",
+    "package_version": "4.7.0",
+    "renderer": "gl_compatibility",
+    "template_directory": "4.7.stable.mono",
+    "version": "4.7-stable"
+  },
+  "logical_resolution": {
+    "height": 270,
+    "width": 480
+  },
+  "primary_export": "windows-x86_64",
+  "project": "Igorogue",
+  "schema_version": 1,
+  "tests": {
+    "framework": "xunit.v3.mtp-v1",
+    "version": "3.2.2"
+  }
+}

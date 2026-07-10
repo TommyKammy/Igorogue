@@ -1,0 +1,375 @@
+[
+  {
+    "id": "FAC-01",
+    "title": "facility site remains a liberty and black territory point",
+    "operation": "inspect",
+    "board": [
+      ".......",
+      ".......",
+      ".......",
+      ".......",
+      ".B.....",
+      "B.B....",
+      ".B....."
+    ],
+    "facilities": [
+      {
+        "instance_id": "facility_01",
+        "facility_id": "development",
+        "owner": "black",
+        "point": [2, 2],
+        "build_sequence": 1
+      }
+    ],
+    "queries": {
+      "group_point": [1, 2],
+      "territory_point": [2, 2]
+    },
+    "expected": {
+      "group_liberties": [[1, 1], [2, 2], [1, 3]],
+      "territory": {
+        "owner": "black",
+        "size": 1,
+        "basic_income": 1,
+        "construction_capacity": 1
+      },
+      "facility_states": {
+        "facility_01": "active"
+      }
+    }
+  },
+  {
+    "id": "FAC-02",
+    "title": "facility does not split a three-point corner territory",
+    "operation": "inspect",
+    "board": [
+      ".......",
+      ".......",
+      ".......",
+      ".......",
+      "B......",
+      ".B.....",
+      "..B...."
+    ],
+    "facilities": [
+      {
+        "instance_id": "facility_02",
+        "facility_id": "development",
+        "owner": "black",
+        "point": [1, 1],
+        "build_sequence": 1
+      }
+    ],
+    "queries": {
+      "territory_point": [1, 1]
+    },
+    "expected": {
+      "territory": {
+        "owner": "black",
+        "size": 3,
+        "basic_income": 1,
+        "construction_capacity": 1
+      },
+      "facility_states": {
+        "facility_02": "active"
+      }
+    }
+  },
+  {
+    "id": "FAC-03",
+    "title": "legal friendly placement destroys the facility on its point",
+    "operation": "place",
+    "board": [
+      ".......",
+      ".......",
+      ".......",
+      ".......",
+      ".B.....",
+      "B.B....",
+      ".B....."
+    ],
+    "facilities": [
+      {
+        "instance_id": "facility_03",
+        "facility_id": "development",
+        "owner": "black",
+        "point": [2, 2],
+        "build_sequence": 1
+      }
+    ],
+    "actor": "black",
+    "point": [2, 2],
+    "expected": {
+      "legal": true,
+      "reason": "legal",
+      "destroyed_facilities": ["facility_03"],
+      "remaining_facilities": [],
+      "events": [
+        "StonePlaced:black:2,2",
+        "FacilityDestroyed:facility_03:stone_occupied"
+      ],
+      "result_board": [
+        ".......",
+        ".......",
+        ".......",
+        ".......",
+        ".B.....",
+        "BBB....",
+        ".B....."
+      ]
+    }
+  },
+  {
+    "id": "FAC-04",
+    "title": "illegal suicide placement does not destroy the facility",
+    "operation": "place",
+    "board": [
+      ".......",
+      ".......",
+      ".......",
+      ".......",
+      ".B.....",
+      "B.B....",
+      ".B....."
+    ],
+    "facilities": [
+      {
+        "instance_id": "facility_04",
+        "facility_id": "development",
+        "owner": "black",
+        "point": [2, 2],
+        "build_sequence": 1
+      }
+    ],
+    "actor": "white",
+    "point": [2, 2],
+    "expected": {
+      "legal": false,
+      "reason": "suicide",
+      "destroyed_facilities": [],
+      "remaining_facilities": ["facility_04"],
+      "events": [],
+      "facility_states": {
+        "facility_04": "active"
+      }
+    }
+  },
+  {
+    "id": "FAC-05",
+    "title": "neutralization disables and restoration reactivates the same instance",
+    "operation": "transition_sequence",
+    "board": [
+      ".......",
+      ".......",
+      ".......",
+      ".......",
+      ".B.....",
+      "B.B....",
+      ".B....."
+    ],
+    "facilities": [
+      {
+        "instance_id": "facility_05",
+        "facility_id": "development",
+        "owner": "black",
+        "point": [2, 2],
+        "build_sequence": 7
+      }
+    ],
+    "next_boards": [
+      [
+        ".......",
+        ".......",
+        ".......",
+        ".......",
+        ".B.....",
+        "B.W....",
+        ".B....."
+      ],
+      [
+        ".......",
+        ".......",
+        ".......",
+        ".......",
+        ".B.....",
+        "B.B....",
+        ".B....."
+      ]
+    ],
+    "expected": {
+      "events": [
+        "FacilityDisabled:facility_05:territory_control_lost",
+        "FacilityActivated:facility_05:territory_control_restored"
+      ],
+      "remaining_facilities": ["facility_05"],
+      "facility_states": {
+        "facility_05": "active"
+      },
+      "owner": "black",
+      "build_sequence": 7
+    }
+  },
+  {
+    "id": "FAC-06",
+    "title": "opponent territory disables without ownership transfer",
+    "operation": "inspect",
+    "board": [
+      ".......",
+      ".......",
+      ".......",
+      ".......",
+      ".W.....",
+      "W.W....",
+      ".W....."
+    ],
+    "facilities": [
+      {
+        "instance_id": "facility_06",
+        "facility_id": "development",
+        "owner": "black",
+        "point": [2, 2],
+        "build_sequence": 1
+      }
+    ],
+    "queries": {
+      "territory_point": [2, 2]
+    },
+    "expected": {
+      "territory": {
+        "owner": "white",
+        "size": 1,
+        "basic_income": 1,
+        "construction_capacity": 1
+      },
+      "facility_states": {
+        "facility_06": "disabled:territory_control_lost"
+      },
+      "facility_owners": {
+        "facility_06": "black"
+      }
+    }
+  },
+  {
+    "id": "FAC-07",
+    "title": "existing facilities stay active after a split creates over-capacity",
+    "operation": "inspect",
+    "board": [
+      ".......",
+      ".......",
+      ".......",
+      "BBBBB..",
+      "..B.B..",
+      "..B.B..",
+      "..B.B.."
+    ],
+    "facilities": [
+      {
+        "instance_id": "facility_07a",
+        "facility_id": "development",
+        "owner": "black",
+        "point": [4, 1],
+        "build_sequence": 1
+      },
+      {
+        "instance_id": "facility_07b",
+        "facility_id": "furnace",
+        "owner": "black",
+        "point": [4, 2],
+        "build_sequence": 2
+      }
+    ],
+    "queries": {
+      "territory_point": [4, 3]
+    },
+    "expected": {
+      "territory": {
+        "owner": "black",
+        "size": 3,
+        "basic_income": 1,
+        "construction_capacity": 1,
+        "installed_count": 2,
+        "is_over_capacity": true
+      },
+      "facility_states": {
+        "facility_07a": "active",
+        "facility_07b": "active"
+      }
+    }
+  },
+  {
+    "id": "FAC-08",
+    "title": "new build is rejected in an over-capacity region",
+    "operation": "build",
+    "board": [
+      ".......",
+      ".......",
+      ".......",
+      "BBBBB..",
+      "..B.B..",
+      "..B.B..",
+      "..B.B.."
+    ],
+    "facilities": [
+      {
+        "instance_id": "facility_08a",
+        "facility_id": "development",
+        "owner": "black",
+        "point": [4, 1],
+        "build_sequence": 1
+      },
+      {
+        "instance_id": "facility_08b",
+        "facility_id": "furnace",
+        "owner": "black",
+        "point": [4, 2],
+        "build_sequence": 2
+      }
+    ],
+    "actor": "black",
+    "point": [4, 3],
+    "facility_id": "market",
+    "expected": {
+      "legal": false,
+      "reason": "facility_capacity_full",
+      "events": [],
+      "remaining_facilities": ["facility_08a", "facility_08b"]
+    }
+  },
+  {
+    "id": "FAC-09",
+    "title": "legal facility construction leaves stone topology unchanged",
+    "operation": "build",
+    "board": [
+      ".......",
+      ".......",
+      ".......",
+      ".......",
+      "B......",
+      ".B.....",
+      "..B...."
+    ],
+    "facilities": [],
+    "actor": "black",
+    "point": [1, 1],
+    "facility_id": "development",
+    "expected": {
+      "legal": true,
+      "reason": "legal",
+      "events": [
+        "FacilityBuilt:generated_facility:development:1,1",
+        "FacilityActivated:generated_facility:built_in_controlled_territory"
+      ],
+      "remaining_facilities": ["generated_facility"],
+      "topology_unchanged": true,
+      "territory": {
+        "owner": "black",
+        "size": 3,
+        "basic_income": 1,
+        "construction_capacity": 1
+      },
+      "facility_states": {
+        "generated_facility": "active"
+      }
+    }
+  }
+]

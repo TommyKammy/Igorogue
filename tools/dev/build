@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -eu
+. "$(dirname "$0")/_common.sh"
+"$(dirname "$0")/restore"
+"$DOTNET_BIN" build Igorogue.sln -c Release --no-restore

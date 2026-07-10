@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>Igorogue.Application</AssemblyName>
+    <RootNamespace>Igorogue.Application</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Igorogue.Domain/Igorogue.Domain.csproj" />
+  </ItemGroup>
+</Project>

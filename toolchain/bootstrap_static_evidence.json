@@ -1,0 +1,38 @@
+{
+  "checks": {
+    "abstract_proxy_regression_tests": {
+      "count": 2,
+      "status": "pass"
+    },
+    "ci_yaml": "pass",
+    "content_outputs_byte_identical": true,
+    "dotnet_build_test": "pending",
+    "godot_headless_export": "pending",
+    "governance": "pass",
+    "json_files_parsed": 45,
+    "posix_shell_syntax": "pass",
+    "python_tooling_tests": {
+      "count": 8,
+      "status": "pass"
+    },
+    "repository_bootstrap_static": "pass_with_missing_lock_warning",
+    "strict_package_locks": "pending",
+    "xml_msbuild_files_parsed": 11
+  },
+  "content_hash": "sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06",
+  "evidence_level": "static-bootstrap",
+  "generated_on": "2026-07-10",
+  "packaging_environment": {
+    "dotnet_available": false,
+    "godot_dotnet_available": false,
+    "python": "3.13.5"
+  },
+  "repository": {
+    "ci_jobs": 3,
+    "solution_projects": 8,
+    "wrapper_pairs": 10
+  },
+  "schema_version": 1,
+  "status": "review",
+  "task_id": "TASK-0001"
+}
