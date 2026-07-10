@@ -20,6 +20,9 @@ jobs:
           python-version: '3.12'
       - name: Run repository governance checks
         run: python3 tools/check_all.py
+      - name: Verify PowerShell native fail-fast behavior
+        shell: pwsh
+        run: tools/tests/test_powershell_native_failure.ps1
       - name: Verify committed runtime content snapshot
         run: python3 tools/content_sync.py --check
 
