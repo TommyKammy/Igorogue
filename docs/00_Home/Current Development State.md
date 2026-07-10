@@ -2,7 +2,7 @@
 type: status
 status: active
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # Current Development State
 
@@ -14,9 +14,9 @@ updated: 2026-07-10
 | Player-visible rules | major M-1 repairs accepted | specifications + deterministic fixtures |
 | Enemy intent | 山賊棋士／侵入者 specified | FEAT-009 + fixtures; human two-person sign-off pending |
 | Engine architecture | accepted | ADR-0001 |
-| Repository bootstrap | static implementation complete | Python/static checks |
-| .NET build/test | unproven on packaged host | TASK-0022 required |
-| Godot headless/export | unproven on packaged host | TASK-0022 required |
+| Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
+| .NET build/test | proven on macOS and CI | locked restore + xUnit |
+| Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
 | Product Rules Kernel | not implemented | TASK-0002 onward |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
@@ -33,18 +33,11 @@ updated: 2026-07-10
 - temporary-liberty expiry and simultaneous capture sweep
 - Godot/.NET repository boundary
 
-## Immediate gate
+## Current gate
 
-[[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]] is the first authorized execution task on the Mac host.
-
-It must either:
-
-- produce genuine runtime evidence and close TASK-0001/TASK-0020; or
-- stop with a precise blocker report without changing accepted version pins.
+[[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]], TASK-0001, and TASK-0020 are complete. [[TASK-0002 Deterministic RNG and Command Log]] is the current authorized implementation task.
 
 ## Next development sequence
-
-After runtime evidence:
 
 1. TASK-0002 deterministic RNG and command log
 2. TASK-0003 coordinates and neighbours

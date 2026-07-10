@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0002
-status: blocked
+status: ready
 project: Igorogue
 milestone: M0
 priority: high
@@ -33,7 +33,7 @@ seed付きRNGと順序付きコマンドログの最小実装。
 
 ## Execution log
 
-未着手。
+2026-07-11 — TASK-0022、TASK-0001、TASK-0020のruntime gate closureを確認し、実装開始可能な`ready`へ遷移。
 
 ## Evidence
 

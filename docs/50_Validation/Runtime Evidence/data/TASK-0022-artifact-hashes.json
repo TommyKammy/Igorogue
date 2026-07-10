@@ -43,8 +43,12 @@
     }
   ],
   "ci": {
-    "status": "pending_final_review_commit",
-    "last_successful_head_sha": "794588c8a643e670b7b49deb212bc5e6171e9e9e",
-    "last_successful_run_url": "https://github.com/TommyKammy/Igorogue/actions/runs/29127755203"
+    "status": "success",
+    "head_sha": "a09e2d3d4425566a458a987556db3429d24076c1",
+    "run_url": "https://github.com/TommyKammy/Igorogue/actions/runs/29128583728"
+  },
+  "merge": {
+    "pull_request": "https://github.com/TommyKammy/Igorogue/pull/2",
+    "merge_commit": "b7d421d2e7f644366f8b186ccd7d4c333ef35f65"
   }
 }

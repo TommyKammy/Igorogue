@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0001
-status: review
+status: done
 project: Igorogue
 milestone: M0
 priority: P0
@@ -90,7 +90,7 @@ bash -n tools/dev/* tools/ci/install_godot.sh
 
 The exact command log and package hash are recorded in the v0.2.9 patch report.
 
-### Configured host and clean checkout — passed; final CI pending
+### Configured host, clean checkout, review, and CI — passed
 
 TASK-0022 supplied pinned-host and detached clean-worktree evidence for acceptance criteria 1–9. All eight lock files are committed. See [[TASK-0022 macOS Runtime Evidence]] for the redacted command log and artifact hashes.
 
@@ -105,13 +105,12 @@ GODOT_BIN=/absolute/path/to/godot-mono tools/dev/godot-smoke
 GODOT_BIN=/absolute/path/to/godot-mono tools/dev/export-windows
 ```
 
-CI run `29127755203` passed governance, pure .NET build/test/simulator, PowerShell native fail-fast, Godot .NET smoke, and the complete Windows managed export on prior head `794588c`. The final review-correction commit must pass its associated CI check before closure.
+CI run `29128583728` passed governance, pure .NET build/test/simulator, PowerShell native fail-fast, Godot .NET smoke, and the complete Windows managed export at final PR head `a09e2d3`. PR #2 was merged as `b7d421d`.
 
 ## Known issues
 
-- Final review-correction CI, independent closeout approval, and the human `review → done`/merge decisions remain.
 - The Godot smoke scene is a bootstrap integration test, not gameplay.
 
 ## Exit decision
 
-Keep task in `review`. Move to `done` only after a clean host or CI produces all runtime evidence and committed package locks.
+Done. TASK-0022 supplied the required clean-host, clean-checkout, lock, runtime, export, review, and CI evidence.

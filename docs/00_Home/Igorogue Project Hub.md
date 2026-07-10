@@ -2,17 +2,17 @@
 type: dashboard
 status: active
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-11
 cssclasses:
   - igorogue-dashboard
 ---
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> Macホストで[[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]]を完了し、その後に決定論的Rules Kernelへ進む。
+> M0 runtime gateを完了し、[[TASK-0002 Deterministic RNG and Command Log]]から決定論的Rules Kernelを直列実装する。
 
-> [!warning] 実装ゲート
-> runtime evidenceが完了するまで`TASK-0002`以降のゲーム実装を開始しない。[[Codex Mac Handoff]]と[[Current Development State]]を参照。
+> [!success] 実装ゲート
+> Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
 
 ## 正本
 
@@ -59,10 +59,10 @@ cssclasses:
 
 ## 直近タスク
 
-- [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]] — ready／next
-- [[TASK-0001 Decide Engine and Repository]] — review; TASK-0022でclosure
-- [[TASK-0020 Review Repository Bootstrap Runtime Evidence]] — TASK-0022でclosure
-- [[TASK-0002 Deterministic RNG and Command Log]] — runtime gate後
+- [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]] — done
+- [[TASK-0001 Decide Engine and Repository]] — done
+- [[TASK-0020 Review Repository Bootstrap Runtime Evidence]] — done
+- [[TASK-0002 Deterministic RNG and Command Log]] — ready／current
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs
