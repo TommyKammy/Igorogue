@@ -7,6 +7,9 @@
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <!-- Godot exports with a target RID and Export* configuration. Keep that
+         dependency graph separate from the committed development lock files. -->
+    <NuGetLockFilePath Condition="'$(GodotTargetPlatform)' != ''">$(MSBuildThisFileDirectory)build/nuget-locks/$(MSBuildProjectName).$(GodotTargetPlatform).lock.json</NuGetLockFilePath>
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
