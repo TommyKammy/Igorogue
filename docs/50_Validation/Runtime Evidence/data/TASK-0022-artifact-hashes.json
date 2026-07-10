@@ -43,7 +43,8 @@
     }
   ],
   "ci": {
-    "status": "pending",
-    "run_url": null
+    "status": "success",
+    "head_sha": "d47cc671bf2a650570c47612e8a026a7c3e0b748",
+    "run_url": "https://github.com/TommyKammy/Igorogue/actions/runs/29127553564"
   }
 }

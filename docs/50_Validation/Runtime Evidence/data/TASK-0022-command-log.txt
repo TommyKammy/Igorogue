@@ -125,4 +125,10 @@ $ git status --short
 exit=0
 
 [Stage 4 — CI]
-pending
+$ GitHub Actions run 29127553564 at d47cc671bf2a650570c47612e8a026a7c3e0b748
+Governance and generated content: success
+PowerShell native exit-17 fail-fast probe: success
+Pure .NET build, tests, and simulator smoke: success
+Godot .NET headless smoke and Windows debug export: success
+Run: https://github.com/TommyKammy/Igorogue/actions/runs/29127553564
+exit=0

@@ -151,13 +151,15 @@ Do not record username, machine serial, tokens, or private absolute paths.
 
 ## Execution log
 
-2026-07-11 — local and clean-checkout runtime gates passed; CI pending:
+2026-07-11 — local, clean-checkout, and CI runtime gates passed; independent closeout review pending:
 
 - Installed and verified .NET SDK 8.0.422 arm64 and Godot 4.7 stable .NET with matching export templates.
 - Generated all eight authentic NuGet lock files twice; the second generation was stable. Human review preceded commit `70f0eec`.
 - Passed governance, locked restore, Release build, 11 xUnit tests, repeated simulator smoke, Godot .NET smoke, and Windows debug export in the task worktree.
 - Fixed an approved bootstrap defect in `c1e1998`: Godot now has its required local solution/UID; export must contain the managed assembly; platform restore locks cannot rewrite committed locks; CI archives the complete export.
 - Repeated the full required sequence from a detached clean worktree at `c1e1998` with no tracked or untracked prerequisite.
+- Corrected the independent review's PowerShell fail-fast finding in `d47cc67`; CI executed a native exit-17 regression before rerunning the full pipeline.
+- CI run `29127553564` passed governance, pure .NET, and Godot managed-export jobs.
 
 2026-07-10 — CI preflight only; the macOS host evidence sequence has not started:
 
@@ -175,7 +177,7 @@ Do not record username, machine serial, tokens, or private absolute paths.
 - Simulator checksum: `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd` on both runs.
 - Content hash: `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`.
 - Clean-checkout Windows executable SHA-256: `0aeded8aaf1b7398549906215aa5ec1cbc16262055b3dba555d036b69fe71d5a`.
-- Stage 4 CI: pending.
+- Stage 4 CI: passed at `d47cc671bf2a650570c47612e8a026a7c3e0b748` — `https://github.com/TommyKammy/Igorogue/actions/runs/29127553564`.
 
 ### Prior CI preflight
 
@@ -188,7 +190,7 @@ Do not record username, machine serial, tokens, or private absolute paths.
 
 ## Known issues
 
-- Stage 4 CI has not yet run on the branch containing the committed locks and managed-export validation. TASK-0022 remains `review` until all three jobs are green.
-- PowerShell wrapper parity was reviewed statically on macOS; `pwsh` is not installed on this host, so the PowerShell wrapper was not executed locally.
+- TASK-0022 remains `review` until the independent closeout review accepts `d47cc67` and a human makes the required `review → done` and merge decisions.
+- `pwsh` is not installed on the macOS host; PowerShell fail-fast behavior was executed successfully on the GitHub Ubuntu runner with a native exit-17 probe.
 - Separate Windows debug exports were not byte-identical. TASK-0022 requires an integrity sidecar, not reproducible build bytes; simulator and Godot runtime checksums remained identical.
 - CI reports non-blocking Node.js 20 deprecation warnings for current action versions.

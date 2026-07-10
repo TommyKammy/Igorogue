@@ -11,7 +11,7 @@ updated: 2026-07-11
 
 ## Verdict
 
-The pinned bootstrap succeeds both in the task worktree and from a detached clean worktree at implementation commit `c1e1998d34f7e9abbb8962b7cc34897ebd9675a1`. Authentic lock files are committed at `70f0eec`. Local and clean-checkout runtime gates pass. CI remains pending, so TASK-0022, TASK-0001, and TASK-0020 are not yet complete.
+The pinned bootstrap succeeds both in the task worktree and from a detached clean worktree at implementation commit `c1e1998d34f7e9abbb8962b7cc34897ebd9675a1`. Authentic lock files are committed at `70f0eec`. Local, clean-checkout, PowerShell fail-fast, and all three CI gates pass. The tasks remain in review pending independent closeout approval and human merge judgment.
 
 ## Identity
 
@@ -52,6 +52,12 @@ Private host paths are represented as `<REPO_ROOT>`, `<CLEAN_WORKTREE>`, and `<G
 | SHA-256 sidecar | present | present |
 | Tracked-file cleanliness | clean | clean |
 
+CI run [`29127553564`](https://github.com/TommyKammy/Igorogue/actions/runs/29127553564) passed at `d47cc671bf2a650570c47612e8a026a7c3e0b748`:
+
+- Governance and generated content — pass, including a real PowerShell native exit-17 fail-fast probe;
+- Pure .NET build, tests, and simulator smoke — pass;
+- Godot .NET headless smoke and complete Windows debug export — pass.
+
 Simulator and Godot smoke both emitted:
 
 ```text
@@ -81,6 +87,6 @@ No gameplay code, package version, version pin, accepted rule, scene, resource, 
 
 ## Remaining gate
 
-Stage 4 CI has not yet run for the reviewed branch. This report remains `review`; no task closure is claimed until governance, pure .NET, and Godot/export CI jobs are green on the reviewed commit.
+All automated acceptance gates pass. This report remains `review` until the independent review accepts the final correction and a human makes the `review → done` and merge decisions required by the repository operating model.
 
 The Windows debug export is integrity-hashed but bit-for-bit reproducible export output is not a TASK-0022 acceptance criterion. Separate local and clean-worktree exports produced different executable hashes; runtime state determinism continues to be covered by the identical simulator and Godot smoke checksums.
