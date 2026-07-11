@@ -17,7 +17,7 @@ updated: 2026-07-11
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | not implemented | TASK-0002 onward |
+| Product Rules Kernel | determinism foundation implemented; board rules pending | TASK-0002 + CI |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,12 +35,12 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]], TASK-0001, and TASK-0020 are complete. [[TASK-0002 Deterministic RNG and Command Log]] is the current authorized implementation task.
+[[TASK-0002 Deterministic RNG and Command Log]] was merged through PR #3 with green CI. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]] is the current authorized implementation task.
 
 ## Next development sequence
 
-1. TASK-0002 deterministic RNG and command log
-2. TASK-0003 coordinates and neighbours
+1. TASK-0002 deterministic RNG and command log — done
+2. TASK-0003 coordinates and neighbours — current
 3. TASK-0004 groups and liberties
 4. TASK-0005 placement and capture
 5. TASK-0006 legality and terminal capture

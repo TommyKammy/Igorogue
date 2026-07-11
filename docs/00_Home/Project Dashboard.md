@@ -8,11 +8,11 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap` is complete. Authentic locks, clean-checkout runtime evidence, managed Windows export, independent review, and CI are recorded in [[TASK-0022 macOS Runtime Evidence]]. Gate 1 deterministic foundation work is active.
+`M0 Repository Bootstrap` and the TASK-0002 determinism foundation are complete. Gate 1 board Rules Kernel work is active.
 
 ## Sprint goal
 
-Prove the Accepted Godot/.NET boundary from a clean checkout, then begin deterministic command-log work without moving game authority into Godot.
+Implement canonical 7×7 coordinates, stable indexing, orthogonal neighbours, and the accepted point-symmetric initial position in the shared Domain Rules Kernel.
 
 ## Health
 
@@ -23,11 +23,11 @@ Prove the Accepted Godot/.NET boundary from a clean checkout, then begin determi
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Abstract proxy only; formal Kernel not implemented |
+| Validation | Yellow | Determinism foundation tested; formal board Kernel not implemented |
 
 ## Blockers
 
-- No product Rules Kernel exists yet.
+- No board Rules Kernel exists yet.
 
 ## Current evidence
 
@@ -39,10 +39,11 @@ Prove the Accepted Godot/.NET boundary from a clean checkout, then begin determi
 - GitHub Actions pipeline definition
 - authentic NuGet locks and clean-checkout runtime evidence
 - managed Windows debug export and final green CI
+- versioned RNG streams and ordered command-log checksums
 
 ## Next
 
-1. [[TASK-0002 Deterministic RNG and Command Log]]
-2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
+1. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
+2. [[TASK-0004 Stone Groups and Unique Liberty Sets]]
 3. FEAT-009 independent two-person sign-off
 4. A-6 style data/document synchronization checker

@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0002
-status: review
+status: done
 project: Igorogue
 milestone: M0
 priority: high
@@ -41,6 +41,8 @@ seed付きRNGと順序付きコマンドログの最小実装。
 
 2026-07-11 — 固定互換vector、stream隔離、bounded draw、immutable更新、同一入力再現、異なるseed／順序、invalid input、log checksumのunit testを追加。Accepted ADR、プレイヤー可視ルール、dependency/package、lock file、Godot scene/resourceは変更していない。
 
+2026-07-11 — 独立Codex reviewで最終`APPROVE`、GitHub Actions run `29130984331`の3 job成功を確認。PR #3をmerge commit `d948b86d0514aa3ce88e76693c5a5fe50ec935aa`として人間が`main`へmergeし、`done`へ遷移。
+
 ## Evidence
 
 - `tools/dev/check` — exit 0。documentation、wikilink、content、repository bootstrap、handoffを含む全check成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
@@ -51,6 +53,7 @@ seed付きRNGと順序付きコマンドログの最小実装。
 - `tests/Igorogue.Application.Tests/OrderedCommandLogTests.cs` — 同一seed＋同一ordered commandsでoutput、canonical RNG state、state checksum、log checksumが一致。seed差とcommand順序差で期待する結果／log checksumが分岐し、malformed checksum、unknown command schema、null payloadの拒否でlogが不変。
 - `tests/Igorogue.Domain.Tests/DeterministicRngTests.cs` — named stream隔離、cosmetic 100 drawがauthoritative state/checksumへ影響しないこと、invalid boundがRNG stateを消費しないことを確認。
 - 独立Codex review — コードfindingなし。Project HubのTASK status driftのみLOW follow-upとして検出し、`review／current`へ同期した。
+- GitHub PR [#3](https://github.com/TommyKammy/Igorogue/pull/3) — Actions run `29130984331`でgovernance、pure .NET build/test/simulator、Godot headless smoke/Windows exportの3 jobが成功。merge commit `d948b86d0514aa3ce88e76693c5a5fe50ec935aa`。
 
 ## Known issues
 

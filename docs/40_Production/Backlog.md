@@ -12,7 +12,7 @@ updated: 2026-07-11
 - [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]] — done
 - [[TASK-0001 Decide Engine and Repository]] — done
 - [[TASK-0020 Review Repository Bootstrap Runtime Evidence]] — done
-- [[TASK-0002 Deterministic RNG and Command Log]] — review／current
+- [[TASK-0002 Deterministic RNG and Command Log]] — done
 
 ## M-1 remaining review
 
@@ -23,7 +23,7 @@ updated: 2026-07-11
 
 ## M1 ordered queue
 
-- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
+- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]] — ready／current
 - [[TASK-0004 Stone Groups and Unique Liberty Sets]]
 - [[TASK-0005 Hypothetical Placement and Capture Resolution]]
 - [[TASK-0006 Suicide Legality and Terminal Capture]]

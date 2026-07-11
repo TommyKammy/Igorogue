@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> M0 runtime gateを完了し、[[TASK-0002 Deterministic RNG and Command Log]]から決定論的Rules Kernelを直列実装する。
+> [[TASK-0002 Deterministic RNG and Command Log]]を完了し、[[TASK-0003 Board Coordinates and Orthogonal Neighbours]]から盤面Rules Kernelを直列実装する。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -62,7 +62,8 @@ cssclasses:
 - [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]] — done
 - [[TASK-0001 Decide Engine and Repository]] — done
 - [[TASK-0020 Review Repository Bootstrap Runtime Evidence]] — done
-- [[TASK-0002 Deterministic RNG and Command Log]] — review／current
+- [[TASK-0002 Deterministic RNG and Command Log]] — done
+- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]] — ready／current
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

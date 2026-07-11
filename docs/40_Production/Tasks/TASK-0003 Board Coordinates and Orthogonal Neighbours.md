@@ -1,12 +1,12 @@
 ---
 type: task
 id: TASK-0003
-status: blocked
+status: ready
 project: Igorogue
 milestone: M1
 priority: high
 dependencies: [TASK-0001]
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # TASK-0003 Board Coordinates and Orthogonal Neighbours
 
@@ -40,7 +40,7 @@ updated: 2026-07-10
 
 ## Execution log
 
-未着手。
+2026-07-11 — TASK-0002の独立review、green CI、PR #3の人間mergeを確認し、直列Gate 1の次タスクとして`ready`へ遷移。
 
 ## Evidence
 
