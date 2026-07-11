@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using Igorogue.Application.Bootstrap;
 using Igorogue.Content;
+using Igorogue.Domain.Board;
 using Igorogue.Domain.Bootstrap;
 
 namespace Igorogue.Architecture.Tests;
@@ -61,6 +62,23 @@ public sealed class ArchitectureBoundaryTests
 
         Assert.NotNull(evaluatorType);
         Assert.False(evaluatorType.IsPublic);
+    }
+
+    [Fact]
+    public void TerritoryApiAcceptsOnlyTheStoneLayerBoardSnapshot()
+    {
+        var analyze = Assert.Single(typeof(TerritoryAnalyzer).GetMethods(
+            BindingFlags.Public |
+            BindingFlags.Static |
+            BindingFlags.DeclaredOnly));
+
+        Assert.Equal(nameof(TerritoryAnalyzer.Analyze), analyze.Name);
+        Assert.Equal(typeof(TerritoryAnalysis), analyze.ReturnType);
+        Assert.Equal(
+            new[] { typeof(BoardState) },
+            analyze.GetParameters().Select(parameter => parameter.ParameterType));
+        Assert.Empty(typeof(TerritoryRegion).GetConstructors());
+        Assert.Empty(typeof(TerritoryAnalysis).GetConstructors());
     }
 
     [Fact]

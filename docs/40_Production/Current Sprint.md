@@ -9,7 +9,7 @@ sprint: S0
 
 ## Goal
 
-Review and land deterministic king-group capture results.
+Review and land deterministic territory-region calculation.
 
 ## Ready
 
@@ -17,8 +17,8 @@ Review and land deterministic king-group capture results.
 
 ## In review
 
-- [[TASK-0007 King Capture and Battle Result]]
-  - implementation evidence complete; independent review approved; CI and human merge pending
+- [[TASK-0008 Territory Region Calculation]]
+  - implementation evidence complete; independent review approved with downstream follow-up; CI and human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -34,13 +34,15 @@ Review and land deterministic king-group capture results.
 - [[TASK-0004 Stone Groups and Unique Liberty Sets]]
 - [[TASK-0005 Hypothetical Placement and Capture Resolution]]
 - [[TASK-0006 Suicide Legality and Terminal Capture]]
+- [[TASK-0007 King Capture and Battle Result]]
 
-## Next after TASK-0007
+## Next after TASK-0008
 
-- [[TASK-0008 Territory Region Calculation]]
+- [[TASK-0009 Golden Board Fixtures]]
+  - blocked pending facility-runtime sequencing Decision Needed
 
 ## Review questions
 
-- Does capturing a white king group produce a player win while capturing a black king group produces a player loss?
-- Is ordinary capture distinguished from king capture without changing capture ordering?
-- If both kings are present in one capture batch, does loss take precedence deterministically?
+- Are orthogonally connected empty points grouped into deterministic regions in canonical order?
+- Is ownership black-only, white-only, or neutral for mixed-color and stone-free boundaries?
+- Do facility markers leave region connectivity, size, ownership, and real liberties unchanged?

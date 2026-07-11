@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0007
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: high
@@ -51,6 +51,8 @@ updated: 2026-07-11
 
 2026-07-11 — commit `adc799e`を対象に、実装担当とは別のCodexが`CODE_REVIEW.md`に従って親commitとの差分をTASK、Rules Canon、Combat Resolution Order、FEAT-005、FEAT-011、ADR-0014、Architecture、Determinism and Replayへ再照合。全severityでfindingなし、独立governance／137 test／2回同一sim checksumを確認して`APPROVE`。`review`へ遷移し、CIと人間merge待ちとした。
 
+2026-07-11 — GitHub Actions run `29139405455`でGovernance、Pure .NET build／137 tests／simulator smoke、Godot .NET headless smoke／Windows debug exportの全3 job成功を確認。人間判断でPR #8をmergeし、merge commit `448a94aac8b024257d9b705964a49ed9f8a17187`を確認して`done`へ遷移。
+
 ## Evidence
 
 - `tools/dev/check` — exit 0。documentation、wikilink、content、既存fixture、governance checkが成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
@@ -61,6 +63,7 @@ updated: 2026-07-11
 - `tests/Igorogue.Architecture.Tests/ArchitectureBoundaryTests.cs` — raw evaluatorがpublic Domain APIへ露出しないことを確認。
 - 読み取り専用API、determinism／spec、独立scope review — 初回MEDIUMの公開API findingを内部core化で修正。他のrule priority、両王石、commit順、決定論、後続scope境界にはP1／P2 findingなし。
 - 独立Codex closeout review — commit `adc799e`の親との差分を正本仕様へ直接照合し、BLOCKER／HIGH／MEDIUM／LOW findingなしで`APPROVE`。独立実行でもgovernance、137/137 test、warning 0／error 0、2回同一sim checksum、clean worktreeを確認。
+- GitHub Actions run `29139405455` — PR #8の全3 job成功。人間判断でPR #8をmergeし、merge commit `448a94aac8b024257d9b705964a49ed9f8a17187`を確認。
 
 ## Known issues
 
