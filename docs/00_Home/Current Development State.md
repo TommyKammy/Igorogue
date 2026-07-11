@@ -17,7 +17,7 @@ updated: 2026-07-11
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | determinism through placement legality/repetition implemented and merged; king result implemented and in review | TASK-0002 through TASK-0006 CI + TASK-0007 local tests and formal review |
+| Product Rules Kernel | determinism through king capture result implemented and merged; territory calculation ready | TASK-0002 through TASK-0007 tests + PR #8 CI |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,7 +35,7 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0007 King Capture and Battle Result]] completed implementation evidence and formal independent review. It remains the current task while CI and human merge are pending; TASK-0008 is not yet authorized.
+[[TASK-0007 King Capture and Battle Result]] was merged through PR #8 with green CI. [[TASK-0008 Territory Region Calculation]] is the current authorized implementation task.
 
 ## Next development sequence
 
@@ -44,8 +44,8 @@ updated: 2026-07-11
 3. TASK-0004 groups and liberties — done
 4. TASK-0005 placement and capture — done
 5. TASK-0006 legality and terminal capture — done
-6. TASK-0007 king result — review／current
-7. TASK-0008 territory
+6. TASK-0007 king result — done
+7. TASK-0008 territory — current
 8. TASK-0009 golden fixtures
 9. TASK-0010 state machine
 10. TASK-0011 replay round trip

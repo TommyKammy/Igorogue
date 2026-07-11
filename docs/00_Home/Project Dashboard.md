@@ -8,11 +8,11 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`からsuicide legality／battle-local repetitionまではmerge済み。king capture resultは実装と独立reviewを完了し、Gate 1のCI／人間merge待ち。
+`M0 Repository Bootstrap`からking capture resultまでは実装・review・CI・merge済み。Gate 1 board Rules Kernel workが継続中。
 
 ## Sprint goal
 
-Review and land king-group capture results in the shared Domain Rules Kernel.
+Implement deterministic territory-region calculation in the shared Domain Rules Kernel.
 
 ## Health
 
@@ -23,11 +23,11 @@ Review and land king-group capture results in the shared Domain Rules Kernel.
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Placement legality and KO-01〜KO-07 proven locally and in CI; king result implemented and independently approved, CI pending |
+| Validation | Yellow | Placement legality, KO-01〜KO-07, and king result proven locally and in CI; territory calculation ready |
 
 ## Blockers
 
-- TASK-0007 CI and human merge are pending.
+- Territory-region calculation is not implemented yet.
 
 ## Current evidence
 
@@ -50,7 +50,7 @@ Review and land king-group capture results in the shared Domain Rules Kernel.
 
 ## Next
 
-1. [[TASK-0007 King Capture and Battle Result]]
-2. [[TASK-0008 Territory Region Calculation]]
+1. [[TASK-0008 Territory Region Calculation]]
+2. [[TASK-0009 Golden Board Fixtures]]
 3. FEAT-009 independent two-person sign-off
 4. A-6 style data/document synchronization checker

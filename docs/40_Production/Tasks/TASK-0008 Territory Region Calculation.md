@@ -1,12 +1,12 @@
 ---
 type: task
 id: TASK-0008
-status: blocked
+status: ready
 project: Igorogue
 milestone: M1
 priority: high
 dependencies: [TASK-0001]
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # TASK-0008 Territory Region Calculation
 
@@ -37,7 +37,7 @@ updated: 2026-07-10
 
 ## Execution log
 
-未着手。
+2026-07-11 — TASK-0007の独立review、green CI、PR #8の人間mergeを確認し、直列Gate 1の次タスクとして`ready`へ遷移。
 
 ## Evidence
 
