@@ -121,6 +121,8 @@ public sealed class PlacementLegalityEvaluatorTests
         Assert.Equal(PlacementLegalityStatus.StoneTopologyRepetition, evaluation.Status);
         Assert.Equal("stone_topology_repetition", evaluation.ReasonId);
         Assert.Null(evaluation.AcceptedCandidate);
+        Assert.Throws<InvalidOperationException>(() =>
+            history.CommitLegalPlacement(evaluation));
         Assert.Equal(2, history.ObservationCount);
         Assert.Same(afterBlack, whiteRecapture.SourceBoard);
     }

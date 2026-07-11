@@ -1,3 +1,5 @@
+using Igorogue.Domain.Combat;
+
 namespace Igorogue.Domain.Board;
 
 public sealed class LegalPlacementCommit
@@ -10,6 +12,8 @@ public sealed class LegalPlacementCommit
         Candidate = candidate;
         RegisteredTopologyKey = registeredTopologyKey;
         HistoryAfterCommit = historyAfterCommit;
+        KingCaptureResult = KingCaptureResultEvaluator.EvaluateAtomicCapture(
+            candidate.CapturedGroups);
     }
 
     public HypotheticalPlacementResolution Candidate { get; }
@@ -21,4 +25,6 @@ public sealed class LegalPlacementCommit
     public StoneTopologyKey RegisteredTopologyKey { get; }
 
     public BattleRepetitionHistory HistoryAfterCommit { get; }
+
+    public KingCaptureResult KingCaptureResult { get; }
 }

@@ -54,6 +54,16 @@ public sealed class ArchitectureBoundaryTests
     }
 
     [Fact]
+    public void RawKingCaptureEvaluatorIsNotPublicDomainApi()
+    {
+        var evaluatorType = typeof(BootstrapState).Assembly.GetType(
+            "Igorogue.Domain.Combat.KingCaptureResultEvaluator");
+
+        Assert.NotNull(evaluatorType);
+        Assert.False(evaluatorType.IsPublic);
+    }
+
+    [Fact]
     public void ProjectReferenceGraphMatchesAcceptedBoundary()
     {
         var root = FindRepositoryRoot();
