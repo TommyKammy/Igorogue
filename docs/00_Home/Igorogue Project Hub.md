@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0010 Headless Battle State Machine]]はPR #11でmerge済み。FAC-08／09 true replayに必要な[[TASK-0024 Authorized Facility Build Battle Command]]は実装・独立review・local validation済みで、CI／人間mergeを待つ。
+> [[TASK-0010 Headless Battle State Machine]]はPR #11でmerge済み。FAC-08／09 true replayに必要な[[TASK-0024 Authorized Facility Build Battle Command]]は実装・独立review・local validation・green PR #12 CI済みで、人間mergeを待つ。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。

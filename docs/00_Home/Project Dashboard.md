@@ -8,7 +8,7 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`からheadless battle state machineまでは実装・review・CI・merge済み。Gate 1のFAC-08／09 true replayに必要なauthorized facility build commandは実装・独立review・local validation済みで、CI／人間mergeを待つ。
+`M0 Repository Bootstrap`からheadless battle state machineまでは実装・review・CI・merge済み。Gate 1のFAC-08／09 true replayに必要なauthorized facility build commandは実装・独立review・local validation・green PR #12 CI済みで、人間mergeを待つ。
 
 ## Sprint goal
 
@@ -23,7 +23,7 @@ Integrate authorized facility build into the deterministic headless battle sessi
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | TASK-0010 post-merge main CI green; TASK-0024 238 tests、independent review、two closeout runs green |
+| Validation | Yellow | TASK-0010 post-merge main CI green; TASK-0024 238 tests、independent review、two closeout runs、PR #12 CI green |
 
 ## Blockers
 

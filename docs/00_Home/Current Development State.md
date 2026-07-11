@@ -35,7 +35,7 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0010 Headless Battle State Machine]] was merged through PR #11 and post-merge main CI run `29151240059` is green. [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] found that FAC-08／09 need a canonical Application build command before true replay and that other exact fixtures need an owner decision. [[TASK-0024 Authorized Facility Build Battle Command]] has implementation、238 tests、independent approval、two green closeout runs and is current in review; TASK-0009 remains blocked by that decision and TASK-0024 merge.
+[[TASK-0010 Headless Battle State Machine]] was merged through PR #11 and post-merge main CI run `29151240059` is green. [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] found that FAC-08／09 need a canonical Application build command before true replay and that other exact fixtures need an owner decision. [[TASK-0024 Authorized Facility Build Battle Command]] has implementation、238 tests、independent approval、two green closeout runs、green PR #12 CI and is current in review; TASK-0009 remains blocked by that decision and TASK-0024 merge.
 
 ## Next development sequence
 

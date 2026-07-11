@@ -83,6 +83,8 @@ updated: 2026-07-11
 
 2026-07-11 — closeout validationで`tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`を二連続実行し全成功。TASK-0024範囲の既知defectなしとして`review`へ遷移し、CIと人間merge判断を待つ。
 
+2026-07-11 — draft PR #12のGitHub Actions run `29152311607`でGovernance、Pure .NET build／238 tests／simulator smoke、Godot .NET headless smoke／Windows debug exportの全3 job成功を確認。`review`を維持し、人間merge判断だけを待つ。
+
 ## Evidence
 
 - TASK-0010 merge commit `d4ffd832f572fb46cbe2d29559032b30c68b2bb2`。
@@ -92,6 +94,7 @@ updated: 2026-07-11
 - `AuthorizedFacilityBuildCommandTests` — canonical payload、legal fact順／snapshot不変、6 rejection reason exact no-op、phase／stale／terminal、accepted-only log、2-run determinism、payload／order divergenceを確認。
 - independent fixed-HEAD review — commit `a326328`、BLOCKER／HIGH／MEDIUM／LOW findingなし、独立`check`／238 tests／sim smoke成功、`APPROVE`。
 - closeout validation 2 consecutive runs — 各runで`tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`がexit 0。各回238 tests、warning 0／error 0、同一sim checksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`。
+- GitHub Actions run `29152311607` — PR #12のGovernance `86543637495`、Pure .NET `86543658321`、Godot／export `86543699204`すべて成功。
 
 ## Known issues
 
