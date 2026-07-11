@@ -171,6 +171,7 @@ public sealed class ArchitectureBoundaryTests
             nameof(TerritoryDeltaResolver.Resolve),
             typeof(TerritoryAnalysis),
             typeof(TerritoryAnalysis),
+            typeof(FacilityPlacementCommit),
             typeof(StoneColor));
 
         Assert.Equal(typeof(TerritoryEstablishedFact), resolve.ReturnType);

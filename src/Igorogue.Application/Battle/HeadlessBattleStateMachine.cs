@@ -44,6 +44,14 @@ public static class HeadlessBattleStateMachine
             return Reject(session, command, "stale_state");
         }
 
+        if (!string.Equals(
+                command.ExpectedLogChecksum,
+                session.CommandLog.CurrentChecksum,
+                StringComparison.Ordinal))
+        {
+            return Reject(session, command, "stale_session");
+        }
+
         if (session.State.IsTerminal)
         {
             return Reject(session, command, "battle_terminal");
@@ -108,7 +116,7 @@ public static class HeadlessBattleStateMachine
 
         if (placementCommit.KingCaptureResult.IsTerminal)
         {
-            var terminal = TerminalFromKingCapture(placementCommit.KingCaptureResult);
+            var terminal = placementCommit.KingCaptureResult;
             var runtimeAfter = FacilityRuntimeAnalyzer.Analyze(
                 placementCommit.FacilityStateAfterCommit,
                 territoryAfter,
@@ -123,14 +131,15 @@ public static class HeadlessBattleStateMachine
                 source.PlayerTurnIndex,
                 BattlePhase.Ended,
                 terminal.Outcome,
-                terminal.Reason);
-            orderedFacts.Add(new BattleEndedFact(terminal.Outcome, stateAfter.EndReasonId));
+                terminal.EndReason);
+            orderedFacts.Add(new BattleEndedFact(terminal.Outcome, terminal.EndReason));
             return Accept(session, command, stateAfter, orderedFacts);
         }
 
         var territoryEstablished = TerritoryDeltaResolver.Resolve(
             source.TerritoryAnalysis,
             territoryAfter,
+            placementCommit,
             command.Actor);
         if (territoryEstablished is not null)
         {
@@ -216,7 +225,9 @@ public static class HeadlessBattleStateMachine
     {
         if (source.PlayerTurnIndex >= source.RuntimePolicy.PlayerTurnLimit)
         {
-            orderedFacts.Add(new BattleEndedFact(BattleOutcome.PlayerDefeat, "turn_limit"));
+            orderedFacts.Add(new BattleEndedFact(
+                BattleOutcome.PlayerDefeat,
+                BattleEndReason.TurnLimit));
             return BattleState.Transition(
                 source,
                 placementCommit.BoardAfterCommit,
@@ -249,7 +260,9 @@ public static class HeadlessBattleStateMachine
     {
         if (source.PlayerTurnIndex >= source.RuntimePolicy.PlayerTurnLimit)
         {
-            orderedFacts.Add(new BattleEndedFact(BattleOutcome.PlayerDefeat, "turn_limit"));
+            orderedFacts.Add(new BattleEndedFact(
+                BattleOutcome.PlayerDefeat,
+                BattleEndReason.TurnLimit));
             return BattleState.Transition(
                 source,
                 source.Board,
@@ -312,24 +325,4 @@ public static class HeadlessBattleStateMachine
                 group,
                 group.RealLibertyCount)));
 
-    private static (BattleOutcome Outcome, BattleEndReason Reason) TerminalFromKingCapture(
-        KingCaptureResult result)
-    {
-        if (result.BlackKingCaptured && result.WhiteKingCaptured)
-        {
-            return (BattleOutcome.PlayerDefeat, BattleEndReason.BothKingsCaptured);
-        }
-
-        if (result.BlackKingCaptured)
-        {
-            return (BattleOutcome.PlayerDefeat, BattleEndReason.BlackKingCaptured);
-        }
-
-        if (result.WhiteKingCaptured)
-        {
-            return (BattleOutcome.PlayerVictory, BattleEndReason.WhiteKingCaptured);
-        }
-
-        throw new ArgumentException("Terminal king result contains no captured king.", nameof(result));
-    }
 }

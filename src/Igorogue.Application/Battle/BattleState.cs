@@ -13,15 +13,6 @@ public enum BattlePhase : byte
     Ended = 3,
 }
 
-public enum BattleEndReason : byte
-{
-    None = 1,
-    WhiteKingCaptured = 2,
-    BlackKingCaptured = 3,
-    BothKingsCaptured = 4,
-    TurnLimit = 5,
-}
-
 public sealed class BattleState
 {
     public const string EncodingVersion = "headless-battle-state-v1";
@@ -110,15 +101,7 @@ public sealed class BattleState
         _ => throw new InvalidOperationException("Battle state contains an unknown outcome."),
     };
 
-    public string EndReasonId => EndReason switch
-    {
-        BattleEndReason.None => "none",
-        BattleEndReason.WhiteKingCaptured => "white_king_captured",
-        BattleEndReason.BlackKingCaptured => "black_king_captured",
-        BattleEndReason.BothKingsCaptured => "both_kings_captured",
-        BattleEndReason.TurnLimit => "turn_limit",
-        _ => throw new InvalidOperationException("Battle state contains an unknown end reason."),
-    };
+    public string EndReasonId => BattleEndReasonRules.ToReasonId(EndReason);
 
     public string CanonicalText { get; }
 
@@ -312,6 +295,7 @@ public sealed class BattleState
                 throw new ArgumentException("Ended battle state requires a terminal outcome and reason.");
             }
 
+            BattleEndReasonRules.ValidateTerminalPair(outcome, endReason);
             return;
         }
 

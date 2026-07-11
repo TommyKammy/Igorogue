@@ -1,5 +1,46 @@
 namespace Igorogue.Domain.Combat;
 
+public enum BattleEndReason : byte
+{
+    None = 1,
+    WhiteKingCaptured = 2,
+    BlackKingCaptured = 3,
+    BothKingsCaptured = 4,
+    TurnLimit = 5,
+}
+
+public static class BattleEndReasonRules
+{
+    public static string ToReasonId(BattleEndReason reason) => reason switch
+    {
+        BattleEndReason.None => "none",
+        BattleEndReason.WhiteKingCaptured => "white_king_captured",
+        BattleEndReason.BlackKingCaptured => "black_king_captured",
+        BattleEndReason.BothKingsCaptured => "both_kings_captured",
+        BattleEndReason.TurnLimit => "turn_limit",
+        _ => throw new ArgumentOutOfRangeException(nameof(reason), reason, "Unknown battle end reason."),
+    };
+
+    public static void ValidateTerminalPair(
+        BattleOutcome outcome,
+        BattleEndReason reason)
+    {
+        var valid = (outcome, reason) switch
+        {
+            (BattleOutcome.PlayerVictory, BattleEndReason.WhiteKingCaptured) => true,
+            (BattleOutcome.PlayerDefeat, BattleEndReason.BlackKingCaptured) => true,
+            (BattleOutcome.PlayerDefeat, BattleEndReason.BothKingsCaptured) => true,
+            (BattleOutcome.PlayerDefeat, BattleEndReason.TurnLimit) => true,
+            _ => false,
+        };
+        if (!valid)
+        {
+            throw new ArgumentException(
+                "Battle outcome and end reason do not form a valid terminal result.");
+        }
+    }
+}
+
 public sealed class CommandRejectedFact : IBattleFact
 {
     public CommandRejectedFact(string reasonId)
@@ -30,23 +71,19 @@ public sealed class EnemyPassedFact : IBattleFact
 
 public sealed class BattleEndedFact : IBattleFact
 {
-    public BattleEndedFact(BattleOutcome outcome, string reasonId)
+    public BattleEndedFact(BattleOutcome outcome, BattleEndReason reason)
     {
-        if (outcome is not BattleOutcome.PlayerVictory and not BattleOutcome.PlayerDefeat)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(outcome),
-                outcome,
-                "A battle-ended fact requires a terminal outcome.");
-        }
+        BattleEndReasonRules.ValidateTerminalPair(outcome, reason);
 
         Outcome = outcome;
-        ReasonId = BattleFactReason.Validate(reasonId, nameof(reasonId));
+        Reason = reason;
     }
 
     public BattleOutcome Outcome { get; }
 
-    public string ReasonId { get; }
+    public BattleEndReason Reason { get; }
+
+    public string ReasonId => BattleEndReasonRules.ToReasonId(Reason);
 }
 
 internal static class BattleFactReason

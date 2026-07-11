@@ -11,6 +11,8 @@ public sealed class HeadlessBattleStateMachineTests
 {
     private const string ContentHash =
         "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+    private const string OtherContentHash =
+        "sha256:abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789";
 
     private static readonly BoardGeometry Geometry =
         BoardGeometry.Create(BoardGeometry.AcceptedSize);
@@ -165,7 +167,7 @@ public sealed class HeadlessBattleStateMachineTests
     }
 
     [Fact]
-    public void OccupiedAndSuicidePlacementsAreExactNoOps()
+    public void OccupiedSuicideAndUnfulfilledTerminalPlacementsAreExactNoOps()
     {
         var occupiedSession = Start(Board(Stone(StoneColor.Black, 4, 4)));
 
@@ -181,6 +183,18 @@ public sealed class HeadlessBattleStateMachineTests
         var suicide = Place(suicideSession, StoneColor.Black, 2, 2);
 
         AssertRejectedNoOp(suicideSession, suicide, "suicide");
+        var terminalSession = Start(Board());
+        var noCapture = Place(
+            terminalSession,
+            StoneColor.Black,
+            2,
+            2,
+            PlacementAccessMode.TerminalCapture);
+
+        AssertRejectedNoOp(
+            terminalSession,
+            noCapture,
+            "terminal_capture_required");
     }
 
     [Fact]
@@ -215,7 +229,9 @@ public sealed class HeadlessBattleStateMachineTests
             initial,
             HeadlessBattleStateMachine.Execute(
                 initial,
-                new ResolveEnemyPassCommand(initial.State.Checksum)),
+                new ResolveEnemyPassCommand(
+                    initial.State.Checksum,
+                    initial.CommandLog.CurrentChecksum)),
             "wrong_phase");
         AssertRejectedNoOp(
             initial,
@@ -224,6 +240,7 @@ public sealed class HeadlessBattleStateMachineTests
 
         var staleCommand = new AuthorizedStonePlacementCommand(
             initial.State.Checksum,
+            initial.CommandLog.CurrentChecksum,
             StoneColor.Black,
             C(1, 1),
             PlacementAccessMode.Normal);
@@ -247,9 +264,30 @@ public sealed class HeadlessBattleStateMachineTests
     }
 
     [Fact]
+    public void CommandFromDifferentContentIdentityIsRejectedAsStaleSession()
+    {
+        var first = Start(Board(), seed: 7, contentHash: ContentHash);
+        var second = Start(Board(), seed: 7, contentHash: OtherContentHash);
+        Assert.Equal(first.State.Checksum, second.State.Checksum);
+        Assert.NotEqual(
+            first.CommandLog.CurrentChecksum,
+            second.CommandLog.CurrentChecksum);
+        var foreignCommand = new AuthorizedStonePlacementCommand(
+            first.State.Checksum,
+            first.CommandLog.CurrentChecksum,
+            StoneColor.Black,
+            C(4, 4),
+            PlacementAccessMode.Normal);
+
+        var result = HeadlessBattleStateMachine.Execute(second, foreignCommand);
+
+        AssertRejectedNoOp(second, result, "stale_session");
+    }
+
+    [Fact]
     public void WhiteKingCaptureEndsInVictoryAndSuppressesPostTerminalBenefits()
     {
-        var facility = Facility("would-activate", StoneColor.Black, 1, 1, 1);
+        var facility = Facility("terminal-trample", StoneColor.Black, 3, 2, 1);
         var session = Start(WhiteKingInAtari(), [facility]);
         Assert.False(
             session.State.FacilityRuntimeAnalysis.OperatingStateFor(facility).IsActive);
@@ -262,14 +300,20 @@ public sealed class HeadlessBattleStateMachineTests
             {
                 typeof(StonePlacedFact),
                 typeof(GroupCapturedFact),
+                typeof(FacilityDestroyedFact),
                 typeof(StoneTopologyRegisteredFact),
                 typeof(KingCaptureEvaluatedFact),
                 typeof(BattleEndedFact),
             },
             result.OrderedFacts.Select(fact => fact.GetType()));
         Assert.True(Assert.IsType<GroupCapturedFact>(result.OrderedFacts[1]).ContainsKing);
+        var destroyed = Assert.IsType<FacilityDestroyedFact>(result.OrderedFacts[2]);
+        Assert.Same(facility, destroyed.Facility);
         Assert.DoesNotContain(result.OrderedFacts, fact => fact is TerritoryEstablishedFact);
-        Assert.DoesNotContain(result.OrderedFacts, fact => fact is FacilityFact);
+        Assert.DoesNotContain(
+            result.OrderedFacts,
+            fact => fact is FacilityActivatedFact or FacilityDisabledFact);
+        Assert.Empty(result.SessionAfter.State.FacilityState.InstalledFacilities);
         var ended = Assert.IsType<BattleEndedFact>(result.OrderedFacts[^1]);
         Assert.Equal(BattleOutcome.PlayerVictory, ended.Outcome);
         Assert.Equal("white_king_captured", ended.ReasonId);
@@ -279,7 +323,9 @@ public sealed class HeadlessBattleStateMachineTests
 
         var postTerminal = HeadlessBattleStateMachine.Execute(
             result.SessionAfter,
-            new EndPlayerTurnCommand(result.SessionAfter.State.Checksum));
+            new EndPlayerTurnCommand(
+                result.SessionAfter.State.Checksum,
+                result.SessionAfter.CommandLog.CurrentChecksum));
         AssertRejectedNoOp(result.SessionAfter, postTerminal, "battle_terminal");
     }
 
@@ -374,24 +420,82 @@ public sealed class HeadlessBattleStateMachineTests
     }
 
     [Fact]
+    public void ProductionTurnLimitEndsOnlyAfterTwentiethEnemyBoundary()
+    {
+        var session = Start(Board(), playerTurnLimit: 20);
+        for (var completedTurn = 1; completedTurn < 20; completedTurn++)
+        {
+            var enemyPhase = EndPlayerTurn(session);
+            Assert.True(enemyPhase.Accepted);
+            var nextPlayerTurn = EnemyPass(enemyPhase.SessionAfter);
+            Assert.True(nextPlayerTurn.Accepted);
+            session = nextPlayerTurn.SessionAfter;
+        }
+
+        Assert.Equal(20, session.State.PlayerTurnIndex);
+        Assert.Equal(BattlePhase.PlayerAction, session.State.Phase);
+        Assert.Equal(BattleOutcome.Ongoing, session.State.Outcome);
+        var finalEnemyPhase = EndPlayerTurn(session).SessionAfter;
+
+        var result = EnemyPass(finalEnemyPhase);
+
+        Assert.True(result.Accepted);
+        Assert.Equal(BattleEndReason.TurnLimit, result.SessionAfter.State.EndReason);
+        Assert.Equal(BattleOutcome.PlayerDefeat, result.SessionAfter.State.Outcome);
+        Assert.Equal(20, result.SessionAfter.State.PlayerTurnIndex);
+    }
+
+    [Fact]
+    public void KingCaptureOnTwentiethEnemyActionTakesPriorityOverTurnLimitReason()
+    {
+        var session = Start(BlackKingInAtari(), playerTurnLimit: 20);
+        for (var completedTurn = 1; completedTurn < 20; completedTurn++)
+        {
+            session = EnemyPass(EndPlayerTurn(session).SessionAfter).SessionAfter;
+        }
+
+        var finalEnemyPhase = EndPlayerTurn(session).SessionAfter;
+        var result = Place(finalEnemyPhase, StoneColor.White, 3, 2);
+
+        Assert.True(result.Accepted);
+        Assert.Equal(BattleOutcome.PlayerDefeat, result.SessionAfter.State.Outcome);
+        Assert.Equal(
+            BattleEndReason.BlackKingCaptured,
+            result.SessionAfter.State.EndReason);
+        Assert.Equal(
+            "black_king_captured",
+            Assert.IsType<BattleEndedFact>(result.OrderedFacts[^1]).ReasonId);
+        Assert.DoesNotContain(
+            result.OrderedFacts.OfType<BattleEndedFact>(),
+            fact => fact.Reason == BattleEndReason.TurnLimit);
+    }
+
+    [Fact]
     public void SameInitialStateSeedAndCommandsProduceIdenticalStateAndLogChecksums()
     {
         var first = RunDeterministicScript(seed: 123456789);
         var second = RunDeterministicScript(seed: 123456789);
 
-        Assert.Equal(first.State.CanonicalText, second.State.CanonicalText);
-        Assert.Equal(first.State.Checksum, second.State.Checksum);
-        Assert.Equal(first.CommandLog.CurrentChecksum, second.CommandLog.CurrentChecksum);
+        Assert.Equal(first.Boundaries, second.Boundaries);
         Assert.Equal(
-            first.CommandLog.Entries.Select(ProjectEntry),
-            second.CommandLog.Entries.Select(ProjectEntry));
+            first.FinalSession.State.CanonicalText,
+            second.FinalSession.State.CanonicalText);
         Assert.Equal(
-            first.State.RngState.ToCanonicalText(),
-            second.State.RngState.ToCanonicalText());
+            first.FinalSession.State.Checksum,
+            second.FinalSession.State.Checksum);
         Assert.Equal(
-            DeterministicChecksum.Sha256Hex(first.State.CanonicalText),
-            first.State.Checksum);
-        Assert.All(first.CommandLog.Entries, entry =>
+            first.FinalSession.CommandLog.CurrentChecksum,
+            second.FinalSession.CommandLog.CurrentChecksum);
+        Assert.Equal(
+            first.FinalSession.CommandLog.Entries.Select(ProjectEntry),
+            second.FinalSession.CommandLog.Entries.Select(ProjectEntry));
+        Assert.Equal(
+            first.FinalSession.State.RngState.ToCanonicalText(),
+            second.FinalSession.State.RngState.ToCanonicalText());
+        Assert.Equal(
+            DeterministicChecksum.Sha256Hex(first.FinalSession.State.CanonicalText),
+            first.FinalSession.State.Checksum);
+        Assert.All(first.FinalSession.CommandLog.Entries, entry =>
         {
             Assert.Matches("^[0-9a-f]{64}$", entry.ResultChecksum);
             Assert.Matches("^[0-9a-f]{64}$", entry.LogChecksum);
@@ -417,13 +521,26 @@ public sealed class HeadlessBattleStateMachineTests
         Assert.NotEqual(forward.CommandLog.CurrentChecksum, reversed.CommandLog.CurrentChecksum);
     }
 
-    private static HeadlessBattleSession RunDeterministicScript(long seed)
+    private static DeterministicScriptResult RunDeterministicScript(long seed)
     {
         var session = Start(Board(), seed: seed);
-        session = Place(session, StoneColor.Black, 1, 1).SessionAfter;
-        session = Place(session, StoneColor.Black, 2, 1).SessionAfter;
-        session = EndPlayerTurn(session).SessionAfter;
-        return Place(session, StoneColor.White, 7, 7).SessionAfter;
+        var boundaries = new List<CommandBoundaryProjection>();
+
+        var first = Place(session, StoneColor.Black, 1, 1);
+        boundaries.Add(ProjectBoundary(first));
+        session = first.SessionAfter;
+
+        var second = Place(session, StoneColor.Black, 2, 1);
+        boundaries.Add(ProjectBoundary(second));
+        session = second.SessionAfter;
+
+        var endTurn = EndPlayerTurn(session);
+        boundaries.Add(ProjectBoundary(endTurn));
+        session = endTurn.SessionAfter;
+
+        var enemy = Place(session, StoneColor.White, 7, 7);
+        boundaries.Add(ProjectBoundary(enemy));
+        return new DeterministicScriptResult(enemy.SessionAfter, boundaries.ToArray());
     }
 
     private static HeadlessBattleSession RunTwoBlackPlacements(
@@ -439,7 +556,9 @@ public sealed class HeadlessBattleStateMachineTests
         BoardState board,
         IEnumerable<FacilityInstance>? facilities = null,
         int playerTurnLimit = 20,
-        long seed = 42)
+        long seed = 42,
+        string gameVersion = "v0.2.10",
+        string contentHash = ContentHash)
     {
         var installed = facilities?.ToArray() ?? [];
         var nextBuildSequence = installed.Length == 0
@@ -449,7 +568,7 @@ public sealed class HeadlessBattleStateMachineTests
             board,
             FacilityState.Create(board, installed, nextBuildSequence),
             RuntimePolicy(playerTurnLimit),
-            Metadata(seed));
+            Metadata(seed, gameVersion, contentHash));
     }
 
     private static BattleRuntimePolicy RuntimePolicy(int playerTurnLimit = 20) =>
@@ -461,8 +580,11 @@ public sealed class HeadlessBattleStateMachineTests
                 slotCap: 3,
                 typeLimits: [new KeyValuePair<string, int>("default", 1)]));
 
-    private static ReplayMetadata Metadata(long seed = 42) =>
-        ReplayMetadata.Create("v0.2.10", ContentHash, seed);
+    private static ReplayMetadata Metadata(
+        long seed = 42,
+        string gameVersion = "v0.2.10",
+        string contentHash = ContentHash) =>
+        ReplayMetadata.Create(gameVersion, contentHash, seed);
 
     private static BattleCommandResult Place(
         HeadlessBattleSession session,
@@ -481,6 +603,7 @@ public sealed class HeadlessBattleStateMachineTests
             session,
             new AuthorizedStonePlacementCommand(
                 session.State.Checksum,
+                session.CommandLog.CurrentChecksum,
                 actor,
                 point,
                 accessMode));
@@ -488,12 +611,16 @@ public sealed class HeadlessBattleStateMachineTests
     private static BattleCommandResult EndPlayerTurn(HeadlessBattleSession session) =>
         HeadlessBattleStateMachine.Execute(
             session,
-            new EndPlayerTurnCommand(session.State.Checksum));
+            new EndPlayerTurnCommand(
+                session.State.Checksum,
+                session.CommandLog.CurrentChecksum));
 
     private static BattleCommandResult EnemyPass(HeadlessBattleSession session) =>
         HeadlessBattleStateMachine.Execute(
             session,
-            new ResolveEnemyPassCommand(session.State.Checksum));
+            new ResolveEnemyPassCommand(
+                session.State.Checksum,
+                session.CommandLog.CurrentChecksum));
 
     private static void AssertRejectedNoOp(
         HeadlessBattleSession expectedSession,
@@ -520,9 +647,72 @@ public sealed class HeadlessBattleStateMachineTests
         Assert.Equal(expectedReason, rejected.ReasonId);
     }
 
+    private static CommandBoundaryProjection ProjectBoundary(
+        BattleCommandResult result) =>
+        new(
+            result.Accepted,
+            result.ReasonId,
+            result.StateChecksum,
+            result.LogChecksum,
+            string.Join('\u001e', result.OrderedFacts.Select(ProjectFact)));
+
+    private static string ProjectFact(IBattleFact fact) => fact switch
+    {
+        StonePlacedFact placed =>
+            $"stone_placed|{ColorId(placed.Stone.Color)}|{PointId(placed.Stone.Point)}|king={placed.Stone.IsKing}",
+        GroupCapturedFact captured =>
+            $"group_captured|by={ColorId(captured.CapturingColor)}|" +
+            $"anchor={PointId(captured.CapturedGroup.Anchor)}|" +
+            $"stones={string.Join(';', captured.CapturedGroup.Stones.Select(stone => PointId(stone.Point)))}|" +
+            $"king={captured.ContainsKing}",
+        FacilityDestroyedFact destroyed =>
+            $"facility_destroyed|{destroyed.Facility.InstanceId}|{destroyed.ReasonId}",
+        FacilityActivatedFact activated =>
+            $"facility_activated|{activated.Facility.InstanceId}|{activated.ReasonId}|" +
+            PointId(activated.Region.Anchor),
+        FacilityDisabledFact disabled =>
+            $"facility_disabled|{disabled.Facility.InstanceId}|{disabled.ReasonId}|" +
+            PointId(disabled.Region.Anchor),
+        FacilityBuiltFact built => $"facility_built|{built.Facility.InstanceId}",
+        StoneTopologyRegisteredFact topology =>
+            $"topology_registered|{topology.RegisteredTopologyKey.ToCanonicalText()}|" +
+            $"observations={topology.HistoryAfterRegistration.ObservationCount}",
+        KingCaptureEvaluatedFact king =>
+            $"king_capture_evaluated|{king.Result.ToCanonicalText()}|{king.Result.EndReasonId}",
+        TerritoryEstablishedFact territory =>
+            $"territory_established|{ColorId(territory.SourceActor)}|" +
+            string.Join(';', territory.ChangedPoints.Select(PointId)),
+        EnemyPassedFact passed => $"enemy_passed|turn={passed.PlayerTurnIndex}",
+        BattleEndedFact ended =>
+            $"battle_ended|{ended.Outcome}|{ended.ReasonId}",
+        CommandRejectedFact rejected => $"command_rejected|{rejected.ReasonId}",
+        _ => throw new InvalidOperationException(
+            $"Unhandled battle fact projection type {fact.GetType().FullName}."),
+    };
+
+    private static string ColorId(StoneColor color) => color switch
+    {
+        StoneColor.Black => "black",
+        StoneColor.White => "white",
+        _ => throw new InvalidOperationException("Unknown test stone color."),
+    };
+
+    private static string PointId(CanonicalPoint point) => $"{point.X},{point.Y}";
+
     private static string ProjectEntry(CommandLogEntry entry) =>
         $"{entry.Sequence}|{entry.CommandType}|{entry.CommandSchemaVersion}|" +
         $"{entry.CanonicalPayload}|{entry.ResultChecksum}|{entry.LogChecksum}";
+
+    private sealed record DeterministicScriptResult(
+        HeadlessBattleSession FinalSession,
+        IReadOnlyList<CommandBoundaryProjection> Boundaries);
+
+    private sealed record CommandBoundaryProjection(
+        bool Accepted,
+        string ReasonId,
+        string StateChecksum,
+        string LogChecksum,
+        string OrderedFacts);
 
     private static BoardState KoBeforeCapture() => Board(
         Stone(StoneColor.Black, 3, 4),

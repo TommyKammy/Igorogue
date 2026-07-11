@@ -13,11 +13,12 @@ public sealed class BattleFactTests
         var passed = new EnemyPassedFact(20);
         var ended = new BattleEndedFact(
             BattleOutcome.PlayerDefeat,
-            "turn_limit");
+            BattleEndReason.TurnLimit);
 
         Assert.Equal("wrong_phase", rejected.ReasonId);
         Assert.Equal(20, passed.PlayerTurnIndex);
         Assert.Equal(BattleOutcome.PlayerDefeat, ended.Outcome);
+        Assert.Equal(BattleEndReason.TurnLimit, ended.Reason);
         Assert.Equal("turn_limit", ended.ReasonId);
         Assert.All(
             new IBattleFact[] { rejected, passed, ended },
@@ -30,9 +31,15 @@ public sealed class BattleFactTests
         Assert.Throws<ArgumentException>(() => new CommandRejectedFact(" "));
         Assert.Throws<ArgumentException>(() => new CommandRejectedFact("bad reason"));
         Assert.Throws<ArgumentOutOfRangeException>(() => new EnemyPassedFact(0));
-        Assert.Throws<ArgumentOutOfRangeException>(() => new BattleEndedFact(
+        Assert.Throws<ArgumentException>(() => new BattleEndedFact(
             BattleOutcome.Ongoing,
-            "not_ended"));
+            BattleEndReason.TurnLimit));
+        Assert.Throws<ArgumentException>(() => new BattleEndedFact(
+            BattleOutcome.PlayerVictory,
+            BattleEndReason.BlackKingCaptured));
+        Assert.Throws<ArgumentException>(() => new BattleEndedFact(
+            BattleOutcome.PlayerDefeat,
+            BattleEndReason.WhiteKingCaptured));
     }
 
     [Fact]

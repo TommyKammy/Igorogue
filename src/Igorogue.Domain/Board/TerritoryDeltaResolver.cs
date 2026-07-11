@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using Igorogue.Domain.Combat;
+using Igorogue.Domain.Facilities;
 
 namespace Igorogue.Domain.Board;
 
@@ -51,6 +52,36 @@ public sealed class TerritoryEstablishedFact : IBattleFact
 public static class TerritoryDeltaResolver
 {
     public static TerritoryEstablishedFact? Resolve(
+        TerritoryAnalysis before,
+        TerritoryAnalysis after,
+        FacilityPlacementCommit placementCommit,
+        StoneColor sourceActor)
+    {
+        ArgumentNullException.ThrowIfNull(before);
+        ArgumentNullException.ThrowIfNull(after);
+        ArgumentNullException.ThrowIfNull(placementCommit);
+        if (!ReferenceEquals(
+                before.SourceBoard,
+                placementCommit.Candidate.SourceBoard))
+        {
+            throw new ArgumentException(
+                "Before territory analysis must belong to the placement commit's exact source board.",
+                nameof(before));
+        }
+
+        if (!ReferenceEquals(
+                after.SourceBoard,
+                placementCommit.BoardAfterCommit))
+        {
+            throw new ArgumentException(
+                "After territory analysis must belong to the placement commit's exact result board.",
+                nameof(after));
+        }
+
+        return ResolveCore(before, after, sourceActor);
+    }
+
+    internal static TerritoryEstablishedFact? ResolveCore(
         TerritoryAnalysis before,
         TerritoryAnalysis after,
         StoneColor sourceActor)

@@ -19,6 +19,8 @@ public sealed class KingCaptureResultEvaluatorTests
         Assert.Equal("ongoing", empty.OutcomeId);
         Assert.False(empty.HasKingCapture);
         Assert.False(empty.IsTerminal);
+        Assert.Equal(BattleEndReason.None, empty.EndReason);
+        Assert.Equal("none", empty.EndReasonId);
         Assert.Equal(
             "king-capture-result-v1:ongoing:black=0:white=0",
             empty.ToCanonicalText());
@@ -39,6 +41,7 @@ public sealed class KingCaptureResultEvaluatorTests
         Assert.True(result.WhiteKingCaptured);
         Assert.True(result.HasKingCapture);
         Assert.True(result.IsTerminal);
+        Assert.Equal(BattleEndReason.WhiteKingCaptured, result.EndReason);
     }
 
     [Fact]
@@ -55,6 +58,7 @@ public sealed class KingCaptureResultEvaluatorTests
         Assert.False(result.WhiteKingCaptured);
         Assert.True(result.HasKingCapture);
         Assert.True(result.IsTerminal);
+        Assert.Equal(BattleEndReason.BlackKingCaptured, result.EndReason);
     }
 
     [Fact]
@@ -74,6 +78,7 @@ public sealed class KingCaptureResultEvaluatorTests
         Assert.Equal(BattleOutcome.PlayerDefeat, canonical.Outcome);
         Assert.True(canonical.BlackKingCaptured);
         Assert.True(canonical.WhiteKingCaptured);
+        Assert.Equal(BattleEndReason.BothKingsCaptured, canonical.EndReason);
         Assert.Equal(
             "king-capture-result-v1:loss:black=1:white=1",
             canonical.ToCanonicalText());

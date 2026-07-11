@@ -50,7 +50,7 @@ updated: 2026-07-11
 ## Acceptance criteria
 
 - start factoryはinitial `BoardState`と`FacilityState`をexact snapshotへbindし、repetition history、territory、facility runtime analysisを同じboardから作る。foreign facility snapshotを拒否し、初期状態は`player_action`、player turn 1、`ongoing`である。
-- phaseは`player_action -> enemy_action -> player_action | ended`。黒のalready-authorized placementはplayer phaseで複数回、`EndPlayerTurn`でenemy phaseへ移る。enemy phaseは白のalready-authorized placement1回またはexplicit pass 1回で境界を完了する。wrong actor／phase、stale checksum、battle-ended commandはexact no-opとして拒否する。
+- phaseは`player_action -> enemy_action -> player_action | ended`。黒のalready-authorized placementはplayer phaseで複数回、`EndPlayerTurn`でenemy phaseへ移る。enemy phaseは白のalready-authorized placement1回またはexplicit pass 1回で境界を完了する。wrong actor／phase、stale state checksum、異なるmetadata／履歴のstale log checksum、battle-ended commandはexact no-opとして拒否する。
 - placementは既存`HypotheticalPlacementResolver`、real-only `EffectiveLibertySnapshot`、`PlacementLegalityEvaluator`、`BattleRepetitionHistory`、`FacilityPlacementIntegrator`だけをauthorityとする。occupied、suicide、repetition、terminal-capture-requiredはstable reasonで拒否し、board／facility／history／territory／phase／turn／RNG／state checksum／command logを変更しない。
 - legal placementのpre-trigger fact順は`StonePlaced -> GroupCaptured[] -> FacilityDestroyed? -> StoneTopologyRegistered -> KingCaptureEvaluated`を維持し、topology observationはexactly one件とする。raw `LegalPlacementCommit`からfacility順を再構成しない。
 - old／new `TerritoryAnalysis`のpointwise ownership deltaから、非黒領地から黒領地へ変化した全pointをCanonical orderで持つ`TerritoryEstablished`を一つのatomic resolutionにつき最大1件返す。DECISION-0002に従い、`TerritoryEstablished? -> FacilityDisabled / FacilityActivated[]`の順とし、facility factsはpoint、ordinal instance ID順、`MomentumChanged`は0件とする。
@@ -58,14 +58,14 @@ updated: 2026-07-11
 - king captureは黒king lossを優先し、白king captureはwin、両king captureはlossとする。terminal placementでもplacement／destruction／topology結果は確定し、territory／facility operating triggerを発行せず、terminal result後のcommandを拒否する。
 - enemy action／pass後、player turnが上限未満ならturnを増やしてplayer phaseへ戻す。20回目のplayer turn後のenemy boundaryがongoingなら`PlayerDefeat(reason=turn_limit)`とする。king terminalをturn-limitで上書きしない。turn limitはApplication policy入力であり、コードへruntime値20を複製しない。
 - battle stateはversioned canonical projectionとSHA-256 checksumを持ち、phase、player turn、outcome／reason、board topology、full ordered repetition history、facility canonical state、territory ownership projection、authoritative RNG state、turn policyを含む。入力とcommand列が同じならfacts、各boundary state checksum、log checksumが一致し、ambient RNGとunordered outcome traversalを使用しない。
-- `AuthorizedStonePlacement`、`EndPlayerTurn`、enemy passはversioned canonical commandである。成功したstate-transition commandだけを既存`OrderedCommandLog`へ結果checksum付きでappendし、rejected commandはlogを変更しない。
+- `AuthorizedStonePlacement`、`EndPlayerTurn`、enemy passはexpected state checksumとexpected prior log checksumを持つversioned canonical commandである。成功したstate-transition commandだけを既存`OrderedCommandLog`へ結果checksum付きでappendし、rejected commandはlogを変更しない。異なるgame version／content hashのsession間でauthorized commandを流用できない。
 - public APIはGodot／UI型、filesystem、clock、processへ依存せず、ApplicationはDomain ruleを複製しない。新package／project referenceを追加しない。
 
 ## Validation
 
 - Domain testsでterritory deltaのinput order、black establishment、white／neutral change、canonical changed points、facility destruction後のremaining transition、stale／cross-snapshot rejectionを固定する。
 - Application testsでinitial state、複数black action、phase／actor／stale rejection、enemy placement／pass、occupied／suicide／repetition no-op、facility trample order、king win／loss、turn 19→20、turn 20 loss、terminal precedenceを固定する。
-- 同じinitial state、seed、metadata、ordered commandsを2回実行し、全facts、state checksum、log checksum一致を確認する。command順変更では分岐し、rejection前後はstate／log checksum不変とする。
+- 同じinitial state、seed、metadata、ordered commandsを2回実行し、各command boundaryの全fact projection、state checksum、log checksum一致を確認する。command順変更では分岐し、rejection前後はstate／log checksum不変、異なるcontent identityではstale session拒否とする。
 - Architecture testsでApplication→Domain境界、Godot／filesystem／ambient RNG非依存、raw board mutationのApplication重複なしを確認する。
 - `tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`を実行し、closeout前に3 commandを連続でもう1回実行する。
 - 実装担当とは別のCodexがroot `CODE_REVIEW.md`に従いfixed-HEAD reviewする。
