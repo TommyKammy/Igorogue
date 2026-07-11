@@ -17,7 +17,7 @@ updated: 2026-07-11
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | determinism implemented; board geometry in review | TASK-0002 + TASK-0003 tests |
+| Product Rules Kernel | determinism and board geometry implemented; groups/liberties active | TASK-0002 + TASK-0003 tests |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,13 +35,13 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0002 Deterministic RNG and Command Log]] was merged through PR #3 with green CI. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]] is the current authorized implementation task.
+[[TASK-0003 Board Coordinates and Orthogonal Neighbours]] was merged through PR #4 with green CI. [[TASK-0004 Stone Groups and Unique Liberty Sets]] is the current authorized implementation task.
 
 ## Next development sequence
 
 1. TASK-0002 deterministic RNG and command log — done
-2. TASK-0003 coordinates and neighbours — current
-3. TASK-0004 groups and liberties
+2. TASK-0003 coordinates and neighbours — done
+3. TASK-0004 groups and liberties — current
 4. TASK-0005 placement and capture
 5. TASK-0006 legality and terminal capture
 6. TASK-0007 king result

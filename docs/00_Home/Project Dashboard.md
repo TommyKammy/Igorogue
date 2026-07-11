@@ -8,11 +8,11 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap` and the TASK-0002 determinism foundation are complete. Gate 1 board Rules Kernel work is active.
+`M0 Repository Bootstrap`、TASK-0002 determinism、TASK-0003 board geometryは完了。Gate 1 board Rules Kernel workが継続中。
 
 ## Sprint goal
 
-Implement canonical 7×7 coordinates, stable indexing, orthogonal neighbours, and the accepted point-symmetric initial position in the shared Domain Rules Kernel.
+Implement same-color orthogonal groups and duplicate-free real-liberty sets in the shared Domain Rules Kernel.
 
 ## Health
 
@@ -44,7 +44,7 @@ Implement canonical 7×7 coordinates, stable indexing, orthogonal neighbours, an
 
 ## Next
 
-1. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
-2. [[TASK-0004 Stone Groups and Unique Liberty Sets]]
+1. [[TASK-0004 Stone Groups and Unique Liberty Sets]]
+2. [[TASK-0005 Hypothetical Placement and Capture Resolution]]
 3. FEAT-009 independent two-person sign-off
 4. A-6 style data/document synchronization checker

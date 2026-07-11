@@ -9,16 +9,14 @@ sprint: S0
 
 ## Goal
 
-Continue Gate 1 by implementing canonical board coordinates, stable indexing, orthogonal neighbours, and the accepted point-symmetric initial position.
+Continue Gate 1 by implementing same-color orthogonal groups and duplicate-free real-liberty sets.
 
 ## Ready
 
-- なし
+- [[TASK-0004 Stone Groups and Unique Liberty Sets]]
 
 ## In review
 
-- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
-  - implementation evidence complete; independent Codex review approved; CI pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -30,13 +28,14 @@ Continue Gate 1 by implementing canonical board coordinates, stable indexing, or
 - [[TASK-0001 Decide Engine and Repository]]
 - [[TASK-0020 Review Repository Bootstrap Runtime Evidence]]
 - [[TASK-0002 Deterministic RNG and Command Log]]
+- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
 
-## Next after TASK-0003
+## Next after TASK-0004
 
-- [[TASK-0004 Stone Groups and Unique Liberty Sets]]
+- [[TASK-0005 Hypothetical Placement and Capture Resolution]]
 
 ## Review questions
 
-- Are CanonicalPoint, InternalPoint, and canonical index conversions exact and reject out-of-range values?
-- Are orthogonal neighbours returned in canonical point order with no diagonals?
-- Does `standard_v0_2` satisfy role-aware reflection, connected three-stone king groups, and seven liberties per side?
+- Are groups connected only through orthogonal same-color stones, never diagonals or opposing colors?
+- Does each group expose every empty orthogonal neighbour exactly once in canonical point order?
+- Are multiple groups and their anchors returned in a stable deterministic order?

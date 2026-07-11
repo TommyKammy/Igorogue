@@ -1,12 +1,12 @@
 ---
 type: task
 id: TASK-0004
-status: blocked
+status: ready
 project: Igorogue
 milestone: M1
 priority: high
 dependencies: [TASK-0001]
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # TASK-0004 Stone Groups and Unique Liberty Sets
 
@@ -33,7 +33,7 @@ updated: 2026-07-10
 
 ## Execution log
 
-未着手。
+2026-07-11 — TASK-0003の独立review、green CI、PR #4の人間mergeを確認し、直列Gate 1の次タスクとして`ready`へ遷移。
 
 ## Evidence
 

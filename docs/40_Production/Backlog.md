@@ -23,8 +23,8 @@ updated: 2026-07-11
 
 ## M1 ordered queue
 
-- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]] — review／current
-- [[TASK-0004 Stone Groups and Unique Liberty Sets]]
+- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]] — done
+- [[TASK-0004 Stone Groups and Unique Liberty Sets]] — ready／current
 - [[TASK-0005 Hypothetical Placement and Capture Resolution]]
 - [[TASK-0006 Suicide Legality and Terminal Capture]]
 - [[TASK-0007 King Capture and Battle Result]]

@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0003
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: high
@@ -59,6 +59,7 @@ updated: 2026-07-11
 - `tests/Igorogue.Domain.Tests/InitialPositionFixtureTests.cs` — `game_data/balance/system.json`のboard sizeと`standard_v0_2`をDomain factoryへ入力し、COORD-10〜12のexact 6-stone set、同役割を保つ色交換点対称、中央空点、各色1王2護衛、3石連結、exact 7-liberty set、diagram row順を確認。
 - 読み取り専用implementation reviewで、非7盤の公開生成、未検証comparator、未承認ID文字種制約、Domain内constructor bypassを検出して修正。再確認後の判定は`APPROVE`、残存findingなし。
 - 独立Codex review — `origin/main...HEAD`の全14ファイルとAccepted仕様／runtime dataを照合し、findingなしで`APPROVE`。review側でもgovernance、67/67 test、2回同一simulator checksumを確認。
+- GitHub Actions run `29133200709` — PR #4 head `9ff11c168fd2bfaa4388b49363a9a0cd799905b9`で全3 job成功。人間判断でPR #4をmergeし、merge commit `700a56d4769a937444ab7b972879280aec639ae1`を確認。
 
 ## Known issues
 
