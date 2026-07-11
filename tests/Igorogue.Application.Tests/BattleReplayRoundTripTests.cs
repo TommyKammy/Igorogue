@@ -543,15 +543,16 @@ public sealed class BattleReplayRoundTripTests
     [Fact]
     public void LoaderRejectsAttemptCountAboveResourceLimitBeforeMappingEntries()
     {
-        var root = JsonNode.Parse(Save(GoldenDocument("CORE-INITIAL-01")))!.AsObject();
-        var attempts = root["attempts"]!.AsArray();
-        for (var index = 0; index <= BattleReplaySerializer.MaxAttempts; index++)
+        var json = new StringBuilder("{\"attempts\":[{\"duplicate\":1,\"duplicate\":2}");
+        for (var index = 1; index <= BattleReplaySerializer.MaxAttempts; index++)
         {
-            attempts.Add(new JsonObject());
+            json.Append(",{}");
         }
 
+        json.Append("]}");
+
         var exception = Assert.Throws<ReplayValidationException>(
-            () => Load(Encoding.UTF8.GetBytes(root.ToJsonString())));
+            () => Load(Encoding.UTF8.GetBytes(json.ToString())));
 
         Assert.Equal("replay_too_many_attempts", exception.ReasonId);
     }

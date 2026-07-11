@@ -90,6 +90,7 @@ public static class BattleReplaySerializer
                            MaxDepth = 64,
                        }))
             {
+                RejectAttemptCountBeforeMaterialization(parsed.RootElement);
                 RejectDuplicateProperties(parsed.RootElement, depth: 0);
             }
 
@@ -313,6 +314,26 @@ public static class BattleReplaySerializer
             foreach (var child in element.EnumerateArray())
             {
                 RejectDuplicateProperties(child, depth + 1);
+            }
+        }
+    }
+
+    private static void RejectAttemptCountBeforeMaterialization(JsonElement root)
+    {
+        if (root.ValueKind != JsonValueKind.Object)
+        {
+            return;
+        }
+
+        foreach (var property in root.EnumerateObject())
+        {
+            if (property.NameEquals("attempts") &&
+                property.Value.ValueKind == JsonValueKind.Array &&
+                property.Value.GetArrayLength() > MaxAttempts)
+            {
+                throw new ReplayValidationException(
+                    "replay_too_many_attempts",
+                    $"Replay document exceeds the {MaxAttempts} attempt limit.");
             }
         }
     }
