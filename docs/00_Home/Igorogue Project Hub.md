@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0023 Implement Facility Runtime Semantics]]のFAC-01〜09 facility runtime実装はgreen CIまで確認済み。人間mergeで閉じる。
+> [[TASK-0010 Headless Battle State Machine]]で、既承認のscripted placementから終局まで進む決定的Application境界を作る。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -56,8 +56,6 @@ cssclasses:
 ## Remaining decisions
 
 - ローカライズ対応範囲
-- [[DECISION-0002 Resolve Territory and Facility Event Order]]
-- [[DECISION-0003 Sequence Golden Replay After Battle State Machine]]
 
 ## 直近タスク
 
@@ -72,8 +70,11 @@ cssclasses:
 - [[TASK-0007 King Capture and Battle Result]] — done
 - [[TASK-0008 Territory Region Calculation]] — done
 - [[DECISION-0001 Insert Facility Runtime Task Before Golden Fixtures]] — resolved
-- [[TASK-0023 Implement Facility Runtime Semantics]] — review／current
-- [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0023 and DECISION-0003
+- [[TASK-0023 Implement Facility Runtime Semantics]] — done
+- [[DECISION-0002 Resolve Territory and Facility Event Order]] — resolved
+- [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] — resolved
+- [[TASK-0010 Headless Battle State Machine]] — ready／current
+- [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0010
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

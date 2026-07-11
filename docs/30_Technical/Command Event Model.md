@@ -136,6 +136,20 @@ stone_occupied
 - 領地再計算では領地事実をregion anchor順で発行した後、施設状態変化をCanonical point order、instance ID順で発行する。
 - 建設容量超過は建設時の`CommandRejected(reason=facility_capacity_full)`とテレメトリで表し、既存施設を自動停止しない。
 
+## 領地成立関連
+
+```text
+TerritoryEstablished(
+  source_actor,
+  changed_points
+)
+```
+
+- 一つのatomic resolutionにつき最大1件。
+- `changed_points`は非黒領地から黒領地へ変化した全交点をCanonical point orderで保持し、空ならeventを発行しない。
+- source actorが白でもownership deltaの診断factは発行できるが、普遍Momentum source候補になるのは黒actorだけ。
+- 領地事実と`TerritoryEstablished`を先に確定し、その後に`FacilityDisabled / FacilityActivated`を座標順、最後に将来の普遍領地`MomentumChanged`を発行する。
+
 
 ## 余勢関連
 

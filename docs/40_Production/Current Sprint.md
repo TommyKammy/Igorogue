@@ -9,12 +9,15 @@ sprint: S0
 
 ## Goal
 
-Implement deterministic facility runtime semantics.
+Implement the deterministic headless battle state machine.
+
+## Ready
+
+- [[TASK-0010 Headless Battle State Machine]]
+  - scripted authorized placement、turn boundary、terminal result、state／log checksum
 
 ## In review
 
-- [[TASK-0023 Implement Facility Runtime Semantics]]
-  - independent `CODE_REVIEW.md` approval, local validation, and green PR #10 CI complete; human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -32,15 +35,16 @@ Implement deterministic facility runtime semantics.
 - [[TASK-0006 Suicide Legality and Terminal Capture]]
 - [[TASK-0007 King Capture and Battle Result]]
 - [[TASK-0008 Territory Region Calculation]]
+- [[TASK-0023 Implement Facility Runtime Semantics]]
 
-## Next sequencing decision after TASK-0023
+## Next after TASK-0010
 
-- [[DECISION-0003 Sequence Golden Replay After Battle State Machine]]
-- [[TASK-0009 Golden Board Fixtures]] or [[TASK-0010 Headless Battle State Machine]]
-  - owner decision pending; neither task is selected while DECISION-0003 remains open
+- [[TASK-0009 Golden Board Fixtures]]
+- [[TASK-0011 Replay Round Trip Verification]]
+- order fixed by resolved [[DECISION-0003 Sequence Golden Replay After Battle State Machine]]
 
 ## Review questions
 
-- Are facility instances immutable, unique, canonically ordered, and never committed beneath stones?
-- Does only an accepted legal placement destroy the placement-point facility while rejected placement is a complete no-op?
-- Do neutralization, opponent control, restoration, capacity, over-capacity, and build limits match FAC-01〜09 without changing stone topology?
+- Does every accepted scripted placement use the shared Domain placement and facility-aware composite without duplicating rules?
+- Are rejection, terminal state, phase changes, RNG state, and command log deterministic exact no-ops or transitions as specified?
+- Is the selected `TerritoryEstablished -> FacilityDisabled / FacilityActivated` order stable and Momentum-free in M1?

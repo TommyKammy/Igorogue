@@ -127,6 +127,8 @@ and at least one point changed from non-black-territory to black-territory:
 - 自動黒石生成が条件を満たした場合も生成できる。
 - 敵白行動だけで黒領地が偶発的に成立しても生成しない。
 
+盤面差分は一つのatomic resolutionにつき最大1件の`TerritoryEstablished`へ正規化する。payloadはsource actorと、非黒領地から黒領地へ変化した全交点のCanonical point order列を持つ。複数regionまたは複数pointを含んでも普遍sourceの評価は1回だけである。
+
 ### Territory style bonus source: facility built
 
 地合い流`style_territory`だけが持つ追加source。
@@ -226,7 +228,7 @@ MomentumChanged(-1, spent_for_momentum_reach)
 → battle result check
 → capture and card triggers
 → territory recalculation
-→ TerritoryEstablished facts
+→ TerritoryEstablished fact? (at most one per atomic resolution)
 → facility state changes
 → MomentumChanged(+1, black_territory_established) if eligible
 → evaluate momentum approach draw

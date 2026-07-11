@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0023
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: high
@@ -90,6 +90,8 @@ Stone layerと独立したimmutableなfacility stateを共有pure Domain Rules K
 
 2026-07-11 — draft PR #10のGitHub Actions run `29147816243`でGovernance、Pure .NET build／tests／simulator smoke、Godot .NET headless smoke／Windows debug exportの全3 job成功を確認。`review`を維持し、人間判断のmergeだけを待つ。
 
+2026-07-11 — Project ownerがPR #10をmerge。merge commit `f34c89f4c443ce03d25964513a1e9613cdc9dd63`とpost-merge main GitHub Actions run `29149023851`の全3 job成功を確認し、`done`へ遷移。
+
 ## Evidence
 
 - implementation commit `87b370246828a363e5e141fa1f2f9e7754647090` — facility runtime production 15 files、Domain／Architecture test、共有FAC fixture adapter。Application、Content、`game_data/`、package／project reference、Godot assetの変更なし。
@@ -102,9 +104,9 @@ Stone layerと独立したimmutableなfacility stateを共有pure Domain Rules K
 - `ArchitectureBoundaryTests` — stone-only `TerritoryAnalyzer`署名を維持し、facility analyzerの明示入力、accepted-placement-only integrator、non-forgeable result／fact API、Godot非依存を確認。
 - independent fixed-HEAD review — commit `87b3702`を正本へ直接照合。初回LOW test gapを解消後、BLOCKER／HIGH／MEDIUM／LOW findingなし、独立validation green、clean worktreeで`APPROVE`。
 - GitHub Actions run `29147816243` — PR #10のGovernance、Pure .NET、Godot／Windows export全3 job成功。
+- PR #10 final head `5ae2364afb1b27f02081555f2cd4aa2c2e6f64a3`、merge commit `f34c89f4c443ce03d25964513a1e9613cdc9dd63`。
+- post-merge main GitHub Actions run `29149023851` — Governance `86535370909`、Pure .NET `86535387684`、Godot／export `86535426893`すべて成功。
 
 ## Known issues
 
-TASK-0023範囲の既知defectはなし。
-
-[[DECISION-0002 Resolve Territory and Facility Event Order]]と[[DECISION-0003 Sequence Golden Replay After Battle State Machine]]は後続統合をblockするが、本タスクのpure Domain facility runtime／FAC unit parityはblockしない。TASK-0010はfacility-aware composite seamを使用し、raw placement commitからfacility順を独自publishしてはならない。
+TASK-0023範囲の既知defectはなし。TASK-0010はfacility-aware composite seamを使用し、raw placement commitからfacility順を独自publishしてはならない。

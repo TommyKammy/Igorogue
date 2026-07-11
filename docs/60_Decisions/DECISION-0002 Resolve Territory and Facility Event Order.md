@@ -1,8 +1,8 @@
 ---
 type: decision-needed
 id: DECISION-0002
-status: open
-blocking: [TASK-0010]
+status: resolved
+blocking: []
 updated: 2026-07-11
 ---
 # DECISION-0002 Resolve Territory and Facility Event Order
@@ -24,6 +24,8 @@ updated: 2026-07-11
 
 [[TASK-0023 Implement Facility Runtime Semantics]]はfacility factsの内部順だけを固定し、`TerritoryEstablished`とMomentumを実装しない。TASK-0010は本decision解決まで`blocked`を維持する。
 
-## Owner decision
+## Resolution
 
-未決。
+2026-07-11 — Project ownerが推奨Option 2を選択した。石トポロジー変化後のglobal fact順を、`territory facts / TerritoryEstablished`、`FacilityDisabled / FacilityActivated`、将来の`MomentumChanged`の順へ統一する。
+
+`TerritoryEstablished`は一つのatomic resolutionにつき最大1件とし、source actorと「非黒領地から黒領地へ変化した全交点」のCanonical point order列を保持する。source actorが黒のときだけ、後続の普遍Momentum source候補となる。TASK-0010はこのfactと施設状態変化までを実装し、Momentum runtime自体はM3へ残す。

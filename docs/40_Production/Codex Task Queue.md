@@ -25,7 +25,7 @@ updated: 2026-07-11
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0023 Implement Facility Runtime Semantics]] (`review`; green CI, human merge pending).
+Current: [[TASK-0010 Headless Battle State Machine]] (`ready`).
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
@@ -35,11 +35,11 @@ Current: [[TASK-0023 Implement Facility Runtime Semantics]] (`review`; green CI,
 6. [[TASK-0007 King Capture and Battle Result]]
 7. [[TASK-0008 Territory Region Calculation]]
 8. [[TASK-0023 Implement Facility Runtime Semantics]]
-9. [[TASK-0009 Golden Board Fixtures]] — blocked pending TASK-0023 and DECISION-0003
-10. [[TASK-0010 Headless Battle State Machine]] — blocked pending TASK-0023 and DECISION-0002
-11. [[TASK-0011 Replay Round Trip Verification]]
+9. [[TASK-0010 Headless Battle State Machine]] — ready／current
+10. [[TASK-0009 Golden Board Fixtures]] — blocked pending TASK-0010
+11. [[TASK-0011 Replay Round Trip Verification]] — blocked pending TASK-0010 and TASK-0009
 
-Items 9 and 10 are not a selected post-TASK-0023 order. [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] must resolve which task starts next.
+[[DECISION-0003 Sequence Golden Replay After Battle State Machine]] resolved the post-TASK-0023 order as TASK-0010→TASK-0009→TASK-0011.
 
 ## Gate 2 — Core Duel
 

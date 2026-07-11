@@ -8,11 +8,11 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`からterritory-region calculationまでは実装・review・CI・merge済み。Gate 1 facility runtimeは実装・独立review・green CI済みで、人間mergeを待つ。
+`M0 Repository Bootstrap`からfacility runtimeまでは実装・review・CI・merge済み。Gate 1はheadless battle state machineへ進む。
 
 ## Sprint goal
 
-Implement deterministic facility runtime semantics in the shared Domain Rules Kernel.
+Implement a deterministic scripted headless battle state machine over the shared Domain Rules Kernel.
 
 ## Health
 
@@ -23,12 +23,12 @@ Implement deterministic facility runtime semantics in the shared Domain Rules Ke
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Facility runtime proven locally, independently approved, and green in PR #10 CI |
+| Validation | Yellow | Facility runtime merged with green post-merge CI; TASK-0010 ready |
 
 ## Blockers
 
-- TASK-0023 facility runtime awaits human merge.
-- TASK-0009 remains blocked by TASK-0023 and DECISION-0003; TASK-0010 remains blocked by TASK-0023 and DECISION-0002.
+- TASK-0009 awaits TASK-0010; TASK-0011 awaits TASK-0010 and TASK-0009.
+- FEAT-009 independent two-person paper sign-off remains human-only.
 
 ## Current evidence
 
@@ -53,7 +53,8 @@ Implement deterministic facility runtime semantics in the shared Domain Rules Ke
 
 ## Next
 
-1. Human review／merge [[TASK-0023 Implement Facility Runtime Semantics]]
-2. Resolve [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] before [[TASK-0009 Golden Board Fixtures]]
-3. FEAT-009 independent two-person sign-off
-4. A-6 style data/document synchronization checker
+1. Execute [[TASK-0010 Headless Battle State Machine]]
+2. Execute [[TASK-0009 Golden Board Fixtures]] after TASK-0010 merge
+3. Execute [[TASK-0011 Replay Round Trip Verification]] after TASK-0009 merge
+4. FEAT-009 independent two-person sign-off
+5. A-6 style data/document synchronization checker

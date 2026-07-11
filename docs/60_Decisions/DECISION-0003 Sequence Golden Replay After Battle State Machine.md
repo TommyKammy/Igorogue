@@ -1,8 +1,8 @@
 ---
 type: decision-needed
 id: DECISION-0003
-status: open
-blocking: [TASK-0009]
+status: resolved
+blocking: []
 updated: 2026-07-11
 ---
 # DECISION-0003 Sequence Golden Replay After Battle State Machine
@@ -24,6 +24,8 @@ updated: 2026-07-11
 
 TASK-0009を`blocked`に保ち、direct unit snapshotをgolden replayと呼ばない。TASK-0023は本decisionに依存しない。
 
-## Owner decision
+## Resolution
 
-未決。
+2026-07-11 — Accepted ruleを変更しない最小の運用判断としてOption 1を採用した。TASK-0023 merge後は[[TASK-0010 Headless Battle State Machine]]、[[TASK-0009 Golden Board Fixtures]]、[[TASK-0011 Replay Round Trip Verification]]の順で進める。
+
+TASK-0009のgolden replay acceptanceをdirect Domain snapshotへ縮小せず、TASK-0010が提供するordered command、turn-boundary checksum、terminal resultを利用する。保存・読込・round tripはTASK-0011に残す。
