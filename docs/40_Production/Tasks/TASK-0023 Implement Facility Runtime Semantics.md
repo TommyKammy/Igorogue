@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0023
-status: ready
+status: in_progress
 project: Igorogue
 milestone: M1
 priority: high
@@ -75,6 +75,8 @@ Stone layerと独立したimmutableなfacility stateを共有pure Domain Rules K
 ## Execution log
 
 2026-07-11 — TASK-0008の独立review、GitHub Actions run `29141650052`の全3 job成功、PR #9の人間merge `8a29a622f6f66ad0ed0d5048a2172e87b8a2424b`を確認。[[DECISION-0001 Insert Facility Runtime Task Before Golden Fixtures]]のsmallest safe operational resolutionにより、TASK-0008とTASK-0009の間へ挿入し`ready`へ遷移。
+
+2026-07-11 — Outcome、Non-goals、Allowed areas、Acceptance、Validationを再確認。`src/Igorogue.Domain/Facilities/`、accepted placementとの最小Domain seam、Domain／Architecture tests、本TASK Evidenceだけを変更対象として`in_progress`へ遷移。Momentum、Application、replay、Accepted仕様、`game_data/`、package／project reference、Godot assetは変更しない。
 
 ## Evidence
 
