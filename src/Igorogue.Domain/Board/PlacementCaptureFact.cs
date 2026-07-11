@@ -1,6 +1,6 @@
 namespace Igorogue.Domain.Board;
 
-public abstract class PlacementCaptureFact
+public abstract class PlacementCaptureFact : ICommittedPlacementFact
 {
     internal PlacementCaptureFact()
     {

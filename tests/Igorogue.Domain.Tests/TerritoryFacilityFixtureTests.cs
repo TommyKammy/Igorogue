@@ -1,13 +1,12 @@
-using System.Text.Json;
 using Igorogue.Domain.Board;
 
 namespace Igorogue.Domain.Tests;
 
 public sealed class TerritoryFacilityFixtureTests
 {
-    private static readonly BoardGeometry Geometry = BoardGeometry.Create(7);
+    private static readonly BoardGeometry Geometry = FacilityFixtureData.Geometry;
     private static readonly Lazy<IReadOnlyDictionary<string, FacilityFixture>> Fixtures =
-        new(LoadFixtures);
+        new(FacilityFixtureData.LoadFixtures);
 
     [Fact]
     public void CanonicalFacilityFixtureInventoryIsPresent()
@@ -15,6 +14,76 @@ public sealed class TerritoryFacilityFixtureTests
         Assert.Equal(
             Enumerable.Range(1, 9).Select(index => $"FAC-{index:00}"),
             Fixtures.Value.Keys.Order(StringComparer.Ordinal));
+    }
+
+    [Fact]
+    public void SharedAdapterRetainsRuntimeMetadataAndJsonEventOrder()
+    {
+        var placement = RequiredFixture("FAC-03");
+        var placedOver = Assert.Single(placement.Facilities);
+
+        Assert.Equal("legal friendly placement destroys the facility on its point", placement.Title);
+        Assert.Equal("place", placement.Operation);
+        Assert.Equal(StoneColor.Black, placement.Actor);
+        Assert.Equal(C(2, 2), placement.Point);
+        Assert.Equal("facility_03", placedOver.InstanceId);
+        Assert.Equal("development", placedOver.FacilityContentId);
+        Assert.Equal(StoneColor.Black, placedOver.OwnerColor);
+        Assert.Equal(C(2, 2), placedOver.Point);
+        Assert.Equal(1L, placedOver.BuildSequence);
+        Assert.Empty(placedOver.ExplicitDisableSources);
+        Assert.Equal(2L, placement.InitialNextBuildSequence);
+        Assert.True(placement.Expected.Legal);
+        Assert.Equal("legal", placement.Expected.Reason);
+        Assert.Equal(
+            new[]
+            {
+                "StonePlaced:black:2,2",
+                "FacilityDestroyed:facility_03:stone_occupied",
+            },
+            placement.Expected.Events);
+        Assert.Empty(placement.Expected.RemainingFacilities);
+        Assert.Equal(new[] { "facility_03" }, placement.Expected.DestroyedFacilities);
+        Assert.NotNull(placement.Expected.ResultBoard);
+
+        var transition = RequiredFixture("FAC-05");
+        Assert.Equal(2, transition.NextBoards.Count);
+        Assert.Equal(StoneColor.Black, transition.Expected.Owner);
+        Assert.Equal(7L, transition.Expected.BuildSequence);
+        Assert.Equal("active", transition.Expected.FacilityStates["facility_05"]);
+
+        var opponentTerritory = RequiredFixture("FAC-06");
+        Assert.Equal(StoneColor.Black, opponentTerritory.Expected.FacilityOwners["facility_06"]);
+        Assert.Equal(TerritoryOwner.White, opponentTerritory.Expected.Territory?.Owner);
+        Assert.Equal(1, opponentTerritory.Expected.Territory?.BasicIncome);
+        Assert.Equal(1, opponentTerritory.Expected.Territory?.ConstructionCapacity);
+
+        var overCapacity = RequiredFixture("FAC-07");
+        Assert.Equal(2, overCapacity.Expected.Territory?.InstalledCount);
+        Assert.True(overCapacity.Expected.Territory?.IsOverCapacity);
+
+        var build = RequiredFixture("FAC-09");
+        Assert.Equal("development", build.FacilityContentId);
+        Assert.True(build.Expected.TopologyUnchanged);
+        Assert.Equal(1L, build.InitialNextBuildSequence);
+    }
+
+    [Fact]
+    public void SharedAdapterCreatesPolicyFromCanonicalSystemData()
+    {
+        var policy = FacilityFixtureData.LoadRuntimePolicy();
+
+        Assert.Equal(3, policy.TerritoryIncomeDivisor);
+        Assert.Equal(5, policy.SlotCap);
+        Assert.Collection(
+            policy.CapacityBands,
+            band => Assert.Equal((1, 3, 1), (band.MinSize, band.MaxSize, band.Slots)),
+            band => Assert.Equal((4, 7, 2), (band.MinSize, band.MaxSize, band.Slots)),
+            band => Assert.Equal((8, 12, 3), (band.MinSize, band.MaxSize, band.Slots)),
+            band => Assert.Equal((13, 49, 4), (band.MinSize, band.MaxSize, band.Slots)));
+        Assert.Equal(1, policy.TypeLimits["default"]);
+        Assert.Equal(2, policy.TypeLimits["development"]);
+        Assert.Equal(2, policy.TypeLimits["furnace"]);
     }
 
     [Theory]
@@ -27,7 +96,7 @@ public sealed class TerritoryFacilityFixtureTests
     {
         var fixture = RequiredFixture(fixtureId);
         var queryPoint = Assert.IsType<CanonicalPoint>(fixture.TerritoryPoint);
-        var expected = Assert.IsType<ExpectedTerritory>(fixture.ExpectedTerritory);
+        var expected = Assert.IsType<FacilityFixtureTerritory>(fixture.ExpectedTerritory);
 
         Assert.All(fixture.FacilityPoints, point => Assert.True(fixture.Board.IsEmpty(point)));
         if (fixture.ActionPoint is not null)
@@ -149,166 +218,5 @@ public sealed class TerritoryFacilityFixtureTests
             ? fixture
             : throw new InvalidOperationException($"Missing facility fixture {fixtureId}.");
 
-    private static IReadOnlyDictionary<string, FacilityFixture> LoadFixtures()
-    {
-        var root = FindRepositoryRoot();
-        var path = Path.Combine(
-            root.FullName,
-            "game_data/fixtures/facility_intersection_fixtures.json");
-        using var stream = File.OpenRead(path);
-        using var document = JsonDocument.Parse(stream);
-
-        return document.RootElement
-            .EnumerateArray()
-            .Select(ParseFixture)
-            .ToDictionary(fixture => fixture.Id, StringComparer.Ordinal);
-    }
-
-    private static FacilityFixture ParseFixture(JsonElement element)
-    {
-        var id = element.GetProperty("id").GetString()
-            ?? throw new InvalidDataException("Facility fixture id cannot be null.");
-        var board = ParseBoard(element.GetProperty("board"), $"{id}/board");
-        var facilityPoints = element.GetProperty("facilities")
-            .EnumerateArray()
-            .Select(facility => ParsePoint(facility.GetProperty("point"), $"{id}/facilities"))
-            .OrderBy(Geometry.ToCanonicalIndex)
-            .ToArray();
-        var queries = element.TryGetProperty("queries", out var queryElement)
-            ? queryElement
-            : default;
-        var groupPoint = queries.ValueKind == JsonValueKind.Object &&
-            queries.TryGetProperty("group_point", out var groupPointElement)
-                ? ParsePoint(groupPointElement, $"{id}/queries/group_point")
-                : null;
-        var territoryPoint = queries.ValueKind == JsonValueKind.Object &&
-            queries.TryGetProperty("territory_point", out var territoryPointElement)
-                ? ParsePoint(territoryPointElement, $"{id}/queries/territory_point")
-                : element.TryGetProperty("point", out var actionTerritoryPoint)
-                    ? ParsePoint(actionTerritoryPoint, $"{id}/point")
-                    : null;
-        var actionPoint = element.TryGetProperty("point", out var actionPointElement)
-            ? ParsePoint(actionPointElement, $"{id}/point")
-            : null;
-        var expected = element.GetProperty("expected");
-        var expectedTerritory = expected.TryGetProperty("territory", out var expectedTerritoryElement)
-            ? new ExpectedTerritory(
-                ParseOwner(expectedTerritoryElement.GetProperty("owner").GetString()),
-                expectedTerritoryElement.GetProperty("size").GetInt32())
-            : null;
-        var expectedGroupLiberties = expected.TryGetProperty(
-                "group_liberties",
-                out var groupLibertyElement)
-            ? groupLibertyElement
-                .EnumerateArray()
-                .Select(point => ParsePoint(point, $"{id}/expected/group_liberties"))
-                .OrderBy(Geometry.ToCanonicalIndex)
-                .ToArray()
-            : [];
-        var nextBoards = element.TryGetProperty("next_boards", out var nextBoardElement)
-            ? nextBoardElement
-                .EnumerateArray()
-                .Select((rows, index) => ParseBoard(rows, $"{id}/next_boards[{index}]"))
-                .ToArray()
-            : [];
-
-        return new FacilityFixture(
-            id,
-            board,
-            facilityPoints,
-            groupPoint,
-            territoryPoint,
-            actionPoint,
-            expectedTerritory,
-            expectedGroupLiberties,
-            nextBoards);
-    }
-
-    private static BoardState ParseBoard(JsonElement rowsElement, string label)
-    {
-        var rows = rowsElement.EnumerateArray()
-            .Select(row => row.GetString()
-                ?? throw new InvalidDataException($"{label} row cannot be null."))
-            .ToArray();
-        if (rows.Length != Geometry.Size || rows.Any(row => row.Length != Geometry.Size))
-        {
-            throw new InvalidDataException($"{label} must be a 7x7 diagram.");
-        }
-
-        var stones = new List<BoardStone>();
-        for (var row = 0; row < rows.Length; row++)
-        {
-            var y = Geometry.CanonicalYFromDiagramRow(row);
-            for (var column = 0; column < rows[row].Length; column++)
-            {
-                var symbol = rows[row][column];
-                if (symbol == '.')
-                {
-                    continue;
-                }
-
-                var (color, isKing) = symbol switch
-                {
-                    'B' => (StoneColor.Black, false),
-                    'K' => (StoneColor.Black, true),
-                    'W' => (StoneColor.White, false),
-                    'Q' => (StoneColor.White, true),
-                    _ => throw new InvalidDataException($"{label} contains unknown symbol {symbol}."),
-                };
-                stones.Add(new BoardStone(color, isKing, C(column + 1, y)));
-            }
-        }
-
-        return BoardState.Create(Geometry, stones);
-    }
-
-    private static CanonicalPoint ParsePoint(JsonElement element, string label)
-    {
-        var coordinates = element.EnumerateArray().Select(value => value.GetInt32()).ToArray();
-        if (coordinates.Length != 2)
-        {
-            throw new InvalidDataException($"{label} must contain [x,y].");
-        }
-
-        return C(coordinates[0], coordinates[1]);
-    }
-
-    private static TerritoryOwner ParseOwner(string? owner) => owner switch
-    {
-        "black" => TerritoryOwner.Black,
-        "white" => TerritoryOwner.White,
-        "neutral" => TerritoryOwner.Neutral,
-        _ => throw new InvalidDataException($"Unknown territory owner {owner ?? "<null>"}."),
-    };
-
-    private static DirectoryInfo FindRepositoryRoot()
-    {
-        DirectoryInfo? directory = new(AppContext.BaseDirectory);
-        while (directory is not null)
-        {
-            if (File.Exists(Path.Combine(directory.FullName, "Igorogue.sln")))
-            {
-                return directory;
-            }
-
-            directory = directory.Parent;
-        }
-
-        throw new DirectoryNotFoundException("Could not find Igorogue.sln from test output path.");
-    }
-
     private static CanonicalPoint C(int x, int y) => Geometry.CreateCanonicalPoint(x, y);
-
-    private sealed record ExpectedTerritory(TerritoryOwner Owner, int Size);
-
-    private sealed record FacilityFixture(
-        string Id,
-        BoardState Board,
-        IReadOnlyList<CanonicalPoint> FacilityPoints,
-        CanonicalPoint? GroupPoint,
-        CanonicalPoint? TerritoryPoint,
-        CanonicalPoint? ActionPoint,
-        ExpectedTerritory? ExpectedTerritory,
-        IReadOnlyList<CanonicalPoint> ExpectedGroupLiberties,
-        IReadOnlyList<BoardState> NextBoards);
 }

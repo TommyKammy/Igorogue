@@ -4,6 +4,7 @@ using Igorogue.Application.Bootstrap;
 using Igorogue.Content;
 using Igorogue.Domain.Board;
 using Igorogue.Domain.Bootstrap;
+using Igorogue.Domain.Facilities;
 
 namespace Igorogue.Architecture.Tests;
 
@@ -79,6 +80,79 @@ public sealed class ArchitectureBoundaryTests
             analyze.GetParameters().Select(parameter => parameter.ParameterType));
         Assert.Empty(typeof(TerritoryRegion).GetConstructors());
         Assert.Empty(typeof(TerritoryAnalysis).GetConstructors());
+    }
+
+    [Fact]
+    public void FacilityRuntimeAnalysisRequiresAllExactSnapshotInputsExplicitly()
+    {
+        var analyze = Assert.Single(typeof(FacilityRuntimeAnalyzer).GetMethods(
+            BindingFlags.Public |
+            BindingFlags.Static |
+            BindingFlags.DeclaredOnly));
+
+        Assert.Equal(nameof(FacilityRuntimeAnalyzer.Analyze), analyze.Name);
+        Assert.Equal(typeof(FacilityRuntimeAnalysis), analyze.ReturnType);
+        Assert.Equal(
+            new[]
+            {
+                typeof(FacilityState),
+                typeof(TerritoryAnalysis),
+                typeof(FacilityRuntimePolicy),
+            },
+            analyze.GetParameters().Select(parameter => parameter.ParameterType));
+        Assert.Empty(typeof(FacilityState).GetConstructors());
+        Assert.Empty(typeof(FacilityRuntimeAnalysis).GetConstructors());
+    }
+
+    [Fact]
+    public void FacilityPlacementIntegrationAcceptsOnlyAnAcceptedPlacementCommit()
+    {
+        var apply = Assert.Single(typeof(FacilityPlacementIntegrator).GetMethods(
+            BindingFlags.Public |
+            BindingFlags.Static |
+            BindingFlags.DeclaredOnly));
+
+        Assert.Equal(nameof(FacilityPlacementIntegrator.Apply), apply.Name);
+        Assert.Equal(typeof(FacilityPlacementCommit), apply.ReturnType);
+        Assert.Equal(
+            new[] { typeof(FacilityState), typeof(LegalPlacementCommit) },
+            apply.GetParameters().Select(parameter => parameter.ParameterType));
+        Assert.Empty(typeof(FacilityPlacementCommit).GetConstructors());
+        Assert.DoesNotContain(
+            typeof(FacilityPlacementCommit).GetProperties(
+                BindingFlags.Public | BindingFlags.Instance),
+            property => property.PropertyType == typeof(LegalPlacementCommit));
+        Assert.True(typeof(ICommittedPlacementFact).IsAssignableFrom(
+            typeof(PlacementCaptureFact)));
+        Assert.True(typeof(ICommittedPlacementFact).IsAssignableFrom(
+            typeof(FacilityDestroyedFact)));
+        Assert.True(typeof(ICommittedPlacementFact).IsAssignableFrom(
+            typeof(StoneTopologyRegisteredFact)));
+        Assert.True(typeof(ICommittedPlacementFact).IsAssignableFrom(
+            typeof(KingCaptureEvaluatedFact)));
+    }
+
+    [Fact]
+    public void FacilityEvaluationsCommitsTransitionsAndFactsCannotBeForged()
+    {
+        var nonForgeableTypes = new[]
+        {
+            typeof(FacilityRuntimePolicy),
+            typeof(FacilityOperatingState),
+            typeof(FacilityRegionRuntimeAnalysis),
+            typeof(FacilityBuildEvaluation),
+            typeof(FacilityBuildCommit),
+            typeof(FacilityOperatingTransition),
+            typeof(FacilityFact),
+            typeof(FacilityBuiltFact),
+            typeof(FacilityActivatedFact),
+            typeof(FacilityDisabledFact),
+            typeof(FacilityDestroyedFact),
+            typeof(StoneTopologyRegisteredFact),
+            typeof(KingCaptureEvaluatedFact),
+        };
+
+        Assert.All(nonForgeableTypes, type => Assert.Empty(type.GetConstructors()));
     }
 
     [Fact]
