@@ -9,14 +9,16 @@ sprint: S0
 
 ## Goal
 
-Implement deterministic king-group capture results.
+Review and land deterministic king-group capture results.
 
 ## Ready
 
-- [[TASK-0007 King Capture and Battle Result]]
+- なし
 
 ## In review
 
+- [[TASK-0007 King Capture and Battle Result]]
+  - implementation evidence complete; independent review approved; CI and human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 

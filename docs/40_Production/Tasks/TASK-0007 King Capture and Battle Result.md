@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0007
-status: in_progress
+status: review
 project: Igorogue
 milestone: M1
 priority: high
@@ -49,6 +49,8 @@ updated: 2026-07-11
 
 2026-07-11 — package、project reference、lock、Application、Content、game_data、Accepted仕様、Godot assetは変更していない。正式event publish、`CaptureBatch`、終局時benefit suppression、expiry sweep、20-turn loss、battle state transition、UI／replayは後続taskへ維持した。
 
+2026-07-11 — commit `adc799e`を対象に、実装担当とは別のCodexが`CODE_REVIEW.md`に従って親commitとの差分をTASK、Rules Canon、Combat Resolution Order、FEAT-005、FEAT-011、ADR-0014、Architecture、Determinism and Replayへ再照合。全severityでfindingなし、独立governance／137 test／2回同一sim checksumを確認して`APPROVE`。`review`へ遷移し、CIと人間merge待ちとした。
+
 ## Evidence
 
 - `tools/dev/check` — exit 0。documentation、wikilink、content、既存fixture、governance checkが成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
@@ -58,6 +60,7 @@ updated: 2026-07-11
 - `tests/Igorogue.Domain.Tests/PlacementLegalityEvaluatorTests.cs` — 反復不合法な王石captureはaccepted candidateを持たず、`CommitLegalPlacement`が拒否し、履歴を変更しないことを確認。
 - `tests/Igorogue.Architecture.Tests/ArchitectureBoundaryTests.cs` — raw evaluatorがpublic Domain APIへ露出しないことを確認。
 - 読み取り専用API、determinism／spec、独立scope review — 初回MEDIUMの公開API findingを内部core化で修正。他のrule priority、両王石、commit順、決定論、後続scope境界にはP1／P2 findingなし。
+- 独立Codex closeout review — commit `adc799e`の親との差分を正本仕様へ直接照合し、BLOCKER／HIGH／MEDIUM／LOW findingなしで`APPROVE`。独立実行でもgovernance、137/137 test、warning 0／error 0、2回同一sim checksum、clean worktreeを確認。
 
 ## Known issues
 

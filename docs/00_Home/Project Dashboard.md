@@ -8,11 +8,11 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`からsuicide legality／battle-local repetitionまでは完了。Gate 1 board Rules Kernel workが継続中。
+`M0 Repository Bootstrap`からsuicide legality／battle-local repetitionまではmerge済み。king capture resultは実装と独立reviewを完了し、Gate 1のCI／人間merge待ち。
 
 ## Sprint goal
 
-Implement king-group capture results in the shared Domain Rules Kernel.
+Review and land king-group capture results in the shared Domain Rules Kernel.
 
 ## Health
 
@@ -23,11 +23,11 @@ Implement king-group capture results in the shared Domain Rules Kernel.
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Placement legality and KO-01〜KO-07 proven locally and in CI; king result active |
+| Validation | Yellow | Placement legality and KO-01〜KO-07 proven locally and in CI; king result implemented and independently approved, CI pending |
 
 ## Blockers
 
-- King-capture battle result is not implemented yet.
+- TASK-0007 CI and human merge are pending.
 
 ## Current evidence
 
@@ -46,6 +46,7 @@ Implement king-group capture results in the shared Domain Rules Kernel.
 - canonical `StoneTopologyKey` and immutable battle-local repetition history
 - suicide／terminal legality and KO-01〜KO-07 through the shared Rules Kernel
 - atomic legal commit binding for board, ordered facts, and next history
+- versioned king-capture result, shared pure evaluator, and legal-commit result binding
 
 ## Next
 
