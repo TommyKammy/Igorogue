@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0023
-status: in_progress
+status: review
 project: Igorogue
 milestone: M1
 priority: high
@@ -78,10 +78,30 @@ Stone layerと独立したimmutableなfacility stateを共有pure Domain Rules K
 
 2026-07-11 — Outcome、Non-goals、Allowed areas、Acceptance、Validationを再確認。`src/Igorogue.Domain/Facilities/`、accepted placementとの最小Domain seam、Domain／Architecture tests、本TASK Evidenceだけを変更対象として`in_progress`へ遷移。Momentum、Application、replay、Accepted仕様、`game_data/`、package／project reference、Godot assetは変更しない。
 
+2026-07-11 — immutable `FacilityInstance`／`FacilityState`、versioned canonical projection、typed `FacilityRuntimePolicy`、exact board／territoryへbindしたoperating／region analysisをpure Domainへ実装。explicit disable優先、point reassociation、region-local installed／type count、income／capacity／over-capacityをderived stateとし、filesystemとbalance hard-codeをDomainへ導入していない。
+
+2026-07-11 — ordered fail-closed build evaluation／commit、territory state transition、accepted `LegalPlacementCommit`専用のfacility-aware compositeを実装。placement compositeは`StonePlaced`→`GroupCaptured[]`→`FacilityDestroyed?`→`StoneTopologyRegistered`→king resultをtyped列へ固定し、破壊対象をplacement pointだけに限定、next sequenceとexact source objectsを保持する。
+
+2026-07-11 — canonical FAC fixture adapterを全metadata／expected fieldへ拡張し、FAC-01〜09をproduction runtime oracleへ移植。state／policy／analysis／build／placement／transition、split／merge、idempotency、duplicate、stone coexistence、immutable collection、foreign snapshot、sequence non-reuse、territory-control-lost countをDomain testで固定し、public seam／non-forgeabilityをArchitecture testで固定した。
+
+2026-07-11 — precommit独立reviewの唯一のLOW finding「territory-control-lost施設のinstalled／type count直接test不足」を追加回帰testで解消。再reviewはfinding 0、`APPROVE`。
+
+2026-07-11 — implementation commit `87b370246828a363e5e141fa1f2f9e7754647090`を、実装担当とは別のCodexがparent `e925d946ec82bd5e681873a298e0c760468706c7`からroot `CODE_REVIEW.md`に従い固定HEAD review。scope、全Acceptance、determinism、FAC parity、test oracleにfindingなし。独立check／test／sim smokeとclean worktreeを確認し`APPROVE`、`review`へ遷移。CIと人間merge待ち。
+
 ## Evidence
 
-未作成。
+- implementation commit `87b370246828a363e5e141fa1f2f9e7754647090` — facility runtime production 15 files、Domain／Architecture test、共有FAC fixture adapter。Application、Content、`game_data/`、package／project reference、Godot assetの変更なし。
+- `tools/dev/check`を実装後とcloseoutで実行 — 両方exit 0。documentation、wikilink、content、FAC-01〜09 checker、governance全成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
+- `tools/dev/test`を実装後とcloseoutで実行 — 両方exit 0。exact .NET SDK `8.0.422`、locked restore、Release build warning 0／error 0。最終Domain 181、Application 12、Architecture 10、合計203 test成功。
+- `tools/dev/sim-smoke`を実装後とcloseoutで実行 — 両方exit 0。同一`checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`、同一content hash、`files=7`。
+- `FacilityRuntimeFixtureTests` — canonical FAC-01〜09のinspect／place／transition／buildをproduction state、analysis、legality、commit、factへ照合。
+- `FacilityStateTests`、`FacilityRuntimePolicyTests`、`FacilityRuntimeAnalyzerTests` — canonical／immutable state、injected system policy、exact snapshot、explicit-first state、region metricsを確認。
+- `FacilityBuildEvaluatorTests`、`FacilityPlacementIntegratorTests`、`FacilityOperatingTransitionTests` — accepted validation order、illegal no-op、sequence非再利用、typed pre-trigger順、single topology observation、point-only destruction、復元禁止、split／merge、idempotency、canonical fact順を確認。
+- `ArchitectureBoundaryTests` — stone-only `TerritoryAnalyzer`署名を維持し、facility analyzerの明示入力、accepted-placement-only integrator、non-forgeable result／fact API、Godot非依存を確認。
+- independent fixed-HEAD review — commit `87b3702`を正本へ直接照合。初回LOW test gapを解消後、BLOCKER／HIGH／MEDIUM／LOW findingなし、独立validation green、clean worktreeで`APPROVE`。
 
 ## Known issues
+
+TASK-0023範囲の既知defectはなし。
 
 [[DECISION-0002 Resolve Territory and Facility Event Order]]と[[DECISION-0003 Sequence Golden Replay After Battle State Machine]]は後続統合をblockするが、本タスクのpure Domain facility runtime／FAC unit parityはblockしない。TASK-0010はfacility-aware composite seamを使用し、raw placement commitからfacility順を独自publishしてはならない。

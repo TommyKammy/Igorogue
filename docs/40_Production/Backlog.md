@@ -31,7 +31,7 @@ TASK-0009とTASK-0010の表示順はplaceholderであり、相対順とTASK-0023
 - [[TASK-0006 Suicide Legality and Terminal Capture]] — done
 - [[TASK-0007 King Capture and Battle Result]] — done
 - [[TASK-0008 Territory Region Calculation]] — done
-- [[TASK-0023 Implement Facility Runtime Semantics]] — ready／current
+- [[TASK-0023 Implement Facility Runtime Semantics]] — review／current
 - [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0023 and DECISION-0003
 - [[TASK-0010 Headless Battle State Machine]] — blocked／TASK-0023 and DECISION-0002
 - [[TASK-0011 Replay Round Trip Verification]]

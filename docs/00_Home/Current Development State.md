@@ -17,7 +17,7 @@ updated: 2026-07-11
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | determinism through territory calculation implemented and merged; facility runtime ready | TASK-0002 through TASK-0008 tests + PR #9 CI |
+| Product Rules Kernel | territory merged; facility runtime implemented and in review | TASK-0002 through TASK-0008 + TASK-0023 local/independent validation |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,7 +35,7 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0008 Territory Region Calculation]] was merged through PR #9 with green CI. [[DECISION-0001 Insert Facility Runtime Task Before Golden Fixtures]] resolved the missing dependency by inserting [[TASK-0023 Implement Facility Runtime Semantics]], which is the current authorized task. TASK-0009 remains blocked by TASK-0023 and [[DECISION-0003 Sequence Golden Replay After Battle State Machine]].
+[[TASK-0008 Territory Region Calculation]] was merged through PR #9 with green CI. [[TASK-0023 Implement Facility Runtime Semantics]] is implemented with FAC-01〜09 production parity, green local validation, and independent approval; it is the current task in review pending CI and human merge. TASK-0009 remains blocked by TASK-0023 and [[DECISION-0003 Sequence Golden Replay After Battle State Machine]].
 
 ## Next development sequence
 
@@ -48,7 +48,7 @@ TASK-0009とTASK-0010の番号はplaceholderであり、相対順とTASK-0023後
 5. TASK-0006 legality and terminal capture — done
 6. TASK-0007 king result — done
 7. TASK-0008 territory — done
-8. TASK-0023 facility runtime — current
+8. TASK-0023 facility runtime — review／current
 9. TASK-0009 golden fixtures — blocked／TASK-0023 and DECISION-0003
 10. TASK-0010 state machine — blocked／TASK-0023 and DECISION-0002
 11. TASK-0011 replay round trip

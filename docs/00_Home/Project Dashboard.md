@@ -8,7 +8,7 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`からterritory-region calculationまでは実装・review・CI・merge済み。Gate 1 facility runtime foundationへ進む。
+`M0 Repository Bootstrap`からterritory-region calculationまでは実装・review・CI・merge済み。Gate 1 facility runtimeは実装・独立review済みで、CIと人間mergeを待つ。
 
 ## Sprint goal
 
@@ -23,11 +23,11 @@ Implement deterministic facility runtime semantics in the shared Domain Rules Ke
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Territory calculation proven locally and in CI; facility runtime ready |
+| Validation | Yellow | Facility runtime proven locally and independently approved; CI pending |
 
 ## Blockers
 
-- TASK-0023 facility runtime is not implemented yet.
+- TASK-0023 facility runtime awaits CI and human merge.
 - TASK-0009 remains blocked by TASK-0023 and DECISION-0003; TASK-0010 remains blocked by TASK-0023 and DECISION-0002.
 
 ## Current evidence
@@ -49,10 +49,11 @@ Implement deterministic facility runtime semantics in the shared Domain Rules Ke
 - atomic legal commit binding for board, ordered facts, and next history
 - versioned king-capture result, shared pure evaluator, and legal-commit result binding
 - deterministic stone-layer territory regions, canonical ordering, and FAC projection tests
+- immutable facility state, injected runtime policy, FAC-01〜09 production parity, typed build／placement／transition facts
 
 ## Next
 
-1. [[TASK-0023 Implement Facility Runtime Semantics]]
+1. Review／CI／human merge [[TASK-0023 Implement Facility Runtime Semantics]]
 2. Resolve [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] before [[TASK-0009 Golden Board Fixtures]]
 3. FEAT-009 independent two-person sign-off
 4. A-6 style data/document synchronization checker

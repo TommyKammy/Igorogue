@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0008 Territory Region Calculation]]を完了し、[[TASK-0023 Implement Facility Runtime Semantics]]でFAC-01〜09のfacility-side runtimeを実装する。
+> [[TASK-0023 Implement Facility Runtime Semantics]]のFAC-01〜09 facility runtime実装をreview／CI／人間mergeで閉じる。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -72,7 +72,7 @@ cssclasses:
 - [[TASK-0007 King Capture and Battle Result]] — done
 - [[TASK-0008 Territory Region Calculation]] — done
 - [[DECISION-0001 Insert Facility Runtime Task Before Golden Fixtures]] — resolved
-- [[TASK-0023 Implement Facility Runtime Semantics]] — ready／current
+- [[TASK-0023 Implement Facility Runtime Semantics]] — review／current
 - [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0023 and DECISION-0003
 - FEAT-009 independent two-person paper sign-off
 

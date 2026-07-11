@@ -11,12 +11,10 @@ sprint: S0
 
 Implement deterministic facility runtime semantics.
 
-## Ready
-
-- [[TASK-0023 Implement Facility Runtime Semantics]]
-
 ## In review
 
+- [[TASK-0023 Implement Facility Runtime Semantics]]
+  - independent `CODE_REVIEW.md` approval and local validation complete; CI and human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
