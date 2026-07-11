@@ -8,11 +8,11 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`からheadless battle state machineまでは実装・review・CI・merge済み。Gate 1のFAC-08／09 true replayに必要なauthorized facility build commandは実装・独立review・local validation・green PR #12 CI済みで、人間mergeを待つ。
+`M0 Repository Bootstrap`からauthorized facility build commandまでは実装・review・CI・merge済み。Gate 1のversioned golden board evidenceは実装・validation済みでreview中。
 
 ## Sprint goal
 
-Integrate authorized facility build into the deterministic headless battle session without duplicating Domain rules.
+Implement deterministic golden board evidence without bypassing Application commands.
 
 ## Health
 
@@ -23,11 +23,11 @@ Integrate authorized facility build into the deterministic headless battle sessi
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | TASK-0010 post-merge main CI green; TASK-0024 238 tests、independent review、two closeout runs、PR #12 CI green |
+| Validation | Yellow | TASK-0009 19-case golden suite local validation green; independent review pending |
 
 ## Blockers
 
-- TASK-0009 awaits TASK-0024 and DECISION-0004 owner resolution; TASK-0011 awaits TASK-0009.
+- TASK-0011 awaits TASK-0009.
 - FEAT-009 independent two-person paper sign-off remains human-only.
 
 ## Current evidence
@@ -51,12 +51,12 @@ Integrate authorized facility build into the deterministic headless battle sessi
 - deterministic stone-layer territory regions, canonical ordering, and FAC projection tests
 - immutable facility state, injected runtime policy, FAC-01〜09 production parity, typed build／placement／transition facts
 - immutable headless battle state machine with canonical placement／turn／pass commands and merged PR #11 evidence
+- canonical authorized facility build command with merged PR #12 evidence
+- schema-v1 golden suite with 19 cases、35 boundaries、source hashes、ordered facts、exact no-op rejection evidence
 
 ## Next
 
-1. Implement／review／merge [[TASK-0024 Authorized Facility Build Battle Command]]
-2. Resolve [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] with the project owner
-3. Execute [[TASK-0009 Golden Board Fixtures]] after TASK-0024 merge and DECISION-0004 resolution
-4. Execute [[TASK-0011 Replay Round Trip Verification]] after TASK-0009 merge
-5. FEAT-009 independent two-person sign-off
-6. A-6 style data/document synchronization checker
+1. Review／merge [[TASK-0009 Golden Board Fixtures]]
+2. Execute [[TASK-0011 Replay Round Trip Verification]] after TASK-0009 merge
+3. FEAT-009 independent two-person sign-off
+4. A-6 style data/document synchronization checker

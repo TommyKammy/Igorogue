@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0024
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: high
@@ -85,6 +85,8 @@ updated: 2026-07-11
 
 2026-07-11 — draft PR #12のGitHub Actions run `29152311607`でGovernance、Pure .NET build／238 tests／simulator smoke、Godot .NET headless smoke／Windows debug exportの全3 job成功を確認。`review`を維持し、人間merge判断だけを待つ。
 
+2026-07-11 — PR #12の人間merge commit `acafc3215434fbafa3e2acbef19649ea9c0a66f4`とpost-merge main GitHub Actions run `29153064894`の全3 job成功を確認し、`done`へ遷移した。
+
 ## Evidence
 
 - TASK-0010 merge commit `d4ffd832f572fb46cbe2d29559032b30c68b2bb2`。
@@ -95,7 +97,9 @@ updated: 2026-07-11
 - independent fixed-HEAD review — commit `a326328`、BLOCKER／HIGH／MEDIUM／LOW findingなし、独立`check`／238 tests／sim smoke成功、`APPROVE`。
 - closeout validation 2 consecutive runs — 各runで`tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`がexit 0。各回238 tests、warning 0／error 0、同一sim checksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`。
 - GitHub Actions run `29152311607` — PR #12のGovernance `86543637495`、Pure .NET `86543658321`、Godot／export `86543699204`すべて成功。
+- PR #12 human merge commit `acafc3215434fbafa3e2acbef19649ea9c0a66f4`。
+- post-merge main GitHub Actions run `29153064894` — Governance `86545606363`、Pure .NET `86545627626`、Godot／export `86545675484`すべて成功。
 
 ## Known issues
 
-TASK-0024範囲の既知defectはなし。TASK-0009は本taskのCI／人間mergeとopen [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]]解決まで`blocked`を維持する。card cost、on-build effect、Momentum、enemy buildは本commandの上流または後続taskで扱う。
+TASK-0024範囲の既知defectはなし。card cost、on-build effect、Momentum、enemy buildは本commandの上流または後続taskで扱う。

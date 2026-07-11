@@ -2,7 +2,7 @@
 type: spec-fixture
 status: accepted
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-11
 id: ADR-0011-FIXTURES
 ---
 # ADR-0011 Board Repetition Fixtures
@@ -99,3 +99,14 @@ StoneTopologyRegistered
 ```
 
 敵候補生成では`CommandRejected`を発行せず、候補フィルターとして静かに除外する。
+
+## Golden evidence mapping
+
+[[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]]に従い、canonical JSONの全payload／期待値はDomain unit evidenceでexactに維持し、Application golden suiteは次に分ける。
+
+- KO-01／02／05／06はP0から正規Application commandを実行し、battle-local historyを再構築するtrue replay。
+- KO-03は`stone_kind=infiltrator`をsource metadataとして保持し、generic stone commandへ正規化する。exact stone-kind assertionはDomain evidence、reachable replayはKO-02 counterpartと同一checksumであることを固定する。
+- KO-04は施設、気、手札、妙手倍率のnon-stone payloadを`unmapped_non_topology_metadata`として保持する。未実装stateを実行済みとせず、exact payload／topology assertionはDomain evidence、reachable repetition no-opはApplication replayで固定する。
+- KO-07はtest adapterが共有Domain legalityで候補を順に評価し、反復候補をsilent filterする。選択された第2候補だけをApplicationへsubmitし、除外候補の`CommandRejected`をbattle facts／command logへ発行しない。
+
+Application replayへ過去board snapshotや履歴を直接注入しない。すべてのreachable historyはP0からaccepted commandで構築する。

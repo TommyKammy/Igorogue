@@ -1,0 +1,1615 @@
+{
+  "schema_id": "igorogue.golden-board-fixtures",
+  "schema_version": 1,
+  "fact_projection": "igorogue-battle-fact-v1",
+  "game_version": "v0.2.10",
+  "content_hash": "sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06",
+  "runtime_policy": {
+    "player_turn_limit": 20,
+    "territory_income_divisor": 3,
+    "capacity_bands": [
+      {
+        "min": 1,
+        "max": 3,
+        "slots": 1
+      },
+      {
+        "min": 4,
+        "max": 7,
+        "slots": 2
+      },
+      {
+        "min": 8,
+        "max": 12,
+        "slots": 3
+      },
+      {
+        "min": 13,
+        "max": 49,
+        "slots": 4
+      }
+    ],
+    "slot_cap": 5,
+    "type_limits": {
+      "default": 1,
+      "development": 2,
+      "furnace": 2
+    }
+  },
+  "source_catalogs": [
+    {
+      "id": "repetition",
+      "path": "game_data/fixtures/board_repetition_fixtures.json",
+      "sha256": "d9c4c5c4918bd00231c65f79e74925d6d7970c83c9ba6a6f80ac32ef789d4629"
+    },
+    {
+      "id": "facility",
+      "path": "game_data/fixtures/facility_intersection_fixtures.json",
+      "sha256": "da1257aeb83e4d816d4229a65a1cecea679d490f224cf1e7ce5fddbae9d886ae"
+    }
+  ],
+  "cases": [
+    {
+      "id": "CORE-INITIAL-01",
+      "title": "canonical v0.2 initial board",
+      "source": {
+        "kind": "unit_case",
+        "path": "tests/Igorogue.Domain.Tests/InitialPositionFixtureTests.cs",
+        "test_case": "Coord10StandardPositionMatchesDataAndRoleAwarePointSymmetry"
+      },
+      "evidence": {
+        "domain": "exact_unit_case",
+        "application": "initial_state",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          "....WQ.",
+          ".....W.",
+          ".......",
+          ".B.....",
+          ".KB....",
+          "......."
+        ],
+        "facilities": [],
+        "next_build_sequence": 1,
+        "state_checksum": "bb636a791003756015cf9a2cc1c2f3222b37a040af344de7685b417fa1b64c54",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "CORE-SIMULTANEOUS-CAPTURE-01",
+      "title": "two adjacent opponent groups are captured in canonical order",
+      "source": {
+        "kind": "unit_case",
+        "path": "tests/Igorogue.Domain.Tests/HypotheticalPlacementResolverTests.cs",
+        "test_case": "TwoOpponentGroupsAreRemovedTogetherInAnchorAndStoneOrder"
+      },
+      "evidence": {
+        "domain": "exact_unit_case",
+        "application": "canonical_replay",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".B.....",
+          "BWBB...",
+          "BW.WB..",
+          ".B.B...",
+          "......."
+        ],
+        "facilities": [],
+        "next_build_sequence": 1,
+        "state_checksum": "b444151da13bb936e56554f520c9c8cc1e3d809d9fa976368ab288fc5832ebe8",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.authorized_stone_placement",
+          "before_state_checksum": "b444151da13bb936e56554f520c9c8cc1e3d809d9fa976368ab288fc5832ebe8",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "04da9c8916bf1348ff998ce97fdc2eba859ff7cc794916143dd52e41c154eed4",
+            "log_checksum": "9f759318aef392108e9f9a6152272353fabe32faae81ac239a2a6352f9935d6e",
+            "ordered_facts": [
+              "stone_placed|color=black|point=3,3|king=0",
+              "group_captured|by=black|anchor=2,3|stones=2,3;2,4|king=0",
+              "group_captured|by=black|anchor=4,3|stones=4,3|king=0",
+              "topology_registered|cells=........B.B...B.B.B..B.BB....B...................|observations=2",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0",
+              "territory_established|actor=black|points=1,1;2,1;3,1;4,1;5,1;6,1;7,1;1,2;3,2;5,2;6,2;7,2;2,3;4,3;6,3;7,3;2,4;5,4;6,4;7,4;1,5;3,5;4,5;5,5;6,5;7,5;1,6;2,6;3,6;4,6;5,6;6,6;7,6;1,7;2,7;3,7;4,7;5,7;6,7;7,7"
+            ]
+          },
+          "actor": "black",
+          "point": [
+            3,
+            3
+          ],
+          "access_mode": "normal"
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "CORE-TERMINAL-CAPTURE-01",
+      "title": "terminal capture mode ends battle on white king capture",
+      "source": {
+        "kind": "unit_case",
+        "path": "tests/Igorogue.Application.Tests/HeadlessBattleStateMachineTests.cs",
+        "test_case": "WhiteKingCaptureEndsInVictoryAndSuppressesPostTerminalBenefits"
+      },
+      "evidence": {
+        "domain": "exact_unit_case",
+        "application": "canonical_replay",
+        "relation": "semantic_equivalent",
+        "limitations": [
+          "The linked unit case also includes a trampled facility; this replay isolates the same terminal king-capture ordering without that unrelated facility."
+        ]
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          "......K",
+          ".......",
+          ".......",
+          "..B....",
+          ".BQB...",
+          ".......",
+          "......."
+        ],
+        "facilities": [],
+        "next_build_sequence": 1,
+        "state_checksum": "5a55b58b16365a04caea76c986f388670b39187265e84eb9b1a0891347046fe0",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.authorized_stone_placement",
+          "before_state_checksum": "5a55b58b16365a04caea76c986f388670b39187265e84eb9b1a0891347046fe0",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "96bf8aa57a738b97a8427815afb4d2b0a86a624eb912860b0b4e2be1335273b8",
+            "log_checksum": "92c562af731f9d63fcebb925b80ec9f6079ca609eab03363cbd96a6edbd3ebb6",
+            "ordered_facts": [
+              "stone_placed|color=black|point=3,2|king=0",
+              "group_captured|by=black|anchor=3,3|stones=3,3|king=1",
+              "topology_registered|cells=.........B.....B.B.....B........................K|observations=2",
+              "king_capture_evaluated|outcome=win|reason=white_king_captured|black=0|white=1",
+              "battle_ended|outcome=win|reason=white_king_captured"
+            ]
+          },
+          "actor": "black",
+          "point": [
+            3,
+            2
+          ],
+          "access_mode": "terminal_capture"
+        }
+      ],
+      "terminal": {
+        "is_terminal": true,
+        "outcome": "win",
+        "end_reason": "white_king_captured"
+      }
+    },
+    {
+      "id": "KO-01",
+      "title": "initial ko capture is legal",
+      "source": {
+        "kind": "fixture",
+        "catalog": "repetition",
+        "fixture_id": "KO-01"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "canonical_replay",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          "..B....",
+          ".BWB...",
+          ".W.W...",
+          "..W...."
+        ],
+        "facilities": [],
+        "next_build_sequence": 1,
+        "state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "black",
+          "point": [
+            3,
+            2
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+            "log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+            "ordered_facts": [
+              "stone_placed|color=black|point=3,2|king=0",
+              "group_captured|by=black|anchor=3,3|stones=3,3|king=0",
+              "topology_registered|cells=..W.....WBW....B.B.....B.........................|observations=2",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0",
+              "territory_established|actor=black|points=3,3"
+            ]
+          }
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "KO-02",
+      "title": "immediate ko recapture repeats P0",
+      "source": {
+        "kind": "fixture",
+        "catalog": "repetition",
+        "fixture_id": "KO-02"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "canonical_replay",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          "..B....",
+          ".BWB...",
+          ".W.W...",
+          "..W...."
+        ],
+        "facilities": [],
+        "next_build_sequence": 1,
+        "state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "black",
+          "point": [
+            3,
+            2
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+            "log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+            "ordered_facts": [
+              "stone_placed|color=black|point=3,2|king=0",
+              "group_captured|by=black|anchor=3,3|stones=3,3|king=0",
+              "topology_registered|cells=..W.....WBW....B.B.....B.........................|observations=2",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0",
+              "territory_established|actor=black|points=3,3"
+            ]
+          }
+        },
+        {
+          "type": "battle.end_player_turn",
+          "before_state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+          "before_log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+            "log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+            "ordered_facts": []
+          }
+        },
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "white",
+          "point": [
+            3,
+            3
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+          "before_log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+          "expected": {
+            "accepted": false,
+            "reason": "stone_topology_repetition",
+            "state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+            "log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+            "ordered_facts": [
+              "command_rejected|reason=stone_topology_repetition"
+            ]
+          }
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "KO-03",
+      "title": "special stone kind does not bypass repetition",
+      "source": {
+        "kind": "fixture",
+        "catalog": "repetition",
+        "fixture_id": "KO-03"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "canonical_replay",
+        "relation": "metadata_normalized",
+        "limitations": [
+          "The source infiltrator label is retained below and normalized to the canonical basic-stone Application command because topology repetition has no stone-kind dimension."
+        ]
+      },
+      "source_normalization": {
+        "source_stone_kind": "infiltrator",
+        "source_non_topology_metadata": {},
+        "application_projection": "canonical_basic_stone_placement",
+        "omitted_fields": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          "..B....",
+          ".BWB...",
+          ".W.W...",
+          "..W...."
+        ],
+        "facilities": [],
+        "next_build_sequence": 1,
+        "state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "black",
+          "point": [
+            3,
+            2
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+            "log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+            "ordered_facts": [
+              "stone_placed|color=black|point=3,2|king=0",
+              "group_captured|by=black|anchor=3,3|stones=3,3|king=0",
+              "topology_registered|cells=..W.....WBW....B.B.....B.........................|observations=2",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0",
+              "territory_established|actor=black|points=3,3"
+            ]
+          }
+        },
+        {
+          "type": "battle.end_player_turn",
+          "before_state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+          "before_log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+            "log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+            "ordered_facts": []
+          }
+        },
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "white",
+          "point": [
+            3,
+            3
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+          "before_log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+          "expected": {
+            "accepted": false,
+            "reason": "stone_topology_repetition",
+            "state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+            "log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+            "ordered_facts": [
+              "command_rejected|reason=stone_topology_repetition"
+            ]
+          }
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "KO-04",
+      "title": "non-stone state changes do not bypass repetition",
+      "source": {
+        "kind": "fixture",
+        "catalog": "repetition",
+        "fixture_id": "KO-04"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "canonical_replay",
+        "relation": "metadata_normalized",
+        "limitations": [
+          "The source non-topology values are retained below and explicitly omitted from the canonical Application command because repetition identity is stone topology only."
+        ]
+      },
+      "source_normalization": {
+        "source_stone_kind": "basic",
+        "source_non_topology_metadata": {
+          "facility_destroyed": "facility_market_01",
+          "qi_delta": 3,
+          "cards_drawn": 2,
+          "brilliant_multiplier": 2.5
+        },
+        "application_projection": "canonical_basic_stone_placement",
+        "omitted_fields": [
+          "brilliant_multiplier",
+          "cards_drawn",
+          "facility_destroyed",
+          "qi_delta"
+        ]
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          "..B....",
+          ".BWB...",
+          ".W.W...",
+          "..W...."
+        ],
+        "facilities": [],
+        "next_build_sequence": 1,
+        "state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "black",
+          "point": [
+            3,
+            2
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+            "log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+            "ordered_facts": [
+              "stone_placed|color=black|point=3,2|king=0",
+              "group_captured|by=black|anchor=3,3|stones=3,3|king=0",
+              "topology_registered|cells=..W.....WBW....B.B.....B.........................|observations=2",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0",
+              "territory_established|actor=black|points=3,3"
+            ]
+          }
+        },
+        {
+          "type": "battle.end_player_turn",
+          "before_state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+          "before_log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+            "log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+            "ordered_facts": []
+          }
+        },
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "white",
+          "point": [
+            3,
+            3
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+          "before_log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+          "expected": {
+            "accepted": false,
+            "reason": "stone_topology_repetition",
+            "state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+            "log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+            "ordered_facts": [
+              "command_rejected|reason=stone_topology_repetition"
+            ]
+          }
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "KO-05",
+      "title": "recapture after a new elsewhere stone creates unseen topology",
+      "source": {
+        "kind": "fixture",
+        "catalog": "repetition",
+        "fixture_id": "KO-05"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "canonical_replay",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          "..B....",
+          ".BWB...",
+          ".W.W...",
+          "..W...."
+        ],
+        "facilities": [],
+        "next_build_sequence": 1,
+        "state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "black",
+          "point": [
+            3,
+            2
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+            "log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+            "ordered_facts": [
+              "stone_placed|color=black|point=3,2|king=0",
+              "group_captured|by=black|anchor=3,3|stones=3,3|king=0",
+              "topology_registered|cells=..W.....WBW....B.B.....B.........................|observations=2",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0",
+              "territory_established|actor=black|points=3,3"
+            ]
+          }
+        },
+        {
+          "type": "battle.end_player_turn",
+          "before_state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+          "before_log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+            "log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+            "ordered_facts": []
+          }
+        },
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "white",
+          "point": [
+            1,
+            2
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+          "before_log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "9ea85f825142dd9ce4f307cf4dfefbdb18489d733bb7536bd6d58fe3099b5a75",
+            "log_checksum": "19616e074f89b6e49e377043fd77d1724bb4295328d2fb4f5841ae78d9e03ba8",
+            "ordered_facts": [
+              "stone_placed|color=white|point=1,2|king=0",
+              "topology_registered|cells=..W....WWBW....B.B.....B.........................|observations=3",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0"
+            ]
+          }
+        },
+        {
+          "type": "battle.end_player_turn",
+          "before_state_checksum": "9ea85f825142dd9ce4f307cf4dfefbdb18489d733bb7536bd6d58fe3099b5a75",
+          "before_log_checksum": "19616e074f89b6e49e377043fd77d1724bb4295328d2fb4f5841ae78d9e03ba8",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "9d6d3efefe96870ed24da2f51e1eb50c1f581efa14887a7dba706f48079243e6",
+            "log_checksum": "45b9233450a5e67477658fa1aaa188cd9b89c06001afded29c27f8e158fff6cd",
+            "ordered_facts": []
+          }
+        },
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "white",
+          "point": [
+            3,
+            3
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "9d6d3efefe96870ed24da2f51e1eb50c1f581efa14887a7dba706f48079243e6",
+          "before_log_checksum": "45b9233450a5e67477658fa1aaa188cd9b89c06001afded29c27f8e158fff6cd",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "d93733502fa9c0699864e80c795ae45fe82c3ef81c9c23332d12f8bede109e04",
+            "log_checksum": "156f766e369ad5318b1d6b0371b6ae95698ead6794dedbe4e532b9fc2208cfbe",
+            "ordered_facts": [
+              "stone_placed|color=white|point=3,3|king=0",
+              "group_captured|by=white|anchor=3,2|stones=3,2|king=0",
+              "topology_registered|cells=..W....WW.W....BWB.....B.........................|observations=4",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0"
+            ]
+          }
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "KO-06",
+      "title": "return to an intermediate topology remains illegal",
+      "source": {
+        "kind": "fixture",
+        "catalog": "repetition",
+        "fixture_id": "KO-06"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "canonical_replay",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          "..B....",
+          ".BWB...",
+          ".W.W...",
+          "..W...."
+        ],
+        "facilities": [],
+        "next_build_sequence": 1,
+        "state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "black",
+          "point": [
+            3,
+            2
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+            "log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+            "ordered_facts": [
+              "stone_placed|color=black|point=3,2|king=0",
+              "group_captured|by=black|anchor=3,3|stones=3,3|king=0",
+              "topology_registered|cells=..W.....WBW....B.B.....B.........................|observations=2",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0",
+              "territory_established|actor=black|points=3,3"
+            ]
+          }
+        },
+        {
+          "type": "battle.end_player_turn",
+          "before_state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+          "before_log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+            "log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+            "ordered_facts": []
+          }
+        },
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "white",
+          "point": [
+            1,
+            2
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+          "before_log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "9ea85f825142dd9ce4f307cf4dfefbdb18489d733bb7536bd6d58fe3099b5a75",
+            "log_checksum": "19616e074f89b6e49e377043fd77d1724bb4295328d2fb4f5841ae78d9e03ba8",
+            "ordered_facts": [
+              "stone_placed|color=white|point=1,2|king=0",
+              "topology_registered|cells=..W....WWBW....B.B.....B.........................|observations=3",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0"
+            ]
+          }
+        },
+        {
+          "type": "battle.end_player_turn",
+          "before_state_checksum": "9ea85f825142dd9ce4f307cf4dfefbdb18489d733bb7536bd6d58fe3099b5a75",
+          "before_log_checksum": "19616e074f89b6e49e377043fd77d1724bb4295328d2fb4f5841ae78d9e03ba8",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "9d6d3efefe96870ed24da2f51e1eb50c1f581efa14887a7dba706f48079243e6",
+            "log_checksum": "45b9233450a5e67477658fa1aaa188cd9b89c06001afded29c27f8e158fff6cd",
+            "ordered_facts": []
+          }
+        },
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "white",
+          "point": [
+            3,
+            3
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "9d6d3efefe96870ed24da2f51e1eb50c1f581efa14887a7dba706f48079243e6",
+          "before_log_checksum": "45b9233450a5e67477658fa1aaa188cd9b89c06001afded29c27f8e158fff6cd",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "d93733502fa9c0699864e80c795ae45fe82c3ef81c9c23332d12f8bede109e04",
+            "log_checksum": "156f766e369ad5318b1d6b0371b6ae95698ead6794dedbe4e532b9fc2208cfbe",
+            "ordered_facts": [
+              "stone_placed|color=white|point=3,3|king=0",
+              "group_captured|by=white|anchor=3,2|stones=3,2|king=0",
+              "topology_registered|cells=..W....WW.W....BWB.....B.........................|observations=4",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0"
+            ]
+          }
+        },
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "black",
+          "point": [
+            3,
+            2
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "d93733502fa9c0699864e80c795ae45fe82c3ef81c9c23332d12f8bede109e04",
+          "before_log_checksum": "156f766e369ad5318b1d6b0371b6ae95698ead6794dedbe4e532b9fc2208cfbe",
+          "expected": {
+            "accepted": false,
+            "reason": "stone_topology_repetition",
+            "state_checksum": "d93733502fa9c0699864e80c795ae45fe82c3ef81c9c23332d12f8bede109e04",
+            "log_checksum": "156f766e369ad5318b1d6b0371b6ae95698ead6794dedbe4e532b9fc2208cfbe",
+            "ordered_facts": [
+              "command_rejected|reason=stone_topology_repetition"
+            ]
+          }
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "KO-07",
+      "title": "enemy candidate filtering skips a repeating primary point",
+      "source": {
+        "kind": "fixture",
+        "catalog": "repetition",
+        "fixture_id": "KO-07"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "adapter_plus_replay",
+        "relation": "silent_filter",
+        "limitations": [
+          "Candidate legality is evaluated silently through the Domain adapter; only the selected legal point is submitted as an Application command."
+        ]
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          "..B....",
+          ".BWB...",
+          ".W.W...",
+          "..W...."
+        ],
+        "facilities": [],
+        "next_build_sequence": 1,
+        "state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "black",
+          "point": [
+            3,
+            2
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "5451c3ee4cc2471a17c679155871a1fc032199f8296dcb42547679bae84d1817",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+            "log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+            "ordered_facts": [
+              "stone_placed|color=black|point=3,2|king=0",
+              "group_captured|by=black|anchor=3,3|stones=3,3|king=0",
+              "topology_registered|cells=..W.....WBW....B.B.....B.........................|observations=2",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0",
+              "territory_established|actor=black|points=3,3"
+            ]
+          }
+        },
+        {
+          "type": "battle.end_player_turn",
+          "before_state_checksum": "12bdcae0041fb613c8401c1dcdfa075a08beb3cf587b4b70e8887a2f1eb9c893",
+          "before_log_checksum": "48dba8a1bca6640182631a0fff4c343b9a3edbe44b7b21917317904596de5165",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+            "log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+            "ordered_facts": []
+          }
+        },
+        {
+          "type": "adapter.silent_candidate_filter",
+          "candidates": [
+            {
+              "point": [
+                3,
+                3
+              ],
+              "expected_legal": false,
+              "expected_reason": "stone_topology_repetition"
+            },
+            {
+              "point": [
+                1,
+                2
+              ],
+              "expected_legal": true,
+              "expected_reason": "legal"
+            }
+          ],
+          "expected_chosen_point": [
+            1,
+            2
+          ],
+          "before_state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+          "before_log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+          "expected": {
+            "accepted": null,
+            "reason": "silent_filter",
+            "state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+            "log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+            "ordered_facts": []
+          }
+        },
+        {
+          "type": "battle.authorized_stone_placement",
+          "actor": "white",
+          "point": [
+            1,
+            2
+          ],
+          "access_mode": "normal",
+          "before_state_checksum": "9c9a5cc81c56eec3d80b3b6fc5488bbf886b6eae1a6b6746e7fc20c60616300b",
+          "before_log_checksum": "7bc15ed0016662c4a74446cfd022e4b2e46dbb0b05ee5fefeb08c3e938898069",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "9ea85f825142dd9ce4f307cf4dfefbdb18489d733bb7536bd6d58fe3099b5a75",
+            "log_checksum": "19616e074f89b6e49e377043fd77d1724bb4295328d2fb4f5841ae78d9e03ba8",
+            "ordered_facts": [
+              "stone_placed|color=white|point=1,2|king=0",
+              "topology_registered|cells=..W....WWBW....B.B.....B.........................|observations=3",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0"
+            ]
+          }
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "FAC-01",
+      "title": "facility site remains a liberty and black territory point",
+      "source": {
+        "kind": "fixture",
+        "catalog": "facility",
+        "fixture_id": "FAC-01"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "initial_state",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          ".......",
+          ".B.....",
+          "B.B....",
+          ".B....."
+        ],
+        "facilities": [
+          {
+            "instance_id": "facility_01",
+            "content_id": "development",
+            "owner": "black",
+            "point": [
+              2,
+              2
+            ],
+            "build_sequence": 1,
+            "explicit_disable_sources": []
+          }
+        ],
+        "next_build_sequence": 2,
+        "state_checksum": "aed9912cb5c8cb79064ad9fac3de9a33a35022514f7d57410c931f4ef19c1f51",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "FAC-02",
+      "title": "facility does not split a three-point corner territory",
+      "source": {
+        "kind": "fixture",
+        "catalog": "facility",
+        "fixture_id": "FAC-02"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "initial_state",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          ".......",
+          "B......",
+          ".B.....",
+          "..B...."
+        ],
+        "facilities": [
+          {
+            "instance_id": "facility_02",
+            "content_id": "development",
+            "owner": "black",
+            "point": [
+              1,
+              1
+            ],
+            "build_sequence": 1,
+            "explicit_disable_sources": []
+          }
+        ],
+        "next_build_sequence": 2,
+        "state_checksum": "fba617fa1acea3ae00cd601fcadd9ce7414ccdb86e9d2452a9fee542001faaf3",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "FAC-03",
+      "title": "legal friendly placement destroys the facility on its point",
+      "source": {
+        "kind": "fixture",
+        "catalog": "facility",
+        "fixture_id": "FAC-03"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "canonical_replay",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          ".......",
+          ".B.....",
+          "B.B....",
+          ".B....."
+        ],
+        "facilities": [
+          {
+            "instance_id": "facility_03",
+            "content_id": "development",
+            "owner": "black",
+            "point": [
+              2,
+              2
+            ],
+            "build_sequence": 1,
+            "explicit_disable_sources": []
+          }
+        ],
+        "next_build_sequence": 2,
+        "state_checksum": "ee3ab32a7d703278b104c3c860b7d1a532fdbd2f1d5d48706c537dfa76ba001b",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.authorized_stone_placement",
+          "before_state_checksum": "ee3ab32a7d703278b104c3c860b7d1a532fdbd2f1d5d48706c537dfa76ba001b",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "4b52cbeb07df4670581964e1b87c4a6806e439c8bb8225da666ef285eb70c81d",
+            "log_checksum": "88211298995af8dc7ec3df42828c2fbd085d137be95123e69efbb1feda506dde",
+            "ordered_facts": [
+              "stone_placed|color=black|point=2,2|king=0",
+              "facility_destroyed|id=facility_03|reason=stone_occupied",
+              "topology_registered|cells=.B.....BBB.....B.................................|observations=2",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0"
+            ]
+          },
+          "actor": "black",
+          "point": [
+            2,
+            2
+          ],
+          "access_mode": "normal"
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "FAC-04",
+      "title": "illegal suicide placement does not destroy the facility",
+      "source": {
+        "kind": "fixture",
+        "catalog": "facility",
+        "fixture_id": "FAC-04"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "canonical_replay",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          ".......",
+          ".B.....",
+          "B.B....",
+          ".B....."
+        ],
+        "facilities": [
+          {
+            "instance_id": "facility_04",
+            "content_id": "development",
+            "owner": "black",
+            "point": [
+              2,
+              2
+            ],
+            "build_sequence": 1,
+            "explicit_disable_sources": []
+          }
+        ],
+        "next_build_sequence": 2,
+        "state_checksum": "aa8f812de0d72a4979d4de5438b50189a4fdf2f0e3eae5f8ffac78a565b0ae67",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.end_player_turn",
+          "before_state_checksum": "aa8f812de0d72a4979d4de5438b50189a4fdf2f0e3eae5f8ffac78a565b0ae67",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "c416f3e21eff22dfa4740df32656472ed59faaddebd33a371b0e60c81265b607",
+            "log_checksum": "165da524ecfb4990ef60d80db05670a38070acaa7fa2b2503afc7efdea917689",
+            "ordered_facts": []
+          }
+        },
+        {
+          "type": "battle.authorized_stone_placement",
+          "before_state_checksum": "c416f3e21eff22dfa4740df32656472ed59faaddebd33a371b0e60c81265b607",
+          "before_log_checksum": "165da524ecfb4990ef60d80db05670a38070acaa7fa2b2503afc7efdea917689",
+          "expected": {
+            "accepted": false,
+            "reason": "suicide",
+            "state_checksum": "c416f3e21eff22dfa4740df32656472ed59faaddebd33a371b0e60c81265b607",
+            "log_checksum": "165da524ecfb4990ef60d80db05670a38070acaa7fa2b2503afc7efdea917689",
+            "ordered_facts": [
+              "command_rejected|reason=suicide"
+            ]
+          },
+          "actor": "white",
+          "point": [
+            2,
+            2
+          ],
+          "access_mode": "normal"
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "FAC-05",
+      "title": "neutralization disables and restoration reactivates the same instance",
+      "source": {
+        "kind": "fixture",
+        "catalog": "facility",
+        "fixture_id": "FAC-05"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "canonical_replay",
+        "relation": "semantic_equivalent",
+        "limitations": [
+          "The exact direct-board disable and restore snapshots remain Domain evidence; this linked replay uses legal commands on a centered board to disable and reactivate the same facility_05 instance."
+        ]
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          "..B....",
+          ".B.B...",
+          ".......",
+          "......."
+        ],
+        "facilities": [
+          {
+            "instance_id": "facility_05",
+            "content_id": "development",
+            "owner": "black",
+            "point": [
+              1,
+              1
+            ],
+            "build_sequence": 7,
+            "explicit_disable_sources": []
+          }
+        ],
+        "next_build_sequence": 8,
+        "state_checksum": "07b61945ab9cdadb5bce718797b368b90a27ee6c748a2325adfa80511d2b0a34",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.end_player_turn",
+          "before_state_checksum": "07b61945ab9cdadb5bce718797b368b90a27ee6c748a2325adfa80511d2b0a34",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "e248f5b56c1b55aad13385285c5404b2731bb13a7972c8a05c195329f3b39c05",
+            "log_checksum": "76f5d9633d817607d1ca7af9304ff6bd5a47697bb6e65c697c3d8d59fe4e185b",
+            "ordered_facts": []
+          }
+        },
+        {
+          "type": "battle.authorized_stone_placement",
+          "before_state_checksum": "e248f5b56c1b55aad13385285c5404b2731bb13a7972c8a05c195329f3b39c05",
+          "before_log_checksum": "76f5d9633d817607d1ca7af9304ff6bd5a47697bb6e65c697c3d8d59fe4e185b",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "4828bc84b153c20e54de89f1870a94d197b725d96dd2b284a601921c929b7ba0",
+            "log_checksum": "41375ea563443f556a3d7b177eba105af40e56ed76c2fa8055b10ff0dff31e5b",
+            "ordered_facts": [
+              "stone_placed|color=white|point=3,3|king=0",
+              "topology_registered|cells=...............BWB.....B.........................|observations=2",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0",
+              "facility_disabled|id=facility_05|reason=territory_control_lost|region=1,1"
+            ]
+          },
+          "actor": "white",
+          "point": [
+            3,
+            3
+          ],
+          "access_mode": "normal"
+        },
+        {
+          "type": "battle.authorized_stone_placement",
+          "before_state_checksum": "4828bc84b153c20e54de89f1870a94d197b725d96dd2b284a601921c929b7ba0",
+          "before_log_checksum": "41375ea563443f556a3d7b177eba105af40e56ed76c2fa8055b10ff0dff31e5b",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "b287ce6e65a10e8679eeaf806217961c7bf5b2fbbcef6a88dc2445dc8ff29b04",
+            "log_checksum": "f9f9fcf07898b2b79e37d59fafba3a4127b68c50ee366eb8665bc44055904f1f",
+            "ordered_facts": [
+              "stone_placed|color=black|point=3,2|king=0",
+              "group_captured|by=black|anchor=3,3|stones=3,3|king=0",
+              "topology_registered|cells=.........B.....B.B.....B.........................|observations=3",
+              "king_capture_evaluated|outcome=ongoing|reason=none|black=0|white=0",
+              "territory_established|actor=black|points=1,1;2,1;3,1;4,1;5,1;6,1;7,1;1,2;2,2;4,2;5,2;6,2;7,2;1,3;3,3;5,3;6,3;7,3;1,4;2,4;4,4;5,4;6,4;7,4;1,5;2,5;3,5;4,5;5,5;6,5;7,5;1,6;2,6;3,6;4,6;5,6;6,6;7,6;1,7;2,7;3,7;4,7;5,7;6,7;7,7",
+              "facility_activated|id=facility_05|reason=territory_control_restored|region=1,1"
+            ]
+          },
+          "actor": "black",
+          "point": [
+            3,
+            2
+          ],
+          "access_mode": "normal"
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "FAC-06",
+      "title": "opponent territory disables without ownership transfer",
+      "source": {
+        "kind": "fixture",
+        "catalog": "facility",
+        "fixture_id": "FAC-06"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "initial_state",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          ".......",
+          ".W.....",
+          "W.W....",
+          ".W....."
+        ],
+        "facilities": [
+          {
+            "instance_id": "facility_06",
+            "content_id": "development",
+            "owner": "black",
+            "point": [
+              2,
+              2
+            ],
+            "build_sequence": 1,
+            "explicit_disable_sources": []
+          }
+        ],
+        "next_build_sequence": 2,
+        "state_checksum": "982f2aea2be87667b7278c265d77a0c76a25e75817838a69dedbf65602a1ef69",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "FAC-07",
+      "title": "existing facilities stay active after a split creates over-capacity",
+      "source": {
+        "kind": "fixture",
+        "catalog": "facility",
+        "fixture_id": "FAC-07"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "initial_state",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          "BBBBB..",
+          "..B.B..",
+          "..B.B..",
+          "..B.B.."
+        ],
+        "facilities": [
+          {
+            "instance_id": "facility_07a",
+            "content_id": "development",
+            "owner": "black",
+            "point": [
+              4,
+              1
+            ],
+            "build_sequence": 1,
+            "explicit_disable_sources": []
+          },
+          {
+            "instance_id": "facility_07b",
+            "content_id": "furnace",
+            "owner": "black",
+            "point": [
+              4,
+              2
+            ],
+            "build_sequence": 2,
+            "explicit_disable_sources": []
+          }
+        ],
+        "next_build_sequence": 3,
+        "state_checksum": "80edf978458adc0221b0e05b14dda517b6e5d908a1a4815b6a89d6267219c94b",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "FAC-08",
+      "title": "new build is rejected in an over-capacity region",
+      "source": {
+        "kind": "fixture",
+        "catalog": "facility",
+        "fixture_id": "FAC-08"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "canonical_replay",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          "BBBBB..",
+          "..B.B..",
+          "..B.B..",
+          "..B.B.."
+        ],
+        "facilities": [
+          {
+            "instance_id": "facility_08a",
+            "content_id": "development",
+            "owner": "black",
+            "point": [
+              4,
+              1
+            ],
+            "build_sequence": 1,
+            "explicit_disable_sources": []
+          },
+          {
+            "instance_id": "facility_08b",
+            "content_id": "furnace",
+            "owner": "black",
+            "point": [
+              4,
+              2
+            ],
+            "build_sequence": 2,
+            "explicit_disable_sources": []
+          }
+        ],
+        "next_build_sequence": 3,
+        "state_checksum": "bd8eb8c434ae7d7d3a98a4348cac0dca483558f2e23d802605c9b27e6d43f60e",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.authorized_facility_build",
+          "before_state_checksum": "bd8eb8c434ae7d7d3a98a4348cac0dca483558f2e23d802605c9b27e6d43f60e",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": false,
+            "reason": "facility_capacity_full",
+            "state_checksum": "bd8eb8c434ae7d7d3a98a4348cac0dca483558f2e23d802605c9b27e6d43f60e",
+            "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+            "ordered_facts": [
+              "command_rejected|reason=facility_capacity_full"
+            ]
+          },
+          "point": [
+            4,
+            3
+          ],
+          "facility_content_id": "market",
+          "instance_id": "candidate_facility"
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    },
+    {
+      "id": "FAC-09",
+      "title": "legal facility construction leaves stone topology unchanged",
+      "source": {
+        "kind": "fixture",
+        "catalog": "facility",
+        "fixture_id": "FAC-09"
+      },
+      "evidence": {
+        "domain": "exact_fixture",
+        "application": "canonical_replay",
+        "relation": "exact",
+        "limitations": []
+      },
+      "seed": 42,
+      "initial": {
+        "board": [
+          ".......",
+          ".......",
+          ".......",
+          ".......",
+          "B......",
+          ".B.....",
+          "..B...."
+        ],
+        "facilities": [],
+        "next_build_sequence": 1,
+        "state_checksum": "0cf78cbfc27f1e2cbe2fe8cea03861420cd9c4fa3559531d3b5fcdc1ab109520",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "steps": [
+        {
+          "type": "battle.authorized_facility_build",
+          "before_state_checksum": "0cf78cbfc27f1e2cbe2fe8cea03861420cd9c4fa3559531d3b5fcdc1ab109520",
+          "before_log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7",
+          "expected": {
+            "accepted": true,
+            "reason": "accepted",
+            "state_checksum": "e01a47e97e774d7106a0872591bc5666c05e707ea626344260da180f5e4d54d5",
+            "log_checksum": "d841c867aeb6fa9249543208f0ea206c5f70ceb9452e1567261bed8879d14b91",
+            "ordered_facts": [
+              "facility_built|id=generated_facility|content=development|owner=black|point=1,1|sequence=1",
+              "facility_activated|id=generated_facility|reason=built_in_controlled_territory|region=1,1"
+            ]
+          },
+          "point": [
+            1,
+            1
+          ],
+          "facility_content_id": "development",
+          "instance_id": "generated_facility"
+        }
+      ],
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      }
+    }
+  ]
+}

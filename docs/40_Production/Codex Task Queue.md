@@ -25,7 +25,7 @@ updated: 2026-07-11
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0024 Authorized Facility Build Battle Command]] (`review`; implementation、238 tests、independent approval、two closeout runs、green PR #12 CI complete).
+Current: [[TASK-0009 Golden Board Fixtures]] (`review`; 19-case local validation green, DECISION-0004 Option 1 resolved).
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
@@ -36,12 +36,12 @@ Current: [[TASK-0024 Authorized Facility Build Battle Command]] (`review`; imple
 7. [[TASK-0008 Territory Region Calculation]]
 8. [[TASK-0023 Implement Facility Runtime Semantics]]
 9. [[TASK-0010 Headless Battle State Machine]] — done
-10. [[TASK-0024 Authorized Facility Build Battle Command]] — review／current
-11. [[TASK-0009 Golden Board Fixtures]] — blocked pending TASK-0024 and DECISION-0004
+10. [[TASK-0024 Authorized Facility Build Battle Command]] — done
+11. [[TASK-0009 Golden Board Fixtures]] — review／current
 12. [[TASK-0011 Replay Round Trip Verification]] — blocked pending TASK-0009
 
 [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] resolved the post-TASK-0023 order as TASK-0010→TASK-0009→TASK-0011.
-The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] remains open for the exact-fixture evidence contract.
+The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] resolved the exact-fixture evidence contract as Option 1.
 
 ## Gate 2 — Core Duel
 

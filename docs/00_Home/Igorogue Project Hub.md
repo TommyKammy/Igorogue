@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0010 Headless Battle State Machine]]はPR #11でmerge済み。FAC-08／09 true replayに必要な[[TASK-0024 Authorized Facility Build Battle Command]]は実装・独立review・local validation・green PR #12 CI済みで、人間mergeを待つ。
+> [[TASK-0024 Authorized Facility Build Battle Command]]はPR #12でmerge済み。[[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] Option 1に従う[[TASK-0009 Golden Board Fixtures]]の19 casesを独立reviewする。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -74,9 +74,9 @@ cssclasses:
 - [[DECISION-0002 Resolve Territory and Facility Event Order]] — resolved
 - [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] — resolved
 - [[TASK-0010 Headless Battle State Machine]] — done
-- [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] — open／blocks TASK-0009
-- [[TASK-0024 Authorized Facility Build Battle Command]] — review／current
-- [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0024 and DECISION-0004
+- [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] — resolved／Option 1
+- [[TASK-0024 Authorized Facility Build Battle Command]] — done
+- [[TASK-0009 Golden Board Fixtures]] — review／current
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs
