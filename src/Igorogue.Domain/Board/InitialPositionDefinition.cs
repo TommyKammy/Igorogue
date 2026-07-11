@@ -122,12 +122,6 @@ public sealed record InitialStonePlacement
     public CanonicalPoint Point { get; }
 }
 
-public enum StoneColor : byte
-{
-    Black = 1,
-    White = 2,
-}
-
 public enum InitialStoneRole : byte
 {
     King = 1,
