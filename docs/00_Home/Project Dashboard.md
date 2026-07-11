@@ -2,17 +2,17 @@
 type: dashboard
 status: active
 project: Igorogue
-updated: 2026-07-11
+updated: 2026-07-12
 ---
 # Project Dashboard
 
 ## Phase
 
-`M0 Repository Bootstrap`からauthorized facility build commandまでは実装・review・CI・merge済み。Gate 1のversioned golden board evidenceは実装・validation済みでreview中。
+`M0 Repository Bootstrap`からversioned golden board evidenceまでは実装・review・CI・merge済み。Gate 1のreplay round tripを実装中。
 
 ## Sprint goal
 
-Implement deterministic golden board evidence without bypassing Application commands.
+Implement deterministic replay save／load／verification without bypassing Application commands.
 
 ## Health
 
@@ -23,11 +23,10 @@ Implement deterministic golden board evidence without bypassing Application comm
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | TASK-0009 validation／independent review／draft PR #13 initial CI green; human merge pending |
+| Validation | Yellow | TASK-0009 PR #13 merged and post-merge CI green; TASK-0011 in progress |
 
 ## Blockers
 
-- TASK-0011 awaits TASK-0009.
 - FEAT-009 independent two-person paper sign-off remains human-only.
 
 ## Current evidence
@@ -56,7 +55,6 @@ Implement deterministic golden board evidence without bypassing Application comm
 
 ## Next
 
-1. Review／merge [[TASK-0009 Golden Board Fixtures]]
-2. Execute [[TASK-0011 Replay Round Trip Verification]] after TASK-0009 merge
-3. FEAT-009 independent two-person sign-off
-4. A-6 style data/document synchronization checker
+1. Implement／review／merge [[TASK-0011 Replay Round Trip Verification]]
+2. FEAT-009 independent two-person sign-off
+3. A-6 style data/document synchronization checker

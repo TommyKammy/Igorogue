@@ -2,19 +2,22 @@
 type: sprint
 status: active
 project: Igorogue
-updated: 2026-07-11
+updated: 2026-07-12
 sprint: S0
 ---
 # Current Sprint
 
 ## Goal
 
-Implement versioned golden board evidence over the deterministic headless battle session.
+Implement deterministic replay save／load／verification over the versioned golden command suite.
+
+## In progress
+
+- [[TASK-0011 Replay Round Trip Verification]]
+  - 19 cases／34 Application attempts、accepted-only log chain、fail-closed schema／metadata／checksum verification
 
 ## In review
 
-- [[TASK-0009 Golden Board Fixtures]]
-  - KO-01〜07、FAC-01〜09、initial、simultaneous capture、terminal exception／validation・independent review・draft PR #13 initial CI green、人間merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -35,14 +38,14 @@ Implement versioned golden board evidence over the deterministic headless battle
 - [[TASK-0023 Implement Facility Runtime Semantics]]
 - [[TASK-0010 Headless Battle State Machine]]
 - [[TASK-0024 Authorized Facility Build Battle Command]]
+- [[TASK-0009 Golden Board Fixtures]]
 
-## Next after TASK-0009
+## Next after TASK-0011
 
-- [[TASK-0011 Replay Round Trip Verification]]
-- exact-fixture evidence contract fixed by resolved [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] Option 1
+- Gate 1 deterministic foundation completion audit
 
 ## Review questions
 
-- Does every true replay use only canonical Application commands without history／board injection?
-- Are source fixture hashes、evidence classifications、attempted inputs、accepted-only logs distinct and explicit?
-- Do rejected commands and KO-07 silent filtering preserve state／log exactly as specified?
+- Does every replay execute only typed Application commands from a canonical initial session?
+- Are submitted attempts and the accepted-only log chain distinct and integrity-checked?
+- Do schema、metadata、content、checksum、acceptance／reason、terminal drifts fail closed at the first mismatch?

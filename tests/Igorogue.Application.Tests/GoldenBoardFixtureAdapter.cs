@@ -157,10 +157,12 @@ internal static class GoldenBoardFixtureAdapter
                 catalog.GameVersion,
                 catalog.ContentHash,
                 fixture.Seed));
+        var initialSession = session;
         var initialStateChecksum = session.State.Checksum;
         var initialLogChecksum = session.CommandLog.CurrentChecksum;
 
         var boundaries = new List<GoldenActualBoundary>();
+        var commandResults = new List<BattleCommandResult>();
         for (var stepIndex = 0; stepIndex < fixture.Steps.Count; stepIndex++)
         {
             var step = fixture.Steps[stepIndex];
@@ -213,6 +215,7 @@ internal static class GoldenBoardFixtureAdapter
             var beforeCount = session.CommandLog.Entries.Count;
             var result = HeadlessBattleStateMachine.Execute(session, command);
             session = result.SessionAfter;
+            commandResults.Add(result);
             boundaries.Add(new GoldenActualBoundary(
                 result.Accepted,
                 result.ReasonId,
@@ -225,9 +228,11 @@ internal static class GoldenBoardFixtureAdapter
         }
 
         return new GoldenRunResult(
+            initialSession,
             session,
             initialStateChecksum,
             initialLogChecksum,
+            commandResults.ToArray(),
             boundaries.ToArray(),
             new GoldenTerminalResult
             {
@@ -480,9 +485,11 @@ internal static class GoldenBoardFixtureAdapter
 }
 
 internal sealed record GoldenRunResult(
+    HeadlessBattleSession InitialSession,
     HeadlessBattleSession FinalSession,
     string InitialStateChecksum,
     string InitialLogChecksum,
+    IReadOnlyList<BattleCommandResult> CommandResults,
     IReadOnlyList<GoldenActualBoundary> Boundaries,
     GoldenTerminalResult Terminal);
 

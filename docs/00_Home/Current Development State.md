@@ -2,7 +2,7 @@
 type: status
 status: active
 project: Igorogue
-updated: 2026-07-11
+updated: 2026-07-12
 ---
 # Current Development State
 
@@ -17,7 +17,7 @@ updated: 2026-07-11
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | headless battle and authorized facility build merged; golden fixture integration in review | TASK-0002〜0008、TASK-0023、TASK-0010、TASK-0024 merged; TASK-0009 review |
+| Product Rules Kernel | golden fixture integration merged; replay round trip in progress | TASK-0002〜0010、TASK-0023、TASK-0024 merged; TASK-0011 current |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,7 +35,7 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0024 Authorized Facility Build Battle Command]] was merged through PR #12 and post-merge main CI run `29153064894` is green. Project owner selected [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] Option 1, separating exact Domain fixture evidence from reachable Application replay evidence without changing player-visible rules. [[TASK-0009 Golden Board Fixtures]] implemented 19 versioned cases; fixed-HEAD independent review is approved and draft PR #13 initial CI is green. Human merge is pending.
+[[TASK-0009 Golden Board Fixtures]] was merged through PR #13 at `b2bfceca8bf88046aa100d563b62c6697d1afcd6`; post-merge main CI run `29155541603` is green. [[TASK-0011 Replay Round Trip Verification]] is current in progress and is limited to versioned Application replay save／load／verification over the merged golden command cases.
 
 ## Next development sequence
 
@@ -49,8 +49,8 @@ updated: 2026-07-11
 8. TASK-0023 facility runtime — done
 9. TASK-0010 state machine — done
 10. TASK-0024 authorized facility build command — done
-11. TASK-0009 golden fixtures — review／current
-12. TASK-0011 replay round trip — blocked／TASK-0009
+11. TASK-0009 golden fixtures — done
+12. TASK-0011 replay round trip — in progress／current
 
 ## Open human-only item
 
