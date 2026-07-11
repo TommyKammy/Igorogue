@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0010
-status: in_progress
+status: review
 project: Igorogue
 milestone: M1
 priority: high
@@ -80,12 +80,34 @@ updated: 2026-07-11
 
 2026-07-11 — Outcome、Non-goals、Allowed areas、Acceptance、Validationを再確認。Domainのtyped fact／territory delta／facility survivor transition、ApplicationのBattle state／session／command orchestration、Domain／Application／Architecture testsを変更対象として`in_progress`へ遷移。
 
+2026-07-11 — Domainへ共通`IBattleFact`、一atomic resolution最大1件の`TerritoryEstablishedFact`、placement commitへexact bindしたterritory delta、施設踏破後のsurvivor-only reassociationを実装。placement／facility factを一つのtyped ordered seamへ統合した。
+
+2026-07-11 — Applicationへimmutable `BattleState`／`HeadlessBattleSession`、already-authorized placement／player turn end／enemy pass command、phase／turn-limit／terminal orchestration、versioned canonical state checksum、accepted-command-only `OrderedCommandLog`接続を実装した。
+
+2026-07-11 — Domain／Application／Architecture testsでexact snapshot、pre-trigger順、選択済み`TerritoryEstablished -> facility transition`順、illegal exact no-op、king terminal suppression、20-turn boundary、state／log determinism、host isolationを固定した。
+
+2026-07-11 — adversarial auditで、異なるcontent identity間のauthorized command流用、terminal outcome／reason整合のApplication重複、same-Geometry stale territory snapshot、per-boundary fact比較不足を検出。fix commit `0911c30d8b586cfae4be6ef93a0b345b499a8d26`でexpected prior log checksum、Domain-owned `BattleEndReasonRules`、`FacilityPlacementCommit` exact binding、全boundary fact projectionへ修正し、`terminal_capture_required`、正式turn 20、king precedence、terminal facility trample testも追加した。
+
+2026-07-11 — fixed HEAD `0911c30d8b586cfae4be6ef93a0b345b499a8d26`を実装担当とは別のCodexがroot `CODE_REVIEW.md`に従って独立review。全Acceptance、scope、determinism、event order、facility survivor seam、testsを照合し、finding 0、`APPROVE`。独立check／test／sim smokeもgreen。
+
+2026-07-11 — closeout validationで`tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`を連続実行し全成功。実装範囲の既知defectなしとして`review`へ遷移し、CIと人間merge判断を待つ。
+
 ## Evidence
 
 - TASK-0023 merge commit `f34c89f4c443ce03d25964513a1e9613cdc9dd63`。
 - post-merge main GitHub Actions run `29149023851` — Governance job `86535370909`、Pure .NET job `86535387684`、Godot／export job `86535426893`すべて成功。
-- 実装Evidenceは未作成。
+- implementation commits — `4c7ad02904758feedd385bf15ccce1f05eb7e7f1` Domain ordered facts／delta／survivor transition、`a2c1309` Application state machine、`9c4cac6` architecture guards、`77d4eaa` integration tests、`0911c30d8b586cfae4be6ef93a0b345b499a8d26` adversarial review fixes。
+- `tools/dev/check`をpost-fixとcloseoutで実行 — 両方exit 0。documentation、wikilink、content、全design fixture／governance check成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
+- `tools/dev/test`をpost-fix独立reviewとcloseoutで実行 — 両方exit 0。exact .NET SDK `8.0.422`、locked restore、Release build warning 0／error 0。最終Domain 190、Application 27、Architecture 15、合計232 test成功。
+- `tools/dev/sim-smoke`をpost-fix独立reviewとcloseoutで実行 — 両方exit 0。同一`checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`、同一content hash、`files=7`。
+- `TerritoryDeltaResolverTests`／`FacilityOperatingTransitionTests` — exact placement source／result、same-Geometry stale rejection、white-source diagnostic delta、survivor-only transition、destroyed instance exclusionを確認。
+- `HeadlessBattleStateMachineTests` — initial binding、facility trample、selected event order、occupied／suicide／repetition／terminal grant rejection、phase／actor／state／session stale、king terminal、20-turn loss、terminal precedence、各boundary fact／state／log determinismを確認。
+- `ArchitectureBoundaryTests` — shared fact seam、non-forgeable delta／state result、accepted placement dependency、Application→Domain、Godot／filesystem／clock／process／ambient RNG非露出を確認。
+- independent fixed-HEAD review — `0911c30d8b586cfae4be6ef93a0b345b499a8d26`、BLOCKER／HIGH／MEDIUM／LOW findingなし、独立validation green、`APPROVE`。
+- Content、`game_data/`、package／project reference、Godot assetの変更なし。
 
 ## Known issues
+
+TASK-0010範囲の既知defectはなし。
 
 本タスクのauthorized placementはreal-liberty-onlyであり、仮呼吸点runtimeを実装しない。enemy AI、追加敵行動、カード資源、Momentum、正式golden replay／round tripは明示した後続taskの範囲である。

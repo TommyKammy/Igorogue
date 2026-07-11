@@ -17,7 +17,7 @@ updated: 2026-07-11
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | facility runtime merged; headless battle state machine ready | TASK-0002 through TASK-0023 merged; TASK-0010 DoR |
+| Product Rules Kernel | headless battle state machine implemented and in review | TASK-0002 through TASK-0023 merged; TASK-0010 local/independent validation |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,7 +35,7 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0023 Implement Facility Runtime Semantics]] was merged through PR #10 and its post-merge main CI is green. The project owner selected the FEAT-002 event order in [[DECISION-0002 Resolve Territory and Facility Event Order]], and [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] selected TASK-0010→TASK-0009→TASK-0011. [[TASK-0010 Headless Battle State Machine]] is the current task in progress.
+[[TASK-0023 Implement Facility Runtime Semantics]] was merged through PR #10 and its post-merge main CI is green. [[TASK-0010 Headless Battle State Machine]] now provides deterministic scripted placement、turn boundary、terminal result、state／log checksum with independent approval and is the current task in review. TASK-0009 remains blocked until TASK-0010 CI and human merge.
 
 ## Next development sequence
 
@@ -47,7 +47,7 @@ updated: 2026-07-11
 6. TASK-0007 king result — done
 7. TASK-0008 territory — done
 8. TASK-0023 facility runtime — done
-9. TASK-0010 state machine — in_progress／current
+9. TASK-0010 state machine — review／current
 10. TASK-0009 golden fixtures — blocked／TASK-0010
 11. TASK-0011 replay round trip — blocked／TASK-0010 and TASK-0009
 

@@ -25,7 +25,7 @@ updated: 2026-07-11
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0010 Headless Battle State Machine]] (`in_progress`).
+Current: [[TASK-0010 Headless Battle State Machine]] (`review`; local validation and independent approval complete, CI／human merge pending).
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
@@ -35,7 +35,7 @@ Current: [[TASK-0010 Headless Battle State Machine]] (`in_progress`).
 6. [[TASK-0007 King Capture and Battle Result]]
 7. [[TASK-0008 Territory Region Calculation]]
 8. [[TASK-0023 Implement Facility Runtime Semantics]]
-9. [[TASK-0010 Headless Battle State Machine]] — in_progress／current
+9. [[TASK-0010 Headless Battle State Machine]] — review／current
 10. [[TASK-0009 Golden Board Fixtures]] — blocked pending TASK-0010
 11. [[TASK-0011 Replay Round Trip Verification]] — blocked pending TASK-0010 and TASK-0009
 

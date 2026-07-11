@@ -11,13 +11,10 @@ sprint: S0
 
 Implement the deterministic headless battle state machine.
 
-## In progress
-
-- [[TASK-0010 Headless Battle State Machine]]
-  - scripted authorized placement、turn boundary、terminal result、state／log checksum
-
 ## In review
 
+- [[TASK-0010 Headless Battle State Machine]]
+  - implementation、232 tests、independent `CODE_REVIEW.md` approval complete; CI／human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 

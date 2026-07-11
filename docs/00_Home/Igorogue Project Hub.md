@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0010 Headless Battle State Machine]]で、既承認のscripted placementから終局まで進む決定的Application境界を作る。
+> [[TASK-0010 Headless Battle State Machine]]の決定的Application境界は実装・独立review済み。CI／人間mergeで閉じる。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -73,7 +73,7 @@ cssclasses:
 - [[TASK-0023 Implement Facility Runtime Semantics]] — done
 - [[DECISION-0002 Resolve Territory and Facility Event Order]] — resolved
 - [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] — resolved
-- [[TASK-0010 Headless Battle State Machine]] — in_progress／current
+- [[TASK-0010 Headless Battle State Machine]] — review／current
 - [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0010
 - FEAT-009 independent two-person paper sign-off
 
