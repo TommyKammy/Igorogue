@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0004 Stone Groups and Unique Liberty Sets]]を完了し、[[TASK-0005 Hypothetical Placement and Capture Resolution]]で仮配置と相手複数群の同時捕獲を実装する。
+> [[TASK-0005 Hypothetical Placement and Capture Resolution]]の仮配置と有効呼吸点ベース同時捕獲を検証し、Gate 1の次段へ進める。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -65,7 +65,7 @@ cssclasses:
 - [[TASK-0002 Deterministic RNG and Command Log]] — done
 - [[TASK-0003 Board Coordinates and Orthogonal Neighbours]] — done
 - [[TASK-0004 Stone Groups and Unique Liberty Sets]] — done
-- [[TASK-0005 Hypothetical Placement and Capture Resolution]] — ready／current
+- [[TASK-0005 Hypothetical Placement and Capture Resolution]] — review／current
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

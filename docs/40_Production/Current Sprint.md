@@ -9,14 +9,16 @@ sprint: S0
 
 ## Goal
 
-Implement hypothetical single-stone placement and stable simultaneous opponent-group capture.
+Review and land hypothetical single-stone placement and stable simultaneous opponent-group capture.
 
 ## Ready
 
-- [[TASK-0005 Hypothetical Placement and Capture Resolution]]
+- なし
 
 ## In review
 
+- [[TASK-0005 Hypothetical Placement and Capture Resolution]]
+  - implementation evidence complete; independent Codex review approved; CI pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -38,5 +40,5 @@ Implement hypothetical single-stone placement and stable simultaneous opponent-g
 ## Review questions
 
 - Is the placement applied to an immutable hypothetical board without changing the source board?
-- Are all adjacent opponent groups with zero resulting real liberties selected from one snapshot and removed simultaneously?
+- Are all adjacent opponent groups with zero effective liberties in the exact post-placement snapshot selected and removed simultaneously?
 - Are placement and captured-group facts returned in stable canonical order?

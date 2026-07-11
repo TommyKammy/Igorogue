@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0005
-status: in_progress
+status: review
 project: Igorogue
 milestone: M1
 priority: high
@@ -52,6 +52,8 @@ updated: 2026-07-11
 
 2026-07-11 — package、project reference、lock、Application、Content、game_data、Accepted仕様、Godot assetは変更していない。
 
+2026-07-11 — 独立Codex closeout reviewでコードfindingなし。review questionのcapture条件が実呼吸点と誤記されていたMEDIUM findingと、TASK／dashboardの状態driftであるLOW findingを修正し、再確認`APPROVE`を得て`review`へ遷移。
+
 ## Evidence
 
 - `tools/dev/check` — exit 0。documentation、wikilink、content、既存fixture、governance checkが成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
@@ -59,6 +61,7 @@ updated: 2026-07-11
 - `tools/dev/sim-smoke`を2回実行 — 両方exit 0。同一の`checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`、同一content hash、`files=7`を確認。
 - `tests/Igorogue.Domain.Tests/HypotheticalPlacementResolverTests.cs` — captureなし、occupied拒否、KO-01／KO-02 raw resolution、同一group dedupe、2群同時除去とfact順、effective補正の正負方向、非隣接group非掃引、self-zero候補、王石metadata、入力permutation、snapshot境界を確認。
 - 読み取り専用API reviewとarchitecture／scope review — 初回2 findingを修正後、両方findingなしで`APPROVE`。review側でもgovernance、100/100 test、warning 0／error 0を確認。
+- 独立Codex closeout review — `origin/main...HEAD`を正本仕様と直接照合し、コードfindingなし。governance、100/100 test、2回同一simulator checksumを独立確認。capture条件の文言と状態同期を文書follow-upとして指摘し、修正前`CHANGES REQUIRED`、修正後再確認はfindingなしで`APPROVE`。
 
 ## Known issues
 

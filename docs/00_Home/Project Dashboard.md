@@ -12,7 +12,7 @@ updated: 2026-07-11
 
 ## Sprint goal
 
-Implement hypothetical single-stone placement and stable simultaneous opponent-group capture in the shared Domain Rules Kernel.
+Review and land hypothetical single-stone placement and stable simultaneous opponent-group capture in the shared Domain Rules Kernel.
 
 ## Health
 
@@ -23,11 +23,11 @@ Implement hypothetical single-stone placement and stable simultaneous opponent-g
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Groups and real liberties tested; placement/capture active |
+| Validation | Yellow | Placement and effective-liberty capture tested; legality pending |
 
 ## Blockers
 
-- Hypothetical placement and simultaneous capture Rules Kernel is not implemented yet.
+- Suicide legality and stone-topology repetition Rules Kernel is not implemented yet.
 
 ## Current evidence
 
@@ -42,6 +42,7 @@ Implement hypothetical single-stone placement and stable simultaneous opponent-g
 - versioned RNG streams and ordered command-log checksums
 - canonical 7×7 geometry and standard initial-position invariants
 - deterministic same-color groups and duplicate-free real-liberty sets
+- immutable hypothetical placement and effective-liberty simultaneous capture
 
 ## Next
 
