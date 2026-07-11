@@ -73,7 +73,7 @@ cssclasses:
 - [[TASK-0023 Implement Facility Runtime Semantics]] — done
 - [[DECISION-0002 Resolve Territory and Facility Event Order]] — resolved
 - [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] — resolved
-- [[TASK-0010 Headless Battle State Machine]] — ready／current
+- [[TASK-0010 Headless Battle State Machine]] — in_progress／current
 - [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0010
 - FEAT-009 independent two-person paper sign-off
 

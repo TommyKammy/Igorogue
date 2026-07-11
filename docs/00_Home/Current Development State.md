@@ -35,7 +35,7 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0023 Implement Facility Runtime Semantics]] was merged through PR #10 and its post-merge main CI is green. The project owner selected the FEAT-002 event order in [[DECISION-0002 Resolve Territory and Facility Event Order]], and [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] selected TASK-0010→TASK-0009→TASK-0011. [[TASK-0010 Headless Battle State Machine]] is the current ready task.
+[[TASK-0023 Implement Facility Runtime Semantics]] was merged through PR #10 and its post-merge main CI is green. The project owner selected the FEAT-002 event order in [[DECISION-0002 Resolve Territory and Facility Event Order]], and [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] selected TASK-0010→TASK-0009→TASK-0011. [[TASK-0010 Headless Battle State Machine]] is the current task in progress.
 
 ## Next development sequence
 
@@ -47,7 +47,7 @@ updated: 2026-07-11
 6. TASK-0007 king result — done
 7. TASK-0008 territory — done
 8. TASK-0023 facility runtime — done
-9. TASK-0010 state machine — ready／current
+9. TASK-0010 state machine — in_progress／current
 10. TASK-0009 golden fixtures — blocked／TASK-0010
 11. TASK-0011 replay round trip — blocked／TASK-0010 and TASK-0009
 

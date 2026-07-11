@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0010
-status: ready
+status: in_progress
 project: Igorogue
 milestone: M1
 priority: high
@@ -77,6 +77,8 @@ updated: 2026-07-11
 2026-07-11 — Project ownerが[[DECISION-0002 Resolve Territory and Facility Event Order]]の推奨Option 2を選択。[[DECISION-0003 Sequence Golden Replay After Battle State Machine]]はruleを変更しないOption 1で閉じ、TASK-0010→TASK-0009→TASK-0011へ並べ替えた。
 
 2026-07-11 — Outcome、Non-goals、Allowed areas、Acceptance、Validationを具体化。M1のscripted placement state machineへ限定し、Momentum、カード、enemy AI、仮呼吸点、反攻、golden replayを後続taskへ残して`ready`へ遷移。
+
+2026-07-11 — Outcome、Non-goals、Allowed areas、Acceptance、Validationを再確認。Domainのtyped fact／territory delta／facility survivor transition、ApplicationのBattle state／session／command orchestration、Domain／Application／Architecture testsを変更対象として`in_progress`へ遷移。
 
 ## Evidence
 

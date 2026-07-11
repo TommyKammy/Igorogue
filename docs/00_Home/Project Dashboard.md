@@ -23,7 +23,7 @@ Implement a deterministic scripted headless battle state machine over the shared
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Facility runtime merged with green post-merge CI; TASK-0010 ready |
+| Validation | Yellow | Facility runtime merged with green post-merge CI; TASK-0010 in progress |
 
 ## Blockers
 

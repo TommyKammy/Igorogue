@@ -11,7 +11,7 @@ sprint: S0
 
 Implement the deterministic headless battle state machine.
 
-## Ready
+## In progress
 
 - [[TASK-0010 Headless Battle State Machine]]
   - scripted authorized placement、turn boundary、terminal result、state／log checksum
