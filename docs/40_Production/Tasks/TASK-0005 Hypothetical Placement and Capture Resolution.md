@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0005
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: high
@@ -62,6 +62,7 @@ updated: 2026-07-11
 - `tests/Igorogue.Domain.Tests/HypotheticalPlacementResolverTests.cs` — captureなし、occupied拒否、KO-01／KO-02 raw resolution、同一group dedupe、2群同時除去とfact順、effective補正の正負方向、非隣接group非掃引、self-zero候補、王石metadata、入力permutation、snapshot境界を確認。
 - 読み取り専用API reviewとarchitecture／scope review — 初回2 findingを修正後、両方findingなしで`APPROVE`。review側でもgovernance、100/100 test、warning 0／error 0を確認。
 - 独立Codex closeout review — `origin/main...HEAD`を正本仕様と直接照合し、コードfindingなし。governance、100/100 test、2回同一simulator checksumを独立確認。capture条件の文言と状態同期を文書follow-upとして指摘し、修正前`CHANGES REQUIRED`、修正後再確認はfindingなしで`APPROVE`。
+- GitHub Actions run `29136106002` — PR #6 head `9c8fd7e3db23a46cdcded746d41bf557da450fbc`で全3 job成功。人間判断でPR #6をmergeし、merge commit `025ccb6ca0a153b1d47c787dadbe97d0b1fd84a0`を確認。
 
 ## Known issues
 

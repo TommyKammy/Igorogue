@@ -9,16 +9,14 @@ sprint: S0
 
 ## Goal
 
-Review and land hypothetical single-stone placement and stable simultaneous opponent-group capture.
+Implement suicide legality, terminal-capture permission, and battle-local stone-topology repetition.
 
 ## Ready
 
-- なし
+- [[TASK-0006 Suicide Legality and Terminal Capture]]
 
 ## In review
 
-- [[TASK-0005 Hypothetical Placement and Capture Resolution]]
-  - implementation evidence complete; independent Codex review approved; CI pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -32,13 +30,14 @@ Review and land hypothetical single-stone placement and stable simultaneous oppo
 - [[TASK-0002 Deterministic RNG and Command Log]]
 - [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
 - [[TASK-0004 Stone Groups and Unique Liberty Sets]]
+- [[TASK-0005 Hypothetical Placement and Capture Resolution]]
 
-## Next after TASK-0005
+## Next after TASK-0006
 
-- [[TASK-0006 Suicide Legality and Terminal Capture]]
+- [[TASK-0007 King Capture and Battle Result]]
 
 ## Review questions
 
-- Is the placement applied to an immutable hypothetical board without changing the source board?
-- Are all adjacent opponent groups with zero effective liberties in the exact post-placement snapshot selected and removed simultaneously?
-- Are placement and captured-group facts returned in stable canonical order?
+- Does capture-created liberty make the placed group legal while zero effective liberty without capture is rejected as suicide?
+- Does terminal permission apply only to an immediate opponent-group capture and never bypass suicide or repetition?
+- Are `StoneTopologyKey` and ordered history canonical, and do rejected placements leave board, facts, history, and RNG untouched?

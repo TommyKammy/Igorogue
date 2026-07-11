@@ -8,11 +8,11 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`、determinism、board geometry、groups/libertiesは完了。Gate 1 board Rules Kernel workが継続中。
+`M0 Repository Bootstrap`からhypothetical placement／captureまでは完了。Gate 1 board Rules Kernel workが継続中。
 
 ## Sprint goal
 
-Review and land hypothetical single-stone placement and stable simultaneous opponent-group capture in the shared Domain Rules Kernel.
+Implement suicide legality, terminal-capture permission, and battle-local stone-topology repetition in the shared Domain Rules Kernel.
 
 ## Health
 
@@ -23,7 +23,7 @@ Review and land hypothetical single-stone placement and stable simultaneous oppo
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Placement and effective-liberty capture tested; legality pending |
+| Validation | Yellow | Placement and effective-liberty capture tested; legality active |
 
 ## Blockers
 
@@ -46,7 +46,7 @@ Review and land hypothetical single-stone placement and stable simultaneous oppo
 
 ## Next
 
-1. [[TASK-0005 Hypothetical Placement and Capture Resolution]]
-2. [[TASK-0006 Suicide Legality and Terminal Capture]]
+1. [[TASK-0006 Suicide Legality and Terminal Capture]]
+2. [[TASK-0007 King Capture and Battle Result]]
 3. FEAT-009 independent two-person sign-off
 4. A-6 style data/document synchronization checker
