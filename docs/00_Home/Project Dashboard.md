@@ -8,7 +8,7 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`からfacility runtimeまでは実装・review・CI・merge済み。Gate 1 headless battle state machineは実装・独立review・local validation済みで、CI／人間mergeを待つ。
+`M0 Repository Bootstrap`からfacility runtimeまでは実装・review・CI・merge済み。Gate 1 headless battle state machineは実装・独立review・local validation・green PR #11 CI済みで、人間mergeを待つ。
 
 ## Sprint goal
 
@@ -23,11 +23,11 @@ Implement a deterministic scripted headless battle state machine over the shared
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | TASK-0010 local 232 tests and independent review green; CI pending |
+| Validation | Yellow | TASK-0010 local 232 tests、independent review、PR #11 CI green; human merge pending |
 
 ## Blockers
 
-- TASK-0009 awaits TASK-0010 CI／human merge; TASK-0011 awaits TASK-0010 and TASK-0009.
+- TASK-0009 awaits TASK-0010 human merge; TASK-0011 awaits TASK-0010 and TASK-0009.
 - FEAT-009 independent two-person paper sign-off remains human-only.
 
 ## Current evidence
@@ -53,7 +53,7 @@ Implement a deterministic scripted headless battle state machine over the shared
 
 ## Next
 
-1. Review CI and human-merge [[TASK-0010 Headless Battle State Machine]]
+1. Human-review／merge [[TASK-0010 Headless Battle State Machine]]
 2. Execute [[TASK-0009 Golden Board Fixtures]] after TASK-0010 merge
 3. Execute [[TASK-0011 Replay Round Trip Verification]] after TASK-0009 merge
 4. FEAT-009 independent two-person sign-off

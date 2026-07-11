@@ -92,6 +92,8 @@ updated: 2026-07-11
 
 2026-07-11 — closeout validationで`tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`を連続実行し全成功。実装範囲の既知defectなしとして`review`へ遷移し、CIと人間merge判断を待つ。
 
+2026-07-11 — draft PR #11のGitHub Actions run `29150792085`でGovernance、Pure .NET build／232 tests／simulator smoke、Godot .NET headless smoke／Windows debug exportの全3 job成功を確認。`review`を維持し、人間merge判断だけを待つ。
+
 ## Evidence
 
 - TASK-0023 merge commit `f34c89f4c443ce03d25964513a1e9613cdc9dd63`。
@@ -104,6 +106,7 @@ updated: 2026-07-11
 - `HeadlessBattleStateMachineTests` — initial binding、facility trample、selected event order、occupied／suicide／repetition／terminal grant rejection、phase／actor／state／session stale、king terminal、20-turn loss、terminal precedence、各boundary fact／state／log determinismを確認。
 - `ArchitectureBoundaryTests` — shared fact seam、non-forgeable delta／state result、accepted placement dependency、Application→Domain、Godot／filesystem／clock／process／ambient RNG非露出を確認。
 - independent fixed-HEAD review — `0911c30d8b586cfae4be6ef93a0b345b499a8d26`、BLOCKER／HIGH／MEDIUM／LOW findingなし、独立validation green、`APPROVE`。
+- GitHub Actions run `29150792085` — PR #11のGovernance `86539852257`、Pure .NET `86539868985`、Godot／export `86539916578`すべて成功。
 - Content、`game_data/`、package／project reference、Godot assetの変更なし。
 
 ## Known issues

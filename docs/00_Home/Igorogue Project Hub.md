@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0010 Headless Battle State Machine]]の決定的Application境界は実装・独立review済み。CI／人間mergeで閉じる。
+> [[TASK-0010 Headless Battle State Machine]]の決定的Application境界は実装・独立review・green PR #11 CI済み。人間mergeで閉じる。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。

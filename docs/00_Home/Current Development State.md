@@ -35,7 +35,7 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0023 Implement Facility Runtime Semantics]] was merged through PR #10 and its post-merge main CI is green. [[TASK-0010 Headless Battle State Machine]] now provides deterministic scripted placement、turn boundary、terminal result、state／log checksum with independent approval and is the current task in review. TASK-0009 remains blocked until TASK-0010 CI and human merge.
+[[TASK-0023 Implement Facility Runtime Semantics]] was merged through PR #10 and its post-merge main CI is green. [[TASK-0010 Headless Battle State Machine]] now provides deterministic scripted placement、turn boundary、terminal result、state／log checksum with independent approval and green PR #11 CI; it is the current task in review pending human merge. TASK-0009 remains blocked until that merge.
 
 ## Next development sequence
 
