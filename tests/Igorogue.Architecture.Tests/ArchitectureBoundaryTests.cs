@@ -1,9 +1,12 @@
 using System.Reflection;
 using System.Xml.Linq;
+using Igorogue.Application.Battle;
 using Igorogue.Application.Bootstrap;
+using Igorogue.Application.Replay;
 using Igorogue.Content;
 using Igorogue.Domain.Board;
 using Igorogue.Domain.Bootstrap;
+using Igorogue.Domain.Combat;
 using Igorogue.Domain.Facilities;
 
 namespace Igorogue.Architecture.Tests;
@@ -133,6 +136,117 @@ public sealed class ArchitectureBoundaryTests
     }
 
     [Fact]
+    public void BattleFactSeamIncludesPlacementFacilityTerritoryAndLifecycleFacts()
+    {
+        var factTypes = new[]
+        {
+            typeof(ICommittedPlacementFact),
+            typeof(PlacementCaptureFact),
+            typeof(StonePlacedFact),
+            typeof(GroupCapturedFact),
+            typeof(StoneTopologyRegisteredFact),
+            typeof(KingCaptureEvaluatedFact),
+            typeof(FacilityFact),
+            typeof(FacilityBuiltFact),
+            typeof(FacilityActivatedFact),
+            typeof(FacilityDisabledFact),
+            typeof(FacilityDestroyedFact),
+            typeof(TerritoryEstablishedFact),
+            typeof(CommandRejectedFact),
+            typeof(EnemyPassedFact),
+            typeof(BattleEndedFact),
+        };
+
+        Assert.All(factTypes, type =>
+            Assert.True(
+                typeof(IBattleFact).IsAssignableFrom(type),
+                $"{type.FullName} must cross the battle fact seam."));
+    }
+
+    [Fact]
+    public void TerritoryDeltaResolutionRequiresBoundAnalysesAndReturnsANonForgeableFact()
+    {
+        var resolve = RequirePublicStaticMethod(
+            typeof(TerritoryDeltaResolver),
+            nameof(TerritoryDeltaResolver.Resolve),
+            typeof(TerritoryAnalysis),
+            typeof(TerritoryAnalysis),
+            typeof(StoneColor));
+
+        Assert.Equal(typeof(TerritoryEstablishedFact), resolve.ReturnType);
+        Assert.Empty(typeof(TerritoryEstablishedFact).GetConstructors(
+            BindingFlags.Public | BindingFlags.Instance));
+    }
+
+    [Fact]
+    public void FacilityAfterPlacementResolutionRequiresThePlacementCommit()
+    {
+        var reassociate = RequirePublicStaticMethod(
+            typeof(FacilityOperatingTransitionResolver),
+            nameof(FacilityOperatingTransitionResolver.ReassociateAfterPlacement),
+            typeof(FacilityRuntimeAnalysis),
+            typeof(FacilityPlacementCommit),
+            typeof(TerritoryAnalysis));
+
+        Assert.Equal(typeof(FacilityOperatingTransition), reassociate.ReturnType);
+    }
+
+    [Fact]
+    public void HeadlessBattleStateIsCreatedAndAdvancedOnlyThroughTheStateMachine()
+    {
+        var start = RequirePublicStaticMethod(
+            typeof(HeadlessBattleStateMachine),
+            nameof(HeadlessBattleStateMachine.Start),
+            typeof(BoardState),
+            typeof(FacilityState),
+            typeof(BattleRuntimePolicy),
+            typeof(ReplayMetadata));
+        var execute = RequirePublicStaticMethod(
+            typeof(HeadlessBattleStateMachine),
+            nameof(HeadlessBattleStateMachine.Execute),
+            typeof(HeadlessBattleSession),
+            typeof(IBattleCommand));
+
+        Assert.Equal(typeof(HeadlessBattleSession), start.ReturnType);
+        Assert.Equal(typeof(BattleCommandResult), execute.ReturnType);
+        Assert.All(
+            new[]
+            {
+                typeof(BattleState),
+                typeof(HeadlessBattleSession),
+                typeof(BattleCommandResult),
+            },
+            type => Assert.Empty(type.GetConstructors(
+                BindingFlags.Public | BindingFlags.Instance)));
+    }
+
+    [Fact]
+    public void HeadlessBattlePublicSurfaceDoesNotLeakHostOrAmbientRuntimeApis()
+    {
+        var battleTypes = typeof(BattleState).Assembly
+            .GetExportedTypes()
+            .Where(type => type.Namespace == typeof(BattleState).Namespace)
+            .Concat(
+            [
+                typeof(IBattleFact),
+                typeof(TerritoryEstablishedFact),
+                typeof(TerritoryDeltaResolver),
+                typeof(FacilityOperatingTransitionResolver),
+            ])
+            .Distinct()
+            .ToArray();
+
+        var offenders = battleTypes
+            .SelectMany(type => PublicSurfaceTypes(type)
+                .SelectMany(ExpandSignatureType)
+                .Select(signatureType => (type, signatureType)))
+            .Where(pair => IsHostOrAmbientRuntimeType(pair.signatureType))
+            .ToArray();
+
+        Assert.Empty(offenders);
+    }
+
+    [Fact]
     public void FacilityEvaluationsCommitsTransitionsAndFactsCannotBeForged()
     {
         var nonForgeableTypes = new[]
@@ -195,6 +309,74 @@ public sealed class ArchitectureBoundaryTests
                 yield return parameter.ParameterType;
             }
         }
+    }
+
+    private static IEnumerable<Type> PublicSurfaceTypes(Type type)
+    {
+        foreach (var signatureType in PublicSignatureTypes(type))
+        {
+            yield return signatureType;
+        }
+
+        foreach (var constructor in type.GetConstructors(
+                     BindingFlags.Public | BindingFlags.Instance))
+        {
+            foreach (var parameter in constructor.GetParameters())
+            {
+                yield return parameter.ParameterType;
+            }
+        }
+    }
+
+    private static IEnumerable<Type> ExpandSignatureType(Type type)
+    {
+        yield return type;
+
+        if (type.HasElementType && type.GetElementType() is { } elementType)
+        {
+            foreach (var nestedType in ExpandSignatureType(elementType))
+            {
+                yield return nestedType;
+            }
+        }
+
+        foreach (var genericArgument in type.GetGenericArguments())
+        {
+            foreach (var nestedType in ExpandSignatureType(genericArgument))
+            {
+                yield return nestedType;
+            }
+        }
+    }
+
+    private static bool IsHostOrAmbientRuntimeType(Type type)
+    {
+        var typeNamespace = type.Namespace ?? string.Empty;
+        var fullName = type.FullName ?? string.Empty;
+        return typeNamespace.StartsWith("Godot", StringComparison.Ordinal) ||
+            typeNamespace.StartsWith("System.IO", StringComparison.Ordinal) ||
+            typeNamespace.StartsWith("System.Diagnostics", StringComparison.Ordinal) ||
+            type == typeof(DateTime) ||
+            type == typeof(DateTimeOffset) ||
+            fullName == "System.TimeProvider" ||
+            type == typeof(Random) ||
+            fullName == "System.Security.Cryptography.RandomNumberGenerator";
+    }
+
+    private static MethodInfo RequirePublicStaticMethod(
+        Type declaringType,
+        string methodName,
+        params Type[] parameterTypes)
+    {
+        var method = declaringType.GetMethod(
+            methodName,
+            BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly,
+            binder: null,
+            types: parameterTypes,
+            modifiers: null);
+
+        Assert.NotNull(method);
+        return method;
     }
 
     private static DirectoryInfo FindRepositoryRoot()
