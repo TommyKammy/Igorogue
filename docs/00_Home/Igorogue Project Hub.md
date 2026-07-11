@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0004 Stone Groups and Unique Liberty Sets]]の同色連結と実呼吸点を検証し、Gate 1の次段へ進める。
+> [[TASK-0004 Stone Groups and Unique Liberty Sets]]を完了し、[[TASK-0005 Hypothetical Placement and Capture Resolution]]で仮配置と相手複数群の同時捕獲を実装する。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -64,7 +64,8 @@ cssclasses:
 - [[TASK-0020 Review Repository Bootstrap Runtime Evidence]] — done
 - [[TASK-0002 Deterministic RNG and Command Log]] — done
 - [[TASK-0003 Board Coordinates and Orthogonal Neighbours]] — done
-- [[TASK-0004 Stone Groups and Unique Liberty Sets]] — review／current
+- [[TASK-0004 Stone Groups and Unique Liberty Sets]] — done
+- [[TASK-0005 Hypothetical Placement and Capture Resolution]] — ready／current
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

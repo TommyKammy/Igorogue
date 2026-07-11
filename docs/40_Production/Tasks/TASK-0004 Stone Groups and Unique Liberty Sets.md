@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0004
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: high
@@ -57,6 +57,7 @@ updated: 2026-07-11
 - `tests/Igorogue.Domain.Tests/InitialPositionFixtureTests.cs` — `standard_v0_2`をproduction `BoardState`／`StoneGroupAnalyzer`へ通し、2 group、anchor `(2,2)`／`(6,5)`、各3石・王石1・実呼吸点7を確認。
 - 読み取り専用API reviewとarchitecture／scope review — 両方findingなしで`APPROVE`。review側でもgovernance、85/85 test、warning 0／error 0を確認。
 - 独立Codex closeout review — `origin/main...HEAD`を正本仕様と直接照合し、コードfindingなし。governance、85/85 test、2回同一simulator checksumを独立確認。状態同期だけをLOW follow-upとして指摘し、修正前`APPROVE WITH FOLLOW-UP`、修正後再確認はfindingなしで`APPROVE`。
+- GitHub Actions run `29134488480` — PR #5 head `ea3d49b9f662c6d01b8b8cf990736a26bdf8fb86`で全3 job成功。人間判断でPR #5をmergeし、merge commit `18d8ea0dfc84cc6b4d72f3b9d9301099e36b4ec8`を確認。
 
 ## Known issues
 
