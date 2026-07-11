@@ -75,6 +75,10 @@ Gate 1／M1のAccepted exit statementsを、fixed main HEADの共有Rules Kernel
 
 2026-07-12 — 独立Codexがfixed HEAD `6e4a41dd02fe1db4daebaeecaf60ac1745b227fd`をroot `CODE_REVIEW.md`に従い再監査。findingなし、`APPROVE`。独立実行の`tools/dev/check`、259／259 tests、`tools/dev/sim-smoke`、docs-only diff／`git diff --check`も全成功した。
 
+2026-07-12 — review evidenceを記録したcloseout docs-only HEAD `f4af7a20d080e0e15b6b065f3e93ed8557610826`も独立再監査。`6e4a41d..f4af7a2`は本TASKへ3行のreview evidenceを追記しただけで、findingなし、`APPROVE`。reviewerは記録内容の正確性、`git diff --check`、clean worktreeを確認し、evidence-only diffのためfull test rerunは不要と判断した。
+
+2026-07-12 — draft PR #15 initial CI run `29172280775`をHEAD `f4af7a20d080e0e15b6b065f3e93ed8557610826`で確認。Governance `86595312917`、Pure .NET `86595329953`、Godot／Windows export `86595381458`は全てsuccess、PRはmergeable clean。
+
 ## Evidence
 
 - [[TASK-0025 Gate 1 Deterministic Foundation Audit]] — fixed main HEAD、exit evidence matrix、formal simulator境界、MOM／CTR conflict、TLE M1 gap、human-only gateを記録。
@@ -84,7 +88,9 @@ Gate 1／M1のAccepted exit statementsを、fixed main HEADの共有Rules Kernel
 - `tools/dev/check` ×2 — exit 0。documentation／wikilink／content／fixture／governance check成功、content snapshot一致。
 - `tools/dev/test` ×2 — exit 0。.NET SDK 8.0.422、Domain 190、Application 54、Architecture 15、計259 tests、warning 0／error 0。
 - `tools/dev/sim-smoke` ×2 — exit 0。両runで`checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`。正式board simulation evidenceではない。
-- independent fixed-HEAD review — `6e4a41dd02fe1db4daebaeecaf60ac1745b227fd`、findingなし、`APPROVE`。reviewer validationもcheck／259 tests／sim-smoke／diff check全成功。
+- independent substantive-audit review — `6e4a41dd02fe1db4daebaeecaf60ac1745b227fd`、findingなし、`APPROVE`。reviewer validationもcheck／259 tests／sim-smoke／diff check全成功。
+- independent closeout-evidence review — `f4af7a20d080e0e15b6b065f3e93ed8557610826`、`6e4a41d..f4af7a2`の3行evidence-only diffにfindingなし、`APPROVE`。diff check／clean worktree成功。
+- GitHub draft PR #15 initial CI run `29172280775` — HEAD `f4af7a20d080e0e15b6b065f3e93ed8557610826`、Governance `86595312917`、Pure .NET `86595329953`、Godot／Windows export `86595381458`すべてsuccess、mergeable clean。
 - `git diff --check` — exit 0。変更はdocumentation／evidenceだけ。
 
 ## Known issues
