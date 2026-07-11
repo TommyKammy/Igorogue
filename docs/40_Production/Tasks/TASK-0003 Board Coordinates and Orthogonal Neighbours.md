@@ -58,6 +58,7 @@ updated: 2026-07-11
 - `tests/Igorogue.Domain.Tests/BoardCoordinateTests.cs` — COORD-01〜09、全49点のCanonical/Internal/index往復、0／-1／6／8のboard-size拒否、各座標境界、隅2・辺3・中央4の隣接、斜め除外、全点のreflection involution、公開comparatorの`(y,x)`順を確認。
 - `tests/Igorogue.Domain.Tests/InitialPositionFixtureTests.cs` — `game_data/balance/system.json`のboard sizeと`standard_v0_2`をDomain factoryへ入力し、COORD-10〜12のexact 6-stone set、同役割を保つ色交換点対称、中央空点、各色1王2護衛、3石連結、exact 7-liberty set、diagram row順を確認。
 - 読み取り専用implementation reviewで、非7盤の公開生成、未検証comparator、未承認ID文字種制約、Domain内constructor bypassを検出して修正。再確認後の判定は`APPROVE`、残存findingなし。
+- 独立Codex review — `origin/main...HEAD`の全14ファイルとAccepted仕様／runtime dataを照合し、findingなしで`APPROVE`。review側でもgovernance、67/67 test、2回同一simulator checksumを確認。
 
 ## Known issues
 
