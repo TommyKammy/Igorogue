@@ -9,7 +9,7 @@ sprint: S0
 
 ## Goal
 
-Begin Gate 1 by implementing deterministic RNG streams and the ordered command-log contract after closing the macOS runtime gate.
+Continue Gate 1 by implementing canonical board coordinates, stable indexing, orthogonal neighbours, and the accepted point-symmetric initial position.
 
 ## Ready
 
@@ -17,7 +17,7 @@ Begin Gate 1 by implementing deterministic RNG streams and the ordered command-l
 
 ## In review
 
-- [[TASK-0002 Deterministic RNG and Command Log]]
+- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
   - implementation evidence complete; independent Codex review approved; CI pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
@@ -29,13 +29,14 @@ Begin Gate 1 by implementing deterministic RNG streams and the ordered command-l
 - [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]]
 - [[TASK-0001 Decide Engine and Repository]]
 - [[TASK-0020 Review Repository Bootstrap Runtime Evidence]]
+- [[TASK-0002 Deterministic RNG and Command Log]]
 
-## Next after TASK-0002
+## Next after TASK-0003
 
-- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
+- [[TASK-0004 Stone Groups and Unique Liberty Sets]]
 
 ## Review questions
 
-- Are gameplay/reward/cosmetic RNG streams isolated and versioned?
-- Does the same seed and ordered input produce identical output and checksum?
-- Does rejected input leave command-log and RNG state unchanged?
+- Are CanonicalPoint, InternalPoint, and canonical index conversions exact and reject out-of-range values?
+- Are orthogonal neighbours returned in canonical point order with no diagonals?
+- Does `standard_v0_2` satisfy role-aware reflection, connected three-stone king groups, and seven liberties per side?
