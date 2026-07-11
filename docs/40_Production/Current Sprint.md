@@ -11,13 +11,10 @@ sprint: S0
 
 Integrate the accepted facility build kernel into the deterministic headless battle session.
 
-## In progress
-
-- [[TASK-0024 Authorized Facility Build Battle Command]]
-  - canonical accepted build command required by FAC-08／09 true replay
-
 ## In review
 
+- [[TASK-0024 Authorized Facility Build Battle Command]]
+  - implementation、238 tests、independent `CODE_REVIEW.md` approval、two green closeout runs complete; CI／human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 

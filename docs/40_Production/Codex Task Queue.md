@@ -25,7 +25,7 @@ updated: 2026-07-11
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0024 Authorized Facility Build Battle Command]] (`in_progress`; required for FAC-08／09 true Application replay).
+Current: [[TASK-0024 Authorized Facility Build Battle Command]] (`review`; implementation、238 tests、independent approval、two closeout runs complete).
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
@@ -36,7 +36,7 @@ Current: [[TASK-0024 Authorized Facility Build Battle Command]] (`in_progress`; 
 7. [[TASK-0008 Territory Region Calculation]]
 8. [[TASK-0023 Implement Facility Runtime Semantics]]
 9. [[TASK-0010 Headless Battle State Machine]] — done
-10. [[TASK-0024 Authorized Facility Build Battle Command]] — in_progress／current
+10. [[TASK-0024 Authorized Facility Build Battle Command]] — review／current
 11. [[TASK-0009 Golden Board Fixtures]] — blocked pending TASK-0024 and DECISION-0004
 12. [[TASK-0011 Replay Round Trip Verification]] — blocked pending TASK-0009
 

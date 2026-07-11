@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0024
-status: in_progress
+status: review
 project: Igorogue
 milestone: M1
 priority: high
@@ -79,6 +79,10 @@ updated: 2026-07-11
 
 2026-07-11 — 一次validationで`tools/dev/check`と`tools/dev/test`を実行し成功。Release build warning 0／error 0、Domain 190、Application 33、Architecture 15の合計238 testがgreen。
 
+2026-07-11 — fixed HEAD `a326328`を実装担当とは別のCodexがroot `CODE_REVIEW.md`に従って独立review。Rules Canon、FEAT-001、ADR-0012、Architecture、Determinism、FAC fixture、全Acceptanceへ照合し、finding 0、`APPROVE`。独立check／test／sim smokeもgreen。
+
+2026-07-11 — closeout validationで`tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`を二連続実行し全成功。TASK-0024範囲の既知defectなしとして`review`へ遷移し、CIと人間merge判断を待つ。
+
 ## Evidence
 
 - TASK-0010 merge commit `d4ffd832f572fb46cbe2d29559032b30c68b2bb2`。
@@ -86,7 +90,9 @@ updated: 2026-07-11
 - `tools/dev/check` — documentation、wikilink、content、design fixture、repository governanceすべて成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
 - `tools/dev/test` — exact .NET SDK `8.0.422`、locked restore、Release build warning 0／error 0。Domain 190、Application 33、Architecture 15、合計238 test成功。
 - `AuthorizedFacilityBuildCommandTests` — canonical payload、legal fact順／snapshot不変、6 rejection reason exact no-op、phase／stale／terminal、accepted-only log、2-run determinism、payload／order divergenceを確認。
+- independent fixed-HEAD review — commit `a326328`、BLOCKER／HIGH／MEDIUM／LOW findingなし、独立`check`／238 tests／sim smoke成功、`APPROVE`。
+- closeout validation 2 consecutive runs — 各runで`tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`がexit 0。各回238 tests、warning 0／error 0、同一sim checksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`。
 
 ## Known issues
 
-TASK-0009は本taskのreview、CI、人間mergeまで`blocked`を維持する。card cost、on-build effect、Momentum、enemy buildは本commandの上流または後続taskで扱う。
+TASK-0024範囲の既知defectはなし。TASK-0009は本taskのCI／人間mergeとopen [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]]解決まで`blocked`を維持する。card cost、on-build effect、Momentum、enemy buildは本commandの上流または後続taskで扱う。
