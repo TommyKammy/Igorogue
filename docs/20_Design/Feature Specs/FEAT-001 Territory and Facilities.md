@@ -4,7 +4,7 @@ id: FEAT-001
 status: accepted
 project: Igorogue
 updated: 2026-07-10
-version: 1.0.1
+version: 1.0.2
 ---
 # FEAT-001 Territory and Facilities
 
@@ -278,11 +278,13 @@ StonePlaced
 → KingCaptured / battle result
 → capture and destruction triggers
 → territory recalculation and territory facts
-→ FacilityDisabled / FacilityActivated[]
 → TerritoryEstablished ownership-delta facts
+→ FacilityDisabled / FacilityActivated[]
 → universal territory momentum trigger
 → facility and remaining territory triggers
 ```
+
+`TerritoryEstablished`は一つのatomic resolutionにつき最大1件で、source actorと、非黒領地から黒領地へ変化した交点をCanonical point orderで保持する。施設状態変化はこのfactの後、将来の普遍領地Momentum sourceは施設状態変化の後に解決する。
 
 施設だけを建設・破壊する効果は石トポロジー履歴を変更しない。
 

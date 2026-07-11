@@ -23,18 +23,16 @@ updated: 2026-07-11
 
 ## M1 ordered queue
 
-TASK-0009とTASK-0010の表示順はplaceholderであり、相対順とTASK-0023後の次タスクは[[DECISION-0003 Sequence Golden Replay After Battle State Machine]]のowner decisionまで未選択とする。
-
 - [[TASK-0003 Board Coordinates and Orthogonal Neighbours]] — done
 - [[TASK-0004 Stone Groups and Unique Liberty Sets]] — done
 - [[TASK-0005 Hypothetical Placement and Capture Resolution]] — done
 - [[TASK-0006 Suicide Legality and Terminal Capture]] — done
 - [[TASK-0007 King Capture and Battle Result]] — done
 - [[TASK-0008 Territory Region Calculation]] — done
-- [[TASK-0023 Implement Facility Runtime Semantics]] — review／current
-- [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0023 and DECISION-0003
-- [[TASK-0010 Headless Battle State Machine]] — blocked／TASK-0023 and DECISION-0002
-- [[TASK-0011 Replay Round Trip Verification]]
+- [[TASK-0023 Implement Facility Runtime Semantics]] — done
+- [[TASK-0010 Headless Battle State Machine]] — review／current
+- [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0010
+- [[TASK-0011 Replay Round Trip Verification]] — blocked／TASK-0010 and TASK-0009
 
 See [[Codex Task Queue]] for gate order and concurrency rules.
 

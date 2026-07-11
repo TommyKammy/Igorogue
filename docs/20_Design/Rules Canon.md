@@ -91,8 +91,9 @@ version: 0.2.7
 8. 石トポロジーを履歴へ登録。
 9. 王石捕獲による勝敗を確認。
 10. 捕獲・施設破壊トリガーを処理。
-11. 領地を再計算し、施設の停止・再稼働を確定する。
-12. 領地・施設・余勢・妙手トリガーを処理。
+11. 領地を再計算し、領地事実と`TerritoryEstablished`を確定する。
+12. 施設の停止・再稼働を確定する。
+13. 領地・施設・余勢・妙手トリガーを処理。
 
 ## 勝敗
 
@@ -119,6 +120,7 @@ version: 0.2.7
 - 相手領地になっても施設所有権は移転しない。
 - 施設建設・停止・再稼働・直接破壊だけでは石トポロジー履歴を変更しない。
 - 厳密な建設、破壊、イベント順は[[ADR-0012 Facility Sites Are Empty Intersections]]と[[FEAT-001 Territory and Facilities]]を正本とする。
+- 石トポロジー変化後は`TerritoryEstablished`、`FacilityDisabled / FacilityActivated`、普遍領地Momentum sourceの順で処理する。
 
 ## 施設容量
 

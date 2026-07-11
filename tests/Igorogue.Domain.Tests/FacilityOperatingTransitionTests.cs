@@ -175,11 +175,124 @@ public sealed class FacilityOperatingTransitionTests
                 TerritoryAnalyzer.Analyze(Board(Stone(StoneColor.Black, 1, 1)))));
     }
 
+    [Fact]
+    public void PlacementReassociationComparesOnlySurvivorsAfterTargetDestruction()
+    {
+        var source = Board(Stone(StoneColor.Black, 7, 7));
+        var survivor = Facility("survivor", 1, 1, 1);
+        var destroyed = Facility("destroyed", 4, 4, 2);
+        var state = FacilityState.Create(source, [destroyed, survivor], 3);
+        var analysisBefore = Analyze(state);
+        var placement = FacilityPlacementIntegrator.Apply(
+            state,
+            CommitLegalPlacement(
+                source,
+                StoneColor.White,
+                destroyed.Point,
+                BattleRepetitionHistory.Start(source)));
+        var territoryAfter = TerritoryAnalyzer.Analyze(placement.BoardAfterCommit);
+
+        var transition = FacilityOperatingTransitionResolver.ReassociateAfterPlacement(
+            analysisBefore,
+            placement,
+            territoryAfter);
+
+        Assert.Same(destroyed, placement.DestructionFact?.Facility);
+        Assert.Same(placement.FacilityStateAfterCommit, transition.StateAfterTransition);
+        Assert.Same(territoryAfter, transition.AnalysisAfter.TerritoryAnalysis);
+        Assert.Single(transition.StateAfterTransition.InstalledFacilities);
+        Assert.Same(survivor, transition.StateAfterTransition.FacilityById("survivor"));
+        var disabled = Assert.IsType<FacilityDisabledFact>(
+            Assert.Single(transition.OrderedFacts));
+        Assert.Same(survivor, disabled.Facility);
+        Assert.Equal("territory_control_lost", disabled.ReasonId);
+        Assert.DoesNotContain(
+            transition.OrderedFacts,
+            fact => ReferenceEquals(fact.Facility, destroyed));
+    }
+
+    [Fact]
+    public void PlacementReassociationRejectsStaleSourceAndResultSnapshots()
+    {
+        var source = Board(Stone(StoneColor.Black, 7, 7));
+        var survivor = Facility("survivor", 1, 1, 1);
+        var destroyed = Facility("destroyed", 4, 4, 2);
+        var state = FacilityState.Create(source, [destroyed, survivor], 3);
+        var analysisBefore = Analyze(state);
+        var placement = FacilityPlacementIntegrator.Apply(
+            state,
+            CommitLegalPlacement(
+                source,
+                StoneColor.White,
+                destroyed.Point,
+                BattleRepetitionHistory.Start(source)));
+        var equivalentSourceState = FacilityState.Create(
+            source,
+            state.InstalledFacilities,
+            state.NextBuildSequence);
+        var foreignBefore = Analyze(equivalentSourceState);
+        var equivalentResultBoard = BoardState.Create(
+            Geometry,
+            placement.BoardAfterCommit.OccupiedStones.Reverse());
+        var foreignTerritoryAfter = TerritoryAnalyzer.Analyze(equivalentResultBoard);
+
+        Assert.Throws<ArgumentException>(() =>
+            FacilityOperatingTransitionResolver.ReassociateAfterPlacement(
+                foreignBefore,
+                placement,
+                TerritoryAnalyzer.Analyze(placement.BoardAfterCommit)));
+        Assert.Throws<ArgumentException>(() =>
+            FacilityOperatingTransitionResolver.ReassociateAfterPlacement(
+                analysisBefore,
+                placement,
+                foreignTerritoryAfter));
+        Assert.Throws<ArgumentException>(() =>
+            FacilityOperatingTransitionResolver.ReassociateAfterPlacement(
+                analysisBefore,
+                placement,
+                TerritoryAnalyzer.Analyze(source)));
+    }
+
     private static FacilityRuntimeAnalysis Analyze(FacilityState state) =>
         FacilityRuntimeAnalyzer.Analyze(
             state,
             TerritoryAnalyzer.Analyze(state.SourceBoard),
             Policy.Value);
+
+    private static LegalPlacementCommit CommitLegalPlacement(
+        BoardState source,
+        StoneColor actor,
+        CanonicalPoint point,
+        BattleRepetitionHistory history)
+    {
+        if (!HypotheticalPlacementResolver.TryCreate(
+                source,
+                new BoardStone(actor, false, point),
+                out var hypothetical) ||
+            hypothetical is null)
+        {
+            throw new InvalidOperationException("Test placement unexpectedly targeted a stone.");
+        }
+
+        var afterCaptures = HypotheticalPlacementResolver.ResolveCaptures(
+            hypothetical,
+            RealLiberties(hypothetical.GroupsAfterPlacement));
+        var evaluation = PlacementLegalityEvaluator.Evaluate(
+            afterCaptures,
+            RealLiberties(afterCaptures.GroupsAfterCapture),
+            history,
+            PlacementAccessMode.Normal);
+        Assert.True(evaluation.IsLegal);
+        return history.CommitLegalPlacement(evaluation);
+    }
+
+    private static EffectiveLibertySnapshot RealLiberties(
+        StoneGroupAnalysis analysis) =>
+        EffectiveLibertySnapshot.Create(
+            analysis,
+            analysis.Groups.Select(group => new GroupEffectiveLiberty(
+                group,
+                group.RealLibertyCount)));
 
     private static FacilityRuntimePolicy CapacityOnePolicy() => FacilityRuntimePolicy.Create(
         3,

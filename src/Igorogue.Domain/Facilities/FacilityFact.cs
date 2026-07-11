@@ -1,4 +1,5 @@
 using Igorogue.Domain.Board;
+using Igorogue.Domain.Combat;
 
 namespace Igorogue.Domain.Facilities;
 
@@ -19,7 +20,7 @@ public enum FacilityDestructionReason : byte
     StoneOccupied = 1,
 }
 
-public abstract class FacilityFact
+public abstract class FacilityFact : IBattleFact
 {
     internal FacilityFact(FacilityInstance facility)
     {

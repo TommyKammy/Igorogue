@@ -10,6 +10,13 @@ public sealed record KingCaptureResult
     {
         BlackKingCaptured = blackKingCaptured;
         WhiteKingCaptured = whiteKingCaptured;
+        EndReason = (blackKingCaptured, whiteKingCaptured) switch
+        {
+            (true, true) => BattleEndReason.BothKingsCaptured,
+            (true, false) => BattleEndReason.BlackKingCaptured,
+            (false, true) => BattleEndReason.WhiteKingCaptured,
+            (false, false) => BattleEndReason.None,
+        };
         Outcome = blackKingCaptured
             ? BattleOutcome.PlayerDefeat
             : whiteKingCaptured
@@ -26,6 +33,10 @@ public sealed record KingCaptureResult
     public bool IsTerminal => Outcome != BattleOutcome.Ongoing;
 
     public BattleOutcome Outcome { get; }
+
+    public BattleEndReason EndReason { get; }
+
+    public string EndReasonId => BattleEndReasonRules.ToReasonId(EndReason);
 
     public string OutcomeId => Outcome switch
     {

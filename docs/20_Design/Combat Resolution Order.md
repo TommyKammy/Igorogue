@@ -24,8 +24,8 @@ updated: 2026-07-10
 → 王石勝敗
 → 捕獲・施設破壊トリガー
 → 領地再計算と領地事実をanchor順で確定
+→ TerritoryEstablished?をCanonical changed-point順で確定
 → 施設停止・再稼働を座標順で確定
-→ TerritoryEstablishedと施設状態を確定
 → 普遍領地source／地合い流施設sourceの余勢生成
 → 余勢前進ドロー判定
 → 妙手倍率
@@ -44,6 +44,7 @@ updated: 2026-07-10
 - 合法手の配置点に施設がある場合、石配置と同時捕獲の確定後、`StoneTopologyRegistered`より前に`FacilityDestroyed(reason=stone_occupied)`を確定する。
 - 施設破壊自体は`StoneTopologyKey`へ含めない。
 - 領地再計算後、複数施設の停止・再稼働イベントはCanonical point order、instance ID順で発行する。
+- `TerritoryEstablished`は一つのatomic resolutionにつき最大1件で、施設停止・再稼働イベントより前に発行する。
 - 施設建設だけのカードは石配置経路を通らず、`FacilityBuilt`、`FacilityActivated`、後続トリガーの順で解決する。
 
 厳密な意味論は[[ADR-0012 Facility Sites Are Empty Intersections]]と[[FEAT-001 Territory and Facilities]]を参照する。
