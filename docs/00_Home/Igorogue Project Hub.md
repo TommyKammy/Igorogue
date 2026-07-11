@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0007 King Capture and Battle Result]]を完了し、[[TASK-0008 Territory Region Calculation]]で空点領域と隣接色による領地判定を実装する。
+> [[TASK-0008 Territory Region Calculation]]の独立review済み実装をCIと人間mergeへ進める。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -68,7 +68,8 @@ cssclasses:
 - [[TASK-0005 Hypothetical Placement and Capture Resolution]] — done
 - [[TASK-0006 Suicide Legality and Terminal Capture]] — done
 - [[TASK-0007 King Capture and Battle Result]] — done
-- [[TASK-0008 Territory Region Calculation]] — ready／current
+- [[TASK-0008 Territory Region Calculation]] — review／current
+- [[TASK-0009 Golden Board Fixtures]] — blocked／facility runtime Decision Needed
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

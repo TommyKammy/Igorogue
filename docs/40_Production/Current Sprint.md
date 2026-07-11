@@ -9,14 +9,16 @@ sprint: S0
 
 ## Goal
 
-Implement deterministic territory-region calculation.
+Review and land deterministic territory-region calculation.
 
 ## Ready
 
-- [[TASK-0008 Territory Region Calculation]]
+- なし
 
 ## In review
 
+- [[TASK-0008 Territory Region Calculation]]
+  - implementation evidence complete; independent review approved with downstream follow-up; CI and human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -37,6 +39,7 @@ Implement deterministic territory-region calculation.
 ## Next after TASK-0008
 
 - [[TASK-0009 Golden Board Fixtures]]
+  - blocked pending facility-runtime sequencing Decision Needed
 
 ## Review questions
 

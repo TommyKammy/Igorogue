@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0008
-status: in_progress
+status: review
 project: Igorogue
 milestone: M1
 priority: high
@@ -49,6 +49,8 @@ updated: 2026-07-11
 
 2026-07-11 — package、project reference、lock、Application、Content、game_data、Accepted仕様、Godot assetは変更していない。基本収入、建設容量、FacilityInstance、建設・破壊・稼働、territory delta／facility event、Momentum、battle state、replay、UIは後続へ維持した。
 
+2026-07-11 — commit `37e0c00`を対象に、実装担当とは別のCodexが`CODE_REVIEW.md`に従って親commitとの差分をTASK、Rules Canon、Architecture、Determinism and Replay、FEAT-001、ADR-0012、canonical FAC fixtureへ再照合。TASK-0008範囲のfindingなし、独立governance／160 test／2回同一sim checksumを確認した。TASK-0009前のfacility runtime計画gapをMEDIUM follow-upとして維持し、`APPROVE WITH FOLLOW-UP`で`review`へ遷移。CIと人間merge待ちとした。
+
 ## Evidence
 
 - `tools/dev/check` — exit 0。documentation、wikilink、content、FAC-01〜09を含む既存fixture、governance checkが成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
@@ -59,6 +61,7 @@ updated: 2026-07-11
 - `tests/Igorogue.Architecture.Tests/ArchitectureBoundaryTests.cs` — public analyzer入力が`BoardState`だけで、region／analysisを外部からforgeできないことを確認。
 - 読み取り専用API review — public surface、immutability、exact source binding、lookup整合性、canonical順、neutral semantics、facility入力排除にfindingなしで`APPROVE`。独立実行でもgovernance、160/160 test、warning 0／error 0を確認。
 - determinism／spec review — コードfindingなし。Known Issuesの計画gap記録をMEDIUM findingとして指摘し、FAC projectionとfacility runtime integrationを区別して解消。独立実行でもgovernance、160/160 test、2回同一sim checksumを確認。
+- 独立Codex closeout review — commit `37e0c00`の親との差分を正本仕様へ直接照合し、TASK-0008範囲のBLOCKER／HIGH／MEDIUM／LOW findingなし。独立実行でもgovernance、160/160 test、warning 0／error 0、2回同一sim checksum、clean worktreeを確認。TASK-0009のfacility runtime計画gapだけを下流MEDIUM follow-upとして`APPROVE WITH FOLLOW-UP`。
 
 ## Known issues
 

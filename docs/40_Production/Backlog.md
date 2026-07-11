@@ -28,8 +28,8 @@ updated: 2026-07-11
 - [[TASK-0005 Hypothetical Placement and Capture Resolution]] — done
 - [[TASK-0006 Suicide Legality and Terminal Capture]] — done
 - [[TASK-0007 King Capture and Battle Result]] — done
-- [[TASK-0008 Territory Region Calculation]] — ready／current
-- [[TASK-0009 Golden Board Fixtures]]
+- [[TASK-0008 Territory Region Calculation]] — review／current
+- [[TASK-0009 Golden Board Fixtures]] — blocked／facility runtime Decision Needed
 - [[TASK-0010 Headless Battle State Machine]]
 - [[TASK-0011 Replay Round Trip Verification]]
 
