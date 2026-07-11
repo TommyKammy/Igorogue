@@ -2,7 +2,7 @@
 type: roadmap
 status: active
 project: Igorogue
-updated: 2026-07-11
+updated: 2026-07-12
 ---
 # Codex Task Queue
 
@@ -25,7 +25,7 @@ updated: 2026-07-11
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0009 Golden Board Fixtures]] (`review`; 19-case validation、fixed-HEAD review、draft PR #13 initial CI green; human merge pending).
+Current: [[TASK-0011 Replay Round Trip Verification]] (`review`; double validation、independent fixed-HEAD review、draft PR #14 initial CI green; human merge pending).
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
@@ -37,8 +37,8 @@ Current: [[TASK-0009 Golden Board Fixtures]] (`review`; 19-case validation、fix
 8. [[TASK-0023 Implement Facility Runtime Semantics]]
 9. [[TASK-0010 Headless Battle State Machine]] — done
 10. [[TASK-0024 Authorized Facility Build Battle Command]] — done
-11. [[TASK-0009 Golden Board Fixtures]] — review／current
-12. [[TASK-0011 Replay Round Trip Verification]] — blocked pending TASK-0009
+11. [[TASK-0009 Golden Board Fixtures]] — done
+12. [[TASK-0011 Replay Round Trip Verification]] — review／current
 
 [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] resolved the post-TASK-0023 order as TASK-0010→TASK-0009→TASK-0011.
 The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] resolved the exact-fixture evidence contract as Option 1.

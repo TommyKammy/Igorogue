@@ -2,14 +2,14 @@
 type: dashboard
 status: active
 project: Igorogue
-updated: 2026-07-11
+updated: 2026-07-12
 cssclasses:
   - igorogue-dashboard
 ---
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0024 Authorized Facility Build Battle Command]]はPR #12でmerge済み。[[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] Option 1に従う[[TASK-0009 Golden Board Fixtures]]の19 casesは独立review approved、draft PR #13 initial CI green、人間merge待ち。
+> [[TASK-0011 Replay Round Trip Verification]]は19 golden cases／34 Application attemptsのdouble validationと独立fixed-HEAD reviewを完了。draft PR #14 initial CI green、人間merge待ち。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -76,7 +76,8 @@ cssclasses:
 - [[TASK-0010 Headless Battle State Machine]] — done
 - [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] — resolved／Option 1
 - [[TASK-0024 Authorized Facility Build Battle Command]] — done
-- [[TASK-0009 Golden Board Fixtures]] — review／current
+- [[TASK-0009 Golden Board Fixtures]] — done
+- [[TASK-0011 Replay Round Trip Verification]] — review／current
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

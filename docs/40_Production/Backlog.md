@@ -2,7 +2,7 @@
 type: backlog
 status: active
 project: Igorogue
-updated: 2026-07-11
+updated: 2026-07-12
 ---
 # Backlog
 
@@ -32,8 +32,8 @@ updated: 2026-07-11
 - [[TASK-0023 Implement Facility Runtime Semantics]] — done
 - [[TASK-0010 Headless Battle State Machine]] — done
 - [[TASK-0024 Authorized Facility Build Battle Command]] — done
-- [[TASK-0009 Golden Board Fixtures]] — review／current
-- [[TASK-0011 Replay Round Trip Verification]] — blocked／TASK-0009
+- [[TASK-0009 Golden Board Fixtures]] — done
+- [[TASK-0011 Replay Round Trip Verification]] — review／current
 
 See [[Codex Task Queue]] for gate order and concurrency rules.
 

@@ -2,17 +2,17 @@
 type: dashboard
 status: active
 project: Igorogue
-updated: 2026-07-11
+updated: 2026-07-12
 ---
 # Project Dashboard
 
 ## Phase
 
-`M0 Repository Bootstrap`からauthorized facility build commandまでは実装・review・CI・merge済み。Gate 1のversioned golden board evidenceは実装・validation済みでreview中。
+`M0 Repository Bootstrap`からversioned golden board evidenceまでは実装・review・CI・merge済み。Gate 1のreplay round tripは実装・double validation・独立fixed-HEAD review済みで、人間merge待ち。
 
 ## Sprint goal
 
-Implement deterministic golden board evidence without bypassing Application commands.
+Implement deterministic replay save／load／verification without bypassing Application commands.
 
 ## Health
 
@@ -23,11 +23,10 @@ Implement deterministic golden board evidence without bypassing Application comm
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | TASK-0009 validation／independent review／draft PR #13 initial CI green; human merge pending |
+| Validation | Yellow | TASK-0011 draft PR #14 initial CI green; human merge pending |
 
 ## Blockers
 
-- TASK-0011 awaits TASK-0009.
 - FEAT-009 independent two-person paper sign-off remains human-only.
 
 ## Current evidence
@@ -53,10 +52,10 @@ Implement deterministic golden board evidence without bypassing Application comm
 - immutable headless battle state machine with canonical placement／turn／pass commands and merged PR #11 evidence
 - canonical authorized facility build command with merged PR #12 evidence
 - schema-v1 golden suite with 19 cases、35 boundaries、source hashes、ordered facts、exact no-op rejection evidence
+- versioned replay envelope with 34 submitted attempts、accepted-only log chain、strict bounded Stream I/O、typed replay and fail-closed integrity evidence
 
 ## Next
 
-1. Review／merge [[TASK-0009 Golden Board Fixtures]]
-2. Execute [[TASK-0011 Replay Round Trip Verification]] after TASK-0009 merge
-3. FEAT-009 independent two-person sign-off
-4. A-6 style data/document synchronization checker
+1. Review／merge [[TASK-0011 Replay Round Trip Verification]]
+2. FEAT-009 independent two-person sign-off
+3. A-6 style data/document synchronization checker

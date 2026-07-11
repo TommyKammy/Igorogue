@@ -1,12 +1,12 @@
 ---
 type: task
 id: TASK-0009
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: high
 dependencies: [TASK-0001, TASK-0023, TASK-0010, TASK-0024]
-updated: 2026-07-11
+updated: 2026-07-12
 ---
 # TASK-0009 Golden Board Fixtures
 
@@ -81,6 +81,8 @@ updated: 2026-07-11
 
 2026-07-11 — closeout docs-only HEAD `a2b2977d5def656800c3ed7df3418ecab5cb5dfd`も独立review findingなし、`APPROVE`。draft PR #13を作成し、initial CI run `29155005147`のGovernance、Pure .NET、Godot／Windows export全job成功とmergeable cleanを確認した。
 
+2026-07-12 — PR #13を人間merge。merge commit `b2bfceca8bf88046aa100d563b62c6697d1afcd6`とpost-merge main CI run `29155541603`の全3 job成功を確認し、`review`から`done`へ遷移した。
+
 ## Evidence
 
 - `tests/golden/v1/board_fixture_cases.json` — schema v1、SHA-256 `b3e62c12574746233e1d829e4f30fcc179559cae017fcdd707a656e63b01655d`、19 cases、35 boundaries、6 rejected attempts、1 silent-filter boundary。
@@ -90,10 +92,11 @@ updated: 2026-07-11
 - `tools/dev/sim-smoke` ×3 — exit 0。全runでchecksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`一致。
 - 独立fixed-HEAD review — `375326e`はKO-06分類HIGH 1件で`CHANGES REQUIRED`。修正後`1b14fb8321e4e86fe5e346bc4112db795659a344`はfindingなし、`APPROVE`。reviewer側でもcheck／241 tests／sim-smoke／catalog SHAを再確認。
 - GitHub draft PR #13 initial CI run `29155005147` — Governance job `86550573361`、Pure .NET job `86550590065`、Godot .NET headless／Windows debug export job `86550627429`すべてsuccess。head `a2b2977d5def656800c3ed7df3418ecab5cb5dfd`、mergeable clean。
+- PR #13 human merge／post-merge main CI — merge commit `b2bfceca8bf88046aa100d563b62c6697d1afcd6`。run `29155541603`のGovernance job `86551899710`、Pure .NET job `86551918828`、Godot／export job `86551965558`すべてsuccess。
 
 ## Known issues
 
-現時点の既知実装blockerなし。TASK-0011はTASK-0009の独立reviewと人間mergeまで開始しない。production rule、Content／`game_data/`、package／project reference、Godot assetは変更していない。
+既知issueなし。production rule、Content／`game_data/`、package／project reference、Godot assetは変更していない。
 
 ## Predefined specification sources
 
