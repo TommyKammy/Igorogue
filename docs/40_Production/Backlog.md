@@ -33,7 +33,7 @@ updated: 2026-07-12
 - [[TASK-0010 Headless Battle State Machine]] — done
 - [[TASK-0024 Authorized Facility Build Battle Command]] — done
 - [[TASK-0009 Golden Board Fixtures]] — done
-- [[TASK-0011 Replay Round Trip Verification]] — in_progress／current
+- [[TASK-0011 Replay Round Trip Verification]] — review／current
 
 See [[Codex Task Queue]] for gate order and concurrency rules.
 

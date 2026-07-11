@@ -11,13 +11,10 @@ sprint: S0
 
 Implement deterministic replay save／load／verification over the versioned golden command suite.
 
-## In progress
-
-- [[TASK-0011 Replay Round Trip Verification]]
-  - 19 cases／34 Application attempts、accepted-only log chain、fail-closed schema／metadata／checksum verification
-
 ## In review
 
+- [[TASK-0011 Replay Round Trip Verification]]
+  - 19 cases／34 Application attempts、accepted-only log chain、fail-closed schema／metadata／checksum verification、double validation／fixed-HEAD review approved
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 

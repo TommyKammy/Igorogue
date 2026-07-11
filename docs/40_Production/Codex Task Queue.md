@@ -25,7 +25,7 @@ updated: 2026-07-12
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0011 Replay Round Trip Verification]] (`in_progress`; TASK-0009 PR #13 merge and post-merge main CI green).
+Current: [[TASK-0011 Replay Round Trip Verification]] (`review`; double validation and independent fixed-HEAD review approved, draft PR pending).
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
@@ -38,7 +38,7 @@ Current: [[TASK-0011 Replay Round Trip Verification]] (`in_progress`; TASK-0009 
 9. [[TASK-0010 Headless Battle State Machine]] — done
 10. [[TASK-0024 Authorized Facility Build Battle Command]] — done
 11. [[TASK-0009 Golden Board Fixtures]] — done
-12. [[TASK-0011 Replay Round Trip Verification]] — in_progress／current
+12. [[TASK-0011 Replay Round Trip Verification]] — review／current
 
 [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] resolved the post-TASK-0023 order as TASK-0010→TASK-0009→TASK-0011.
 The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] resolved the exact-fixture evidence contract as Option 1.

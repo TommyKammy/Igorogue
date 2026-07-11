@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0011
-status: in_progress
+status: review
 project: Igorogue
 milestone: M1
 priority: high
@@ -68,6 +68,10 @@ updated: 2026-07-12
 
 2026-07-12 — `tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`を固定worktreeで各2回実行し全成功。実装commitを固定して独立fixed-HEAD reviewへ渡す。
 
+2026-07-12 — fixed HEAD `61670f1682bef7ff61c62e5b22ab5c1f34afd807`の独立reviewで、4096 attempts上限がDTO materialization後に評価されるresource amplificationをHIGHとして検出。指摘を採用し、root `attempts`配列長をduplicate再帰／DTO変換より前に検査する順序へ修正し、duplicateを含む4097-entry inputで固定した。
+
+2026-07-12 — 修正fixed HEAD `32226c661d159fd14de9620b9c2d2cbb8b286e84`を同じ独立担当が再review。findingなし、reviewer側でも`tools/dev/check`／259 tests／`sim-smoke`、worktree cleanを確認し`APPROVE`。全AcceptanceとEvidenceを満たしたため、人間merge待ちの`review`へ遷移した。
+
 ## Evidence
 
 - `src/Igorogue.Application/Replay/BattleReplayDocument.cs`／`BattleReplaySerializer.cs`／`BattleReplayRunner.cs` — immutable versioned envelope、attempt／document integrity、strict bounded Stream I/O、canonical initial sessionからのfail-closed replay。
@@ -77,6 +81,7 @@ updated: 2026-07-12
 - `tools/dev/check` ×2 — exit 0。全governance／documentation／fixture check成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
 - `tools/dev/sim-smoke` ×2 — exit 0。両runでchecksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`一致。
 - preliminary independent contract／stream review — resource amplificationとrunner途中差分testの指摘を修正。再reviewはBLOCKER／HIGH／MEDIUM findingなし、`APPROVE`。
+- 独立fixed-HEAD review — `61670f1`はattempt countの検査順にHIGH 1件で`CHANGES REQUIRED`。修正後`32226c661d159fd14de9620b9c2d2cbb8b286e84`はfindingなし、`APPROVE`。reviewer側でもcheck／259 tests／sim-smoke／clean worktreeを再確認。
 - `git diff --check` — exit 0。
 
 ## Known issues

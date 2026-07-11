@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0009 Golden Board Fixtures]]はPR #13でmerge、post-merge main CI green。19 golden casesを使う[[TASK-0011 Replay Round Trip Verification]]を実装する。
+> [[TASK-0011 Replay Round Trip Verification]]は19 golden cases／34 Application attemptsのdouble validationと独立fixed-HEAD reviewを完了。draft PR publicationと人間merge待ち。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -77,7 +77,7 @@ cssclasses:
 - [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] — resolved／Option 1
 - [[TASK-0024 Authorized Facility Build Battle Command]] — done
 - [[TASK-0009 Golden Board Fixtures]] — done
-- [[TASK-0011 Replay Round Trip Verification]] — in_progress／current
+- [[TASK-0011 Replay Round Trip Verification]] — review／current
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

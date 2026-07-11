@@ -8,7 +8,7 @@ updated: 2026-07-12
 
 ## Phase
 
-`M0 Repository Bootstrap`からversioned golden board evidenceまでは実装・review・CI・merge済み。Gate 1のreplay round tripを実装中。
+`M0 Repository Bootstrap`からversioned golden board evidenceまでは実装・review・CI・merge済み。Gate 1のreplay round tripは実装・double validation・独立fixed-HEAD review済みで、人間merge待ち。
 
 ## Sprint goal
 
@@ -23,7 +23,7 @@ Implement deterministic replay save／load／verification without bypassing Appl
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | TASK-0009 PR #13 merged and post-merge CI green; TASK-0011 in progress |
+| Validation | Yellow | TASK-0011 local double validation and independent fixed-HEAD review approved; draft PR pending |
 
 ## Blockers
 
@@ -52,9 +52,10 @@ Implement deterministic replay save／load／verification without bypassing Appl
 - immutable headless battle state machine with canonical placement／turn／pass commands and merged PR #11 evidence
 - canonical authorized facility build command with merged PR #12 evidence
 - schema-v1 golden suite with 19 cases、35 boundaries、source hashes、ordered facts、exact no-op rejection evidence
+- versioned replay envelope with 34 submitted attempts、accepted-only log chain、strict bounded Stream I/O、typed replay and fail-closed integrity evidence
 
 ## Next
 
-1. Implement／review／merge [[TASK-0011 Replay Round Trip Verification]]
+1. Publish／review／merge [[TASK-0011 Replay Round Trip Verification]]
 2. FEAT-009 independent two-person sign-off
 3. A-6 style data/document synchronization checker

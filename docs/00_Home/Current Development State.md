@@ -17,7 +17,7 @@ updated: 2026-07-12
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | golden fixture integration merged; replay round trip in progress | TASK-0002〜0010、TASK-0023、TASK-0024 merged; TASK-0011 current |
+| Product Rules Kernel | replay round trip implemented and independently approved | TASK-0002〜0010、TASK-0023、TASK-0024 merged; TASK-0011 review |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,7 +35,7 @@ updated: 2026-07-12
 
 ## Current gate
 
-[[TASK-0009 Golden Board Fixtures]] was merged through PR #13 at `b2bfceca8bf88046aa100d563b62c6697d1afcd6`; post-merge main CI run `29155541603` is green. [[TASK-0011 Replay Round Trip Verification]] is current in progress and is limited to versioned Application replay save／load／verification over the merged golden command cases.
+[[TASK-0009 Golden Board Fixtures]] was merged through PR #13 at `b2bfceca8bf88046aa100d563b62c6697d1afcd6`; post-merge main CI run `29155541603` is green. [[TASK-0011 Replay Round Trip Verification]] fixed HEAD `32226c661d159fd14de9620b9c2d2cbb8b286e84` passed double local validation and independent review; draft PR publication and human merge remain.
 
 ## Next development sequence
 
@@ -50,7 +50,7 @@ updated: 2026-07-12
 9. TASK-0010 state machine — done
 10. TASK-0024 authorized facility build command — done
 11. TASK-0009 golden fixtures — done
-12. TASK-0011 replay round trip — in progress／current
+12. TASK-0011 replay round trip — review／current
 
 ## Open human-only item
 
