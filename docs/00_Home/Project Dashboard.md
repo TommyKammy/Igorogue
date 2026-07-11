@@ -8,11 +8,11 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`からking capture resultまではmerge済み。territory-region calculationは実装と独立reviewを完了し、Gate 1のCI／人間merge待ち。
+`M0 Repository Bootstrap`からterritory-region calculationまでは実装・review・CI・merge済み。Gate 1 facility runtimeは実装・独立review・green CI済みで、人間mergeを待つ。
 
 ## Sprint goal
 
-Review and land deterministic territory-region calculation in the shared Domain Rules Kernel.
+Implement deterministic facility runtime semantics in the shared Domain Rules Kernel.
 
 ## Health
 
@@ -23,12 +23,12 @@ Review and land deterministic territory-region calculation in the shared Domain 
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Territory calculation implemented and independently approved; CI pending; facility runtime planning follow-up open |
+| Validation | Yellow | Facility runtime proven locally, independently approved, and green in PR #10 CI |
 
 ## Blockers
 
-- TASK-0008 CI and human merge are pending.
-- TASK-0009 is blocked pending a facility-runtime sequencing Decision Needed.
+- TASK-0023 facility runtime awaits human merge.
+- TASK-0009 remains blocked by TASK-0023 and DECISION-0003; TASK-0010 remains blocked by TASK-0023 and DECISION-0002.
 
 ## Current evidence
 
@@ -49,10 +49,11 @@ Review and land deterministic territory-region calculation in the shared Domain 
 - atomic legal commit binding for board, ordered facts, and next history
 - versioned king-capture result, shared pure evaluator, and legal-commit result binding
 - deterministic stone-layer territory regions, canonical ordering, and FAC projection tests
+- immutable facility state, injected runtime policy, FAC-01〜09 production parity, typed build／placement／transition facts
 
 ## Next
 
-1. [[TASK-0008 Territory Region Calculation]]
-2. Resolve facility-runtime sequencing before [[TASK-0009 Golden Board Fixtures]]
+1. Human review／merge [[TASK-0023 Implement Facility Runtime Semantics]]
+2. Resolve [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] before [[TASK-0009 Golden Board Fixtures]]
 3. FEAT-009 independent two-person sign-off
 4. A-6 style data/document synchronization checker

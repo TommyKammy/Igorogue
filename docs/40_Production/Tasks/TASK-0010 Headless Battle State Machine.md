@@ -5,8 +5,8 @@ status: blocked
 project: Igorogue
 milestone: M1
 priority: high
-dependencies: [TASK-0001]
-updated: 2026-07-10
+dependencies: [TASK-0001, TASK-0023]
+updated: 2026-07-11
 ---
 # TASK-0010 Headless Battle State Machine
 
@@ -19,6 +19,8 @@ updated: 2026-07-10
 - [[Rules Canon]]
 - [[Architecture]]
 - [[Determinism and Replay]]
+- [[DECISION-0002 Resolve Territory and Facility Event Order]]
+- [[TASK-0023 Implement Facility Runtime Semantics]]
 
 ## Non-goals
 
@@ -33,7 +35,7 @@ updated: 2026-07-10
 
 ## Execution log
 
-未着手。
+2026-07-11 — [[DECISION-0002 Resolve Territory and Facility Event Order]]のglobal event order決定と、TASK-0023が提供するfacility-aware composite placement seamを待つため`blocked`を維持。raw `LegalPlacementCommit`からfacility順を独自publishしてはならない。
 
 ## Evidence
 
@@ -41,4 +43,4 @@ updated: 2026-07-10
 
 ## Known issues
 
-なし。
+[[DECISION-0002 Resolve Territory and Facility Event Order]]のowner decisionが必要。TASK-0023 merge前はfacility-aware state transitionを統合できない。

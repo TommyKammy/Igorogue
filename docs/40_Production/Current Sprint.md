@@ -9,16 +9,12 @@ sprint: S0
 
 ## Goal
 
-Review and land deterministic territory-region calculation.
-
-## Ready
-
-- なし
+Implement deterministic facility runtime semantics.
 
 ## In review
 
-- [[TASK-0008 Territory Region Calculation]]
-  - implementation evidence complete; independent review approved with downstream follow-up; CI and human merge pending
+- [[TASK-0023 Implement Facility Runtime Semantics]]
+  - independent `CODE_REVIEW.md` approval, local validation, and green PR #10 CI complete; human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -35,14 +31,16 @@ Review and land deterministic territory-region calculation.
 - [[TASK-0005 Hypothetical Placement and Capture Resolution]]
 - [[TASK-0006 Suicide Legality and Terminal Capture]]
 - [[TASK-0007 King Capture and Battle Result]]
+- [[TASK-0008 Territory Region Calculation]]
 
-## Next after TASK-0008
+## Next sequencing decision after TASK-0023
 
-- [[TASK-0009 Golden Board Fixtures]]
-  - blocked pending facility-runtime sequencing Decision Needed
+- [[DECISION-0003 Sequence Golden Replay After Battle State Machine]]
+- [[TASK-0009 Golden Board Fixtures]] or [[TASK-0010 Headless Battle State Machine]]
+  - owner decision pending; neither task is selected while DECISION-0003 remains open
 
 ## Review questions
 
-- Are orthogonally connected empty points grouped into deterministic regions in canonical order?
-- Is ownership black-only, white-only, or neutral for mixed-color and stone-free boundaries?
-- Do facility markers leave region connectivity, size, ownership, and real liberties unchanged?
+- Are facility instances immutable, unique, canonically ordered, and never committed beneath stones?
+- Does only an accepted legal placement destroy the placement-point facility while rejected placement is a complete no-op?
+- Do neutralization, opponent control, restoration, capacity, over-capacity, and build limits match FAC-01〜09 without changing stone topology?

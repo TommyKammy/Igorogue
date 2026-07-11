@@ -17,7 +17,7 @@ updated: 2026-07-11
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | determinism through king capture result implemented and merged; territory calculation implemented and in review | TASK-0002 through TASK-0007 CI + TASK-0008 local tests and formal review |
+| Product Rules Kernel | territory merged; facility runtime implemented and in review | TASK-0002 through TASK-0008 + TASK-0023 local/independent validation |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,9 +35,11 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0008 Territory Region Calculation]] completed implementation evidence and formal independent review. It remains the current task while CI and human merge are pending. [[TASK-0009 Golden Board Fixtures]] is blocked until facility-runtime sequencing is resolved by Decision Needed.
+[[TASK-0008 Territory Region Calculation]] was merged through PR #9 with green CI. [[TASK-0023 Implement Facility Runtime Semantics]] is implemented with FAC-01〜09 production parity, independent approval, and green PR #10 CI; it is the current task in review pending human merge. TASK-0009 remains blocked by TASK-0023 and [[DECISION-0003 Sequence Golden Replay After Battle State Machine]].
 
 ## Next development sequence
+
+TASK-0009とTASK-0010の番号はplaceholderであり、相対順とTASK-0023後の次タスクは[[DECISION-0003 Sequence Golden Replay After Battle State Machine]]のowner decisionまで未選択とする。
 
 1. TASK-0002 deterministic RNG and command log — done
 2. TASK-0003 coordinates and neighbours — done
@@ -45,10 +47,11 @@ updated: 2026-07-11
 4. TASK-0005 placement and capture — done
 5. TASK-0006 legality and terminal capture — done
 6. TASK-0007 king result — done
-7. TASK-0008 territory — review／current
-8. TASK-0009 golden fixtures — blocked／facility runtime Decision Needed
-9. TASK-0010 state machine
-10. TASK-0011 replay round trip
+7. TASK-0008 territory — done
+8. TASK-0023 facility runtime — review／current
+9. TASK-0009 golden fixtures — blocked／TASK-0023 and DECISION-0003
+10. TASK-0010 state machine — blocked／TASK-0023 and DECISION-0002
+11. TASK-0011 replay round trip
 
 ## Open human-only item
 

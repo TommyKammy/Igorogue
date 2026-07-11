@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0008 Territory Region Calculation]]の独立review済み実装をCIと人間mergeへ進める。
+> [[TASK-0023 Implement Facility Runtime Semantics]]のFAC-01〜09 facility runtime実装はgreen CIまで確認済み。人間mergeで閉じる。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -56,6 +56,8 @@ cssclasses:
 ## Remaining decisions
 
 - ローカライズ対応範囲
+- [[DECISION-0002 Resolve Territory and Facility Event Order]]
+- [[DECISION-0003 Sequence Golden Replay After Battle State Machine]]
 
 ## 直近タスク
 
@@ -68,8 +70,10 @@ cssclasses:
 - [[TASK-0005 Hypothetical Placement and Capture Resolution]] — done
 - [[TASK-0006 Suicide Legality and Terminal Capture]] — done
 - [[TASK-0007 King Capture and Battle Result]] — done
-- [[TASK-0008 Territory Region Calculation]] — review／current
-- [[TASK-0009 Golden Board Fixtures]] — blocked／facility runtime Decision Needed
+- [[TASK-0008 Territory Region Calculation]] — done
+- [[DECISION-0001 Insert Facility Runtime Task Before Golden Fixtures]] — resolved
+- [[TASK-0023 Implement Facility Runtime Semantics]] — review／current
+- [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0023 and DECISION-0003
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs
