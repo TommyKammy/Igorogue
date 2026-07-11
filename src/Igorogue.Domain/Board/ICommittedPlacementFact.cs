@@ -2,7 +2,7 @@ using Igorogue.Domain.Combat;
 
 namespace Igorogue.Domain.Board;
 
-public interface ICommittedPlacementFact
+public interface ICommittedPlacementFact : IBattleFact
 {
 }
 
