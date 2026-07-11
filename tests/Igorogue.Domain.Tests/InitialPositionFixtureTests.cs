@@ -54,14 +54,22 @@ public sealed class InitialPositionFixtureTests
     public void Coord11EachInitialKingGroupHasThreeConnectedStonesAndSevenUniqueLiberties()
     {
         var context = Fixture.Value;
+        var analysis = StoneGroupAnalyzer.Analyze(BoardState.FromInitialPosition(context.Position));
+
+        Assert.Equal(2, analysis.Groups.Count);
+        Assert.Equal(
+            new[] { C(context, 2, 2), C(context, 6, 5) },
+            analysis.Groups.Select(group => group.Anchor).ToArray());
 
         AssertInitialKingGroup(
             context,
+            analysis,
             StoneColor.Black,
             [C(context, 2, 1), C(context, 3, 1), C(context, 1, 2), C(context, 4, 2),
                 C(context, 1, 3), C(context, 3, 3), C(context, 2, 4)]);
         AssertInitialKingGroup(
             context,
+            analysis,
             StoneColor.White,
             [C(context, 6, 4), C(context, 5, 5), C(context, 7, 5), C(context, 4, 6),
                 C(context, 7, 6), C(context, 5, 7), C(context, 6, 7)]);
@@ -156,6 +164,7 @@ public sealed class InitialPositionFixtureTests
 
     private static void AssertInitialKingGroup(
         FixtureContext context,
+        StoneGroupAnalysis analysis,
         StoneColor color,
         IReadOnlyList<CanonicalPoint> expectedLiberties)
     {
@@ -163,69 +172,19 @@ public sealed class InitialPositionFixtureTests
             .Where(stone => stone.Color == color)
             .ToArray();
         var king = Assert.Single(colorStones, stone => stone.Role == InitialStoneRole.King);
-        var group = ConnectedGroup(context, king.Point, color);
-        var liberties = UniqueLiberties(context, group);
+        var group = analysis.GroupAt(king.Point);
 
-        Assert.Equal(3, group.Count);
-        Assert.Contains(king.Point, group);
+        Assert.NotNull(group);
+        Assert.Equal(color, group.Color);
+        Assert.Equal(3, group.Stones.Count);
+        Assert.Single(group.Stones, stone => stone.IsKing);
+        Assert.Contains(king.Point, group.StonePoints);
         Assert.Equal(
             colorStones.Select(stone => stone.Point)
                 .OrderBy(context.Geometry.ToCanonicalIndex)
                 .ToArray(),
-            group);
-        Assert.Equal(expectedLiberties, liberties);
-    }
-
-    private static IReadOnlyList<CanonicalPoint> ConnectedGroup(
-        FixtureContext context,
-        CanonicalPoint start,
-        StoneColor color)
-    {
-        var occupied = context.Position.Stones.ToDictionary(stone => stone.Point);
-        var found = new HashSet<CanonicalPoint>();
-        var queue = new Queue<CanonicalPoint>();
-        queue.Enqueue(start);
-
-        while (queue.Count > 0)
-        {
-            var point = queue.Dequeue();
-            if (!found.Add(point))
-            {
-                continue;
-            }
-
-            foreach (var neighbour in context.Geometry.GetOrthogonalNeighbours(point))
-            {
-                if (!found.Contains(neighbour) &&
-                    occupied.TryGetValue(neighbour, out var stone) &&
-                    stone.Color == color)
-                {
-                    queue.Enqueue(neighbour);
-                }
-            }
-        }
-
-        return found.OrderBy(context.Geometry.ToCanonicalIndex).ToArray();
-    }
-
-    private static IReadOnlyList<CanonicalPoint> UniqueLiberties(
-        FixtureContext context,
-        IReadOnlyCollection<CanonicalPoint> group)
-    {
-        var occupied = context.Position.Stones.Select(stone => stone.Point).ToHashSet();
-        var liberties = new HashSet<CanonicalPoint>();
-        foreach (var point in group)
-        {
-            foreach (var neighbour in context.Geometry.GetOrthogonalNeighbours(point))
-            {
-                if (!occupied.Contains(neighbour))
-                {
-                    liberties.Add(neighbour);
-                }
-            }
-        }
-
-        return liberties.OrderBy(context.Geometry.ToCanonicalIndex).ToArray();
+            group.StonePoints);
+        Assert.Equal(expectedLiberties, group.RealLiberties);
     }
 
     private static string[] RenderDiagram(FixtureContext context)

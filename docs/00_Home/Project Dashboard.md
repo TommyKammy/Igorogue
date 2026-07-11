@@ -8,11 +8,11 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap` and the TASK-0002 determinism foundation are complete. Gate 1 board Rules Kernel work is active.
+`M0 Repository Bootstrap`、TASK-0002 determinism、TASK-0003 board geometryは完了。Gate 1 board Rules Kernel workが継続中。
 
 ## Sprint goal
 
-Implement canonical 7×7 coordinates, stable indexing, orthogonal neighbours, and the accepted point-symmetric initial position in the shared Domain Rules Kernel.
+Review and land same-color orthogonal groups and duplicate-free real-liberty sets in the shared Domain Rules Kernel.
 
 ## Health
 
@@ -23,11 +23,11 @@ Implement canonical 7×7 coordinates, stable indexing, orthogonal neighbours, an
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Determinism and board geometry tested; groups/capture pending |
+| Validation | Yellow | Groups and real liberties tested; placement/capture pending |
 
 ## Blockers
 
-- Group, liberty, placement, and capture Rules Kernel is not implemented yet.
+- Hypothetical placement and simultaneous capture Rules Kernel is not implemented yet.
 
 ## Current evidence
 
@@ -41,10 +41,11 @@ Implement canonical 7×7 coordinates, stable indexing, orthogonal neighbours, an
 - managed Windows debug export and final green CI
 - versioned RNG streams and ordered command-log checksums
 - canonical 7×7 geometry and standard initial-position invariants
+- deterministic same-color groups and duplicate-free real-liberty sets
 
 ## Next
 
-1. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
-2. [[TASK-0004 Stone Groups and Unique Liberty Sets]]
+1. [[TASK-0004 Stone Groups and Unique Liberty Sets]]
+2. [[TASK-0005 Hypothetical Placement and Capture Resolution]]
 3. FEAT-009 independent two-person sign-off
 4. A-6 style data/document synchronization checker
