@@ -63,7 +63,7 @@ cssclasses:
 - [[TASK-0001 Decide Engine and Repository]] — done
 - [[TASK-0020 Review Repository Bootstrap Runtime Evidence]] — done
 - [[TASK-0002 Deterministic RNG and Command Log]] — done
-- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]] — ready／current
+- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]] — review／current
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

@@ -23,11 +23,11 @@ Implement canonical 7×7 coordinates, stable indexing, orthogonal neighbours, an
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Determinism foundation tested; formal board Kernel not implemented |
+| Validation | Yellow | Determinism and board geometry tested; groups/capture pending |
 
 ## Blockers
 
-- No board Rules Kernel exists yet.
+- Group, liberty, placement, and capture Rules Kernel is not implemented yet.
 
 ## Current evidence
 
@@ -40,6 +40,7 @@ Implement canonical 7×7 coordinates, stable indexing, orthogonal neighbours, an
 - authentic NuGet locks and clean-checkout runtime evidence
 - managed Windows debug export and final green CI
 - versioned RNG streams and ordered command-log checksums
+- canonical 7×7 geometry and standard initial-position invariants
 
 ## Next
 
