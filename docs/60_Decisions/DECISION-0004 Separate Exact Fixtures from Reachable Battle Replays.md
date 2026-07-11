@@ -13,7 +13,7 @@ updated: 2026-07-11
 
 ## Conflicting sources
 
-- `game_data/fixtures/board_repetition_fixtures.json`のKO-03は未実装の`stone_kind`、KO-04は未実装の非石state change、KO-07はenemy candidateのsilent filteringを含む。
+- `game_data/fixtures/board_repetition_fixtures.json`のKO-03／06は未実装の`stone_kind`、KO-04は未実装の非石state change、KO-07はenemy candidateのsilent filteringを含む。
 - `game_data/fixtures/facility_intersection_fixtures.json`のFAC-05はboard snapshotの直接差し替え、FAC-08／09はfacility build operationを含む。
 - TASK-0010はspecial stone、非石resource、enemy ranking、facility buildをNon-goalとする。
 - TASK-0009のValidationはdirect Domain snapshotをgolden replayと呼ぶことを禁止する。
@@ -38,7 +38,7 @@ TASK-0009を`blocked`に保ち、test-only board mutationやdirect Domain commit
 
 - KO-01〜07／FAC-01〜09のcanonical JSON payloadと期待値は、全caseのDomain unit evidenceでexactに維持する。
 - 現Application commandで到達可能な遷移だけをtrue replayとする。direct Domain snapshot、任意history注入、任意board mutationをreplayと呼ばない。
-- KO-03／04はsource metadataを保持してgeneric stone commandへの正規化を明示し、exact metadata／topology assertionをDomain evidenceで併用する。
+- KO-03／04／06はsource metadataを保持してgeneric stone commandへの正規化または非石field省略を明示し、exact metadata／topology assertionをDomain evidenceで併用する。KO-06のcommand sequence自体はP0から到達可能なtrue replayである。
 - KO-07はtest adapterが共有Domain legalityで候補をsilent filterし、選択されたcommandだけをApplicationへsubmitする。除外候補の`CommandRejected`をbattle facts／logへ追加しない。
 - FAC-01／02／06／07はexact Domain evidenceに加えてApplication start boundaryを固定し、state transition replayとは呼ばない。
 - FAC-05のcanonical direct snapshot sequenceはDomain evidenceに残し、同一instanceの停止→再稼働を合法commandで起こすlinked semantic Application replayを追加する。

@@ -725,8 +725,16 @@
       "evidence": {
         "domain": "exact_fixture",
         "application": "canonical_replay",
-        "relation": "exact",
-        "limitations": []
+        "relation": "metadata_normalized",
+        "limitations": [
+          "The source blood label is retained below and normalized to the canonical basic-stone Application command because topology repetition has no stone-kind dimension."
+        ]
+      },
+      "source_normalization": {
+        "source_stone_kind": "blood",
+        "source_non_topology_metadata": {},
+        "application_projection": "canonical_basic_stone_placement",
+        "omitted_fields": []
       },
       "seed": 42,
       "initial": {

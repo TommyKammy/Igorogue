@@ -21,7 +21,7 @@ Rejected attempts belong to the ordered replay script but not the accepted-only 
 ## Required ADR-0011 cases
 
 `game_data/fixtures/board_repetition_fixtures.json`のKO-01〜KO-07を[[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]]の分類でgolden suiteへ移植する。
-KO-01／02／05／06はtrue Application replay、KO-03／04はsource metadata正規化を明示したreachable replay、KO-07はsilent candidate-filter adapterと選択command replayである。exact payload／期待値は全件のDomain unit evidenceで維持する。
+KO-01／02／05はtrue Application replay、KO-03／04はsource metadata正規化を明示したreachable replay、KO-06はtrue command sequenceであると同時に`stone_kind=blood`のgeneric command正規化を明示する。KO-07はsilent candidate-filter adapterと選択command replayである。exact payload／期待値は全件のDomain unit evidenceで維持する。
 
 反復不合法commandを実行するcaseでは、診断用`CommandRejected`以外のbattle factがなく、state／accepted-only logが変わらないことを検査する。KO-07のsilent filterでは`CommandRejected`自体をbattle factへ発行しない。
 

@@ -75,13 +75,15 @@ updated: 2026-07-11
 
 2026-07-11 — `tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`を各2回実行し全成功。実装とvalidation完了後、独立fixed-HEAD reviewへ渡すため`review`へ遷移した。
 
+2026-07-11 — commit `375326e51527c4ad9d1c0a9313ef49271b1357f7`の独立fixed-HEAD reviewは、KO-06のsource `stone_kind=blood`をgeneric Application commandへ正規化しながら`exact`分類していたHIGH 1件で`CHANGES REQUIRED`。指摘を採用し、KO-06をtrue command replay＋`metadata_normalized`へ再分類、structured source metadata／mapping test／Decision・ADR・READMEを同期した。
+
 ## Evidence
 
-- `tests/golden/v1/board_fixture_cases.json` — schema v1、SHA-256 `5a0078fb9624ad9719266ab8be5a7d13aac54c2af453aca9216dfb6305d0e444`、19 cases、35 boundaries、6 rejected attempts、1 silent-filter boundary。
+- `tests/golden/v1/board_fixture_cases.json` — schema v1、SHA-256 `b3e62c12574746233e1d829e4f30fcc179559cae017fcdd707a656e63b01655d`、19 cases、35 boundaries、6 rejected attempts、1 silent-filter boundary。
 - `tests/Igorogue.Application.Tests/GoldenBoardFixtureAdapter.cs`／`GoldenBoardFixtureTests.cs` — source hash／evidence contract、全boundary checksum／ordered fact、terminal result、same-run twice、reversed setup enumerationを検証。
-- `tools/dev/test` ×3 — exit 0。Domain 190、Application 36、Architecture 15、計241 tests成功。build警告0／error 0。
-- `tools/dev/check` ×3 — exit 0。全governance／documentation／fixture check成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
-- `tools/dev/sim-smoke` ×2 — exit 0。両runでchecksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`一致。
+- `tools/dev/test` ×4 — exit 0。Domain 190、Application 36、Architecture 15、計241 tests成功。build警告0／error 0。
+- `tools/dev/check` ×4 — exit 0。全governance／documentation／fixture check成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
+- `tools/dev/sim-smoke` ×3 — exit 0。全runでchecksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`一致。
 
 ## Known issues
 

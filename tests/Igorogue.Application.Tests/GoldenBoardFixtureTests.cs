@@ -15,7 +15,7 @@ public sealed class GoldenBoardFixtureTests
         new("KO-03", "fixture:repetition:KO-03", "exact_fixture", "canonical_replay", "metadata_normalized"),
         new("KO-04", "fixture:repetition:KO-04", "exact_fixture", "canonical_replay", "metadata_normalized"),
         new("KO-05", "fixture:repetition:KO-05", "exact_fixture", "canonical_replay", "exact"),
-        new("KO-06", "fixture:repetition:KO-06", "exact_fixture", "canonical_replay", "exact"),
+        new("KO-06", "fixture:repetition:KO-06", "exact_fixture", "canonical_replay", "metadata_normalized"),
         new("KO-07", "fixture:repetition:KO-07", "exact_fixture", "adapter_plus_replay", "silent_filter"),
         new("FAC-01", "fixture:facility:FAC-01", "exact_fixture", "initial_state", "exact"),
         new("FAC-02", "fixture:facility:FAC-02", "exact_fixture", "initial_state", "exact"),
@@ -194,9 +194,12 @@ public sealed class GoldenBoardFixtureTests
             sources,
             "KO-04",
             ["brilliant_multiplier", "cards_drawn", "facility_destroyed", "qi_delta"]);
+        AssertSourceNormalization(catalog, sources, "KO-06", []);
         Assert.All(
             catalog.Cases.Where(fixture =>
-                fixture.Id != "KO-03" && fixture.Id != "KO-04"),
+                fixture.Id != "KO-03" &&
+                fixture.Id != "KO-04" &&
+                fixture.Id != "KO-06"),
             fixture => Assert.Null(fixture.SourceNormalization));
     }
 
