@@ -14,7 +14,7 @@ Implement versioned golden board evidence over the deterministic headless battle
 ## In review
 
 - [[TASK-0009 Golden Board Fixtures]]
-  - KO-01〜07、FAC-01〜09、initial、simultaneous capture、terminal exception／validation・independent review green、PR／CI pending
+  - KO-01〜07、FAC-01〜09、initial、simultaneous capture、terminal exception／validation・independent review・draft PR #13 initial CI green、人間merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 

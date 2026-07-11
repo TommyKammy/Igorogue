@@ -35,7 +35,7 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0024 Authorized Facility Build Battle Command]] was merged through PR #12 and post-merge main CI run `29153064894` is green. Project owner selected [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] Option 1, separating exact Domain fixture evidence from reachable Application replay evidence without changing player-visible rules. [[TASK-0009 Golden Board Fixtures]] implemented 19 versioned cases; fixed-HEAD independent review is approved and PR／CI are pending.
+[[TASK-0024 Authorized Facility Build Battle Command]] was merged through PR #12 and post-merge main CI run `29153064894` is green. Project owner selected [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] Option 1, separating exact Domain fixture evidence from reachable Application replay evidence without changing player-visible rules. [[TASK-0009 Golden Board Fixtures]] implemented 19 versioned cases; fixed-HEAD independent review is approved and draft PR #13 initial CI is green. Human merge is pending.
 
 ## Next development sequence
 
