@@ -9,14 +9,16 @@ sprint: S0
 
 ## Goal
 
-Continue Gate 1 by implementing same-color orthogonal groups and duplicate-free real-liberty sets.
+Review and land same-color orthogonal groups and duplicate-free real-liberty sets.
 
 ## Ready
 
-- [[TASK-0004 Stone Groups and Unique Liberty Sets]]
+- なし
 
 ## In review
 
+- [[TASK-0004 Stone Groups and Unique Liberty Sets]]
+  - implementation evidence complete; independent Codex review approved; CI pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 

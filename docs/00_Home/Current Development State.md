@@ -17,7 +17,7 @@ updated: 2026-07-11
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | determinism and board geometry implemented; groups/liberties active | TASK-0002 + TASK-0003 tests |
+| Product Rules Kernel | determinism and board geometry implemented; groups/liberties in review | TASK-0002 through TASK-0004 tests |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,7 +35,7 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0003 Board Coordinates and Orthogonal Neighbours]] was merged through PR #4 with green CI. [[TASK-0004 Stone Groups and Unique Liberty Sets]] is the current authorized implementation task.
+[[TASK-0003 Board Coordinates and Orthogonal Neighbours]] was merged through PR #4 with green CI. [[TASK-0004 Stone Groups and Unique Liberty Sets]] is in review and remains the current Gate 1 task.
 
 ## Next development sequence
 

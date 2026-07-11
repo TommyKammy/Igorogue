@@ -12,7 +12,7 @@ updated: 2026-07-11
 
 ## Sprint goal
 
-Implement same-color orthogonal groups and duplicate-free real-liberty sets in the shared Domain Rules Kernel.
+Review and land same-color orthogonal groups and duplicate-free real-liberty sets in the shared Domain Rules Kernel.
 
 ## Health
 
@@ -23,11 +23,11 @@ Implement same-color orthogonal groups and duplicate-free real-liberty sets in t
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Determinism and board geometry tested; groups/capture pending |
+| Validation | Yellow | Groups and real liberties tested; placement/capture pending |
 
 ## Blockers
 
-- Group, liberty, placement, and capture Rules Kernel is not implemented yet.
+- Hypothetical placement and simultaneous capture Rules Kernel is not implemented yet.
 
 ## Current evidence
 
@@ -41,6 +41,7 @@ Implement same-color orthogonal groups and duplicate-free real-liberty sets in t
 - managed Windows debug export and final green CI
 - versioned RNG streams and ordered command-log checksums
 - canonical 7×7 geometry and standard initial-position invariants
+- deterministic same-color groups and duplicate-free real-liberty sets
 
 ## Next
 

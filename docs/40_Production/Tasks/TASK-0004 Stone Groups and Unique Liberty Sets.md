@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0004
-status: in_progress
+status: review
 project: Igorogue
 milestone: M1
 priority: high
@@ -45,6 +45,8 @@ updated: 2026-07-11
 
 2026-07-11 — package、project reference、lock、Application、Content、game_data、Accepted仕様、Godot assetは変更していない。コミット前API reviewとarchitecture／scope reviewはいずれもfindingなしで`APPROVE`。
 
+2026-07-11 — 独立Codex closeout reviewでコードfindingなし。唯一のLOW findingだったTASK／dashboardの状態driftを修正し、再確認`APPROVE`を得て`review`へ遷移。
+
 ## Evidence
 
 - `tools/dev/check` — exit 0。documentation、wikilink、content、既存fixture、governance checkが成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
@@ -54,6 +56,7 @@ updated: 2026-07-11
 - `tests/Igorogue.Domain.Tests/BoardStateTests.cs` — 入力防御copy、canonical順、初期王石／護衛mapping、同色／異色重複点拒否、null／不正色拒否、immutable占有石列を確認。
 - `tests/Igorogue.Domain.Tests/InitialPositionFixtureTests.cs` — `standard_v0_2`をproduction `BoardState`／`StoneGroupAnalyzer`へ通し、2 group、anchor `(2,2)`／`(6,5)`、各3石・王石1・実呼吸点7を確認。
 - 読み取り専用API reviewとarchitecture／scope review — 両方findingなしで`APPROVE`。review側でもgovernance、85/85 test、warning 0／error 0を確認。
+- 独立Codex closeout review — `origin/main...HEAD`を正本仕様と直接照合し、コードfindingなし。governance、85/85 test、2回同一simulator checksumを独立確認。状態同期だけをLOW follow-upとして指摘し、修正前`APPROVE WITH FOLLOW-UP`、修正後再確認はfindingなしで`APPROVE`。
 
 ## Known issues
 
