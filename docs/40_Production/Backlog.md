@@ -2,17 +2,17 @@
 type: backlog
 status: active
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # Backlog
 
 ## Handoff and M0 gate
 
 - [[TASK-0021 Prepare macOS Codex App Handoff]] — done
-- [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]] — ready／next
-- [[TASK-0001 Decide Engine and Repository]] — review; static bootstrap complete
-- [[TASK-0020 Review Repository Bootstrap Runtime Evidence]] — blocked; TASK-0022 operationally closes it
-- [[TASK-0002 Deterministic RNG and Command Log]] — blocked until runtime gate closes
+- [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]] — done
+- [[TASK-0001 Decide Engine and Repository]] — done
+- [[TASK-0020 Review Repository Bootstrap Runtime Evidence]] — done
+- [[TASK-0002 Deterministic RNG and Command Log]] — review／current
 
 ## M-1 remaining review
 

@@ -1,7 +1,7 @@
 ---
 type: validation-report
 id: VALIDATION-TASK-0022-MACOS
-status: review
+status: complete
 project: Igorogue
 task: TASK-0022
 evidence_level: runtime-bootstrap
@@ -11,7 +11,7 @@ updated: 2026-07-11
 
 ## Verdict
 
-The pinned bootstrap succeeds both in the task worktree and from a detached clean worktree at implementation commit `c1e1998d34f7e9abbb8962b7cc34897ebd9675a1`. Authentic lock files are committed at `70f0eec`. Local and clean-checkout gates pass. CI passed on the previous PR head, but the final review-correction commit has not run yet; Stage 4 therefore remains pending.
+The pinned bootstrap succeeds both in the task worktree and from a detached clean worktree at implementation commit `c1e1998d34f7e9abbb8962b7cc34897ebd9675a1`. Authentic lock files are committed at `70f0eec`. Local, clean-checkout, independent review, final CI, and human merge gates pass.
 
 ## Identity
 
@@ -52,7 +52,7 @@ Private host paths are represented as `<REPO_ROOT>`, `<CLEAN_WORKTREE>`, and `<G
 | SHA-256 sidecar | present | present |
 | Tracked-file cleanliness | clean | clean |
 
-The latest completed CI before the final review corrections was run [`29127755203`](https://github.com/TommyKammy/Igorogue/actions/runs/29127755203) at `794588c8a643e670b7b49deb212bc5e6171e9e9e`:
+Final CI run [`29128583728`](https://github.com/TommyKammy/Igorogue/actions/runs/29128583728) passed at `a09e2d3d4425566a458a987556db3429d24076c1`:
 
 - Governance and generated content — pass, including a real PowerShell native exit-17 fail-fast probe;
 - Pure .NET build, tests, and simulator smoke — pass;
@@ -85,8 +85,8 @@ No gameplay code, package version, version pin, accepted rule, scene, resource, 
 - [[TASK-0022-command-log.txt]]
 - `data/TASK-0022-artifact-hashes.json`
 
-## Remaining gate
+## Closure
 
-Stage 4 is pending for the commit that contains the final review corrections. The associated GitHub check on that commit is the authoritative final-CI evidence; this committed file does not claim success for an unexecuted future run. The report remains `review` until that check is green and a human makes the `review → done` and merge decisions.
+PR [#2](https://github.com/TommyKammy/Igorogue/pull/2) was merged as `b7d421d2e7f644366f8b186ccd7d4c333ef35f65`. TASK-0022, TASK-0001, and TASK-0020 are complete; TASK-0002 is unblocked.
 
 The Windows debug export is integrity-hashed but bit-for-bit reproducible export output is not a TASK-0022 acceptance criterion. Separate local and clean-worktree exports produced different executable hashes; runtime state determinism continues to be covered by the identical simulator and Godot smoke checksums.

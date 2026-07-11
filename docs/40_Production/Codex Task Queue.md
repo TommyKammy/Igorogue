@@ -2,17 +2,17 @@
 type: roadmap
 status: active
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # Codex Task Queue
 
 ## Gate 0 — macOS runtime proof
 
-### Ready
+### Completed
 
 - [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]]
 
-### Review/blocked artifacts it closes
+### Closed artifacts
 
 - [[TASK-0001 Decide Engine and Repository]]
 - [[TASK-0020 Review Repository Bootstrap Runtime Evidence]]
@@ -24,6 +24,8 @@ updated: 2026-07-10
 ## Gate 1 — deterministic foundation
 
 Run serially unless a later architecture review explicitly permits parallel work.
+
+Current: [[TASK-0002 Deterministic RNG and Command Log]].
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]

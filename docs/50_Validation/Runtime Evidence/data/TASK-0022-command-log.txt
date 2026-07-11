@@ -133,4 +133,18 @@ Godot .NET headless smoke and Windows debug export: success
 Run: https://github.com/TommyKammy/Igorogue/actions/runs/29127755203
 exit=0
 
-Final review-correction commit: pending CI; see its associated GitHub checks.
+At this point in the sequence, final review-correction CI was pending; closure is recorded below.
+
+[Final review correction and merge]
+$ GitHub Actions run 29128583728 at a09e2d3d4425566a458a987556db3429d24076c1
+Governance and generated content: success
+PowerShell native exit-17 fail-fast probe: success
+Pure .NET build, tests, and simulator smoke: success
+Godot .NET headless smoke and Windows debug export: success
+Run: https://github.com/TommyKammy/Igorogue/actions/runs/29128583728
+exit=0
+
+$ GitHub pull request 2
+state=merged
+merge_commit=b7d421d2e7f644366f8b186ccd7d4c333ef35f65
+exit=0

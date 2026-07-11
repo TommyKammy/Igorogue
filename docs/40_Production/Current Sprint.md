@@ -2,26 +2,23 @@
 type: sprint
 status: active
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-11
 sprint: S0
 ---
 # Current Sprint
 
 ## Goal
 
-Complete the macOS Codex handoff and convert static repository bootstrap evidence into authentic clean-host runtime and CI evidence.
+Begin Gate 1 by implementing deterministic RNG streams and the ordered command-log contract after closing the macOS runtime gate.
 
 ## Ready
 
-- [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]]
+- なし
 
 ## In review
 
-- [[TASK-0001 Decide Engine and Repository]]
-  - solution, projects, wrappers, generated content, verifier, and CI definitions exist
-  - runtime proof remains pending
-- [[TASK-0020 Review Repository Bootstrap Runtime Evidence]]
-  - closed by TASK-0022 when all local, clean-checkout, export, and CI criteria pass
+- [[TASK-0002 Deterministic RNG and Command Log]]
+  - implementation evidence complete; independent Codex review approved; CI pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -29,16 +26,16 @@ Complete the macOS Codex handoff and convert static repository bootstrap evidenc
 
 - M-1 P0 design repair tasks TASK-0013 through TASK-0019
 - [[TASK-0021 Prepare macOS Codex App Handoff]]
+- [[TASK-0022 Bootstrap macOS Host and Close Runtime Evidence]]
+- [[TASK-0001 Decide Engine and Repository]]
+- [[TASK-0020 Review Repository Bootstrap Runtime Evidence]]
 
-## Next after runtime evidence
+## Next after TASK-0002
 
-- [[TASK-0002 Deterministic RNG and Command Log]]
+- [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
 
 ## Review questions
 
-- Are the exact pinned SDK and Godot .NET editor available on the Mac host?
-- Are authentic package locks stable across two generations and a clean checkout?
-- Do xUnit and simulator smoke run without source changes?
-- Does Godot 4.7 .NET build and run headlessly on macOS?
-- Can the Mac host cross-export the Windows debug build with matching templates?
-- Are all CI jobs green on the reviewed commit?
+- Are gameplay/reward/cosmetic RNG streams isolated and versioned?
+- Does the same seed and ordered input produce identical output and checksum?
+- Does rejected input leave command-log and RNG state unchanged?

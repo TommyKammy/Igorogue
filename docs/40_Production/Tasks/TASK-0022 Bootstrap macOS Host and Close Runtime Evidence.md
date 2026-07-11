@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0022
-status: review
+status: done
 project: Igorogue
 milestone: M0
 priority: P0
@@ -151,7 +151,7 @@ Do not record username, machine serial, tokens, or private absolute paths.
 
 ## Execution log
 
-2026-07-11 — local and clean-checkout gates passed; final review-correction CI pending:
+2026-07-11 — local, clean-checkout, review, CI, and merge gates passed:
 
 - Installed and verified .NET SDK 8.0.422 arm64 and Godot 4.7 stable .NET with matching export templates.
 - Generated all eight authentic NuGet lock files twice; the second generation was stable. Human review preceded commit `70f0eec`.
@@ -160,7 +160,9 @@ Do not record username, machine serial, tokens, or private absolute paths.
 - Repeated the full required sequence from a detached clean worktree at `c1e1998` with no tracked or untracked prerequisite.
 - Corrected the independent review's PowerShell fail-fast finding in `d47cc67`; CI executed a native exit-17 regression before rerunning the full pipeline.
 - CI run `29127755203` passed governance, pure .NET, and Godot managed-export jobs on prior head `794588c`.
-- Final review corrections broaden PowerShell fail-fast coverage and repair handoff lifecycle validation; their associated CI check is pending.
+- Final review corrections broadened PowerShell fail-fast coverage and repaired handoff lifecycle validation.
+- CI run `29128583728` passed all three jobs at final PR head `a09e2d3`.
+- Human merge decision completed PR #2 as merge commit `b7d421d`; TASK-0001 and TASK-0020 are closed.
 
 2026-07-10 — CI preflight only; the macOS host evidence sequence has not started:
 
@@ -178,7 +180,8 @@ Do not record username, machine serial, tokens, or private absolute paths.
 - Simulator checksum: `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd` on both runs.
 - Content hash: `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`.
 - Clean-checkout Windows executable SHA-256: `0aeded8aaf1b7398549906215aa5ec1cbc16262055b3dba555d036b69fe71d5a`.
-- Stage 4 CI: pending for the final review-correction commit. Last successful prior-head run: `https://github.com/TommyKammy/Igorogue/actions/runs/29127755203` at `794588c8a643e670b7b49deb212bc5e6171e9e9e`.
+- Stage 4 CI: passed — `https://github.com/TommyKammy/Igorogue/actions/runs/29128583728` at `a09e2d3d4425566a458a987556db3429d24076c1`.
+- Merged pull request: `https://github.com/TommyKammy/Igorogue/pull/2`; merge commit `b7d421d2e7f644366f8b186ccd7d4c333ef35f65`.
 
 ### Prior CI preflight
 
@@ -191,7 +194,6 @@ Do not record username, machine serial, tokens, or private absolute paths.
 
 ## Known issues
 
-- TASK-0022 remains `review` until the final commit's associated CI check is green and a human makes the required `review → done` and merge decisions.
+- CI reports non-blocking Node.js 20 deprecation warnings for current action versions.
 - `pwsh` is not installed on the macOS host; PowerShell fail-fast behavior was executed successfully on the GitHub Ubuntu runner with a native exit-17 probe.
 - Separate Windows debug exports were not byte-identical. TASK-0022 requires an integrity sidecar, not reproducible build bytes; simulator and Godot runtime checksums remained identical.
-- CI reports non-blocking Node.js 20 deprecation warnings for current action versions.
