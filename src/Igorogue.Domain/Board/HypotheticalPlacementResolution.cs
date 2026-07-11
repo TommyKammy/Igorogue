@@ -8,6 +8,7 @@ public sealed class HypotheticalPlacementResolution
     private readonly ReadOnlyCollection<PlacementCaptureFact> orderedFactView;
 
     internal HypotheticalPlacementResolution(
+        BoardState sourceBoard,
         BoardStone placedStone,
         BoardState boardAfterCapture,
         StoneGroup[] capturedGroups,
@@ -15,6 +16,7 @@ public sealed class HypotheticalPlacementResolution
         StoneGroup placedGroupAfterCapture,
         PlacementCaptureFact[] orderedFacts)
     {
+        SourceBoard = sourceBoard;
         PlacedStone = placedStone;
         BoardAfterCapture = boardAfterCapture;
         GroupsAfterCapture = groupsAfterCapture;
@@ -23,6 +25,8 @@ public sealed class HypotheticalPlacementResolution
         orderedFactView = Array.AsReadOnly((PlacementCaptureFact[])orderedFacts.Clone());
         CapturedStoneCount = capturedGroups.Sum(group => group.Stones.Count);
     }
+
+    public BoardState SourceBoard { get; }
 
     public BoardStone PlacedStone { get; }
 
@@ -37,4 +41,6 @@ public sealed class HypotheticalPlacementResolution
     public IReadOnlyList<PlacementCaptureFact> OrderedFacts => orderedFactView;
 
     public int CapturedStoneCount { get; }
+
+    public bool SatisfiesTerminalCaptureCondition => capturedGroupView.Count > 0;
 }

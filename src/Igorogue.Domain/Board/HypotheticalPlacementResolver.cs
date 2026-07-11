@@ -26,6 +26,7 @@ public static class HypotheticalPlacementResolver
             proposedStone,
             groupsAfterPlacement);
         placement = new HypotheticalPlacement(
+            source,
             proposedStone,
             boardAfterPlacement,
             groupsAfterPlacement,
@@ -72,6 +73,7 @@ public static class HypotheticalPlacementResolver
         var orderedFacts = CreateOrderedFacts(placement.PlacedStone, capturedGroups);
 
         return new HypotheticalPlacementResolution(
+            placement.SourceBoard,
             placement.PlacedStone,
             boardAfterCapture,
             capturedGroups,
