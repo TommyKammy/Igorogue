@@ -30,9 +30,10 @@ updated: 2026-07-11
 - [[TASK-0007 King Capture and Battle Result]] — done
 - [[TASK-0008 Territory Region Calculation]] — done
 - [[TASK-0023 Implement Facility Runtime Semantics]] — done
-- [[TASK-0010 Headless Battle State Machine]] — review／current
-- [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0010
-- [[TASK-0011 Replay Round Trip Verification]] — blocked／TASK-0010 and TASK-0009
+- [[TASK-0010 Headless Battle State Machine]] — done
+- [[TASK-0024 Authorized Facility Build Battle Command]] — review／current
+- [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0024 and DECISION-0004
+- [[TASK-0011 Replay Round Trip Verification]] — blocked／TASK-0009
 
 See [[Codex Task Queue]] for gate order and concurrency rules.
 

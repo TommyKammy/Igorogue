@@ -9,12 +9,12 @@ sprint: S0
 
 ## Goal
 
-Implement the deterministic headless battle state machine.
+Integrate the accepted facility build kernel into the deterministic headless battle session.
 
 ## In review
 
-- [[TASK-0010 Headless Battle State Machine]]
-  - implementation、232 tests、independent `CODE_REVIEW.md` approval、green PR #11 CI complete; human merge pending
+- [[TASK-0024 Authorized Facility Build Battle Command]]
+  - implementation、238 tests、independent `CODE_REVIEW.md` approval、two green closeout runs、green PR #12 CI complete; human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -33,15 +33,16 @@ Implement the deterministic headless battle state machine.
 - [[TASK-0007 King Capture and Battle Result]]
 - [[TASK-0008 Territory Region Calculation]]
 - [[TASK-0023 Implement Facility Runtime Semantics]]
+- [[TASK-0010 Headless Battle State Machine]]
 
-## Next after TASK-0010
+## Next after TASK-0024
 
 - [[TASK-0009 Golden Board Fixtures]]
 - [[TASK-0011 Replay Round Trip Verification]]
-- order fixed by resolved [[DECISION-0003 Sequence Golden Replay After Battle State Machine]]
+- exact-fixture evidence contract awaits owner resolution in [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]]
 
 ## Review questions
 
-- Does every accepted scripted placement use the shared Domain placement and facility-aware composite without duplicating rules?
-- Are rejection, terminal state, phase changes, RNG state, and command log deterministic exact no-ops or transitions as specified?
-- Is the selected `TerritoryEstablished -> FacilityDisabled / FacilityActivated` order stable and Momentum-free in M1?
+- Does Application delegate every build legality and commit decision to the shared Domain facility kernel?
+- Are illegal builds exact no-ops with accepted-only command logging?
+- Does legal build preserve board、territory、repetition、phase、turn、RNG while emitting `FacilityBuilt -> FacilityActivated`?

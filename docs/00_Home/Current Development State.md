@@ -17,7 +17,7 @@ updated: 2026-07-11
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | headless battle state machine implemented and in review | TASK-0002 through TASK-0023 merged; TASK-0010 local/independent validation |
+| Product Rules Kernel | headless battle state machine merged; authorized facility build implemented and in review | TASK-0002〜0008、TASK-0023、TASK-0010 merged; TASK-0024 independently approved |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,7 +35,7 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0023 Implement Facility Runtime Semantics]] was merged through PR #10 and its post-merge main CI is green. [[TASK-0010 Headless Battle State Machine]] now provides deterministic scripted placement、turn boundary、terminal result、state／log checksum with independent approval and green PR #11 CI; it is the current task in review pending human merge. TASK-0009 remains blocked until that merge.
+[[TASK-0010 Headless Battle State Machine]] was merged through PR #11 and post-merge main CI run `29151240059` is green. [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] found that FAC-08／09 need a canonical Application build command before true replay and that other exact fixtures need an owner decision. [[TASK-0024 Authorized Facility Build Battle Command]] has implementation、238 tests、independent approval、two green closeout runs、green PR #12 CI and is current in review; TASK-0009 remains blocked by that decision and TASK-0024 merge.
 
 ## Next development sequence
 
@@ -47,9 +47,10 @@ updated: 2026-07-11
 6. TASK-0007 king result — done
 7. TASK-0008 territory — done
 8. TASK-0023 facility runtime — done
-9. TASK-0010 state machine — review／current
-10. TASK-0009 golden fixtures — blocked／TASK-0010
-11. TASK-0011 replay round trip — blocked／TASK-0010 and TASK-0009
+9. TASK-0010 state machine — done
+10. TASK-0024 authorized facility build command — review／current
+11. TASK-0009 golden fixtures — blocked／TASK-0024 and DECISION-0004
+12. TASK-0011 replay round trip — blocked／TASK-0009
 
 ## Open human-only item
 

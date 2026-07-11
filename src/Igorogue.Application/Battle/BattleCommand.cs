@@ -1,6 +1,7 @@
 using System.Globalization;
 using Igorogue.Application.Replay;
 using Igorogue.Domain.Board;
+using Igorogue.Domain.Facilities;
 
 namespace Igorogue.Application.Battle;
 
@@ -67,6 +68,56 @@ public sealed class AuthorizedStonePlacementCommand : IBattleCommand
         $"actor={BattleCommandValidation.ColorId(Actor)}\n" +
         $"point={Point.X.ToString(CultureInfo.InvariantCulture)},{Point.Y.ToString(CultureInfo.InvariantCulture)}\n" +
         $"access_mode={BattleCommandValidation.AccessModeId(AccessMode)}\n";
+}
+
+public sealed class AuthorizedFacilityBuildCommand : IBattleCommand
+{
+    public AuthorizedFacilityBuildCommand(
+        string expectedStateChecksum,
+        string expectedLogChecksum,
+        CanonicalPoint point,
+        string facilityContentId,
+        string instanceId)
+    {
+        ExpectedStateChecksum = BattleCommandValidation.CanonicalChecksum(
+            expectedStateChecksum,
+            nameof(expectedStateChecksum));
+        ExpectedLogChecksum = BattleCommandValidation.CanonicalChecksum(
+            expectedLogChecksum,
+            nameof(expectedLogChecksum));
+        var request = new FacilityBuildRequest(
+            StoneColor.Black,
+            point,
+            facilityContentId,
+            instanceId);
+
+        Point = request.Point;
+        FacilityContentId = request.FacilityContentId;
+        InstanceId = request.InstanceId;
+    }
+
+    public string CommandType => "battle.authorized_facility_build";
+
+    public int CommandSchemaVersion => 1;
+
+    public string ExpectedStateChecksum { get; }
+
+    public string ExpectedLogChecksum { get; }
+
+    public CanonicalPoint Point { get; }
+
+    public string FacilityContentId { get; }
+
+    public string InstanceId { get; }
+
+    public string ToCanonicalPayload() =>
+        "authorized-facility-build-v1\n" +
+        $"expected_state_checksum={ExpectedStateChecksum}\n" +
+        $"expected_log_checksum={ExpectedLogChecksum}\n" +
+        "actor=black\n" +
+        $"point={Point.X.ToString(CultureInfo.InvariantCulture)},{Point.Y.ToString(CultureInfo.InvariantCulture)}\n" +
+        $"facility_content_id={FacilityContentId}\n" +
+        $"instance_id={InstanceId}\n";
 }
 
 public sealed class EndPlayerTurnCommand : IBattleCommand

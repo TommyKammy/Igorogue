@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0010
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: high
@@ -94,6 +94,8 @@ updated: 2026-07-11
 
 2026-07-11 — draft PR #11のGitHub Actions run `29150792085`でGovernance、Pure .NET build／232 tests／simulator smoke、Godot .NET headless smoke／Windows debug exportの全3 job成功を確認。`review`を維持し、人間merge判断だけを待つ。
 
+2026-07-11 — PR #11の人間merge commit `d4ffd832f572fb46cbe2d29559032b30c68b2bb2`を確認。post-merge main GitHub Actions run `29151240059`も全3 job成功のため、`done`へ遷移した。
+
 ## Evidence
 
 - TASK-0023 merge commit `f34c89f4c443ce03d25964513a1e9613cdc9dd63`。
@@ -107,6 +109,8 @@ updated: 2026-07-11
 - `ArchitectureBoundaryTests` — shared fact seam、non-forgeable delta／state result、accepted placement dependency、Application→Domain、Godot／filesystem／clock／process／ambient RNG非露出を確認。
 - independent fixed-HEAD review — `0911c30d8b586cfae4be6ef93a0b345b499a8d26`、BLOCKER／HIGH／MEDIUM／LOW findingなし、独立validation green、`APPROVE`。
 - GitHub Actions run `29150792085` — PR #11のGovernance `86539852257`、Pure .NET `86539868985`、Godot／export `86539916578`すべて成功。
+- PR #11 human merge commit `d4ffd832f572fb46cbe2d29559032b30c68b2bb2`。
+- post-merge main GitHub Actions run `29151240059` — Governance `86540969301`、Pure .NET `86540988089`、Godot／export `86541037361`すべて成功。
 - Content、`game_data/`、package／project reference、Godot assetの変更なし。
 
 ## Known issues
