@@ -8,11 +8,11 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`からhypothetical placement／captureまでは完了。Gate 1 board Rules Kernel workが継続中。
+`M0 Repository Bootstrap`からsuicide legality／battle-local repetitionまでは実装・独立review済み。Gate 1 board Rules Kernel workが継続中。
 
 ## Sprint goal
 
-Implement suicide legality, terminal-capture permission, and battle-local stone-topology repetition in the shared Domain Rules Kernel.
+Review and land suicide legality, terminal-capture permission, and battle-local stone-topology repetition in the shared Domain Rules Kernel.
 
 ## Health
 
@@ -23,11 +23,11 @@ Implement suicide legality, terminal-capture permission, and battle-local stone-
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Placement and effective-liberty capture tested; legality active |
+| Validation | Yellow | Placement legality and KO-01〜KO-07 tested; CI pending |
 
 ## Blockers
 
-- Suicide legality and stone-topology repetition Rules Kernel is not implemented yet.
+- TASK-0006 awaits green CI and human merge; TASK-0007 remains gated.
 
 ## Current evidence
 
@@ -43,10 +43,13 @@ Implement suicide legality, terminal-capture permission, and battle-local stone-
 - canonical 7×7 geometry and standard initial-position invariants
 - deterministic same-color groups and duplicate-free real-liberty sets
 - immutable hypothetical placement and effective-liberty simultaneous capture
+- canonical `StoneTopologyKey` and immutable battle-local repetition history
+- suicide／terminal legality and KO-01〜KO-07 through the shared Rules Kernel
+- atomic legal commit binding for board, ordered facts, and next history
 
 ## Next
 
-1. [[TASK-0006 Suicide Legality and Terminal Capture]]
+1. Review and merge [[TASK-0006 Suicide Legality and Terminal Capture]]
 2. [[TASK-0007 King Capture and Battle Result]]
 3. FEAT-009 independent two-person sign-off
 4. A-6 style data/document synchronization checker

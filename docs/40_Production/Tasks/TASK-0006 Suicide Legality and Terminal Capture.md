@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0006
-status: in_progress
+status: review
 project: Igorogue
 milestone: M1
 priority: high
@@ -56,6 +56,8 @@ updated: 2026-07-11
 
 2026-07-11 — package、project reference、lock、Application、Content、game_data、Accepted仕様、Godot assetは変更していない。
 
+2026-07-11 — commit `6a59940`を対象に、実装担当とは別のCodexが`CODE_REVIEW.md`に従って`origin/main...HEAD`をTASK、Rules Canon、Combat Resolution Order、ADR-0011、KO fixture、Architecture、Determinism and Replayへ再照合。findingなし、独立governance／128 test／2回同一sim checksumを確認して`APPROVE`。`review`へ遷移し、CIと人間merge待ちとした。
+
 ## Evidence
 
 - `tools/dev/check` — exit 0。documentation、wikilink、content、KO-01〜KO-07を含む既存fixture、governance checkが成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
@@ -65,6 +67,7 @@ updated: 2026-07-11
 - `tests/Igorogue.Domain.Tests/PlacementLegalityEvaluatorTests.cs` — captureで生じる呼吸点、real 0／effective 1、real正／effective 0、terminal grant条件、terminal後suicide、王石capture反復、suicide優先順、occupied／foreign snapshot／history／mode境界を確認。
 - `tests/Igorogue.Domain.Tests/BattleRepetitionHistoryTests.cs` — initial index 0、重複観測restore、canonical text、atomic legal commit、illegal、stale、同値別history、cross-candidate、raw key API不存在、immutable sourceを確認。
 - 読み取り専用API、determinism／fixture、terminal／scope review — 初回HIGHと後続MEDIUM findingを修正後、3者とも残るP1／P2なしで`APPROVE`。review側でもgovernance、128/128 test、warning 0／error 0、2回同一sim checksumを確認。
+- 独立Codex closeout review — HEAD `6a59940`を正本仕様と直接照合し、findingなしで`APPROVE`。独立実行でもgovernance、128/128 test、warning 0／error 0、2回同一sim checksum、clean worktreeを確認。
 
 ## Known issues
 

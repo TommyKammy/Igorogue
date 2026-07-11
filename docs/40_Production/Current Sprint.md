@@ -9,14 +9,16 @@ sprint: S0
 
 ## Goal
 
-Implement suicide legality, terminal-capture permission, and battle-local stone-topology repetition.
+Review and land suicide legality, terminal-capture permission, and battle-local stone-topology repetition.
 
 ## Ready
 
-- [[TASK-0006 Suicide Legality and Terminal Capture]]
+No implementation task is ready until TASK-0006 has green CI and a human merge.
 
 ## In review
 
+- [[TASK-0006 Suicide Legality and Terminal Capture]]
+  - independent Codex review approved; CI and human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
