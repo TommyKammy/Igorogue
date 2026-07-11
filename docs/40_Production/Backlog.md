@@ -31,8 +31,8 @@ updated: 2026-07-11
 - [[TASK-0008 Territory Region Calculation]] — done
 - [[TASK-0023 Implement Facility Runtime Semantics]] — done
 - [[TASK-0010 Headless Battle State Machine]] — done
-- [[TASK-0024 Authorized Facility Build Battle Command]] — review／current
-- [[TASK-0009 Golden Board Fixtures]] — blocked／TASK-0024 and DECISION-0004
+- [[TASK-0024 Authorized Facility Build Battle Command]] — done
+- [[TASK-0009 Golden Board Fixtures]] — review／current
 - [[TASK-0011 Replay Round Trip Verification]] — blocked／TASK-0009
 
 See [[Codex Task Queue]] for gate order and concurrency rules.

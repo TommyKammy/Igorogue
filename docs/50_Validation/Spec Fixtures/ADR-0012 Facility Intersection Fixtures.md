@@ -3,7 +3,7 @@ type: spec-fixture
 id: ADR-0012-FIXTURES
 status: accepted
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-11
 source_decision: ADR-0012
 ---
 # ADR-0012 Facility Intersection Fixtures
@@ -11,7 +11,7 @@ source_decision: ADR-0012
 座標契約は[[Coordinate System and Initial Position]]を参照する。
 
 [[ADR-0012 Facility Sites Are Empty Intersections]]と[[FEAT-001 Territory and Facilities]]の意味論を、製品Rules Kernel実装前に固定する仕様fixtureである。
-M1では同じ盤面、入力、期待イベントを共有Rules Kernelのunit testとgolden replayへ移植する。
+M1ではcanonical payloadと期待値を共有Rules Kernelのunit testへexactに移植し、Application golden evidenceは下記の到達可能性分類に従う。
 
 ## Legend
 
@@ -168,3 +168,14 @@ FacilityActivated(reason=built_in_controlled_territory)
 
 - `game_data/fixtures/facility_intersection_fixtures.json`
 - `tools/check_facility_semantics.py`
+
+## Golden evidence mapping
+
+[[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]]に従い、FAC-01〜09のcanonical JSON payload／期待値は全件をDomain unit evidenceでexactに維持する。Application golden suiteは次に分ける。
+
+- FAC-01／02／06／07はcanonical initial board／facilityを`HeadlessBattleStateMachine.Start`へ渡し、initial state checksumとterminal tripleを固定するinitial-state evidence。state transition replayとは呼ばない。
+- FAC-03／04はcanonical stone placement attemptを正規Application commandでexact replayする。FAC-04のrejected commandはstate／log exact no-opとする。
+- FAC-08／09は[[TASK-0024 Authorized Facility Build Battle Command]]でcanonical build attemptをexact replayする。
+- FAC-05のcanonical `next_boards` sequenceはDomain unit evidenceに残す。Applicationでは同じ`facility_05` instanceが合法石commandにより`FacilityDisabled`後に`FacilityActivated`へ戻るlinked semantic true replayを追加する。
+
+FAC-05のために任意board mutation commandを導入せず、direct Domain transitionをgolden replayと呼ばない。

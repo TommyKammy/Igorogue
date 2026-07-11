@@ -9,12 +9,12 @@ sprint: S0
 
 ## Goal
 
-Integrate the accepted facility build kernel into the deterministic headless battle session.
+Implement versioned golden board evidence over the deterministic headless battle session.
 
 ## In review
 
-- [[TASK-0024 Authorized Facility Build Battle Command]]
-  - implementation、238 tests、independent `CODE_REVIEW.md` approval、two green closeout runs、green PR #12 CI complete; human merge pending
+- [[TASK-0009 Golden Board Fixtures]]
+  - KO-01〜07、FAC-01〜09、initial、simultaneous capture、terminal exception／validation・independent review・draft PR #13 initial CI green、人間merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -34,15 +34,15 @@ Integrate the accepted facility build kernel into the deterministic headless bat
 - [[TASK-0008 Territory Region Calculation]]
 - [[TASK-0023 Implement Facility Runtime Semantics]]
 - [[TASK-0010 Headless Battle State Machine]]
+- [[TASK-0024 Authorized Facility Build Battle Command]]
 
-## Next after TASK-0024
+## Next after TASK-0009
 
-- [[TASK-0009 Golden Board Fixtures]]
 - [[TASK-0011 Replay Round Trip Verification]]
-- exact-fixture evidence contract awaits owner resolution in [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]]
+- exact-fixture evidence contract fixed by resolved [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] Option 1
 
 ## Review questions
 
-- Does Application delegate every build legality and commit decision to the shared Domain facility kernel?
-- Are illegal builds exact no-ops with accepted-only command logging?
-- Does legal build preserve board、territory、repetition、phase、turn、RNG while emitting `FacilityBuilt -> FacilityActivated`?
+- Does every true replay use only canonical Application commands without history／board injection?
+- Are source fixture hashes、evidence classifications、attempted inputs、accepted-only logs distinct and explicit?
+- Do rejected commands and KO-07 silent filtering preserve state／log exactly as specified?

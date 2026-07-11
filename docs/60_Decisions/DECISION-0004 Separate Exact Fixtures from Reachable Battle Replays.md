@@ -1,8 +1,8 @@
 ---
 type: decision-needed
 id: DECISION-0004
-status: open
-blocking: [TASK-0009]
+status: resolved
+blocking: []
 updated: 2026-07-11
 ---
 # DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays
@@ -13,7 +13,7 @@ updated: 2026-07-11
 
 ## Conflicting sources
 
-- `game_data/fixtures/board_repetition_fixtures.json`のKO-03は未実装の`stone_kind`、KO-04は未実装の非石state change、KO-07はenemy candidateのsilent filteringを含む。
+- `game_data/fixtures/board_repetition_fixtures.json`のKO-03／06は未実装の`stone_kind`、KO-04は未実装の非石state change、KO-07はenemy candidateのsilent filteringを含む。
 - `game_data/fixtures/facility_intersection_fixtures.json`のFAC-05はboard snapshotの直接差し替え、FAC-08／09はfacility build operationを含む。
 - TASK-0010はspecial stone、非石resource、enemy ranking、facility buildをNon-goalとする。
 - TASK-0009のValidationはdirect Domain snapshotをgolden replayと呼ぶことを禁止する。
@@ -34,4 +34,14 @@ TASK-0009を`blocked`に保ち、test-only board mutationやdirect Domain commit
 
 ## Owner decision
 
-Option 1を推奨する。ただしこれはADR-0012とgolden acceptanceのevidence分類を変更するため、project ownerの明示決定とAccepted文書の同時更新が必要である。決定まではTASK-0009を`blocked`に保つ。
+2026-07-11 — Project ownerは推奨Option 1を次の継続条件として提示された後、PR #12をmergeして「作業を続けて」と指示した。このowner指示をOption 1の選択として記録する。
+
+- KO-01〜07／FAC-01〜09のcanonical JSON payloadと期待値は、全caseのDomain unit evidenceでexactに維持する。
+- 現Application commandで到達可能な遷移だけをtrue replayとする。direct Domain snapshot、任意history注入、任意board mutationをreplayと呼ばない。
+- KO-03／04／06はsource metadataを保持してgeneric stone commandへの正規化または非石field省略を明示し、exact metadata／topology assertionをDomain evidenceで併用する。KO-06のcommand sequence自体はP0から到達可能なtrue replayである。
+- KO-07はtest adapterが共有Domain legalityで候補をsilent filterし、選択されたcommandだけをApplicationへsubmitする。除外候補の`CommandRejected`をbattle facts／logへ追加しない。
+- FAC-01／02／06／07はexact Domain evidenceに加えてApplication start boundaryを固定し、state transition replayとは呼ばない。
+- FAC-05のcanonical direct snapshot sequenceはDomain evidenceに残し、同一instanceの停止→再稼働を合法commandで起こすlinked semantic Application replayを追加する。
+- FAC-03／04／08／09はcanonical inputをApplication commandでexact replayする。
+
+[[ADR-0011 Board Repetition Fixtures]]、[[ADR-0012 Facility Intersection Fixtures]]、`tests/golden/README.md`、[[TASK-0009 Golden Board Fixtures]]を同じ変更で同期する。これはvalidation evidenceの分類であり、Rules Canon、fixture payload、player-visible ruleを変更しない。
