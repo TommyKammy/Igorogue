@@ -88,6 +88,8 @@ Stone layerと独立したimmutableなfacility stateを共有pure Domain Rules K
 
 2026-07-11 — implementation commit `87b370246828a363e5e141fa1f2f9e7754647090`を、実装担当とは別のCodexがparent `e925d946ec82bd5e681873a298e0c760468706c7`からroot `CODE_REVIEW.md`に従い固定HEAD review。scope、全Acceptance、determinism、FAC parity、test oracleにfindingなし。独立check／test／sim smokeとclean worktreeを確認し`APPROVE`、`review`へ遷移。CIと人間merge待ち。
 
+2026-07-11 — draft PR #10のGitHub Actions run `29147816243`でGovernance、Pure .NET build／tests／simulator smoke、Godot .NET headless smoke／Windows debug exportの全3 job成功を確認。`review`を維持し、人間判断のmergeだけを待つ。
+
 ## Evidence
 
 - implementation commit `87b370246828a363e5e141fa1f2f9e7754647090` — facility runtime production 15 files、Domain／Architecture test、共有FAC fixture adapter。Application、Content、`game_data/`、package／project reference、Godot assetの変更なし。
@@ -99,6 +101,7 @@ Stone layerと独立したimmutableなfacility stateを共有pure Domain Rules K
 - `FacilityBuildEvaluatorTests`、`FacilityPlacementIntegratorTests`、`FacilityOperatingTransitionTests` — accepted validation order、illegal no-op、sequence非再利用、typed pre-trigger順、single topology observation、point-only destruction、復元禁止、split／merge、idempotency、canonical fact順を確認。
 - `ArchitectureBoundaryTests` — stone-only `TerritoryAnalyzer`署名を維持し、facility analyzerの明示入力、accepted-placement-only integrator、non-forgeable result／fact API、Godot非依存を確認。
 - independent fixed-HEAD review — commit `87b3702`を正本へ直接照合。初回LOW test gapを解消後、BLOCKER／HIGH／MEDIUM／LOW findingなし、独立validation green、clean worktreeで`APPROVE`。
+- GitHub Actions run `29147816243` — PR #10のGovernance、Pure .NET、Godot／Windows export全3 job成功。
 
 ## Known issues
 

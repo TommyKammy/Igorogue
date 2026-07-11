@@ -35,7 +35,7 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0008 Territory Region Calculation]] was merged through PR #9 with green CI. [[TASK-0023 Implement Facility Runtime Semantics]] is implemented with FAC-01〜09 production parity, green local validation, and independent approval; it is the current task in review pending CI and human merge. TASK-0009 remains blocked by TASK-0023 and [[DECISION-0003 Sequence Golden Replay After Battle State Machine]].
+[[TASK-0008 Territory Region Calculation]] was merged through PR #9 with green CI. [[TASK-0023 Implement Facility Runtime Semantics]] is implemented with FAC-01〜09 production parity, independent approval, and green PR #10 CI; it is the current task in review pending human merge. TASK-0009 remains blocked by TASK-0023 and [[DECISION-0003 Sequence Golden Replay After Battle State Machine]].
 
 ## Next development sequence
 

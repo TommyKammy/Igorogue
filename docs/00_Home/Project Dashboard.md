@@ -8,7 +8,7 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`からterritory-region calculationまでは実装・review・CI・merge済み。Gate 1 facility runtimeは実装・独立review済みで、CIと人間mergeを待つ。
+`M0 Repository Bootstrap`からterritory-region calculationまでは実装・review・CI・merge済み。Gate 1 facility runtimeは実装・独立review・green CI済みで、人間mergeを待つ。
 
 ## Sprint goal
 
@@ -23,11 +23,11 @@ Implement deterministic facility runtime semantics in the shared Domain Rules Ke
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Facility runtime proven locally and independently approved; CI pending |
+| Validation | Yellow | Facility runtime proven locally, independently approved, and green in PR #10 CI |
 
 ## Blockers
 
-- TASK-0023 facility runtime awaits CI and human merge.
+- TASK-0023 facility runtime awaits human merge.
 - TASK-0009 remains blocked by TASK-0023 and DECISION-0003; TASK-0010 remains blocked by TASK-0023 and DECISION-0002.
 
 ## Current evidence
@@ -53,7 +53,7 @@ Implement deterministic facility runtime semantics in the shared Domain Rules Ke
 
 ## Next
 
-1. Review／CI／human merge [[TASK-0023 Implement Facility Runtime Semantics]]
+1. Human review／merge [[TASK-0023 Implement Facility Runtime Semantics]]
 2. Resolve [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] before [[TASK-0009 Golden Board Fixtures]]
 3. FEAT-009 independent two-person sign-off
 4. A-6 style data/document synchronization checker

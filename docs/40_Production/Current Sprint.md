@@ -14,7 +14,7 @@ Implement deterministic facility runtime semantics.
 ## In review
 
 - [[TASK-0023 Implement Facility Runtime Semantics]]
-  - independent `CODE_REVIEW.md` approval and local validation complete; CI and human merge pending
+  - independent `CODE_REVIEW.md` approval, local validation, and green PR #10 CI complete; human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 

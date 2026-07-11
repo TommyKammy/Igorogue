@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0023 Implement Facility Runtime Semantics]]のFAC-01〜09 facility runtime実装をreview／CI／人間mergeで閉じる。
+> [[TASK-0023 Implement Facility Runtime Semantics]]のFAC-01〜09 facility runtime実装はgreen CIまで確認済み。人間mergeで閉じる。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
