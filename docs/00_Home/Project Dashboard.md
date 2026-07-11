@@ -8,11 +8,11 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`、TASK-0002 determinism、TASK-0003 board geometryは完了。Gate 1 board Rules Kernel workが継続中。
+`M0 Repository Bootstrap`、determinism、board geometry、groups/libertiesは完了。Gate 1 board Rules Kernel workが継続中。
 
 ## Sprint goal
 
-Review and land same-color orthogonal groups and duplicate-free real-liberty sets in the shared Domain Rules Kernel.
+Review and land hypothetical single-stone placement and stable simultaneous opponent-group capture in the shared Domain Rules Kernel.
 
 ## Health
 
@@ -23,11 +23,11 @@ Review and land same-color orthogonal groups and duplicate-free real-liberty set
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Groups and real liberties tested; placement/capture pending |
+| Validation | Yellow | Placement and effective-liberty capture tested; legality pending |
 
 ## Blockers
 
-- Hypothetical placement and simultaneous capture Rules Kernel is not implemented yet.
+- Suicide legality and stone-topology repetition Rules Kernel is not implemented yet.
 
 ## Current evidence
 
@@ -42,10 +42,11 @@ Review and land same-color orthogonal groups and duplicate-free real-liberty set
 - versioned RNG streams and ordered command-log checksums
 - canonical 7×7 geometry and standard initial-position invariants
 - deterministic same-color groups and duplicate-free real-liberty sets
+- immutable hypothetical placement and effective-liberty simultaneous capture
 
 ## Next
 
-1. [[TASK-0004 Stone Groups and Unique Liberty Sets]]
-2. [[TASK-0005 Hypothetical Placement and Capture Resolution]]
+1. [[TASK-0005 Hypothetical Placement and Capture Resolution]]
+2. [[TASK-0006 Suicide Legality and Terminal Capture]]
 3. FEAT-009 independent two-person sign-off
 4. A-6 style data/document synchronization checker

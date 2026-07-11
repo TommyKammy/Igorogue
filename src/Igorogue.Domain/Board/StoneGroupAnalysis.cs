@@ -20,6 +20,8 @@ public sealed class StoneGroupAnalysis
 
     public IReadOnlyList<StoneGroup> Groups => groupView;
 
+    internal BoardGeometry Geometry => geometry;
+
     public StoneGroup? GroupAt(CanonicalPoint point)
     {
         var index = geometry.ToCanonicalIndex(point);
