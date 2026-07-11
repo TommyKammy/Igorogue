@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0011 Replay Round Trip Verification]]は19 golden cases／34 Application attemptsのdouble validationと独立fixed-HEAD reviewを完了。draft PR publicationと人間merge待ち。
+> [[TASK-0011 Replay Round Trip Verification]]は19 golden cases／34 Application attemptsのdouble validationと独立fixed-HEAD reviewを完了。draft PR #14 initial CI green、人間merge待ち。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。

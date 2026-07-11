@@ -72,6 +72,8 @@ updated: 2026-07-12
 
 2026-07-12 — 修正fixed HEAD `32226c661d159fd14de9620b9c2d2cbb8b286e84`を同じ独立担当が再review。findingなし、reviewer側でも`tools/dev/check`／259 tests／`sim-smoke`、worktree cleanを確認し`APPROVE`。全AcceptanceとEvidenceを満たしたため、人間merge待ちの`review`へ遷移した。
 
+2026-07-12 — closeout docs-only HEAD `236446c23e5d379992befca516234a59e3cd9ca1`も独立review findingなし、`APPROVE`。draft PR #14を作成し、initial CI run `29170368075`のGovernance、Pure .NET、Godot／Windows export全job成功とmergeable cleanを確認した。
+
 ## Evidence
 
 - `src/Igorogue.Application/Replay/BattleReplayDocument.cs`／`BattleReplaySerializer.cs`／`BattleReplayRunner.cs` — immutable versioned envelope、attempt／document integrity、strict bounded Stream I/O、canonical initial sessionからのfail-closed replay。
@@ -82,6 +84,7 @@ updated: 2026-07-12
 - `tools/dev/sim-smoke` ×2 — exit 0。両runでchecksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`一致。
 - preliminary independent contract／stream review — resource amplificationとrunner途中差分testの指摘を修正。再reviewはBLOCKER／HIGH／MEDIUM findingなし、`APPROVE`。
 - 独立fixed-HEAD review — `61670f1`はattempt countの検査順にHIGH 1件で`CHANGES REQUIRED`。修正後`32226c661d159fd14de9620b9c2d2cbb8b286e84`はfindingなし、`APPROVE`。reviewer側でもcheck／259 tests／sim-smoke／clean worktreeを再確認。
+- GitHub draft PR #14 initial CI run `29170368075` — Governance job `86590470442`、Pure .NET job `86590484518`、Godot .NET headless／Windows debug export job `86590543431`すべてsuccess。head `236446c23e5d379992befca516234a59e3cd9ca1`、mergeable clean。
 - `git diff --check` — exit 0。
 
 ## Known issues

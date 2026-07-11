@@ -35,7 +35,7 @@ updated: 2026-07-12
 
 ## Current gate
 
-[[TASK-0009 Golden Board Fixtures]] was merged through PR #13 at `b2bfceca8bf88046aa100d563b62c6697d1afcd6`; post-merge main CI run `29155541603` is green. [[TASK-0011 Replay Round Trip Verification]] fixed HEAD `32226c661d159fd14de9620b9c2d2cbb8b286e84` passed double local validation and independent review; draft PR publication and human merge remain.
+[[TASK-0009 Golden Board Fixtures]] was merged through PR #13 at `b2bfceca8bf88046aa100d563b62c6697d1afcd6`; post-merge main CI run `29155541603` is green. [[TASK-0011 Replay Round Trip Verification]] fixed HEAD `32226c661d159fd14de9620b9c2d2cbb8b286e84` passed double local validation and independent review; draft PR #14 initial CI is green and human merge remains.
 
 ## Next development sequence
 

@@ -23,7 +23,7 @@ Implement deterministic replay save／load／verification without bypassing Appl
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | TASK-0011 local double validation and independent fixed-HEAD review approved; draft PR pending |
+| Validation | Yellow | TASK-0011 draft PR #14 initial CI green; human merge pending |
 
 ## Blockers
 
@@ -56,6 +56,6 @@ Implement deterministic replay save／load／verification without bypassing Appl
 
 ## Next
 
-1. Publish／review／merge [[TASK-0011 Replay Round Trip Verification]]
+1. Review／merge [[TASK-0011 Replay Round Trip Verification]]
 2. FEAT-009 independent two-person sign-off
 3. A-6 style data/document synchronization checker

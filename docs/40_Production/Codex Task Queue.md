@@ -25,7 +25,7 @@ updated: 2026-07-12
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0011 Replay Round Trip Verification]] (`review`; double validation and independent fixed-HEAD review approved, draft PR pending).
+Current: [[TASK-0011 Replay Round Trip Verification]] (`review`; double validation、independent fixed-HEAD review、draft PR #14 initial CI green; human merge pending).
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
