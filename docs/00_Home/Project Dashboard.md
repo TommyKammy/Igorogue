@@ -8,11 +8,11 @@ updated: 2026-07-11
 
 ## Phase
 
-`M0 Repository Bootstrap`からfacility runtimeまでは実装・review・CI・merge済み。Gate 1 headless battle state machineは実装・独立review・local validation・green PR #11 CI済みで、人間mergeを待つ。
+`M0 Repository Bootstrap`からheadless battle state machineまでは実装・review・CI・merge済み。Gate 1はFAC-08／09 true replayに必要なauthorized facility build commandを統合中。
 
 ## Sprint goal
 
-Implement a deterministic scripted headless battle state machine over the shared Domain Rules Kernel.
+Integrate authorized facility build into the deterministic headless battle session without duplicating Domain rules.
 
 ## Health
 
@@ -23,11 +23,11 @@ Implement a deterministic scripted headless battle state machine over the shared
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | TASK-0010 local 232 tests、independent review、PR #11 CI green; human merge pending |
+| Validation | Yellow | TASK-0010 post-merge main CI green; TASK-0024 implementation in progress |
 
 ## Blockers
 
-- TASK-0009 awaits TASK-0010 human merge; TASK-0011 awaits TASK-0010 and TASK-0009.
+- TASK-0009 awaits TASK-0024 and DECISION-0004 owner resolution; TASK-0011 awaits TASK-0009.
 - FEAT-009 independent two-person paper sign-off remains human-only.
 
 ## Current evidence
@@ -50,11 +50,12 @@ Implement a deterministic scripted headless battle state machine over the shared
 - versioned king-capture result, shared pure evaluator, and legal-commit result binding
 - deterministic stone-layer territory regions, canonical ordering, and FAC projection tests
 - immutable facility state, injected runtime policy, FAC-01〜09 production parity, typed build／placement／transition facts
+- immutable headless battle state machine with canonical placement／turn／pass commands and merged PR #11 evidence
 
 ## Next
 
-1. Human-review／merge [[TASK-0010 Headless Battle State Machine]]
-2. Execute [[TASK-0009 Golden Board Fixtures]] after TASK-0010 merge
+1. Implement／review／merge [[TASK-0024 Authorized Facility Build Battle Command]]
+2. Execute [[TASK-0009 Golden Board Fixtures]] after TASK-0024 merge
 3. Execute [[TASK-0011 Replay Round Trip Verification]] after TASK-0009 merge
 4. FEAT-009 independent two-person sign-off
 5. A-6 style data/document synchronization checker

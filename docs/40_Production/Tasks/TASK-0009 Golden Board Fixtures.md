@@ -5,7 +5,7 @@ status: blocked
 project: Igorogue
 milestone: M1
 priority: high
-dependencies: [TASK-0001, TASK-0023, TASK-0010]
+dependencies: [TASK-0001, TASK-0023, TASK-0010, TASK-0024]
 updated: 2026-07-11
 ---
 # TASK-0009 Golden Board Fixtures
@@ -45,7 +45,7 @@ updated: 2026-07-11
 
 ## Validation
 
-- TASK-0010のcanonical command／state checksum／terminal resultを使い、direct Domain snapshotをgolden replayと呼ばない。
+- TASK-0010／0024のcanonical command／state checksum／terminal resultを使い、direct Domain snapshotをgolden replayと呼ばない。
 - fixture input順反転、expected fact順、turn-boundary checksum、terminal resultをCIで固定する。
 - `tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`を2回実行し、独立reviewを記録する。
 
@@ -57,13 +57,15 @@ updated: 2026-07-11
 
 2026-07-11 — TASK-0023 mergeと[[DECISION-0003 Sequence Golden Replay After Battle State Machine]] Option 1解決を反映。true replayの実行基盤であるTASK-0010をdependencyへ追加し、同taskのmergeまで`blocked`を維持する。
 
+2026-07-11 — TASK-0010のPR #11人間mergeとpost-merge main CI成功を確認。到達性監査でKO-03／04／07、FAC-05／08／09は全fixture inputを現Application commandとして実行できないことを確認した。FAC buildの[[TASK-0024 Authorized Facility Build Battle Command]]をdependencyへ追加し、[[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]]のowner decisionまで`blocked`を維持する。Acceptanceは変更していない。
+
 ## Evidence
 
 未作成。
 
 ## Known issues
 
-FAC runtime依存とqueue decisionは解決済みで、player-visible ruleの未決はない。TASK-0009を`ready`へ移すにはTASK-0010のreview／CI／人間mergeが必要である。
+[[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]]がopenである。TASK-0009を`ready`へ移すにはowner decisionとTASK-0024のreview／CI／人間mergeが必要である。
 
 ## Predefined specification sources
 

@@ -60,6 +60,8 @@ public static class HeadlessBattleStateMachine
         return command switch
         {
             AuthorizedStonePlacementCommand placement => ExecutePlacement(session, placement),
+            AuthorizedFacilityBuildCommand facilityBuild =>
+                ExecuteFacilityBuild(session, facilityBuild),
             EndPlayerTurnCommand endPlayerTurn => ExecuteEndPlayerTurn(session, endPlayerTurn),
             ResolveEnemyPassCommand enemyPass => ExecuteEnemyPass(session, enemyPass),
             _ => Reject(session, command, "unsupported_command"),
@@ -172,6 +174,53 @@ public static class HeadlessBattleStateMachine
                 BattleOutcome.Ongoing,
                 BattleEndReason.None);
         return Accept(session, command, next, orderedFacts);
+    }
+
+    private static BattleCommandResult ExecuteFacilityBuild(
+        HeadlessBattleSession session,
+        AuthorizedFacilityBuildCommand command)
+    {
+        var source = session.State;
+        if (source.Phase != BattlePhase.PlayerAction)
+        {
+            return Reject(session, command, "wrong_phase");
+        }
+
+        if (source.FacilityState.FacilityById(command.InstanceId) is not null)
+        {
+            return Reject(session, command, "facility_instance_exists");
+        }
+
+        var request = new FacilityBuildRequest(
+            StoneColor.Black,
+            command.Point,
+            command.FacilityContentId,
+            command.InstanceId);
+        var evaluation = FacilityBuildEvaluator.Evaluate(
+            source.FacilityRuntimeAnalysis,
+            request);
+        if (!evaluation.IsLegal)
+        {
+            return Reject(session, command, evaluation.ReasonId);
+        }
+
+        var commit = FacilityBuildEvaluator.Commit(evaluation);
+        var stateAfter = BattleState.Transition(
+            source,
+            source.Board,
+            source.RepetitionHistory,
+            commit.StateAfterCommit,
+            source.TerritoryAnalysis,
+            commit.AnalysisAfterCommit,
+            source.PlayerTurnIndex,
+            source.Phase,
+            source.Outcome,
+            source.EndReason);
+        return Accept(
+            session,
+            command,
+            stateAfter,
+            commit.OrderedFacts.Cast<IBattleFact>());
     }
 
     private static BattleCommandResult ExecuteEndPlayerTurn(
