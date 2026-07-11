@@ -25,7 +25,7 @@ updated: 2026-07-11
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0009 Golden Board Fixtures]] (`review`; 19-case local validation green, DECISION-0004 Option 1 resolved).
+Current: [[TASK-0009 Golden Board Fixtures]] (`review`; 19-case validation and fixed-HEAD independent review green, PR／CI pending).
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]

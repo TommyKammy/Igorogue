@@ -23,7 +23,7 @@ Implement deterministic golden board evidence without bypassing Application comm
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | TASK-0009 19-case golden suite local validation green; independent review pending |
+| Validation | Yellow | TASK-0009 19-case golden suite validation and independent review green; PR／CI pending |
 
 ## Blockers
 

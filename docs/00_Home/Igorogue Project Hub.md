@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0024 Authorized Facility Build Battle Command]]はPR #12でmerge済み。[[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] Option 1に従う[[TASK-0009 Golden Board Fixtures]]の19 casesを独立reviewする。
+> [[TASK-0024 Authorized Facility Build Battle Command]]はPR #12でmerge済み。[[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] Option 1に従う[[TASK-0009 Golden Board Fixtures]]の19 casesは独立review approved、PR／CI待ち。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。

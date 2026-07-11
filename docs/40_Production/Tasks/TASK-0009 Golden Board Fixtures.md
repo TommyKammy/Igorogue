@@ -77,6 +77,8 @@ updated: 2026-07-11
 
 2026-07-11 — commit `375326e51527c4ad9d1c0a9313ef49271b1357f7`の独立fixed-HEAD reviewは、KO-06のsource `stone_kind=blood`をgeneric Application commandへ正規化しながら`exact`分類していたHIGH 1件で`CHANGES REQUIRED`。指摘を採用し、KO-06をtrue command replay＋`metadata_normalized`へ再分類、structured source metadata／mapping test／Decision・ADR・READMEを同期した。
 
+2026-07-11 — 修正fixed HEAD `1b14fb8321e4e86fe5e346bc4112db795659a344`を同じ独立担当が再review。findingなし、`tools/dev/check`／`test`／`sim-smoke`再成功、catalog SHA一致、worktree cleanを確認し`APPROVE`。TASKは人間merge待ちの`review`を維持する。
+
 ## Evidence
 
 - `tests/golden/v1/board_fixture_cases.json` — schema v1、SHA-256 `b3e62c12574746233e1d829e4f30fcc179559cae017fcdd707a656e63b01655d`、19 cases、35 boundaries、6 rejected attempts、1 silent-filter boundary。
@@ -84,6 +86,7 @@ updated: 2026-07-11
 - `tools/dev/test` ×4 — exit 0。Domain 190、Application 36、Architecture 15、計241 tests成功。build警告0／error 0。
 - `tools/dev/check` ×4 — exit 0。全governance／documentation／fixture check成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
 - `tools/dev/sim-smoke` ×3 — exit 0。全runでchecksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`一致。
+- 独立fixed-HEAD review — `375326e`はKO-06分類HIGH 1件で`CHANGES REQUIRED`。修正後`1b14fb8321e4e86fe5e346bc4112db795659a344`はfindingなし、`APPROVE`。reviewer側でもcheck／241 tests／sim-smoke／catalog SHAを再確認。
 
 ## Known issues
 
