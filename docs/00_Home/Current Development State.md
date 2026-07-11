@@ -17,7 +17,7 @@ updated: 2026-07-11
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | determinism through groups/liberties implemented; placement/capture in review | TASK-0002 through TASK-0005 tests |
+| Product Rules Kernel | legality/repetition implemented and independently reviewed; CI/merge pending | TASK-0002 through TASK-0006 tests |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,15 +35,15 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0004 Stone Groups and Unique Liberty Sets]] was merged through PR #5 with green CI. [[TASK-0005 Hypothetical Placement and Capture Resolution]] is in review and remains the current Gate 1 task.
+[[TASK-0005 Hypothetical Placement and Capture Resolution]] was merged through PR #6 with green CI. [[TASK-0006 Suicide Legality and Terminal Capture]] is implemented and independently approved; CI and human merge are pending. TASK-0007 remains blocked until that gate closes.
 
 ## Next development sequence
 
 1. TASK-0002 deterministic RNG and command log — done
 2. TASK-0003 coordinates and neighbours — done
 3. TASK-0004 groups and liberties — done
-4. TASK-0005 placement and capture — current
-5. TASK-0006 legality and terminal capture
+4. TASK-0005 placement and capture — done
+5. TASK-0006 legality and terminal capture — review／current
 6. TASK-0007 king result
 7. TASK-0008 territory
 8. TASK-0009 golden fixtures
