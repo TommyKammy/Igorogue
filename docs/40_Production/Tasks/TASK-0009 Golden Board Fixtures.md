@@ -5,7 +5,7 @@ status: blocked
 project: Igorogue
 milestone: M1
 priority: high
-dependencies: [TASK-0001]
+dependencies: [TASK-0001, TASK-0023]
 updated: 2026-07-11
 ---
 # TASK-0009 Golden Board Fixtures
@@ -40,13 +40,15 @@ updated: 2026-07-11
 
 2026-07-11 — TASK-0008 closeout reviewで、FAC-01〜09の完全なunit／golden移植に必要なfacility runtime実装が現queueに存在しない計画gapを確認。専用task挿入またはacceptance分割のDecision Neededが解決するまで`blocked`を維持する。
 
+2026-07-11 — [[DECISION-0001 Insert Facility Runtime Task Before Golden Fixtures]]のsmallest safe operational resolutionで専用[[TASK-0023 Implement Facility Runtime Semantics]]を挿入し、facility runtimeの未決を明示dependencyへ変換した。golden replayとheadless state machineの順序は[[DECISION-0003 Sequence Golden Replay After Battle State Machine]]が未解決のため`blocked`を維持する。
+
 ## Evidence
 
 未作成。
 
 ## Known issues
 
-FAC-03／04／08と、FAC-05／06／07／09のruntime部分には、未実装の`FacilityInstance`、build、destroy、operating state、capacity、event解決が必要である。TASK-0009を`ready`へ移す前に、専用facility runtime TASKを挿入するか、本タスクのacceptanceをstone-layer projectionと後続runtime goldenへ分割するDecision Neededが必要である。
+FAC runtime依存はTASK-0023へ移管済みで、player-visible ruleの未決はない。TASK-0009を`ready`へ移すには、TASK-0023のreview／CI／人間mergeに加え、[[DECISION-0003 Sequence Golden Replay After Battle State Machine]]のowner decisionが必要である。
 
 ## Predefined specification sources
 

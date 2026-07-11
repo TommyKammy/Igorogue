@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0008
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: high
@@ -51,6 +51,8 @@ updated: 2026-07-11
 
 2026-07-11 — commit `37e0c00`を対象に、実装担当とは別のCodexが`CODE_REVIEW.md`に従って親commitとの差分をTASK、Rules Canon、Architecture、Determinism and Replay、FEAT-001、ADR-0012、canonical FAC fixtureへ再照合。TASK-0008範囲のfindingなし、独立governance／160 test／2回同一sim checksumを確認した。TASK-0009前のfacility runtime計画gapをMEDIUM follow-upとして維持し、`APPROVE WITH FOLLOW-UP`で`review`へ遷移。CIと人間merge待ちとした。
 
+2026-07-11 — GitHub Actions run `29141650052`でGovernance、Pure .NET build／160 tests／simulator smoke、Godot .NET headless smoke／Windows debug exportの全3 job成功を確認。人間判断でPR #9をmergeし、merge commit `8a29a622f6f66ad0ed0d5048a2172e87b8a2424b`を確認して`done`へ遷移。下流follow-upは[[DECISION-0001 Insert Facility Runtime Task Before Golden Fixtures]]のsmallest safe operational resolutionにより[[TASK-0023 Implement Facility Runtime Semantics]]へ移管した。
+
 ## Evidence
 
 - `tools/dev/check` — exit 0。documentation、wikilink、content、FAC-01〜09を含む既存fixture、governance checkが成功。content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`。
@@ -62,11 +64,10 @@ updated: 2026-07-11
 - 読み取り専用API review — public surface、immutability、exact source binding、lookup整合性、canonical順、neutral semantics、facility入力排除にfindingなしで`APPROVE`。独立実行でもgovernance、160/160 test、warning 0／error 0を確認。
 - determinism／spec review — コードfindingなし。Known Issuesの計画gap記録をMEDIUM findingとして指摘し、FAC projectionとfacility runtime integrationを区別して解消。独立実行でもgovernance、160/160 test、2回同一sim checksumを確認。
 - 独立Codex closeout review — commit `37e0c00`の親との差分を正本仕様へ直接照合し、TASK-0008範囲のBLOCKER／HIGH／MEDIUM／LOW findingなし。独立実行でもgovernance、160/160 test、warning 0／error 0、2回同一sim checksum、clean worktreeを確認。TASK-0009のfacility runtime計画gapだけを下流MEDIUM follow-upとして`APPROVE WITH FOLLOW-UP`。
+- GitHub Actions run `29141650052` — PR #9の全3 job成功。人間判断でPR #9をmergeし、merge commit `8a29a622f6f66ad0ed0d5048a2172e87b8a2424b`を確認。
 
 ## Known issues
 
 TASK-0008範囲の既知defectはなし。
 
-本タスクのproduction analyzerはstone-layer projectionだけを実装する。FAC-09のテストはfacility metadataがterritory／liberty APIへ入らない型境界の証拠であり、実`FacilityInstance`、build、destroy、operating state、capacity、eventとのruntime統合ではない。FAC-03／04／08と、FAC-05／06／07／09のfacility runtime側は未実装である。
-
-現在の[[TASK-0009 Golden Board Fixtures]]はFAC-01〜09のunit test／golden replay完全移植を要求するが、その前にfacility runtimeを実装するTASKがない。TASK-0009を`ready`へ移す前に、専用facility runtime TASKを挿入するか、TASK-0009の受け入れ条件を実装済みprojectionと後続runtimeへ分割するDecision Neededが必要である。これはTASK-0008の領地規則・実装をblockしない。
+本タスクのproduction analyzerはstone-layer projectionだけを実装する。facility runtime範囲は[[DECISION-0001 Insert Facility Runtime Task Before Golden Fixtures]]で解決し、[[TASK-0023 Implement Facility Runtime Semantics]]へ移管した。TASK-0008範囲に未解決の計画gapはない。
