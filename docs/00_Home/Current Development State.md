@@ -17,7 +17,7 @@ updated: 2026-07-11
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | legality/repetition implemented and independently reviewed; CI/merge pending | TASK-0002 through TASK-0006 tests |
+| Product Rules Kernel | determinism through placement legality/repetition implemented and merged; king result active | TASK-0002 through TASK-0006 tests + PR #7 CI |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,7 +35,7 @@ updated: 2026-07-11
 
 ## Current gate
 
-[[TASK-0005 Hypothetical Placement and Capture Resolution]] was merged through PR #6 with green CI. [[TASK-0006 Suicide Legality and Terminal Capture]] is implemented and independently approved; CI and human merge are pending. TASK-0007 remains blocked until that gate closes.
+[[TASK-0006 Suicide Legality and Terminal Capture]] was merged through PR #7 with green CI. [[TASK-0007 King Capture and Battle Result]] is the current authorized implementation task.
 
 ## Next development sequence
 
@@ -43,8 +43,8 @@ updated: 2026-07-11
 2. TASK-0003 coordinates and neighbours — done
 3. TASK-0004 groups and liberties — done
 4. TASK-0005 placement and capture — done
-5. TASK-0006 legality and terminal capture — review／current
-6. TASK-0007 king result
+5. TASK-0006 legality and terminal capture — done
+6. TASK-0007 king result — current
 7. TASK-0008 territory
 8. TASK-0009 golden fixtures
 9. TASK-0010 state machine

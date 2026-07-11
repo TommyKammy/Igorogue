@@ -9,16 +9,14 @@ sprint: S0
 
 ## Goal
 
-Review and land suicide legality, terminal-capture permission, and battle-local stone-topology repetition.
+Implement deterministic king-group capture results.
 
 ## Ready
 
-No implementation task is ready until TASK-0006 has green CI and a human merge.
+- [[TASK-0007 King Capture and Battle Result]]
 
 ## In review
 
-- [[TASK-0006 Suicide Legality and Terminal Capture]]
-  - independent Codex review approved; CI and human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -33,13 +31,14 @@ No implementation task is ready until TASK-0006 has green CI and a human merge.
 - [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
 - [[TASK-0004 Stone Groups and Unique Liberty Sets]]
 - [[TASK-0005 Hypothetical Placement and Capture Resolution]]
+- [[TASK-0006 Suicide Legality and Terminal Capture]]
 
-## Next after TASK-0006
+## Next after TASK-0007
 
-- [[TASK-0007 King Capture and Battle Result]]
+- [[TASK-0008 Territory Region Calculation]]
 
 ## Review questions
 
-- Does capture-created liberty make the placed group legal while zero effective liberty without capture is rejected as suicide?
-- Does terminal permission apply only to an immediate opponent-group capture and never bypass suicide or repetition?
-- Are `StoneTopologyKey` and ordered history canonical, and do rejected placements leave board, facts, history, and RNG untouched?
+- Does capturing a white king group produce a player win while capturing a black king group produces a player loss?
+- Is ordinary capture distinguished from king capture without changing capture ordering?
+- If both kings are present in one capture batch, does loss take precedence deterministically?

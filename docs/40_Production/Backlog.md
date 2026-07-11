@@ -26,8 +26,8 @@ updated: 2026-07-11
 - [[TASK-0003 Board Coordinates and Orthogonal Neighbours]] — done
 - [[TASK-0004 Stone Groups and Unique Liberty Sets]] — done
 - [[TASK-0005 Hypothetical Placement and Capture Resolution]] — done
-- [[TASK-0006 Suicide Legality and Terminal Capture]] — review／current
-- [[TASK-0007 King Capture and Battle Result]]
+- [[TASK-0006 Suicide Legality and Terminal Capture]] — done
+- [[TASK-0007 King Capture and Battle Result]] — ready／current
 - [[TASK-0008 Territory Region Calculation]]
 - [[TASK-0009 Golden Board Fixtures]]
 - [[TASK-0010 Headless Battle State Machine]]

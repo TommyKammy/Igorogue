@@ -25,7 +25,7 @@ updated: 2026-07-11
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0006 Suicide Legality and Terminal Capture]].
+Current: [[TASK-0007 King Capture and Battle Result]].
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
