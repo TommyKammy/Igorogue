@@ -33,7 +33,8 @@ updated: 2026-07-12
 - [[TASK-0010 Headless Battle State Machine]] — done
 - [[TASK-0024 Authorized Facility Build Battle Command]] — done
 - [[TASK-0009 Golden Board Fixtures]] — done
-- [[TASK-0011 Replay Round Trip Verification]] — review／current
+- [[TASK-0011 Replay Round Trip Verification]] — done
+- [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] — blocked／MOM／CTR DECISION-0005 + TLE M1 E3 gap
 
 See [[Codex Task Queue]] for gate order and concurrency rules.
 

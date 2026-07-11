@@ -9,12 +9,17 @@ sprint: S0
 
 ## Goal
 
-Implement deterministic replay save／load／verification over the versioned golden command suite.
+Audit Gate 1／M1 exit evidence and stop on source conflict or missing E3 evidence.
+
+## Blocked
+
+- [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]]
+  - Gate 1 technical sequence complete; M1 result is `DECISION NEEDED`
+  - [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] owner decision pending for MOM／CTR
+  - TLE-01〜15 remain an independent M1 implementation／E3 migration gap
 
 ## In review
 
-- [[TASK-0011 Replay Round Trip Verification]]
-  - 19 cases／34 Application attempts、accepted-only log chain、fail-closed schema／metadata／checksum verification、double validation／fixed-HEAD review／draft PR #14 initial CI green
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -36,13 +41,18 @@ Implement deterministic replay save／load／verification over the versioned gol
 - [[TASK-0010 Headless Battle State Machine]]
 - [[TASK-0024 Authorized Facility Build Battle Command]]
 - [[TASK-0009 Golden Board Fixtures]]
+- [[TASK-0011 Replay Round Trip Verification]]
 
-## Next after TASK-0011
+## Next after TASK-0025 decision
 
-- Gate 1 deterministic foundation completion audit
+- Execute the owner-selected DECISION-0005 option.
+- Define and complete the bounded TLE M1 production／E3 follow-up required by current Accepted scope.
+- Complete TASK-0012 two-human paper sign-off.
+- Re-audit M1 exit before making any Gate 2 task `ready`.
 
 ## Review questions
 
-- Does every replay execute only typed Application commands from a canonical initial session?
-- Are submitted attempts and the accepted-only log chain distinct and integrity-checked?
-- Do schema、metadata、content、checksum、acceptance／reason、terminal drifts fail closed at the first mismatch?
+- Are MOM／CTR migration requirements kept in M1 or moved to Gate 3／M3 with all sources synchronized?
+- Does the bounded TLE follow-up expose every production dependency needed by TLE-01〜15 without elevating the spec checker to E3?
+- Is Application headless battle evidence kept distinct from the bootstrap-only simulator smoke?
+- Is TASK-0012 human sign-off preserved as a separate, non-Codex gate?
