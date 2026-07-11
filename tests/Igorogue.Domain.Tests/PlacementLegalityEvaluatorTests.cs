@@ -23,6 +23,7 @@ public sealed class PlacementLegalityEvaluatorTests
         Assert.Equal(
             StoneTopologyKey.FromBoard(candidate.BoardAfterCapture),
             evaluation.CandidateTopologyKey);
+        Assert.Same(candidate, evaluation.AcceptedCandidate);
         Assert.Equal(1, history.ObservationCount);
         Assert.Same(source, candidate.SourceBoard);
     }
@@ -41,7 +42,9 @@ public sealed class PlacementLegalityEvaluatorTests
         Assert.Equal(PlacementLegalityStatus.TerminalCaptureRequired, terminal.Status);
         Assert.Equal("terminal_capture_required", terminal.ReasonId);
         Assert.Null(terminal.CandidateTopologyKey);
+        Assert.Null(terminal.AcceptedCandidate);
         Assert.True(normal.IsLegal);
+        Assert.Same(candidate, normal.AcceptedCandidate);
     }
 
     [Fact]
@@ -64,6 +67,7 @@ public sealed class PlacementLegalityEvaluatorTests
         Assert.Equal(PlacementLegalityStatus.Suicide, evaluation.Status);
         Assert.Equal("suicide", evaluation.ReasonId);
         Assert.Null(evaluation.CandidateTopologyKey);
+        Assert.Null(evaluation.AcceptedCandidate);
         Assert.Equal(1, history.ObservationCount);
     }
 
@@ -89,6 +93,7 @@ public sealed class PlacementLegalityEvaluatorTests
 
         Assert.Equal(0, candidate.PlacedGroupAfterCapture.RealLibertyCount);
         Assert.True(evaluation.IsLegal);
+        Assert.Same(candidate, evaluation.AcceptedCandidate);
     }
 
     [Fact]
@@ -115,6 +120,7 @@ public sealed class PlacementLegalityEvaluatorTests
             group => group.Stones.Any(stone => stone.IsKing));
         Assert.Equal(PlacementLegalityStatus.StoneTopologyRepetition, evaluation.Status);
         Assert.Equal("stone_topology_repetition", evaluation.ReasonId);
+        Assert.Null(evaluation.AcceptedCandidate);
         Assert.Equal(2, history.ObservationCount);
         Assert.Same(afterBlack, whiteRecapture.SourceBoard);
     }
@@ -139,6 +145,7 @@ public sealed class PlacementLegalityEvaluatorTests
 
         Assert.True(history.HasSeen(StoneTopologyKey.FromBoard(candidateBoard)));
         Assert.Equal(PlacementLegalityStatus.Suicide, evaluation.Status);
+        Assert.Null(evaluation.AcceptedCandidate);
     }
 
     [Fact]

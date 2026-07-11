@@ -60,9 +60,42 @@ public sealed class BattleRepetitionHistory
         return seenKeys.Contains(key);
     }
 
-    public BattleRepetitionHistory RegisterLegalPlacement(StoneTopologyKey unseenKey)
+    public LegalPlacementCommit CommitLegalPlacement(
+        PlacementLegalityEvaluation legalEvaluation)
     {
-        ArgumentNullException.ThrowIfNull(unseenKey);
+        ArgumentNullException.ThrowIfNull(legalEvaluation);
+        if (!legalEvaluation.IsLegal ||
+            legalEvaluation.AcceptedCandidate is null ||
+            legalEvaluation.CandidateTopologyKey is null)
+        {
+            throw new InvalidOperationException(
+                "Only a legal placement evaluation can register a topology observation.");
+        }
+
+        if (!ReferenceEquals(this, legalEvaluation.EvaluatedHistory))
+        {
+            throw new ArgumentException(
+                "The legal placement evaluation belongs to a different battle history.",
+                nameof(legalEvaluation));
+        }
+
+        var candidate = legalEvaluation.AcceptedCandidate
+            ?? throw new InvalidOperationException(
+                "A legal placement evaluation must retain its accepted candidate.");
+        var sourceKey = StoneTopologyKey.FromBoard(candidate.SourceBoard);
+        if (!Current.Equals(sourceKey))
+        {
+            throw new InvalidOperationException(
+                "The battle history no longer ends at the evaluated source board.");
+        }
+
+        var unseenKey = StoneTopologyKey.FromBoard(candidate.BoardAfterCapture);
+        if (!unseenKey.Equals(legalEvaluation.CandidateTopologyKey))
+        {
+            throw new InvalidOperationException(
+                "The accepted candidate no longer matches its evaluated topology key.");
+        }
+
         if (seenKeys.Contains(unseenKey))
         {
             throw new InvalidOperationException(
@@ -76,7 +109,11 @@ public sealed class BattleRepetitionHistory
         {
             unseenKey,
         };
-        return new BattleRepetitionHistory(observations, nextSeenKeys);
+        var historyAfterCommit = new BattleRepetitionHistory(observations, nextSeenKeys);
+        return new LegalPlacementCommit(
+            candidate,
+            unseenKey,
+            historyAfterCommit);
     }
 
     public string ToCanonicalText()

@@ -40,18 +40,18 @@ public static class PlacementLegalityEvaluator
         if (accessMode == PlacementAccessMode.TerminalCapture &&
             !candidate.SatisfiesTerminalCaptureCondition)
         {
-            return PlacementLegalityEvaluation.TerminalCaptureRequired();
+            return PlacementLegalityEvaluation.TerminalCaptureRequired(history);
         }
 
         if (postCaptureEffectiveLiberties.EffectiveLibertiesFor(
                 candidate.PlacedGroupAfterCapture) == 0)
         {
-            return PlacementLegalityEvaluation.Suicide();
+            return PlacementLegalityEvaluation.Suicide(history);
         }
 
         var candidateTopologyKey = StoneTopologyKey.FromBoard(candidate.BoardAfterCapture);
         return history.HasSeen(candidateTopologyKey)
-            ? PlacementLegalityEvaluation.Repetition(candidateTopologyKey)
-            : PlacementLegalityEvaluation.Legal(candidateTopologyKey);
+            ? PlacementLegalityEvaluation.Repetition(candidateTopologyKey, history)
+            : PlacementLegalityEvaluation.Legal(candidate, candidateTopologyKey, history);
     }
 }

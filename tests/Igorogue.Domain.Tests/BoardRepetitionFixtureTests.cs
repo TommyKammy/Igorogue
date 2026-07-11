@@ -46,21 +46,26 @@ public sealed class BoardRepetitionFixtureTests
         Assert.Same(fixture.CurrentBoard, candidate.SourceBoard);
         Assert.Equal(historyBefore, history.ToCanonicalText());
 
-        var committed = CommitIfLegal(fixture.CurrentBoard, history, candidate, evaluation);
+        Assert.Equal(expectedLegal, evaluation.AcceptedCandidate is not null);
         if (expectedLegal)
         {
-            Assert.Same(candidate.BoardAfterCapture, committed.Board);
-            Assert.NotSame(history, committed.History);
-            Assert.Equal(history.ObservationCount + 1, committed.History.ObservationCount);
-            Assert.Equal(candidateKey, committed.History.Current);
-            Assert.Equal(candidate.OrderedFacts, committed.PublishedFacts);
+            var committed = history.CommitLegalPlacement(evaluation);
+
+            Assert.Same(candidate, committed.Candidate);
+            Assert.Same(candidate.BoardAfterCapture, committed.BoardAfterCommit);
+            Assert.NotSame(history, committed.HistoryAfterCommit);
+            Assert.Equal(
+                history.ObservationCount + 1,
+                committed.HistoryAfterCommit.ObservationCount);
+            Assert.Equal(candidateKey, committed.HistoryAfterCommit.Current);
+            Assert.Equal(candidate.OrderedFacts, committed.OrderedFacts);
         }
         else
         {
-            Assert.Same(fixture.CurrentBoard, committed.Board);
-            Assert.Same(history, committed.History);
-            Assert.Equal(historyBefore, committed.History.ToCanonicalText());
-            Assert.Empty(committed.PublishedFacts);
+            Assert.Throws<InvalidOperationException>(() =>
+                history.CommitLegalPlacement(evaluation));
+            Assert.Same(fixture.CurrentBoard, candidate.SourceBoard);
+            Assert.Equal(historyBefore, history.ToCanonicalText());
         }
     }
 
@@ -110,17 +115,12 @@ public sealed class BoardRepetitionFixtureTests
 
         var result = EvaluateFixture(changed);
         var historyBefore = result.History.ToCanonicalText();
-        var committed = CommitIfLegal(
-            changed.CurrentBoard,
-            result.History,
-            result.Candidate,
-            result.Evaluation);
 
         Assert.Equal(PlacementLegalityStatus.StoneTopologyRepetition, result.Evaluation.Status);
-        Assert.Same(changed.CurrentBoard, committed.Board);
-        Assert.Same(result.History, committed.History);
-        Assert.Equal(historyBefore, committed.History.ToCanonicalText());
-        Assert.Empty(committed.PublishedFacts);
+        Assert.Throws<InvalidOperationException>(() =>
+            result.History.CommitLegalPlacement(result.Evaluation));
+        Assert.Same(changed.CurrentBoard, result.Candidate.SourceBoard);
+        Assert.Equal(historyBefore, result.History.ToCanonicalText());
     }
 
     [Fact]
@@ -142,14 +142,10 @@ public sealed class BoardRepetitionFixtureTests
             if (!evaluation.IsLegal)
             {
                 rejected.Add(new RejectedCandidate(input.Point, evaluation.ReasonId));
-                var filtered = CommitIfLegal(
-                    fixture.CurrentBoard,
-                    history,
-                    candidate,
-                    evaluation);
-                Assert.Same(fixture.CurrentBoard, filtered.Board);
-                Assert.Same(history, filtered.History);
-                Assert.Empty(filtered.PublishedFacts);
+                Assert.Null(evaluation.AcceptedCandidate);
+                Assert.Throws<InvalidOperationException>(() =>
+                    history.CommitLegalPlacement(evaluation));
+                Assert.Same(fixture.CurrentBoard, candidate.SourceBoard);
                 Assert.Equal(historyBefore, history.ToCanonicalText());
                 continue;
             }
@@ -169,19 +165,20 @@ public sealed class BoardRepetitionFixtureTests
         Assert.Equal("basic", fixture.Candidates[1].StoneKind);
         Assert.Equal(historyBefore, history.ToCanonicalText());
 
-        var committed = CommitIfLegal(
-            fixture.CurrentBoard,
-            history,
-            chosenCandidate,
-            chosenEvaluation);
+        var committed = history.CommitLegalPlacement(chosenEvaluation);
 
-        Assert.Same(chosenCandidate.BoardAfterCapture, committed.Board);
+        Assert.Same(chosenCandidate, committed.Candidate);
+        Assert.Same(chosenCandidate.BoardAfterCapture, committed.BoardAfterCommit);
         Assert.Equal(
             StoneTopologyKey.FromBoard(fixture.Expected.ResultBoard),
-            StoneTopologyKey.FromBoard(committed.Board));
-        Assert.Equal(history.ObservationCount + 1, committed.History.ObservationCount);
-        Assert.Equal(chosenEvaluation.CandidateTopologyKey, committed.History.Current);
-        var placed = Assert.IsType<StonePlacedFact>(Assert.Single(committed.PublishedFacts));
+            StoneTopologyKey.FromBoard(committed.BoardAfterCommit));
+        Assert.Equal(
+            history.ObservationCount + 1,
+            committed.HistoryAfterCommit.ObservationCount);
+        Assert.Equal(
+            chosenEvaluation.CandidateTopologyKey,
+            committed.HistoryAfterCommit.Current);
+        var placed = Assert.IsType<StonePlacedFact>(Assert.Single(committed.OrderedFacts));
         Assert.Equal(expectedChosenPoint, placed.Stone.Point);
     }
 
@@ -250,28 +247,6 @@ public sealed class BoardRepetitionFixtureTests
             analysis.Groups.Select(group => new GroupEffectiveLiberty(
                 group,
                 group.RealLibertyCount)));
-
-    private static CommittedPlacement CommitIfLegal(
-        BoardState source,
-        BattleRepetitionHistory history,
-        HypotheticalPlacementResolution candidate,
-        PlacementLegalityEvaluation evaluation)
-    {
-        if (!evaluation.IsLegal)
-        {
-            return new CommittedPlacement(
-                source,
-                history,
-                Array.Empty<PlacementCaptureFact>());
-        }
-
-        var candidateKey = evaluation.CandidateTopologyKey
-            ?? throw new InvalidOperationException("Legal placement must provide a topology key.");
-        return new CommittedPlacement(
-            candidate.BoardAfterCapture,
-            history.RegisterLegalPlacement(candidateKey),
-            candidate.OrderedFacts);
-    }
 
     private static IReadOnlyList<CanonicalPoint> CapturedPoints(
         HypotheticalPlacementResolution candidate) =>
@@ -493,8 +468,4 @@ public sealed class BoardRepetitionFixtureTests
         PlacementLegalityEvaluation Evaluation,
         BattleRepetitionHistory History);
 
-    private sealed record CommittedPlacement(
-        BoardState Board,
-        BattleRepetitionHistory History,
-        IReadOnlyList<PlacementCaptureFact> PublishedFacts);
 }

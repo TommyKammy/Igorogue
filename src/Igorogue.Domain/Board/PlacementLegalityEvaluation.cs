@@ -21,10 +21,14 @@ public sealed class PlacementLegalityEvaluation
 {
     private PlacementLegalityEvaluation(
         PlacementLegalityStatus status,
-        StoneTopologyKey? candidateTopologyKey)
+        StoneTopologyKey? candidateTopologyKey,
+        HypotheticalPlacementResolution? acceptedCandidate,
+        BattleRepetitionHistory evaluatedHistory)
     {
         Status = status;
         CandidateTopologyKey = candidateTopologyKey;
+        AcceptedCandidate = acceptedCandidate;
+        EvaluatedHistory = evaluatedHistory;
     }
 
     public PlacementLegalityStatus Status { get; }
@@ -42,15 +46,38 @@ public sealed class PlacementLegalityEvaluation
 
     public StoneTopologyKey? CandidateTopologyKey { get; }
 
-    internal static PlacementLegalityEvaluation Legal(StoneTopologyKey candidateTopologyKey) =>
-        new(PlacementLegalityStatus.Legal, candidateTopologyKey);
+    public HypotheticalPlacementResolution? AcceptedCandidate { get; }
 
-    internal static PlacementLegalityEvaluation TerminalCaptureRequired() =>
-        new(PlacementLegalityStatus.TerminalCaptureRequired, null);
+    internal BattleRepetitionHistory EvaluatedHistory { get; }
 
-    internal static PlacementLegalityEvaluation Suicide() =>
-        new(PlacementLegalityStatus.Suicide, null);
+    internal static PlacementLegalityEvaluation Legal(
+        HypotheticalPlacementResolution acceptedCandidate,
+        StoneTopologyKey candidateTopologyKey,
+        BattleRepetitionHistory evaluatedHistory) =>
+        new(
+            PlacementLegalityStatus.Legal,
+            candidateTopologyKey,
+            acceptedCandidate,
+            evaluatedHistory);
 
-    internal static PlacementLegalityEvaluation Repetition(StoneTopologyKey candidateTopologyKey) =>
-        new(PlacementLegalityStatus.StoneTopologyRepetition, candidateTopologyKey);
+    internal static PlacementLegalityEvaluation TerminalCaptureRequired(
+        BattleRepetitionHistory evaluatedHistory) =>
+        new(
+            PlacementLegalityStatus.TerminalCaptureRequired,
+            null,
+            null,
+            evaluatedHistory);
+
+    internal static PlacementLegalityEvaluation Suicide(
+        BattleRepetitionHistory evaluatedHistory) =>
+        new(PlacementLegalityStatus.Suicide, null, null, evaluatedHistory);
+
+    internal static PlacementLegalityEvaluation Repetition(
+        StoneTopologyKey candidateTopologyKey,
+        BattleRepetitionHistory evaluatedHistory) =>
+        new(
+            PlacementLegalityStatus.StoneTopologyRepetition,
+            candidateTopologyKey,
+            null,
+            evaluatedHistory);
 }
