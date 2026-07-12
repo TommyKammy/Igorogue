@@ -1,12 +1,12 @@
 ---
 type: task
 id: TASK-0012
-status: review
+status: done
 project: Igorogue
 milestone: M-1
 priority: critical
 dependencies: []
-updated: 2026-07-10
+updated: 2026-07-12
 ---
 # TASK-0012 Implement FEAT-009 Enemy Behavior Specification
 
@@ -77,14 +77,20 @@ python tools/check_all.py
 - 専用検査`check_enemy_behaviors.py`を追加。
 - Rules Canon、Domain/Eventモデル、索引を同期。
 
+### 2026-07-12
+
+- Project ownerが、TASK-0012の独立二人human sign-offは実施済みという前提で先へ進むよう明示した。この指示を、二人が独立にfixtureを紙上解決して同一結果へ到達したことに対するowner attestationとして記録し、本TASKを`done`へ遷移した。
+- raw worksheetとsign-off identityはrepositoryへ保存されていない。Codexによる再現や人物情報を補っておらず、証跡の粒度はowner attestationに限定する。
+
 ## Evidence
 
 - `python tools/check_enemy_behaviors.py`: PASS。指定済み敵2体、決定フィクスチャ8件。
 - `python tools/check_all.py`: PASS。文書、Wikilink、content、敵行動、抽象モデル既存テストを通過。
-- 紙上レビュー2名: pending。
+- 紙上レビュー2名: Project owner attestationにより完了、2026-07-12。raw worksheet／identityはrepository未保存。
 
 ## Known issues
 
 - A-2は[[ADR-0011 Battle-Local Stone Topology Repetition Ban]]としてAccepted。製品Kernel実装時に敵候補フィルターへ同fixtureを移植する。
 - 施設点意味論は[[ADR-0012 Facility Sites Are Empty Intersections]]でAcceptedされ、`white_facility_invasion`は合法確定時だけ施設を破壊する。
-- 人間2名による紙上再現が未完了のため、statusは`review`。一致後に`validated`へ移す。
+- human sign-offのraw worksheet／identityはrepositoryに保存されていない。完了根拠は2026-07-12のProject owner attestationであり、Codex evidenceへの置換ではない。
+- FEAT-009のproduction enemy planner／executionはM2の後続TASKで実装する。本TASKの`done`は仕様とhuman paper gateの完了を表し、runtime実装済みを意味しない。

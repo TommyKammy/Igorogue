@@ -9,14 +9,12 @@ sprint: S0
 
 ## Goal
 
-Review and merge TASK-0030 M1 technical exit re-audit without opening Gate 2 before the human prerequisite.
+Complete and review TASK-0031's bounded Gate 2 decomposition without selecting an unresolved starter recipe or starting production implementation early.
 
-## In review
+## In progress
 
-- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]]
-  - independent fixed-HEAD review approved; M1 technical `PASS`／Gate 2 `BLOCKED`
-- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
-  - independent two-person paper sign-off pending
+- [[TASK-0031 Plan Gate 2 Core Duel Implementation]]
+  - close M1／human evidence, isolate DECISION-0006, and define TASK-0032〜0041 in dependency order
 
 ## Completed
 
@@ -43,15 +41,19 @@ Review and merge TASK-0030 M1 technical exit re-audit without opening Gate 2 bef
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]]
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]]
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]
+- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — M1 technical `PASS`; PR #20 merged／CI green
+- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — two-person human sign-off completed by Project owner attestation
 
-## Next after TASK-0030
+## Next after TASK-0031
 
-- Complete TASK-0012 two-human paper sign-off.
-- Define Gate 2 TASKs only after M1 technical PASS is approved and TASK-0012 is complete.
+- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — first safe production candidate after TASK-0031 merge.
+- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolve before default starting recipe is integrated in TASK-0038.
+- TASK-0033〜0041 remain blocked and advance only in dependency order.
 
 ## Review questions
 
-- Does every current source place MOM-01〜19／CTR-01〜25 production migration in M3 and TLE-01〜15 in M1?
-- Do TASK-0027〜0029 expose stone identity、capture benefit、counterattack-boundary、golden／replay dependencies without pulling full MOM／CTR into M1?
-- Is Application headless battle evidence kept distinct from the bootstrap-only simulator smoke?
-- Is TASK-0012 human sign-off preserved as a separate, non-Codex gate?
+- Does the plan preserve Accepted rules and isolate the starter deck／facility ambiguity in DECISION-0006?
+- Is typed Content projection scheduled before deck／hand／qi and all gameplay consumers?
+- Are Domain／Application kept free of Godot types, with UI limited to commands and read-only queries?
+- Does the Godot graybox task explicitly authorize asset edits and require headless／export／human visual evidence?
+- Is the human sign-off recorded only as Project owner attestation without fabricated worksheets or identities?

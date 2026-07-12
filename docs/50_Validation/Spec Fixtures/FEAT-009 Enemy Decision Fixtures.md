@@ -3,7 +3,7 @@ type: spec-fixture
 status: active
 project: Igorogue
 feature: FEAT-009
-updated: 2026-07-10
+updated: 2026-07-12
 ---
 # FEAT-009 Enemy Decision Fixtures
 
@@ -122,7 +122,7 @@ updated: 2026-07-10
 
 | reviewer | date | cases | result | notes |
 |---|---|---|---|---|
-| Reviewer A |  | F09-01〜08 | pending |  |
-| Reviewer B |  | F09-01〜08 | pending |  |
+| Human reviewer 1 | not retained | F09-01〜08 | signed off | completion attested by Project owner on 2026-07-12; identity／worksheet not stored |
+| Human reviewer 2 | not retained | F09-01〜08 | signed off | completion attested by Project owner on 2026-07-12; identity／worksheet not stored |
 
-2名一致後、[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]を`validated`へ移す。
+Project ownerは2026-07-12、独立二人human sign-offが実施済みという前提で先へ進むよう明示した。このowner attestationを二人の一致完了根拠として[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]を`done`へ移した。raw worksheet、実施日、signer identityはrepositoryに保存されておらず、Codex reviewで補完しない。

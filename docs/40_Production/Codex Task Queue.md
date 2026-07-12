@@ -17,15 +17,15 @@ updated: 2026-07-12
 - [[TASK-0001 Decide Engine and Repository]]
 - [[TASK-0020 Review Repository Bootstrap Runtime Evidence]]
 
-### Human-only parallel action
+### Completed human-only gate
 
-- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] two-person paper fixture sign-off
+- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — two-person paper fixture sign-off completed by Project owner attestation; raw worksheets／identities are not stored in the repository
 
 ## Gate 1 — deterministic foundation
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] (`review`; M1 technical exit `PASS`; Gate 2 remains blocked by TASK-0012 human sign-off).
+Status: complete. [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] established M1 technical exit `PASS`, PR #20 was human-merged, post-merge CI is green, and the separate TASK-0012 human gate is closed.
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
@@ -44,7 +44,7 @@ Current: [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] (`review`; M1 tech
 15. [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
 16. [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — done
 17. [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — done
-18. [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — review／current
+18. [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — done
 
 [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] resolved Option 1. TLE work runs strictly TASK-0027 → TASK-0028 → TASK-0029; do not parallelize their state contracts. After each human merge, only the immediate successor may move from `blocked` to `ready`. The specification checker remains E1 and cannot substitute for production E3 evidence.
 
@@ -53,13 +53,23 @@ The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DEC
 
 ## Gate 2 — Core Duel
 
-Only after M1 exit evidence including TLE-01〜15 E3 migration and the required TASK-0012 human sign-off:
+Entry is open because M1 exit evidence including TLE-01〜15 E3 migration and the required TASK-0012 human sign-off are complete.
 
-- basic deck/hand/qi loop;
-- 山賊棋士 intent execution;
-- graybox 7×7 board;
-- capture, territory, and risk previews;
-- no meta progression and minimal relic content.
+Current: [[TASK-0031 Plan Gate 2 Core Duel Implementation]] (`in_progress`; docs-only decomposition).
+
+1. [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — in progress
+2. [[TASK-0032 Implement Typed Core Duel Content Catalog]] — blocked until TASK-0031 merge; first safe production candidate
+3. [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — blocked by TASK-0032
+4. [[TASK-0034 Implement Atomic Basic Stone Card Play]] — blocked by TASK-0033
+5. [[TASK-0035 Implement Starter Stone Card Effects]] — blocked by TASK-0034
+6. [[TASK-0036 Implement Starter Technique and Development Effects]] — blocked by TASK-0035
+7. [[TASK-0037 Implement Bandit Intent Planning and Execution]] — blocked by TASK-0036
+8. [[TASK-0038 Integrate Headless Core Duel and Replay]] — blocked by TASK-0037 and [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]]
+9. [[TASK-0039 Implement Core Duel Preview Queries]] — blocked by TASK-0038
+10. [[TASK-0040 Build Playable Godot Core Duel Graybox]] — blocked by TASK-0039
+11. [[TASK-0041 Validate M2 Core Duel Graybox]] — blocked by TASK-0040
+
+DECISION-0006 does not block TASK-0032 or a generic injected-recipe deck kernel. It must be resolved before TASK-0038 selects the default starting recipe and final M2 facility scope. No meta progression or broad relic content enters Gate 2.
 
 ## Gate 3 — Acceleration Lab
 
