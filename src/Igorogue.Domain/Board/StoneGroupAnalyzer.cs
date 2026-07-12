@@ -65,7 +65,7 @@ public static class StoneGroupAnalyzer
 
         groups.Sort((left, right) => geometry.ToCanonicalIndex(left.Anchor)
             .CompareTo(geometry.ToCanonicalIndex(right.Anchor)));
-        return new StoneGroupAnalysis(geometry, groups.ToArray(), groupsByCanonicalIndex);
+        return new StoneGroupAnalysis(board, groups.ToArray(), groupsByCanonicalIndex);
     }
 
     private static BoardStone[] MaterializeStones(BoardState board, IReadOnlyList<bool> memberMask)

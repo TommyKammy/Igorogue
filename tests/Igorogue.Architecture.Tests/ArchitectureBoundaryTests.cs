@@ -155,6 +155,14 @@ public sealed class ArchitectureBoundaryTests
             typeof(CommandRejectedFact),
             typeof(EnemyPassedFact),
             typeof(BattleEndedFact),
+            typeof(TemporaryLibertyGrantedFact),
+            typeof(TemporaryLibertyRemovedFact),
+            typeof(TemporaryLibertyExpirySweepStartedFact),
+            typeof(TemporaryLibertyExpiredFact),
+            typeof(TemporaryLibertyGroupCapturedFact),
+            typeof(TemporaryLibertyKingGateFact),
+            typeof(CaptureBenefitSuppressedFact),
+            typeof(TemporaryLibertyExpirySweepResolvedFact),
         };
 
         Assert.All(factTypes, type =>
@@ -177,6 +185,79 @@ public sealed class ArchitectureBoundaryTests
         Assert.Equal(typeof(TerritoryEstablishedFact), resolve.ReturnType);
         Assert.Empty(typeof(TerritoryEstablishedFact).GetConstructors(
             BindingFlags.Public | BindingFlags.Instance));
+    }
+
+    [Fact]
+    public void TemporaryLibertyResolutionRequiresExactDomainSnapshotsAndCannotForgeCommits()
+    {
+        var resolve = RequirePublicStaticMethod(
+            typeof(TemporaryLibertyExpiryResolver),
+            nameof(TemporaryLibertyExpiryResolver.Resolve),
+            typeof(StoneRuntimeState),
+            typeof(TemporaryLibertyState),
+            typeof(ContinuousLibertySnapshot),
+            typeof(BattleRepetitionHistory),
+            typeof(int));
+
+        Assert.Equal(typeof(TemporaryLibertyExpiryResolution), resolve.ReturnType);
+        Assert.Empty(typeof(StoneRuntimeState).GetConstructors());
+        Assert.Empty(typeof(TemporaryLibertyState).GetConstructors());
+        Assert.Empty(typeof(ContinuousLibertySnapshot).GetConstructors());
+        Assert.Empty(typeof(TemporaryLibertyExpiryResolution).GetConstructors());
+        Assert.Empty(typeof(TemporaryLibertyGrantResolution).GetConstructors());
+        var integratePlacement = RequirePublicStaticMethod(
+            typeof(StoneRuntimePlacementIntegrator),
+            nameof(StoneRuntimePlacementIntegrator.Apply),
+            typeof(StoneRuntimeState),
+            typeof(TemporaryLibertyState),
+            typeof(LegalPlacementCommit),
+            typeof(StoneRuntimePlacementDescriptor),
+            typeof(TemporaryLibertyEffectiveLibertyAnalysis),
+            typeof(TemporaryLibertyEffectiveLibertyAnalysis));
+        Assert.Equal(typeof(StoneRuntimePlacementCommit), integratePlacement.ReturnType);
+        Assert.Empty(typeof(StoneRuntimePlacementCommit).GetConstructors());
+        Assert.DoesNotContain(
+            typeof(StoneRuntimePlacementCommit).GetProperties(
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static),
+            property => property.PropertyType == typeof(LegalPlacementCommit));
+        Assert.DoesNotContain(
+            typeof(StoneRuntimePlacementCommit).Assembly.GetExportedTypes(),
+            type => type.Name.Contains(
+                "TemporaryLibertyCarrierRemoval",
+                StringComparison.Ordinal));
+        Assert.DoesNotContain(
+            typeof(BattleRepetitionHistory).GetMethods(
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static),
+            method => method.Name.Contains("Mandatory", StringComparison.Ordinal));
+        Assert.DoesNotContain(
+            typeof(TemporaryLibertyState).GetMethods(
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static),
+            method => method.Name.Contains("BeginExpirySweep", StringComparison.Ordinal));
+        var grant = RequirePublicStaticMethod(
+            typeof(TemporaryLibertyGrantResolver),
+            nameof(TemporaryLibertyGrantResolver.Grant),
+            typeof(TemporaryLibertyState),
+            typeof(CanonicalPoint),
+            typeof(string),
+            typeof(int),
+            typeof(string),
+            typeof(int));
+        Assert.Equal(typeof(TemporaryLibertyGrantResolution), grant.ReturnType);
+        Assert.Single(
+            typeof(TemporaryLibertyGrantResolver).GetMethods(
+                BindingFlags.Public | BindingFlags.Static),
+            method => method.Name == nameof(TemporaryLibertyGrantResolver.Grant));
+        var grantAfterSweep = RequirePublicStaticMethod(
+            typeof(TemporaryLibertyGrantResolver),
+            nameof(TemporaryLibertyGrantResolver.GrantAfterExpirySweepStarted),
+            typeof(TemporaryLibertyState),
+            typeof(CanonicalPoint),
+            typeof(string),
+            typeof(int),
+            typeof(string),
+            typeof(TemporaryLibertyExpirySweepWindow));
+        Assert.Equal(typeof(TemporaryLibertyGrantResolution), grantAfterSweep.ReturnType);
+        Assert.Empty(typeof(TemporaryLibertyExpirySweepWindow).GetConstructors());
     }
 
     [Fact]
@@ -233,6 +314,14 @@ public sealed class ArchitectureBoundaryTests
                 typeof(TerritoryEstablishedFact),
                 typeof(TerritoryDeltaResolver),
                 typeof(FacilityOperatingTransitionResolver),
+                typeof(StoneRuntimeState),
+                typeof(TemporaryLibertyState),
+                typeof(ContinuousLibertySnapshot),
+                typeof(TemporaryLibertyExpiryResolver),
+                typeof(TemporaryLibertyExpiryResolution),
+                typeof(StoneRuntimePlacementDescriptor),
+                typeof(StoneRuntimePlacementCommit),
+                typeof(StoneRuntimePlacementIntegrator),
             ])
             .Distinct()
             .ToArray();
@@ -265,6 +354,14 @@ public sealed class ArchitectureBoundaryTests
             typeof(FacilityDestroyedFact),
             typeof(StoneTopologyRegisteredFact),
             typeof(KingCaptureEvaluatedFact),
+            typeof(TemporaryLibertyGrantedFact),
+            typeof(TemporaryLibertyRemovedFact),
+            typeof(TemporaryLibertyExpirySweepStartedFact),
+            typeof(TemporaryLibertyExpiredFact),
+            typeof(TemporaryLibertyGroupCapturedFact),
+            typeof(TemporaryLibertyKingGateFact),
+            typeof(CaptureBenefitSuppressedFact),
+            typeof(TemporaryLibertyExpirySweepResolvedFact),
         };
 
         Assert.All(nonForgeableTypes, type => Assert.Empty(type.GetConstructors()));

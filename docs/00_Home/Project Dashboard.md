@@ -12,7 +12,7 @@ updated: 2026-07-12
 
 ## Sprint goal
 
-Synchronize DECISION-0005 Option 1 and define the serial TLE M1 production／E3 workstream.
+Complete TASK-0027 temporary-liberty Domain kernel and exact TLE-01〜08／11〜13 owned-projection E3 closeout.
 
 ## Health
 
@@ -56,13 +56,15 @@ Synchronize DECISION-0005 Option 1 and define the serial TLE M1 production／E3 
 - versioned replay envelope with 34 submitted attempts、accepted-only log chain、strict bounded Stream I/O、typed replay and fail-closed integrity evidence
 - PR #14 merge and post-merge main CI green at `6398ec1e4f1e4ecf0c8eeaf71e33bb6ddeff6875`
 - PR #15 merge and post-merge main CI green at `6c34a4fffe00b0fbec9dc5dd3033d84c6229a56d`
+- PR #16 merge and post-merge main CI green at `90dda9dd41b96864a24e19a7969285f56c4593b4`
 - [[TASK-0025 Gate 1 Deterministic Foundation Audit]] — fixed-baseline result `DECISION NEEDED`; Option 1 post-audit disposition recorded
 - [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — resolved／Option 1
+- [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — immutable stone runtime、timed／continuous effective liberty、simultaneous expiry、mandatory topology、king gateをproduction Domainへ実装しreview中
 
 ## Next
 
-1. Review／merge [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]]
-2. Execute TASK-0027 → TASK-0028 → TASK-0029 serially
+1. Review／merge [[TASK-0027 Implement Temporary Liberty Domain Kernel]]
+2. TASK-0027 human merge後にTASK-0028 → TASK-0029を直列実行
 3. Complete FEAT-009 independent two-person sign-off
 4. Re-audit M1 exit after TLE E3 migration
 5. Define Gate 2 implementation TASKs only after the gates above permit it

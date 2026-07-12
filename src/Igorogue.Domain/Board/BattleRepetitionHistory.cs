@@ -113,7 +113,62 @@ public sealed class BattleRepetitionHistory
         return new LegalPlacementCommit(
             candidate,
             unseenKey,
+            legalEvaluation.EvaluatedEffectiveLiberties,
             historyAfterCommit);
+    }
+
+    internal MandatoryTopologyCommit CommitMandatoryMutation(
+        BoardState sourceBoard,
+        BoardState resultBoard,
+        string sourceReasonId)
+    {
+        ArgumentNullException.ThrowIfNull(sourceBoard);
+        ArgumentNullException.ThrowIfNull(resultBoard);
+        var reasonId = StableDomainId.Validate(sourceReasonId, nameof(sourceReasonId));
+        if (!ReferenceEquals(sourceBoard.Geometry, resultBoard.Geometry))
+        {
+            throw new ArgumentException(
+                "Mandatory mutation boards must use the exact same geometry.",
+                nameof(resultBoard));
+        }
+
+        var sourceKey = StoneTopologyKey.FromBoard(sourceBoard);
+        if (!Current.Equals(sourceKey))
+        {
+            throw new InvalidOperationException(
+                "The battle history no longer ends at the mandatory mutation source board.");
+        }
+
+        var resultKey = StoneTopologyKey.FromBoard(resultBoard);
+        if (resultKey.Equals(sourceKey))
+        {
+            throw new ArgumentException(
+                "Mandatory topology registration requires an actual stone topology change.",
+                nameof(resultBoard));
+        }
+
+        var firstSeen = !seenKeys.Contains(resultKey);
+        var observations = new StoneTopologyKey[observationView.Count + 1];
+        observationView.CopyTo(observations, 0);
+        observations[^1] = resultKey;
+        var nextSeenKeys = new HashSet<StoneTopologyKey>(seenKeys)
+        {
+            resultKey,
+        };
+        var historyAfterCommit = new BattleRepetitionHistory(observations, nextSeenKeys);
+        var registrationFact = new StoneTopologyRegisteredFact(
+            resultKey,
+            historyAfterCommit,
+            firstSeen,
+            reasonId);
+
+        return new MandatoryTopologyCommit(
+            sourceBoard,
+            resultBoard,
+            resultKey,
+            firstSeen,
+            historyAfterCommit,
+            registrationFact);
     }
 
     public string ToCanonicalText()

@@ -23,11 +23,13 @@ public sealed class PlacementLegalityEvaluation
         PlacementLegalityStatus status,
         StoneTopologyKey? candidateTopologyKey,
         HypotheticalPlacementResolution? acceptedCandidate,
+        EffectiveLibertySnapshot evaluatedEffectiveLiberties,
         BattleRepetitionHistory evaluatedHistory)
     {
         Status = status;
         CandidateTopologyKey = candidateTopologyKey;
         AcceptedCandidate = acceptedCandidate;
+        EvaluatedEffectiveLiberties = evaluatedEffectiveLiberties;
         EvaluatedHistory = evaluatedHistory;
     }
 
@@ -48,36 +50,50 @@ public sealed class PlacementLegalityEvaluation
 
     public HypotheticalPlacementResolution? AcceptedCandidate { get; }
 
+    internal EffectiveLibertySnapshot EvaluatedEffectiveLiberties { get; }
+
     internal BattleRepetitionHistory EvaluatedHistory { get; }
 
     internal static PlacementLegalityEvaluation Legal(
         HypotheticalPlacementResolution acceptedCandidate,
         StoneTopologyKey candidateTopologyKey,
+        EffectiveLibertySnapshot evaluatedEffectiveLiberties,
         BattleRepetitionHistory evaluatedHistory) =>
         new(
             PlacementLegalityStatus.Legal,
             candidateTopologyKey,
             acceptedCandidate,
+            evaluatedEffectiveLiberties,
             evaluatedHistory);
 
     internal static PlacementLegalityEvaluation TerminalCaptureRequired(
+        EffectiveLibertySnapshot evaluatedEffectiveLiberties,
         BattleRepetitionHistory evaluatedHistory) =>
         new(
             PlacementLegalityStatus.TerminalCaptureRequired,
             null,
             null,
+            evaluatedEffectiveLiberties,
             evaluatedHistory);
 
     internal static PlacementLegalityEvaluation Suicide(
+        EffectiveLibertySnapshot evaluatedEffectiveLiberties,
         BattleRepetitionHistory evaluatedHistory) =>
-        new(PlacementLegalityStatus.Suicide, null, null, evaluatedHistory);
+        new(
+            PlacementLegalityStatus.Suicide,
+            null,
+            null,
+            evaluatedEffectiveLiberties,
+            evaluatedHistory);
 
     internal static PlacementLegalityEvaluation Repetition(
         StoneTopologyKey candidateTopologyKey,
+        EffectiveLibertySnapshot evaluatedEffectiveLiberties,
         BattleRepetitionHistory evaluatedHistory) =>
         new(
             PlacementLegalityStatus.StoneTopologyRepetition,
             candidateTopologyKey,
             null,
+            evaluatedEffectiveLiberties,
             evaluatedHistory);
 }

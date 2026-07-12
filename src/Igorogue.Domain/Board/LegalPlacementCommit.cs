@@ -7,10 +7,12 @@ public sealed class LegalPlacementCommit
     internal LegalPlacementCommit(
         HypotheticalPlacementResolution candidate,
         StoneTopologyKey registeredTopologyKey,
+        EffectiveLibertySnapshot evaluatedEffectiveLiberties,
         BattleRepetitionHistory historyAfterCommit)
     {
         Candidate = candidate;
         RegisteredTopologyKey = registeredTopologyKey;
+        EvaluatedEffectiveLiberties = evaluatedEffectiveLiberties;
         HistoryAfterCommit = historyAfterCommit;
         KingCaptureResult = KingCaptureResultEvaluator.EvaluateAtomicCapture(
             candidate.CapturedGroups);
@@ -25,6 +27,8 @@ public sealed class LegalPlacementCommit
     public StoneTopologyKey RegisteredTopologyKey { get; }
 
     public BattleRepetitionHistory HistoryAfterCommit { get; }
+
+    internal EffectiveLibertySnapshot EvaluatedEffectiveLiberties { get; }
 
     public KingCaptureResult KingCaptureResult { get; }
 }

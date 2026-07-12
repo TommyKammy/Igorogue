@@ -73,8 +73,8 @@ public static class HypotheticalPlacementResolver
         var orderedFacts = CreateOrderedFacts(placement.PlacedStone, capturedGroups);
 
         return new HypotheticalPlacementResolution(
-            placement.SourceBoard,
-            placement.PlacedStone,
+            placement,
+            effectiveLiberties,
             boardAfterCapture,
             capturedGroups,
             groupsAfterCapture,
