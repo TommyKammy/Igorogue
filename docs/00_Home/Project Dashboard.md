@@ -61,11 +61,11 @@ Complete TASK-0028 closed-window capture benefits and exact TLE-09／10／15 Dom
 - [[TASK-0025 Gate 1 Deterministic Foundation Audit]] — fixed-baseline result `DECISION NEEDED`; Option 1 post-audit disposition recorded
 - [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — resolved／Option 1
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
-- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — in progress／current
+- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — TLE-09／10／15 Domain E3 green、review／current
 
 ## Next
 
-1. Implement／review [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]]
+1. Review／merge [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]]
 2. TASK-0028 human merge後にTASK-0029を実行
 3. Complete FEAT-009 independent two-person sign-off
 4. Re-audit M1 exit after TLE E3 migration
