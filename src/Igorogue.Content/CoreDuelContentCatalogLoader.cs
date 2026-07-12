@@ -11,6 +11,16 @@ public sealed class CoreDuelContentCatalogLoader
     private const string SystemPath = "balance/system.json";
     private const string BanditContentId = "enemy_bandit";
 
+    private static readonly string[] RequiredStarterCardIds =
+    [
+        "card_basic_stone",
+        "card_contact",
+        "card_development",
+        "card_extend",
+        "card_lure_stone",
+        "card_reinforce",
+    ];
+
     private static readonly JsonDocumentOptions DocumentOptions = new()
     {
         AllowTrailingCommas = false,
@@ -112,6 +122,18 @@ public sealed class CoreDuelContentCatalogLoader
             index++;
         }
 
+        var actualStarterCardIds = starterCards
+            .Select(card => card.Id)
+            .Order(StringComparer.Ordinal)
+            .ToArray();
+        if (!actualStarterCardIds.SequenceEqual(RequiredStarterCardIds, StringComparer.Ordinal))
+        {
+            throw Invalid(
+                $"Core Duel starter IDs must be exactly: " +
+                $"{string.Join(", ", RequiredStarterCardIds)}. Got: " +
+                $"{string.Join(", ", actualStarterCardIds)}.");
+        }
+
         return starterCards;
     }
 
@@ -132,16 +154,13 @@ public sealed class CoreDuelContentCatalogLoader
 
         var cost = RequiredInt(card, "cost", context);
         var type = ParseCardType(RequiredString(card, "type", context), context);
-        var target = card.TryGetProperty("target", out var targetElement)
-            ? ParseCardTarget(RequireString(targetElement, $"{context}.target"), context)
-            : CardTargetKind.None;
-        var placementTags = card.TryGetProperty("placement_tags", out var placementElement)
-            ? ParseCardPlacementTags(placementElement, $"{context}.placement_tags")
-            : [];
+        var target = ParseStarterTarget(card, type, context);
+        var placementTags = ParseStarterPlacementTags(card, type, context);
         var effects = ParseCardOperations(
             RequiredArray(card, "effects", context),
             $"{context}.effects",
             facilityTypeIds);
+        ValidateAcceptedStarterOperationOrder(id, effects, context);
         var onCaptured = card.TryGetProperty("on_captured", out var capturedElement)
             ? ParseCardOperations(
                 RequireArray(capturedElement, $"{context}.on_captured"),
@@ -160,6 +179,75 @@ public sealed class CoreDuelContentCatalogLoader
                 placementTags,
                 effects,
                 onCaptured));
+    }
+
+    private static CardTargetKind ParseStarterTarget(
+        JsonElement card,
+        CardContentType type,
+        string context)
+    {
+        if (card.TryGetProperty("target", out var targetElement))
+        {
+            return ParseCardTarget(
+                RequireString(targetElement, $"{context}.target"),
+                context);
+        }
+
+        if (type != CardContentType.Stone)
+        {
+            throw Invalid($"{context}.target is required for a non-stone starter card.");
+        }
+
+        return CardTargetKind.None;
+    }
+
+    private static CardPlacementTag[] ParseStarterPlacementTags(
+        JsonElement card,
+        CardContentType type,
+        string context)
+    {
+        if (!card.TryGetProperty("placement_tags", out var placementElement))
+        {
+            if (type == CardContentType.Stone)
+            {
+                throw Invalid($"{context}.placement_tags is required for a stone starter card.");
+            }
+
+            return [];
+        }
+
+        var placementTags = ParseCardPlacementTags(
+            placementElement,
+            $"{context}.placement_tags");
+        if (type == CardContentType.Stone && placementTags.Length == 0)
+        {
+            throw Invalid($"{context}.placement_tags must not be empty for a stone starter card.");
+        }
+
+        return placementTags;
+    }
+
+    private static void ValidateAcceptedStarterOperationOrder(
+        string cardId,
+        IReadOnlyList<CardOperationDefinition> effects,
+        string context)
+    {
+        if (!string.Equals(cardId, "card_reinforce", StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        CardOperationKind[] expected =
+        [
+            CardOperationKind.DrawIfTargetAtari,
+            CardOperationKind.TemporaryLiberty,
+        ];
+        if (!effects.Select(effect => effect.Kind).SequenceEqual(expected))
+        {
+            throw Invalid(
+                $"{context}.effects must check draw_if_target_atari before granting " +
+                "temporary_liberty as required by FEAT-011.");
+        }
     }
 
     private static CardPlacementTag[] ParseCardPlacementTags(

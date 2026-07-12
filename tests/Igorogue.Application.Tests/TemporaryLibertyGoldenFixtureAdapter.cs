@@ -23,7 +23,7 @@ internal static class TemporaryLibertyGoldenFixtureAdapter
     internal const string StateProjectionId = "headless-battle-state-v2";
     internal const string GameVersion = "v0.2.10";
     internal const string ContentHash =
-        "sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06";
+        "sha256:cd53980e2edd69ad14b3815c800a3c5aab119f21d95d724d083afa2920c15ad6";
     internal const long Seed = 42;
 
     // These values are accepted player-visible rules without duplicated

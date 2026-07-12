@@ -4,7 +4,7 @@
   "state_projection": "headless-battle-state-v2",
   "fact_projection": "igorogue-tle-battle-fact-v2",
   "game_version": "v0.2.10",
-  "content_hash": "sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06",
+  "content_hash": "sha256:cd53980e2edd69ad14b3815c800a3c5aab119f21d95d724d083afa2920c15ad6",
   "source_catalogs": [
     {
       "path": "game_data/fixtures/temporary_liberty_expiry_fixtures.json",
@@ -20,7 +20,7 @@
     },
     {
       "path": "game_data/content/cards.json",
-      "sha256": "46b44c43a09d4145eaac3f165517e9e69f0bbe8f78b8f7cd92af5831b5658b54"
+      "sha256": "676f0ba1364d344dab2cf08ec2e0262ad74e43176339cceaaa051eb7da85e813"
     },
     {
       "path": "game_data/content/relics.json",
@@ -51,27 +51,27 @@
       "initial": {
         "snapshot_checksum": "c1506d0cc1c9f555090f1375d97f0cc2e42bca0405d8a871f6ea5a111c132816",
         "state_checksum": "28f20147d452fc29c728c62fd7f4690e4b5a2800e1f957653c3620a31ab98f1b",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=28f20147d452fc29c728c62fd7f4690e4b5a2800e1f957653c3620a31ab98f1b\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=28f20147d452fc29c728c62fd7f4690e4b5a2800e1f957653c3620a31ab98f1b\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "928bfb9b5c79a2fe0cb3416d9828fd3c281ee8d40a9783ef2a4bb53b1438d651",
-          "log_checksum": "aec6307ade4a58e56e2f30ff0734299b854d19f9b9bc698cd69ffd77f13477cf",
+          "log_checksum": "e1035fa332cd203a34b35906d1623b427f1e51f30634ebdd24b82f28e8265412",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=928bfb9b5c79a2fe0cb3416d9828fd3c281ee8d40a9783ef2a4bb53b1438d651\nexpected_log_checksum=aec6307ade4a58e56e2f30ff0734299b854d19f9b9bc698cd69ffd77f13477cf\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=928bfb9b5c79a2fe0cb3416d9828fd3c281ee8d40a9783ef2a4bb53b1438d651\nexpected_log_checksum=e1035fa332cd203a34b35906d1623b427f1e51f30634ebdd24b82f28e8265412\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "88103efb62953add8b909b25b5a1f857ef02b2b0693ceea950ec712cd32ddaf4",
-          "log_checksum": "027dfcb58e2d9e2edef32867576a153ae86498b1af581a701393fc5ac2ce36da",
+          "log_checksum": "a240a38fa9d78b0f8eb23a442966bee506267a0d483e353a2d2a6a0263bcbb38",
           "ordered_facts": [
             "boundary_stage|turn=1|stage=enemy_normal_action",
             "enemy_passed|turn=1",
@@ -99,7 +99,7 @@
       ],
       "final": {
         "state_checksum": "88103efb62953add8b909b25b5a1f857ef02b2b0693ceea950ec712cd32ddaf4",
-        "log_checksum": "027dfcb58e2d9e2edef32867576a153ae86498b1af581a701393fc5ac2ce36da",
+        "log_checksum": "a240a38fa9d78b0f8eb23a442966bee506267a0d483e353a2d2a6a0263bcbb38",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
@@ -131,27 +131,27 @@
       "initial": {
         "snapshot_checksum": "56f0675ab1d97ba4c52eee4d9b11722ebdd17bdac36ade2e92e577a1001553db",
         "state_checksum": "c708f7fc70b01b694fb20b3f68f906ab8815c526c70d679157f70cc1d609a445",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=c708f7fc70b01b694fb20b3f68f906ab8815c526c70d679157f70cc1d609a445\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=c708f7fc70b01b694fb20b3f68f906ab8815c526c70d679157f70cc1d609a445\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "d1017963e622302fa672f2e2a2633a27b5a5ee250112d8249320d9aff5f82740",
-          "log_checksum": "6297fc24bf55ab11ca5ee10ea5addb586d8b9fb1788a3f78ef1d7db73b092c8b",
+          "log_checksum": "f62eaca48bb2e276b016b96372708a81dd391eede1644841d80347972ce73642",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=d1017963e622302fa672f2e2a2633a27b5a5ee250112d8249320d9aff5f82740\nexpected_log_checksum=6297fc24bf55ab11ca5ee10ea5addb586d8b9fb1788a3f78ef1d7db73b092c8b\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=d1017963e622302fa672f2e2a2633a27b5a5ee250112d8249320d9aff5f82740\nexpected_log_checksum=f62eaca48bb2e276b016b96372708a81dd391eede1644841d80347972ce73642\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "2a7e73ce26375287f2c049282b46e81d31922f3f9d5be59c806a08f3329cb6b9",
-          "log_checksum": "47f9e08241ea390151c422d5f42956cceedc3f0d802e1dafed030a214aeabef7",
+          "log_checksum": "e0efb4426a67563ebeb12165148abc3e482e5c4d0feb7dc962283696db6ca058",
           "ordered_facts": [
             "boundary_stage|turn=2|stage=enemy_normal_action",
             "enemy_passed|turn=2",
@@ -180,7 +180,7 @@
       ],
       "final": {
         "state_checksum": "2a7e73ce26375287f2c049282b46e81d31922f3f9d5be59c806a08f3329cb6b9",
-        "log_checksum": "47f9e08241ea390151c422d5f42956cceedc3f0d802e1dafed030a214aeabef7",
+        "log_checksum": "e0efb4426a67563ebeb12165148abc3e482e5c4d0feb7dc962283696db6ca058",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
@@ -212,27 +212,27 @@
       "initial": {
         "snapshot_checksum": "a5218b999f69ff7b20de36451778caeef68b3690815c404b77276b33a7b99309",
         "state_checksum": "b9fcc22a305802fe59ebd9085a961c805ce58727a11bd310e88a7acd68f16131",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=b9fcc22a305802fe59ebd9085a961c805ce58727a11bd310e88a7acd68f16131\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=b9fcc22a305802fe59ebd9085a961c805ce58727a11bd310e88a7acd68f16131\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "b326280c409e876fd33c9d8ac40a965ec640970b50f627110f84d0e0d413c480",
-          "log_checksum": "3c0dca21159674f5f1d5bd91e2a8bd72a904b043b2e257fdd7232f8cfba24829",
+          "log_checksum": "78ccd13890ec23e5a71a3a120c928226a7545a36ccfa421f2faf2c45d7c3c3fe",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=b326280c409e876fd33c9d8ac40a965ec640970b50f627110f84d0e0d413c480\nexpected_log_checksum=3c0dca21159674f5f1d5bd91e2a8bd72a904b043b2e257fdd7232f8cfba24829\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=b326280c409e876fd33c9d8ac40a965ec640970b50f627110f84d0e0d413c480\nexpected_log_checksum=78ccd13890ec23e5a71a3a120c928226a7545a36ccfa421f2faf2c45d7c3c3fe\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "e28cb280bda8ebeba3f6e8ff43511ea369084c02c97d0872a010a09427343444",
-          "log_checksum": "13eeb08c4dfd7ecd5c5a4ed63f2a71a2e1a39856739e8d237594477a7eda72af",
+          "log_checksum": "f4d893fedf7561c084fcaa967b320965589068ea28343c8f75e5b3cc054104c4",
           "ordered_facts": [
             "boundary_stage|turn=3|stage=enemy_normal_action",
             "enemy_passed|turn=3",
@@ -262,7 +262,7 @@
       ],
       "final": {
         "state_checksum": "e28cb280bda8ebeba3f6e8ff43511ea369084c02c97d0872a010a09427343444",
-        "log_checksum": "13eeb08c4dfd7ecd5c5a4ed63f2a71a2e1a39856739e8d237594477a7eda72af",
+        "log_checksum": "f4d893fedf7561c084fcaa967b320965589068ea28343c8f75e5b3cc054104c4",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
@@ -294,27 +294,27 @@
       "initial": {
         "snapshot_checksum": "38b1a02cb251faa8f8876414942cbcd1eba10df2ce8515ef8a2645334a7dbb81",
         "state_checksum": "bac22ff38ec8f48a5c7c580876c9058fd8456251cb31d8d49785e2b5772e433a",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=bac22ff38ec8f48a5c7c580876c9058fd8456251cb31d8d49785e2b5772e433a\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=bac22ff38ec8f48a5c7c580876c9058fd8456251cb31d8d49785e2b5772e433a\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "51e59de8bb48438bb1f3ff6fdfdc850210386ec32a05b43a23537c0d6ec2d599",
-          "log_checksum": "74f6d3a0dd557bfbea3eaf353d36369ea2a0da6f7fef817e7e935ba7daef058e",
+          "log_checksum": "b21afcc6393beed3244ad1a94565456bb7c9f87ab041e2f3f32ef36f41c400c4",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=51e59de8bb48438bb1f3ff6fdfdc850210386ec32a05b43a23537c0d6ec2d599\nexpected_log_checksum=74f6d3a0dd557bfbea3eaf353d36369ea2a0da6f7fef817e7e935ba7daef058e\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=51e59de8bb48438bb1f3ff6fdfdc850210386ec32a05b43a23537c0d6ec2d599\nexpected_log_checksum=b21afcc6393beed3244ad1a94565456bb7c9f87ab041e2f3f32ef36f41c400c4\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "feb07b62951eca0cf1e1c05c735b4ee2e8175dcf0a59e973fe2e3b51a86e91d2",
-          "log_checksum": "36b3c299d791df957041c6ab5261c62a998d95a7fc3d142484468e2270db1690",
+          "log_checksum": "46b363bcb4855d0063db9da5a56019630dcf13a10424c8bac9190f09f691e9ad",
           "ordered_facts": [
             "boundary_stage|turn=4|stage=enemy_normal_action",
             "enemy_passed|turn=4",
@@ -338,7 +338,7 @@
       ],
       "final": {
         "state_checksum": "feb07b62951eca0cf1e1c05c735b4ee2e8175dcf0a59e973fe2e3b51a86e91d2",
-        "log_checksum": "36b3c299d791df957041c6ab5261c62a998d95a7fc3d142484468e2270db1690",
+        "log_checksum": "46b363bcb4855d0063db9da5a56019630dcf13a10424c8bac9190f09f691e9ad",
         "temporary_effect_ids": [
           "future"
         ],
@@ -372,27 +372,27 @@
       "initial": {
         "snapshot_checksum": "9c43fc901ca2a9431bc7242dce38187e9825311b13249549bd589d934764707e",
         "state_checksum": "9878d016a96d3bd0c505e720993d1529789ff1690a006d633b20a039a901baa5",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=9878d016a96d3bd0c505e720993d1529789ff1690a006d633b20a039a901baa5\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=9878d016a96d3bd0c505e720993d1529789ff1690a006d633b20a039a901baa5\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "90989df7bf9385102d9aa4bb040656b6c636eab0d5f54a797e7e5453d3abf4a9",
-          "log_checksum": "ec64931ba45fb78cebd9c6e9583506ef9dd6b79e607ac11bc0fb19c7baaceba0",
+          "log_checksum": "c908a66a2515597f8230d88a7a1c4e9b19b1a98f4a44ef1e92123cdb78299f5d",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=90989df7bf9385102d9aa4bb040656b6c636eab0d5f54a797e7e5453d3abf4a9\nexpected_log_checksum=ec64931ba45fb78cebd9c6e9583506ef9dd6b79e607ac11bc0fb19c7baaceba0\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=90989df7bf9385102d9aa4bb040656b6c636eab0d5f54a797e7e5453d3abf4a9\nexpected_log_checksum=c908a66a2515597f8230d88a7a1c4e9b19b1a98f4a44ef1e92123cdb78299f5d\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "de1526ae738a87689883f1065fe665fce0a5efb0d36b674bbb215e11b34da887",
-          "log_checksum": "1f910c1703f2269f83e908a85869643094c1b166b85ab65650e867d94db6bbd0",
+          "log_checksum": "6383da596895139e9289e7b3f3cb8d43bfc847d8720edff3b43e90898b619780",
           "ordered_facts": [
             "boundary_stage|turn=5|stage=enemy_normal_action",
             "enemy_passed|turn=5",
@@ -416,7 +416,7 @@
       ],
       "final": {
         "state_checksum": "de1526ae738a87689883f1065fe665fce0a5efb0d36b674bbb215e11b34da887",
-        "log_checksum": "1f910c1703f2269f83e908a85869643094c1b166b85ab65650e867d94db6bbd0",
+        "log_checksum": "6383da596895139e9289e7b3f3cb8d43bfc847d8720edff3b43e90898b619780",
         "temporary_effect_ids": [],
         "topology_observation_count": 1,
         "reserved_draw": 0,
@@ -448,27 +448,27 @@
       "initial": {
         "snapshot_checksum": "9df2eda21d5cf12c04502119e32230e1b863defdaa21e8613a325b764e70044e",
         "state_checksum": "416055a7ec5e1e7f545e46258e00bb218d570d0f13a4fc531a485d138826cef3",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=416055a7ec5e1e7f545e46258e00bb218d570d0f13a4fc531a485d138826cef3\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=416055a7ec5e1e7f545e46258e00bb218d570d0f13a4fc531a485d138826cef3\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "ad82d9430488a6e577f4204bacbecec93495d4242fa3d882caae115d341deca5",
-          "log_checksum": "c30da957467bc58ecfc2903df2a93048e96e94bf501a7b5fc316661421e3d19f",
+          "log_checksum": "f7dc4f4ff2e5ddcc36e5936f8a76ec56b975aedf108b46772bfbc04801d39b3a",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=ad82d9430488a6e577f4204bacbecec93495d4242fa3d882caae115d341deca5\nexpected_log_checksum=c30da957467bc58ecfc2903df2a93048e96e94bf501a7b5fc316661421e3d19f\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=ad82d9430488a6e577f4204bacbecec93495d4242fa3d882caae115d341deca5\nexpected_log_checksum=f7dc4f4ff2e5ddcc36e5936f8a76ec56b975aedf108b46772bfbc04801d39b3a\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "017ae3b32e8e8b95250e30fb101a3776a56126c5eb503bb61f819251a191fbc2",
-          "log_checksum": "d963da99d82c6ab0721744e63a24b5d19f4f6d3318ca7f9044d932a8b2b86062",
+          "log_checksum": "daad058271d9ec7a8304994b958dd7cac0cae2df1cd1e764eff3d0a3e6a63c79",
           "ordered_facts": [
             "boundary_stage|turn=6|stage=enemy_normal_action",
             "enemy_passed|turn=6",
@@ -492,7 +492,7 @@
       ],
       "final": {
         "state_checksum": "017ae3b32e8e8b95250e30fb101a3776a56126c5eb503bb61f819251a191fbc2",
-        "log_checksum": "d963da99d82c6ab0721744e63a24b5d19f4f6d3318ca7f9044d932a8b2b86062",
+        "log_checksum": "daad058271d9ec7a8304994b958dd7cac0cae2df1cd1e764eff3d0a3e6a63c79",
         "temporary_effect_ids": [],
         "topology_observation_count": 1,
         "reserved_draw": 0,
@@ -524,27 +524,27 @@
       "initial": {
         "snapshot_checksum": "470d41000a5991986d33f2726f829117380729f784e7001792f0d78933e42aef",
         "state_checksum": "ee58807a17fe050500e9f015ca449d1a3ec8be95f750edf738cf7118484a655e",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=ee58807a17fe050500e9f015ca449d1a3ec8be95f750edf738cf7118484a655e\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=ee58807a17fe050500e9f015ca449d1a3ec8be95f750edf738cf7118484a655e\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "1bbbcacf2526a7ca63eb3dbafbe2e2c345b597b43e5cef057f4a2a29938b84ea",
-          "log_checksum": "1d278596025e2b1aa3f94419c7174dd8a1eef44f10a5dc7022a9ff15a4407f4d",
+          "log_checksum": "5024307c3740f414268f25a0105ab1a124989ccfb4a0efd5fca852b96dbab884",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=1bbbcacf2526a7ca63eb3dbafbe2e2c345b597b43e5cef057f4a2a29938b84ea\nexpected_log_checksum=1d278596025e2b1aa3f94419c7174dd8a1eef44f10a5dc7022a9ff15a4407f4d\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=1bbbcacf2526a7ca63eb3dbafbe2e2c345b597b43e5cef057f4a2a29938b84ea\nexpected_log_checksum=5024307c3740f414268f25a0105ab1a124989ccfb4a0efd5fca852b96dbab884\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "3aa5ea0456fe2157b22d5efbb9d378d726c8b0e59bbbba669eddea8466c97945",
-          "log_checksum": "b68171d6b438545e2fd448b2ca0bf7228ace34fa28cf84be89064c429a01bd9d",
+          "log_checksum": "d860c8a18a8b22f2b7ab60f3c5ebeda384aa94f4e3e7bb33cd8a3daea8c8ddbf",
           "ordered_facts": [
             "boundary_stage|turn=7|stage=enemy_normal_action",
             "enemy_passed|turn=7",
@@ -568,7 +568,7 @@
       ],
       "final": {
         "state_checksum": "3aa5ea0456fe2157b22d5efbb9d378d726c8b0e59bbbba669eddea8466c97945",
-        "log_checksum": "b68171d6b438545e2fd448b2ca0bf7228ace34fa28cf84be89064c429a01bd9d",
+        "log_checksum": "d860c8a18a8b22f2b7ab60f3c5ebeda384aa94f4e3e7bb33cd8a3daea8c8ddbf",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
@@ -603,27 +603,27 @@
       "initial": {
         "snapshot_checksum": "08950f4558bca4e94ef79f187b27e4911267b3e376fece2be08ba2550bf0d677",
         "state_checksum": "267030233b82f9927bad026ba2e41aaa91d804cec2e40a9e2ba4ea7e08396d65",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=267030233b82f9927bad026ba2e41aaa91d804cec2e40a9e2ba4ea7e08396d65\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=267030233b82f9927bad026ba2e41aaa91d804cec2e40a9e2ba4ea7e08396d65\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "d76734c0705bc3cdca165f3eeee517265ac7b36ca27f382c38680e299c654a27",
-          "log_checksum": "07b695fb730422396f00ea2ceb18d7ccedcb61b066ba2405fd20031cfdb5675b",
+          "log_checksum": "75cccb2fc4c9b0b0e838de69dfcd426eeef3f0dd5bc01e6bb6bfdcbf9bd03358",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=d76734c0705bc3cdca165f3eeee517265ac7b36ca27f382c38680e299c654a27\nexpected_log_checksum=07b695fb730422396f00ea2ceb18d7ccedcb61b066ba2405fd20031cfdb5675b\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=d76734c0705bc3cdca165f3eeee517265ac7b36ca27f382c38680e299c654a27\nexpected_log_checksum=75cccb2fc4c9b0b0e838de69dfcd426eeef3f0dd5bc01e6bb6bfdcbf9bd03358\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "9eb2baa62b8f2005881fdc058d8036da6f4b328d09b629da9faa604178e6ada1",
-          "log_checksum": "cda079a00f64838989bf4cffdd98b40ebbf44537d85e1efa0b0126c2fc5c43fe",
+          "log_checksum": "9fef19388a9ab3881074446346d8da96c8792737ead4171c3aa60face1a8f595",
           "ordered_facts": [
             "boundary_stage|turn=8|stage=enemy_normal_action",
             "enemy_passed|turn=8",
@@ -649,7 +649,7 @@
       ],
       "final": {
         "state_checksum": "9eb2baa62b8f2005881fdc058d8036da6f4b328d09b629da9faa604178e6ada1",
-        "log_checksum": "cda079a00f64838989bf4cffdd98b40ebbf44537d85e1efa0b0126c2fc5c43fe",
+        "log_checksum": "9fef19388a9ab3881074446346d8da96c8792737ead4171c3aa60face1a8f595",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
@@ -681,27 +681,27 @@
       "initial": {
         "snapshot_checksum": "97e8dd6f13bfc78a007230b7cd56c3f3f043616ec3edbe7aaa505144f0c2fb75",
         "state_checksum": "c8ce6961b5e0f28c2e245949e2cc81c8cf33d8fe38876178e5c4b7fa5235600d",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=c8ce6961b5e0f28c2e245949e2cc81c8cf33d8fe38876178e5c4b7fa5235600d\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=c8ce6961b5e0f28c2e245949e2cc81c8cf33d8fe38876178e5c4b7fa5235600d\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "c1a71bf289012362332b5ca380cc6025a7dde6e64ca74f729c97ec048c3143fa",
-          "log_checksum": "044108eed9272ba72f3b9878b69b395ec71f8f31d12697774ac6d0934504370c",
+          "log_checksum": "c747493e349d3797a52797c9a53e04a2149286812a5368f37278b2de154e496f",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=c1a71bf289012362332b5ca380cc6025a7dde6e64ca74f729c97ec048c3143fa\nexpected_log_checksum=044108eed9272ba72f3b9878b69b395ec71f8f31d12697774ac6d0934504370c\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=c1a71bf289012362332b5ca380cc6025a7dde6e64ca74f729c97ec048c3143fa\nexpected_log_checksum=c747493e349d3797a52797c9a53e04a2149286812a5368f37278b2de154e496f\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "6359be5b870000417346a5f7c3bce3afd23fb123a092895f8c09f5ee8b14cc87",
-          "log_checksum": "b6a66f5016ba719ab1d71890db0a4fbb7d6d133d97fa7118b0ac16f9ff0f3600",
+          "log_checksum": "8a8cdee6ee6a1d8492f5a3ded27411075b71742b61a108529b556a51ecbd7eb5",
           "ordered_facts": [
             "boundary_stage|turn=9|stage=enemy_normal_action",
             "enemy_passed|turn=9",
@@ -737,7 +737,7 @@
       ],
       "final": {
         "state_checksum": "6359be5b870000417346a5f7c3bce3afd23fb123a092895f8c09f5ee8b14cc87",
-        "log_checksum": "b6a66f5016ba719ab1d71890db0a4fbb7d6d133d97fa7118b0ac16f9ff0f3600",
+        "log_checksum": "8a8cdee6ee6a1d8492f5a3ded27411075b71742b61a108529b556a51ecbd7eb5",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 7,
@@ -772,27 +772,27 @@
       "initial": {
         "snapshot_checksum": "3149522d88d140088d509426e2941e76ce4039aac33360e07ea7e53e1659a26e",
         "state_checksum": "5b840886bf7e90f379595e93bf173b4e44304df3908acea15a0fd00b8f48c95b",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=5b840886bf7e90f379595e93bf173b4e44304df3908acea15a0fd00b8f48c95b\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=5b840886bf7e90f379595e93bf173b4e44304df3908acea15a0fd00b8f48c95b\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "f812defc9d3b8ed4b953cff777f54cca167aef82317ae983f0c081514e153544",
-          "log_checksum": "7ad7bd877f973079cd429af79117912e969aa315bdd91060d48bdf1cdc4ac849",
+          "log_checksum": "b72157a14a9a45adaa5f00f759058ce7e2b2b7238572a9d76893a547aaf768f8",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=f812defc9d3b8ed4b953cff777f54cca167aef82317ae983f0c081514e153544\nexpected_log_checksum=7ad7bd877f973079cd429af79117912e969aa315bdd91060d48bdf1cdc4ac849\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=f812defc9d3b8ed4b953cff777f54cca167aef82317ae983f0c081514e153544\nexpected_log_checksum=b72157a14a9a45adaa5f00f759058ce7e2b2b7238572a9d76893a547aaf768f8\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "771b9b4fe9e360e48901ce9e4e7aec9e932ac6f9e7c80587b3916416efbe1144",
-          "log_checksum": "ce48cfe1dc90f3e55ad5fdb44d9bb5f9e33ae77f402665b9739eecef301d7dde",
+          "log_checksum": "155bb25da54c091b2f17fdab452d970ba545f1aca39923b3f06a68470ecda9f8",
           "ordered_facts": [
             "boundary_stage|turn=10|stage=enemy_normal_action",
             "enemy_passed|turn=10",
@@ -828,7 +828,7 @@
       ],
       "final": {
         "state_checksum": "771b9b4fe9e360e48901ce9e4e7aec9e932ac6f9e7c80587b3916416efbe1144",
-        "log_checksum": "ce48cfe1dc90f3e55ad5fdb44d9bb5f9e33ae77f402665b9739eecef301d7dde",
+        "log_checksum": "155bb25da54c091b2f17fdab452d970ba545f1aca39923b3f06a68470ecda9f8",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 2,
@@ -865,27 +865,27 @@
       "initial": {
         "snapshot_checksum": "6feb86f5497b266408770fc0e15c25f70c877d90ee9fd3478e31b9e30ff90a24",
         "state_checksum": "4d0a4d0925a5ea905c8f6015370f86c4fc7db10a866cfac9bd5fbe2d752c900c",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=4d0a4d0925a5ea905c8f6015370f86c4fc7db10a866cfac9bd5fbe2d752c900c\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=4d0a4d0925a5ea905c8f6015370f86c4fc7db10a866cfac9bd5fbe2d752c900c\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "8755b60e18a231add6975c7ad0409e8f74d15be3b553e3b1a84e337ad927384d",
-          "log_checksum": "c5b9f60bcbb1d09fca7de7d5d3e4f40409a78da7754455609079511f03d9437e",
+          "log_checksum": "6354d1828fada8fe482861540290e63050ecca373b1e09a8551374be5360d743",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=8755b60e18a231add6975c7ad0409e8f74d15be3b553e3b1a84e337ad927384d\nexpected_log_checksum=c5b9f60bcbb1d09fca7de7d5d3e4f40409a78da7754455609079511f03d9437e\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=8755b60e18a231add6975c7ad0409e8f74d15be3b553e3b1a84e337ad927384d\nexpected_log_checksum=6354d1828fada8fe482861540290e63050ecca373b1e09a8551374be5360d743\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "82bcd82babbcd238555740cd2ab111a7bfbf323041e5e122549c4831f45b0bc7",
-          "log_checksum": "e8b57df7432f08aee9a4f3465eae6e797dee970ff5341791d713f9719a04b191",
+          "log_checksum": "377933ef38578c0bb003166ef0076c1b9194f4cf511998b3c9088fb0a881a121",
           "ordered_facts": [
             "boundary_stage|turn=11|stage=enemy_normal_action",
             "enemy_passed|turn=11",
@@ -913,7 +913,7 @@
       ],
       "final": {
         "state_checksum": "82bcd82babbcd238555740cd2ab111a7bfbf323041e5e122549c4831f45b0bc7",
-        "log_checksum": "e8b57df7432f08aee9a4f3465eae6e797dee970ff5341791d713f9719a04b191",
+        "log_checksum": "377933ef38578c0bb003166ef0076c1b9194f4cf511998b3c9088fb0a881a121",
         "temporary_effect_ids": [],
         "topology_observation_count": 3,
         "reserved_draw": 0,
@@ -945,27 +945,27 @@
       "initial": {
         "snapshot_checksum": "a21b76eb324aa4064698cae8e054a99dd1e94cd6ac4efe289e50ffb2e6e82ec7",
         "state_checksum": "5e6143982074033ec83feeea6307eb90b576596ddb89c548b994bb68bf0565f0",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=5e6143982074033ec83feeea6307eb90b576596ddb89c548b994bb68bf0565f0\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=5e6143982074033ec83feeea6307eb90b576596ddb89c548b994bb68bf0565f0\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "8329f2a10c2ed0ae2fc558f24662e18b4a001071444b44048b08e2bdee8029a9",
-          "log_checksum": "349d0ca1382ccd236c9723b25ea50892d7543f7c12f437525ceb19a3bf8caf07",
+          "log_checksum": "e06a29bd6860525d64c81c944ba548782a157081038562b289f980c94603e740",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=8329f2a10c2ed0ae2fc558f24662e18b4a001071444b44048b08e2bdee8029a9\nexpected_log_checksum=349d0ca1382ccd236c9723b25ea50892d7543f7c12f437525ceb19a3bf8caf07\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=8329f2a10c2ed0ae2fc558f24662e18b4a001071444b44048b08e2bdee8029a9\nexpected_log_checksum=e06a29bd6860525d64c81c944ba548782a157081038562b289f980c94603e740\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "5b36998f3225b658cf45f5c8293f206cc930c56af42eb28f2c94d81097937620",
-          "log_checksum": "4bb4f1f57e77c1a9d536b019baef918fcd823fe8935a6025e286e4c7d23aad99",
+          "log_checksum": "6158daec9e60c8d0277f27ed943bd7b67ba09b5449f93a0cc2badf386d88378d",
           "ordered_facts": [
             "boundary_stage|turn=12|stage=enemy_normal_action",
             "enemy_passed|turn=12",
@@ -995,7 +995,7 @@
       ],
       "final": {
         "state_checksum": "5b36998f3225b658cf45f5c8293f206cc930c56af42eb28f2c94d81097937620",
-        "log_checksum": "4bb4f1f57e77c1a9d536b019baef918fcd823fe8935a6025e286e4c7d23aad99",
+        "log_checksum": "6158daec9e60c8d0277f27ed943bd7b67ba09b5449f93a0cc2badf386d88378d",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
@@ -1027,27 +1027,27 @@
       "initial": {
         "snapshot_checksum": "0e48b3a3d4a79f59b124d257fd24d9d7b73441d0cd9c7f65bbf53d9ef5a8c0bc",
         "state_checksum": "436cedfa9f7bbd47c2d3b69252cbff7ed03c56577bd64b179884922db4e2929d",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=436cedfa9f7bbd47c2d3b69252cbff7ed03c56577bd64b179884922db4e2929d\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=436cedfa9f7bbd47c2d3b69252cbff7ed03c56577bd64b179884922db4e2929d\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "79764209253cefa62a0d8514e5a9efb8e6b87c891042ca105b4c6df5277d9081",
-          "log_checksum": "a957c9d7691bef5e46b4ef7b4c0cca12d7983633a3d1b66b70f6f2676129a7f0",
+          "log_checksum": "b6cc2153dde8b2774206612d50afcc8a3f32802535e294873875385f5ebd806a",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=79764209253cefa62a0d8514e5a9efb8e6b87c891042ca105b4c6df5277d9081\nexpected_log_checksum=a957c9d7691bef5e46b4ef7b4c0cca12d7983633a3d1b66b70f6f2676129a7f0\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=79764209253cefa62a0d8514e5a9efb8e6b87c891042ca105b4c6df5277d9081\nexpected_log_checksum=b6cc2153dde8b2774206612d50afcc8a3f32802535e294873875385f5ebd806a\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "86d14faccf6a30b2fd649fba0424971234e5906efb24bbcb80c0f6d90680e5ec",
-          "log_checksum": "a24e76e3765fa26a73f04869e8c7f2e2195a4dead13f8a2bb1fd8ace30c1bcf3",
+          "log_checksum": "0e5450ffd9d1581a74474ffb956e585dee15abc3f3d1d9bd28387dd47a5ba1e0",
           "ordered_facts": [
             "boundary_stage|turn=13|stage=enemy_normal_action",
             "enemy_passed|turn=13",
@@ -1068,7 +1068,7 @@
       ],
       "final": {
         "state_checksum": "86d14faccf6a30b2fd649fba0424971234e5906efb24bbcb80c0f6d90680e5ec",
-        "log_checksum": "a24e76e3765fa26a73f04869e8c7f2e2195a4dead13f8a2bb1fd8ace30c1bcf3",
+        "log_checksum": "0e5450ffd9d1581a74474ffb956e585dee15abc3f3d1d9bd28387dd47a5ba1e0",
         "temporary_effect_ids": [
           "future"
         ],
@@ -1102,27 +1102,27 @@
       "initial": {
         "snapshot_checksum": "df4aac4cf7b19941f16e87f9bb5ac95b7d8d7f2618b1cd54a4f805c2229193e8",
         "state_checksum": "9693b014b5cf79da5f2c23ba6f1d2d3f80aa89d828d4ac39a695b561b0a18f9e",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=9693b014b5cf79da5f2c23ba6f1d2d3f80aa89d828d4ac39a695b561b0a18f9e\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=9693b014b5cf79da5f2c23ba6f1d2d3f80aa89d828d4ac39a695b561b0a18f9e\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "ce207e9b7298e0bc408204bfe6af378cb0447d3f8d5e017103f27c48c4e9cda3",
-          "log_checksum": "ac8dd51a28db5717371df68e31cc2ff80461bd650e1eb9457e479c743b16bd62",
+          "log_checksum": "49b9ce2ba2b59a5480f5d19446af1d4cdf7275629708ac957d20d5db4768ad04",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=ce207e9b7298e0bc408204bfe6af378cb0447d3f8d5e017103f27c48c4e9cda3\nexpected_log_checksum=ac8dd51a28db5717371df68e31cc2ff80461bd650e1eb9457e479c743b16bd62\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=ce207e9b7298e0bc408204bfe6af378cb0447d3f8d5e017103f27c48c4e9cda3\nexpected_log_checksum=49b9ce2ba2b59a5480f5d19446af1d4cdf7275629708ac957d20d5db4768ad04\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "2b829b7737a31d8de2ccca95190f30c34e87d0934a0800a513471fd81dc11053",
-          "log_checksum": "08c4bc5776dc5d45e25e29b9cb5300cb7ae3aaa2586c5289e11ded56523c55ec",
+          "log_checksum": "0724b5719deb2949824db169aec826d015c0c2e8d9a252165255dc68df8e8ac8",
           "ordered_facts": [
             "boundary_stage|turn=14|stage=enemy_normal_action",
             "enemy_passed|turn=14"
@@ -1131,11 +1131,11 @@
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=2b829b7737a31d8de2ccca95190f30c34e87d0934a0800a513471fd81dc11053\nexpected_log_checksum=08c4bc5776dc5d45e25e29b9cb5300cb7ae3aaa2586c5289e11ded56523c55ec\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=2b829b7737a31d8de2ccca95190f30c34e87d0934a0800a513471fd81dc11053\nexpected_log_checksum=0724b5719deb2949824db169aec826d015c0c2e8d9a252165255dc68df8e8ac8\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "c1a13df65df724760d86915a8797b0ba5359c355500ae0c4b97176271735fbd5",
-          "log_checksum": "93dad2abc345f4a8501090d39fc22f1b7137423947086e7f2f795c921d299b6f",
+          "log_checksum": "59592a44299a7535c5021d36e34b20c369ed0452b80e8e059f53a5f413acd7f3",
           "ordered_facts": [
             "boundary_stage|turn=14|stage=enemy_counterattack_action",
             "enemy_passed|turn=14",
@@ -1158,7 +1158,7 @@
       ],
       "final": {
         "state_checksum": "c1a13df65df724760d86915a8797b0ba5359c355500ae0c4b97176271735fbd5",
-        "log_checksum": "93dad2abc345f4a8501090d39fc22f1b7137423947086e7f2f795c921d299b6f",
+        "log_checksum": "59592a44299a7535c5021d36e34b20c369ed0452b80e8e059f53a5f413acd7f3",
         "temporary_effect_ids": [],
         "topology_observation_count": 1,
         "reserved_draw": 0,
@@ -1190,27 +1190,27 @@
       "initial": {
         "snapshot_checksum": "7bff73fcf8b2cb842fbdeffdb25d1a1a9b656b8ff5fb917a99e9f2a831ee6247",
         "state_checksum": "9db29ec3c33db1f91a60f2ae7857656baa6af5cae5faf1c82a1f8d4f16d4c231",
-        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+        "log_checksum": "95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=9db29ec3c33db1f91a60f2ae7857656baa6af5cae5faf1c82a1f8d4f16d4c231\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=9db29ec3c33db1f91a60f2ae7857656baa6af5cae5faf1c82a1f8d4f16d4c231\nexpected_log_checksum=95e700973255711e8a755eb4ca3264d4a9bcddf0ba2a38008446bf0c439f2ed5\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "626589b16ec9ca40ff3386b14e285a0a1be3803c96d0d337df34f681f394dd40",
-          "log_checksum": "62231198600ea0bf1336ad7d1ec461f42df06842ca2b46fd4e2e922211761b69",
+          "log_checksum": "f7f90764da2aec83926fc4609645bd5d380927c7b5eb554a61d8806af06bab03",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=626589b16ec9ca40ff3386b14e285a0a1be3803c96d0d337df34f681f394dd40\nexpected_log_checksum=62231198600ea0bf1336ad7d1ec461f42df06842ca2b46fd4e2e922211761b69\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=626589b16ec9ca40ff3386b14e285a0a1be3803c96d0d337df34f681f394dd40\nexpected_log_checksum=f7f90764da2aec83926fc4609645bd5d380927c7b5eb554a61d8806af06bab03\n",
           "accepted": true,
           "reason": "accepted",
           "state_checksum": "74f447a942014a952fe9a8c1d4f9c45aec7ce7abcbc3d24b47610baf70da2499",
-          "log_checksum": "6cf592735d726f75d87bb1dc8a826b4e2f6a43cfea2799236144d82b8a77e1f8",
+          "log_checksum": "60ea01891b0dbdc406253cd4765990b213a65e865713c4bf4080fb563fb0efa3",
           "ordered_facts": [
             "boundary_stage|turn=15|stage=enemy_normal_action",
             "enemy_passed|turn=15",
@@ -1242,7 +1242,7 @@
       ],
       "final": {
         "state_checksum": "74f447a942014a952fe9a8c1d4f9c45aec7ce7abcbc3d24b47610baf70da2499",
-        "log_checksum": "6cf592735d726f75d87bb1dc8a826b4e2f6a43cfea2799236144d82b8a77e1f8",
+        "log_checksum": "60ea01891b0dbdc406253cd4765990b213a65e865713c4bf4080fb563fb0efa3",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,

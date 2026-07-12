@@ -12,7 +12,7 @@ namespace Igorogue.Architecture.Tests;
 public sealed class CoreDuelContentCatalogLoaderTests
 {
     private const string ExpectedContentHash =
-        "sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06";
+        "sha256:cd53980e2edd69ad14b3815c800a3c5aab119f21d95d724d083afa2920c15ad6";
 
     [Fact]
     public void RealGeneratedSnapshotProjectsTheExactCoreDuelCatalog()
@@ -68,6 +68,11 @@ public sealed class CoreDuelContentCatalogLoaderTests
         var build = Assert.IsType<BuildFacilityOperationDefinition>(
             Assert.Single(development.Effects));
         Assert.Equal("development", build.FacilityContentId);
+
+        var reinforce = catalog.StarterCard("card_reinforce");
+        Assert.Equal(
+            [CardOperationKind.DrawIfTargetAtari, CardOperationKind.TemporaryLiberty],
+            reinforce.Effects.Select(operation => operation.Kind));
 
         Assert.Equal("enemy_bandit", catalog.Bandit.Id);
         Assert.Equal("FEAT-009", catalog.Bandit.BehaviorSpec);
@@ -182,6 +187,70 @@ public sealed class CoreDuelContentCatalogLoaderTests
         fixture.MutateJson(
             "content/cards.json",
             root => root.AsArray()[0]!["id"] = "card invalid");
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void UnknownStarterCandidateIdIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/cards.json",
+            root => StarterCard(root, "card_basic_stone")["id"] =
+                "card_unapproved_starter");
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Theory]
+    [InlineData("card_basic_stone")]
+    [InlineData("card_extend")]
+    [InlineData("card_contact")]
+    [InlineData("card_lure_stone")]
+    public void MissingStoneStarterPlacementTagsAreRejected(string cardId)
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/cards.json",
+            root => StarterCard(root, cardId).Remove("placement_tags"));
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void EmptyStoneStarterPlacementTagsAreRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/cards.json",
+            root => StarterCard(root, "card_basic_stone")["placement_tags"] =
+                new JsonArray());
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Theory]
+    [InlineData("card_reinforce")]
+    [InlineData("card_development")]
+    public void MissingTargetedStarterTargetIsRejected(string cardId)
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/cards.json",
+            root => StarterCard(root, cardId).Remove("target"));
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void ReversedReinforceOperationsAreRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/cards.json",
+            root => ReverseArray(
+                StarterCard(root, "card_reinforce")["effects"]!.AsArray()));
 
         Assert.Throws<InvalidDataException>(() => Load(fixture));
     }

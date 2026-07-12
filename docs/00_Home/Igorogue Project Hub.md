@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0031 Plan Gate 2 Core Duel Implementation]]はPR #21でmerge、post-merge main CI green。Gate 2の最初のproduction task [[TASK-0032 Implement Typed Core Duel Content Catalog]]はfixed-HEAD independent review `APPROVE`でhuman merge待ち。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
+> [[TASK-0031 Plan Gate 2 Core Duel Implementation]]はPR #21でmerge、post-merge main CI green。Gate 2の最初のproduction task [[TASK-0032 Implement Typed Core Duel Content Catalog]]はPR #22の妥当なreview feedbackを修正中。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
 
 > [!success] 実装ゲート
 > Gate 1は完了。Gate 2はTASK-0031の計画closeout後、typed contentからGodot graybox／UATまでを依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -89,7 +89,7 @@ cssclasses:
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — review／human evidence not retained
 - [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved／Gate 2 evidence prerequisite waived
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
-- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — review／independently approved
+- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — in progress／PR #22 review fixes
 
 ## Latest design repairs
 
