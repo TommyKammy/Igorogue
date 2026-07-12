@@ -33,7 +33,7 @@ updated: 2026-07-12
 - DECISION-0006で明示されたAccepted／proposed scope docs。
 - `game_data/`のstarting recipeと必要最小schema／generated content。
 - `src/Igorogue.Content/`のrecipe loader／validator／Domain definition conversion。
-- Option 1で必要な`card_development`限定Domain／Application integration。
+- resolved recipeに`card_development`を含む場合に必要な限定Domain／Application integration。
 - Content／Domain／Application／Architecture tests、本TASK／status文書。
 
 ## Acceptance criteria
