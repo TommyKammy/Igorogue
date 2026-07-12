@@ -67,6 +67,10 @@
     "target": "friendly_group",
     "effects": [
       {
+        "op": "draw_if_target_atari",
+        "cards": 1
+      },
+      {
         "op": "temporary_liberty",
         "value": 1,
         "duration": {
@@ -74,10 +78,6 @@
           "timing": "first_enemy_turn_end_at_or_after_grant"
         },
         "stacking": "additive_per_effect_instance"
-      },
-      {
-        "op": "draw_if_target_atari",
-        "cards": 1
       }
     ]
   },

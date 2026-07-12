@@ -5,4 +5,7 @@
     <RootNamespace>Igorogue.Content</RootNamespace>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Igorogue.Domain/Igorogue.Domain.csproj" />
+  </ItemGroup>
 </Project>

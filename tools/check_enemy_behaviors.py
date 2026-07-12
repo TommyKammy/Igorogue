@@ -8,6 +8,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 ENEMIES_PATH = ROOT / "game_data" / "content" / "enemies.json"
+ENEMY_SCHEMA_PATH = ROOT / "docs" / "30_Technical" / "Schemas" / "enemy.schema.json"
 FIXTURES_PATH = ROOT / "game_data" / "fixtures" / "enemy_behavior_decision_fixtures.json"
 SPEC_PATH = ROOT / "docs" / "20_Design" / "Feature Specs" / "FEAT-009 Enemy Action Planning and Placement.md"
 
@@ -89,7 +90,37 @@ def load(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def validate_enemy(enemy: dict[str, Any]) -> list[str]:
+def action_budget_contract(schema: dict[str, Any]) -> dict[str, Any]:
+    try:
+        budget_schema = schema["items"]["properties"]["action_budget"]
+        required = budget_schema["required"]
+        properties = budget_schema["properties"]
+    except (KeyError, TypeError) as error:
+        raise ValueError("enemy schema action_budget contract is incomplete") from error
+
+    if budget_schema.get("additionalProperties") is not False:
+        raise ValueError("enemy schema action_budget must reject additional properties")
+    if not isinstance(required, list) or len(required) != len(set(required)):
+        raise ValueError("enemy schema action_budget required fields must be a unique list")
+
+    contract: dict[str, Any] = {}
+    for field in required:
+        field_schema = properties.get(field)
+        if not isinstance(field, str) or not isinstance(field_schema, dict) or "const" not in field_schema:
+            raise ValueError(
+                "enemy schema action_budget required fields must define const values"
+            )
+        contract[field] = field_schema["const"]
+
+    if set(properties) != set(contract):
+        raise ValueError("enemy schema action_budget properties must all be required")
+    return contract
+
+
+def validate_enemy(
+    enemy: dict[str, Any],
+    expected_action_budget: dict[str, Any],
+) -> list[str]:
     errors: list[str] = []
     enemy_id = enemy.get("id", "<missing-id>")
     if enemy.get("implementation_status") != "specified":
@@ -101,11 +132,7 @@ def validate_enemy(enemy: dict[str, Any]) -> list[str]:
         errors.append(f"{enemy_id}: tie_break must be canonical_y_then_x")
 
     budget = enemy.get("action_budget", {})
-    if budget != {
-        "normal_actions": 1,
-        "counterattack_bonus_actions": 1,
-        "max_actions_per_enemy_turn": 2,
-    }:
+    if budget != expected_action_budget:
         errors.append(f"{enemy_id}: unexpected action_budget {budget}")
 
     permissions = set(enemy.get("placement_permissions", []))
@@ -217,13 +244,19 @@ def main() -> int:
         errors.append("enemies.json must contain a list")
         enemies = []
 
+    try:
+        expected_action_budget = action_budget_contract(load(ENEMY_SCHEMA_PATH))
+    except (OSError, json.JSONDecodeError, ValueError) as error:
+        errors.append(f"enemy schema: {error}")
+        expected_action_budget = {}
+
     by_id = {enemy.get("id"): enemy for enemy in enemies if isinstance(enemy, dict)}
     for required_enemy in REQUIRED_INTENTS:
         if required_enemy not in by_id:
             errors.append(f"missing required enemy {required_enemy}")
     for enemy in enemies:
         if isinstance(enemy, dict):
-            errors.extend(validate_enemy(enemy))
+            errors.extend(validate_enemy(enemy, expected_action_budget))
 
     fixtures = load(FIXTURES_PATH)
     if not isinstance(fixtures, list):

@@ -2,19 +2,20 @@
 type: sprint
 status: active
 project: Igorogue
-updated: 2026-07-12
+updated: 2026-07-13
 sprint: S0
 ---
 # Current Sprint
 
 ## Goal
 
-Complete and review TASK-0031's bounded Gate 2 decomposition without selecting an unresolved starter recipe or starting production implementation early.
+Implement and review TASK-0032's typed Core Duel content catalog without selecting the unresolved starter recipe.
 
 ## In review
 
-- [[TASK-0031 Plan Gate 2 Core Duel Implementation]]
-  - independent fixed-HEAD review approved; human merge pending
+- [[TASK-0032 Implement Typed Core Duel Content Catalog]]
+  - typed starter／Bandit／system policy projection, Content → Domain boundary, fail-closed validation
+  - PR #22 review fixes independently approved; human merge pending; TASK-0033 remains blocked
 
 ## Open human evidence
 
@@ -47,10 +48,11 @@ Complete and review TASK-0031's bounded Gate 2 decomposition without selecting a
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]]
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]
 - [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — M1 technical `PASS`; PR #20 merged／CI green
+- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — PR #21 merged／post-merge CI green
 
-## Next after TASK-0031
+## Next after TASK-0032
 
-- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — first safe production candidate after TASK-0031 merge.
+- [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — remains blocked until TASK-0032 human merge.
 - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolve before TASK-0038 applies the starting recipe／Development scope.
 - TASK-0033〜0042 remain blocked and advance only in dependency order.
 

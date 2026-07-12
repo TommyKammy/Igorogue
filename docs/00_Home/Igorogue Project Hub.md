@@ -2,14 +2,14 @@
 type: dashboard
 status: active
 project: Igorogue
-updated: 2026-07-12
+updated: 2026-07-13
 cssclasses:
   - igorogue-dashboard
 ---
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]]はPR #20でmerge、post-merge main CI green。M1 technical `PASS`は確定。[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]のhuman evidenceは未確認だが、[[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]]のowner waiverによりGate 2 entryはopen。現在は[[TASK-0031 Plan Gate 2 Core Duel Implementation]]でbounded implementation queueを確定中。
+> [[TASK-0031 Plan Gate 2 Core Duel Implementation]]はPR #21でmerge、post-merge main CI green。Gate 2の最初のproduction task [[TASK-0032 Implement Typed Core Duel Content Catalog]]はPR #22 feedback修正後のfixed-HEAD independent review `APPROVE`でhuman merge待ち。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
 
 > [!success] 実装ゲート
 > Gate 1は完了。Gate 2はTASK-0031の計画closeout後、typed contentからGodot graybox／UATまでを依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -88,8 +88,8 @@ cssclasses:
 - [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — done
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — review／human evidence not retained
 - [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved／Gate 2 evidence prerequisite waived
-- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — review／current; independent review approved
-- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — blocked／next safe production candidate after TASK-0031 merge
+- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
+- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — review／PR #22 fixes approved
 
 ## Latest design repairs
 
