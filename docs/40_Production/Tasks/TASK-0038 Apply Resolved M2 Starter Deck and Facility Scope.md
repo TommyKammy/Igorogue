@@ -38,17 +38,17 @@ updated: 2026-07-12
 
 ## Acceptance criteria
 
-- DECISION-0006がresolvedで、選択optionと必要なAccepted Milestone／proposed graybox scopeの更新が同一commitに含まれる。
+- DECISION-0006がresolvedで、選択optionと必要なAccepted Milestone／Deck and Card System／proposed graybox scopeの更新が同一commitに含まれる。Option 3は初期12枚ruleを明示的にsupersedeする。
 - exact card ID → count multisetをmachine-readable正本へ置き、合計枚数、unknown／duplicate／zero count、starter scopeをfail-closedで検証する。
 - typed recipe／resolved starter scopeをcontent hashへbindし、JSON key順／input enumeration reversalでcanonical resultが一致する。
-- Option 1の場合だけ`card_development`を既存authorized facility build commandとcapacity／duplicate／territory checksへ接続し、第二のfacility ruleを作らない。
-- Option 2／3の場合はDecisionが指定したrecipeを実装し、`card_development`をM2 reachable contentへ含めず、未選択facility behaviorをproduction実装しない。
-- runtime valueをコードへ複製しない。Option 1のrejected Development commandはresource／zone／facility state exact no-opとする。
+- resolved recipeに`card_development`を含む場合だけ、Accepted M2／M3 scopeへ限定例外を記録し、既存authorized facility build commandとcapacity／duplicate／territory checksへ接続して第二のfacility ruleを作らない。
+- resolved recipeが`card_development`を除外する場合はDevelopmentをM2 reachable contentへ含めず、未選択facility behaviorをproduction実装しない。
+- runtime valueをコードへ複製しない。Developmentを含むrecipeでのrejected commandはresource／zone／facility state exact no-opとする。
 
 ## Validation
 
 - repository wrappers、recipe malformed／hash／enumeration-order tests。
-- Option 1ではfacility build accepted／negative／ordering tests。Option 2／3ではDevelopment unreachable tests。
+- Developmentを含むrecipeではfacility build accepted／negative／ordering tests。含まないrecipeではDevelopment unreachable tests。
 - independent fixed-HEAD review、CI全job。
 
 ## Known issues

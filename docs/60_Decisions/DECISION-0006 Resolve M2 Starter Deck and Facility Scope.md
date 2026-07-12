@@ -23,11 +23,11 @@ starting recipe、開拓の採用、M2施設境界はプレイヤー可視のcon
 
 1. **Recommended:** M2の「初期6カード」をstarter 6種類と解釈し、Initial Card Setの12枚recipe（`card_basic_stone: 5`、`card_extend: 2`、`card_contact: 2`、`card_reinforce: 1`、`card_development: 1`、`card_lure_stone: 1`）を採用する。`card_development`と既存facility kernelをM2の限定例外として許可し、Accepted [[Milestones and Exit Gates]]のM2／M3境界とproposed graybox scopeへ「開拓1種だけ」の例外を明記する。
 2. 施設なしの12枚deckを維持する。`card_development`を除外し、既存の非施設starterから代替カードとexact multisetをownerが指定する。
-3. M2を文字どおり6枚deckとし、starter 6種を各1枚採用する。Accepted Deck and Card Systemの初期12枚記述を明示的にsupersedeする。
+3. M2を文字どおり6枚deckとし、starter 6種を各1枚採用する。Accepted Deck and Card Systemの初期12枚記述を明示的にsupersedeし、`card_development`を含むためOption 1と同じM2／M3 facility例外を明記する。
 
 ## Recommendation rationale
 
-Option 1はAcceptedな12枚deck、既存の6 starter definitions、既実装facility kernel、proposed Initial Card Setのrecipeをそのまま利用し、新規カードや数値選定を増やさない。「施設なし」はproposed release scopeだけにあるため、限定例外を明記する変更が最小である。
+Option 1はAcceptedな12枚deck、既存の6 starter definitions、既実装facility kernel、proposed Initial Card Setのrecipeをそのまま利用し、新規カードや数値選定を増やさない。一方、Accepted MilestonesはfacilityをM3へ置き、proposed M2 grayboxも施設を除外するため、Option 1／3はM2のDevelopment 1種だけを許す限定例外を両sourceへ明記しなければならない。その更新を含めても、新規replacement cardを決めるOption 2より選択追加が少ない。
 
 ## Safe work before resolution
 

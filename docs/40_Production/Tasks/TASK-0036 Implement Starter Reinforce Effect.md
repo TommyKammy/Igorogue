@@ -26,7 +26,7 @@ updated: 2026-07-12
 ## Acceptance criteria
 
 - 補強はtarget groupとstable stone anchorをcommand時stateへbindし、既存TLE lifecycleでenemy-turn-end expiryを設定する。
-- targetがアタリだった場合のdrawをplayer windowで正しく処理し、stale／foreign targetをexact no-opで拒否する。
+- target選択時の有効呼吸点が1なら仮呼吸点付与前にアタリ対象としてdrawし、その後に+1 effectを付与する。stale／foreign targetはexact no-opで拒否する。
 - canonical state／facts／command logが同一入力で一致する。
 
 ## Validation
