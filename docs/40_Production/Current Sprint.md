@@ -9,12 +9,12 @@ sprint: S0
 
 ## Goal
 
-Review and merge TASK-0029 Application enemy boundary and versioned TLE-01〜15 golden replay evidence.
+Review and merge TASK-0030 M1 technical exit re-audit without opening Gate 2 before the human prerequisite.
 
 ## In review
 
-- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]
-  - authoritative initial snapshot、normal／bonus boundary、TLE-01〜15 Application golden／replay implemented; human merge pending
+- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]]
+  - independent fixed-HEAD review approved; M1 technical `PASS`／Gate 2 `BLOCKED`
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -42,11 +42,12 @@ Review and merge TASK-0029 Application enemy boundary and versioned TLE-01〜15 
 - [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]]
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]]
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]]
+- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]
 
-## Next after TASK-0029
+## Next after TASK-0030
 
 - Complete TASK-0012 two-human paper sign-off.
-- Re-audit M1 exit before making any Gate 2 task `ready`.
+- Define Gate 2 TASKs only after M1 technical PASS is approved and TASK-0012 is complete.
 
 ## Review questions
 

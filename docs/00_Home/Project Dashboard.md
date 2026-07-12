@@ -8,11 +8,11 @@ updated: 2026-07-12
 
 ## Phase
 
-`M0 Repository Bootstrap`からGate 1 ordered implementation sequenceまでは実装・review・CI・merge済み。DECISION-0005 Option 1でMOM／CTR migrationはM3へ確定。M1 exitはTLE-01〜15 production／E3 workstream、Gate 2 entryはさらにTASK-0012 human sign-off待ち。
+`M0 Repository Bootstrap`からTLE-01〜15を含むM1 implementation workstreamまでは実装・review・CI・merge済み。DECISION-0005 Option 1でMOM／CTR migrationはM3へ確定。TASK-0030のindependent reviewによりM1 technical exitは`PASS`、Gate 2 entryはTASK-0012 human sign-off待ち。
 
 ## Sprint goal
 
-Review and merge TASK-0029 Application enemy boundary and versioned TLE-01〜15 golden replay evidence.
+Review and merge TASK-0030 M1 technical exit re-audit while keeping Gate 2 blocked by its human prerequisite.
 
 ## Health
 
@@ -23,11 +23,11 @@ Review and merge TASK-0029 Application enemy boundary and versioned TLE-01〜15 
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | TLE E3 implementation is in review; M1 technical exit awaits merge／re-audit |
+| Validation | Yellow | M1 technical exit `PASS`; TASK-0012 human evidence pending |
 
 ## Blockers
 
-- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — implementation reviewed; human merge／M1 re-audit pending.
+- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — approved; human merge pending.
 - FEAT-009 independent two-person paper sign-off remains human-only.
 
 ## Current evidence
@@ -59,15 +59,16 @@ Review and merge TASK-0029 Application enemy boundary and versioned TLE-01〜15 
 - PR #16 merge and post-merge main CI green at `90dda9dd41b96864a24e19a7969285f56c4593b4`
 - PR #17 merge and post-merge main CI green at `ad50fe7ae7a7170e308c322971380c4e66a2dcb0`
 - PR #18 merge and post-merge main CI green at `ddccd57db12219847646d0b2de85c18b2c94b120`
+- PR #19 merge and post-merge main CI green at `35139bedb927f4c15b4e62a02c423947d5bdb1da`
 - [[TASK-0025 Gate 1 Deterministic Foundation Audit]] — fixed-baseline result `DECISION NEEDED`; Option 1 post-audit disposition recorded
 - [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — resolved／Option 1
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — done
-- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — review／current
+- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — done
+- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — review／current
 
 ## Next
 
-1. Complete／review／merge [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]
+1. Complete／review／merge [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]]
 2. Complete FEAT-009 independent two-person sign-off
-3. Re-audit M1 exit after TLE E3 migration
-4. Define Gate 2 implementation TASKs only after the gates above permit it
+3. Define Gate 2 implementation TASKs only after both gates above permit it
