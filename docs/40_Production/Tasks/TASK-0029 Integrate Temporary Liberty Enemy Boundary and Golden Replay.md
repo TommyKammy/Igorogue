@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0029
-status: blocked
+status: in_progress
 project: Igorogue
 milestone: M1
 priority: critical
@@ -84,10 +84,31 @@ TASK-0027／0028のDomain kernelをheadless Application battleへ接続し、scr
 
 2026-07-12 — DECISION-0005 Option 1のM1 TLE workstream第3段として[[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]]が定義。[[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]]のhuman mergeまで`blocked`。
 
+2026-07-12 — PR #18を人間merge。merged head `fb53bc3f644f8d7a6498c46b12db56da33ed07c3`、merge commit／fixed `origin/main` `ddccd57db12219847646d0b2de85c18b2c94b120`を確認し、唯一の未完dependencyが閉じたため本TASKを`ready`へ遷移した。
+
+2026-07-12 — PR #18 post-merge main CI run `29187053532`のGovernance `86634981261`、Pure .NET `86635001823`、Godot／Windows export `86635049311`がすべてsuccessであることを確認した。Outcome、Non-goals、Acceptanceを再確認し、v1 state／replayを変更せずv2 authoritative initial snapshot、normal／bonus enemy substage、expiry boundary、new-version replay／goldenを並設する方針で本TASKを`in_progress`へ遷移した。baseline `tools/dev/check`と350 testsはexit 0。
+
+2026-07-12 — board／facility／stone identity／temporary・continuous liberty／history／closed-window resource／conditional trigger plan／counterattack policy・stateをexact-bindするauthoritative initial snapshotと`headless-battle-state-v2`を追加した。foreign runtime／facility／history、dangling captured-stone・facility source、未宣言first-use flag、policy不整合、overdue effectをconstruction boundaryで拒否し、入力列挙反転で同じcanonical checksumになることを固定した。
+
+2026-07-12 — player turn終了時のPending snapshot、normal action、任意のbonus action、consume／overflow reprime、expiry、terminal gate、benefit、territory／facility、natural gain、planning trace、turn-limitのApplication順を実装した。actual plannerを偽装せずtyped stage factだけを発行し、pass／runtime placement、turn 20、stale exact no-op、normal／bonus／expiry terminal precedenceを回帰した。
+
+2026-07-12 — 独立rules preflightの指摘を受け、normal／bonus placement captureも共通closed-window`CaptureBatch`へ正規化した。初期trigger setupをbatch-independent conditional planとし、captured source、captured white group、non-king black、any captureをbatchごとにmaterializeする。terminal placementはtrigger選択前に`BatchStarted → CaptureBenefitSuppressed → BatchResolved`を発行し、normalからbonus／expiryへfirst-useとsacrifice stateを一度だけ継承する。
+
+2026-07-12 — mandatory expiryの黒領地差分をtyped `TemporaryLibertyExpiry` source、reason `temporary_liberty_expired`、`ImplicitMomentumEligible=false`で発行し、benefit後／facility reassociation前へ配置した。TLE-12は(4,4) black／size 1／basic income 1とMomentum／Brilliant event 0をApplication state／factで固定した。
+
+2026-07-12 — replay schema 2を新設し、authoritative state projection、metadata、attempt chain、terminal、16 MiB／4096 attempts、JSON duplicate／unknown／trailing／depth制限をfail-closedで検証した。全TLE caseをsave／load／runner 2回でbytes、state、log、factsまで照合する。独立security preflightの指摘を受け、schema 1のvalid bytes／legacy behaviorを変えずv2 projectionを逆方向でも拒否し、v2でunsupported facility-build rejected attemptも完全round tripするようにした。再確認はfindingなし、`APPROVED`。
+
+2026-07-12 — `tests/golden/v2/temporary_liberty_cases.json`へTLE-01〜15を生成した。source expectedをinitial inputへ使わず、source fixture／runtime content SHA、seed 42、canonical initial、全command boundary、ordered facts、terminalを固定した。catalog SHA-256 `8485b4827b9c416e5b617ca0c682957ccf821684b74bbf65c28969e6424f27ca`、source fixture SHA-256 `9f9a74ee9e1407c2b0882b6ccd1aa86ae950dd750fb0bfb4bc3bf12faae20e60`。v1 golden／`game_data/`は未変更。
+
 ## Evidence
 
 - [[FEAT-011 Temporary Liberty Expiry Fixtures]] TLE-01〜15。
 - [[TASK-0011 Replay Round Trip Verification]] v1 replay／golden integrity contract。
+- PR #18 merge commit `ddccd57db12219847646d0b2de85c18b2c94b120`／post-merge main CI run `29187053532`全3 job success。
+- authoritative boundary evidence — exact initial snapshot、normal／bonus pass・placement、conditional capture benefits、terminal／turn-limit precedence、TLE-13 no Domain sweep events、TLE-14 exact typed stage trace。
+- replay v2 evidence — schema／projection専用integrity、tamper・resource limits・cross-version rejection、unsupported facility attempt exact no-op、TLE-01〜15の二重round trip。
+- golden v2 — `tests/golden/v2/temporary_liberty_cases.json`、catalog SHA-256 `8485b4827b9c416e5b617ca0c682957ccf821684b74bbf65c28969e6424f27ca`、source fixture SHA-256 `9f9a74ee9e1407c2b0882b6ccd1aa86ae950dd750fb0bfb4bc3bf12faae20e60`、Momentum／Brilliant／CTR coverage claim各0。
+- rules preflight — placement capture pipeline、expiry conditional trigger、facility command surface、territory source、initial exact-bindingの指摘を修正。security preflight — inverse projection guard／rejected facility attempt保持を修正後、findingなし`APPROVED`。
 
 ## Known issues
 

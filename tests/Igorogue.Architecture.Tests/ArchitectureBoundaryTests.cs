@@ -195,6 +195,12 @@ public sealed class ArchitectureBoundaryTests
             typeof(StoneColor));
 
         Assert.Equal(typeof(TerritoryEstablishedFact), resolve.ReturnType);
+        var resolveAfterExpiry = RequirePublicStaticMethod(
+            typeof(TerritoryDeltaResolver),
+            nameof(TerritoryDeltaResolver.ResolveAfterExpiry),
+            typeof(TerritoryAnalysis),
+            typeof(TemporaryLibertyExpiryResolution));
+        Assert.Equal(typeof(TerritoryEstablishedFact), resolveAfterExpiry.ReturnType);
         Assert.Empty(typeof(TerritoryEstablishedFact).GetConstructors(
             BindingFlags.Public | BindingFlags.Instance));
     }
@@ -295,6 +301,27 @@ public sealed class ArchitectureBoundaryTests
             typeof(CounterattackBoundaryPolicy),
             typeof(IEnumerable<CaptureBenefitTrigger>));
         Assert.Equal(typeof(ClosedWindowCaptureBenefitResolution), resolve.ReturnType);
+        var resolvePlacement = RequirePublicStaticMethod(
+            typeof(ClosedWindowCaptureBenefitResolver),
+            nameof(ClosedWindowCaptureBenefitResolver.ResolvePlacement),
+            typeof(CaptureBatch),
+            typeof(ClosedWindowResourceState),
+            typeof(CounterattackBoundaryState),
+            typeof(CounterattackBoundaryPolicy),
+            typeof(IEnumerable<CaptureBenefitTrigger>));
+        Assert.Equal(
+            typeof(ClosedWindowCaptureBenefitResolution),
+            resolvePlacement.ReturnType);
+        var createConditionalPlan = RequirePublicStaticMethod(
+            typeof(CaptureBenefitTriggerPlan),
+            nameof(CaptureBenefitTriggerPlan.CreateConditional),
+            typeof(IEnumerable<CaptureBenefitTriggerPlanEntry>));
+        Assert.Equal(typeof(CaptureBenefitTriggerPlan), createConditionalPlan.ReturnType);
+        var selectFor = RequirePublicInstanceMethod(
+            typeof(CaptureBenefitTriggerPlan),
+            nameof(CaptureBenefitTriggerPlan.SelectFor),
+            typeof(CaptureBatch));
+        Assert.Equal(typeof(IReadOnlyList<CaptureBenefitTrigger>), selectFor.ReturnType);
         var triggerConstructor = Assert.Single(typeof(CaptureBenefitTrigger).GetConstructors());
         Assert.Equal(
             new[]
@@ -455,6 +482,28 @@ public sealed class ArchitectureBoundaryTests
     }
 
     [Fact]
+    public void AuthoritativeBattleV2UsesAnExactInitialSnapshotAndSeparateReplaySchema()
+    {
+        var start = RequirePublicStaticMethod(
+            typeof(HeadlessBattleStateMachine),
+            nameof(HeadlessBattleStateMachine.Start),
+            typeof(BattleAuthoritativeInitialSnapshot),
+            typeof(ReplayMetadata));
+
+        Assert.Equal(typeof(HeadlessBattleSession), start.ReturnType);
+        Assert.Empty(typeof(BattleAuthoritativeInitialSnapshot).GetConstructors());
+        Assert.Empty(typeof(BattleAuthoritativeRuntimeState).GetConstructors());
+        Assert.Empty(typeof(EnemyTurnBoundaryStageFact).GetConstructors());
+        Assert.Equal("headless-battle-state-v1", BattleState.EncodingVersion);
+        Assert.Equal(
+            "headless-battle-state-v2",
+            BattleState.AuthoritativeEncodingVersion);
+        Assert.Equal(1, BattleReplaySerializer.SchemaVersion);
+        Assert.Equal(2, BattleReplaySerializerV2.SchemaVersion);
+        Assert.Equal(BattleReplaySerializer.SchemaId, BattleReplaySerializerV2.SchemaId);
+    }
+
+    [Fact]
     public void HeadlessBattlePublicSurfaceDoesNotLeakHostOrAmbientRuntimeApis()
     {
         var battleTypes = typeof(BattleState).Assembly
@@ -477,6 +526,8 @@ public sealed class ArchitectureBoundaryTests
                 typeof(CaptureBatch),
                 typeof(CaptureBenefitSource),
                 typeof(CaptureBenefitTrigger),
+                typeof(CaptureBenefitTriggerPlanEntry),
+                typeof(CaptureBenefitTriggerPlan),
                 typeof(CaptureBenefitOperation),
                 typeof(ClosedWindowResourceState),
                 typeof(ClosedWindowCaptureBenefitResolver),
@@ -538,6 +589,7 @@ public sealed class ArchitectureBoundaryTests
             typeof(CounterattackPendingPrimedFact),
             typeof(CounterattackPendingConsumedFact),
             typeof(CaptureBatchResolvedFact),
+            typeof(EnemyTurnBoundaryStageFact),
         };
 
         Assert.All(nonForgeableTypes, type => Assert.Empty(type.GetConstructors()));
@@ -645,6 +697,22 @@ public sealed class ArchitectureBoundaryTests
         var method = declaringType.GetMethod(
             methodName,
             BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly,
+            binder: null,
+            types: parameterTypes,
+            modifiers: null);
+
+        Assert.NotNull(method);
+        return method;
+    }
+
+    private static MethodInfo RequirePublicInstanceMethod(
+        Type declaringType,
+        string methodName,
+        params Type[] parameterTypes)
+    {
+        var method = declaringType.GetMethod(
+            methodName,
+            BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly,
             binder: null,
             types: parameterTypes,
             modifiers: null);

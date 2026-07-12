@@ -794,6 +794,50 @@ public sealed class ClosedWindowCaptureBenefitResolution
 
 public static class ClosedWindowCaptureBenefitResolver
 {
+    public static ClosedWindowCaptureBenefitResolution ResolvePlacement(
+        CaptureBatch captureBatch,
+        ClosedWindowResourceState sourceResources,
+        CounterattackBoundaryState sourceCounterattack,
+        CounterattackBoundaryPolicy policy,
+        IEnumerable<CaptureBenefitTrigger> triggers)
+    {
+        ArgumentNullException.ThrowIfNull(captureBatch);
+        ArgumentNullException.ThrowIfNull(sourceResources);
+        ArgumentNullException.ThrowIfNull(sourceCounterattack);
+        ArgumentNullException.ThrowIfNull(policy);
+        if (captureBatch.Boundary != CaptureBoundary.PlacementResolution)
+        {
+            throw new ArgumentException(
+                "Placement capture benefit resolution requires a placement capture batch.",
+                nameof(captureBatch));
+        }
+
+        if (captureBatch.ContainsKing)
+        {
+            return new ClosedWindowCaptureBenefitResolution(
+                captureBatch,
+                sourceResources,
+                sourceCounterattack,
+                policy,
+                sourceResources,
+                sourceCounterattack,
+                true,
+                [],
+                [
+                    new CaptureBatchStartedFact(captureBatch),
+                    new CaptureBenefitSuppressedFact("terminal_king_capture"),
+                    new CaptureBatchResolvedFact(captureBatch.BatchId, true),
+                ]);
+        }
+
+        return Resolve(
+            captureBatch,
+            sourceResources,
+            sourceCounterattack,
+            policy,
+            triggers);
+    }
+
     public static ClosedWindowCaptureBenefitResolution Resolve(
         CaptureBatch captureBatch,
         ClosedWindowResourceState sourceResources,

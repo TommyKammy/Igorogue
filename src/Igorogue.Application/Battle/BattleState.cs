@@ -16,6 +16,7 @@ public enum BattlePhase : byte
 public sealed class BattleState
 {
     public const string EncodingVersion = "headless-battle-state-v1";
+    public const string AuthoritativeEncodingVersion = "headless-battle-state-v2";
 
     private BattleState(
         BoardState board,
@@ -28,7 +29,8 @@ public sealed class BattleState
         int playerTurnIndex,
         BattlePhase phase,
         BattleOutcome outcome,
-        BattleEndReason endReason)
+        BattleEndReason endReason,
+        BattleAuthoritativeRuntimeState? authoritativeRuntime)
     {
         ArgumentNullException.ThrowIfNull(board);
         ArgumentNullException.ThrowIfNull(repetitionHistory);
@@ -43,8 +45,15 @@ public sealed class BattleState
             facilityState,
             territoryAnalysis,
             facilityRuntimeAnalysis,
-            runtimePolicy);
-        ValidateLifecycle(playerTurnIndex, phase, outcome, endReason, runtimePolicy);
+            runtimePolicy,
+            authoritativeRuntime);
+        ValidateLifecycle(
+            playerTurnIndex,
+            phase,
+            outcome,
+            endReason,
+            runtimePolicy,
+            authoritativeRuntime);
 
         Board = board;
         RepetitionHistory = repetitionHistory;
@@ -57,6 +66,7 @@ public sealed class BattleState
         Phase = phase;
         Outcome = outcome;
         EndReason = endReason;
+        AuthoritativeRuntime = authoritativeRuntime;
         CanonicalText = BuildCanonicalText();
         Checksum = DeterministicChecksum.Sha256Hex(CanonicalText);
     }
@@ -82,6 +92,12 @@ public sealed class BattleState
     public BattleOutcome Outcome { get; }
 
     public BattleEndReason EndReason { get; }
+
+    public BattleAuthoritativeRuntimeState? AuthoritativeRuntime { get; }
+
+    public string StateProjectionId => AuthoritativeRuntime is null
+        ? EncodingVersion
+        : AuthoritativeEncodingVersion;
 
     public bool IsTerminal => Phase == BattlePhase.Ended;
 
@@ -142,7 +158,34 @@ public sealed class BattleState
             1,
             BattlePhase.PlayerAction,
             BattleOutcome.Ongoing,
-            BattleEndReason.None);
+            BattleEndReason.None,
+            null);
+    }
+
+    internal static BattleState Start(
+        BattleAuthoritativeInitialSnapshot initial,
+        AuthoritativeRngState rngState)
+    {
+        ArgumentNullException.ThrowIfNull(initial);
+        ArgumentNullException.ThrowIfNull(rngState);
+        var territory = TerritoryAnalyzer.Analyze(initial.Board);
+        var facilityRuntime = FacilityRuntimeAnalyzer.Analyze(
+            initial.FacilityState,
+            territory,
+            initial.RuntimePolicy.FacilityPolicy);
+        return new BattleState(
+            initial.Board,
+            initial.RepetitionHistory,
+            initial.FacilityState,
+            territory,
+            facilityRuntime,
+            rngState,
+            initial.RuntimePolicy,
+            initial.PlayerTurnIndex,
+            BattlePhase.PlayerAction,
+            BattleOutcome.Ongoing,
+            BattleEndReason.None,
+            BattleAuthoritativeRuntimeState.FromInitial(initial));
     }
 
     internal static BattleState Transition(
@@ -158,6 +201,13 @@ public sealed class BattleState
         BattleEndReason endReason)
     {
         ArgumentNullException.ThrowIfNull(source);
+        if (source.AuthoritativeRuntime is not null)
+        {
+            throw new ArgumentException(
+                "Legacy battle transition cannot discard authoritative runtime state.",
+                nameof(source));
+        }
+
         return new BattleState(
             board,
             repetitionHistory,
@@ -169,10 +219,52 @@ public sealed class BattleState
             playerTurnIndex,
             phase,
             outcome,
-            endReason);
+            endReason,
+            null);
     }
 
-    private string BuildCanonicalText() => string.Join(
+    internal static BattleState TransitionAuthoritative(
+        BattleState source,
+        BoardState board,
+        BattleRepetitionHistory repetitionHistory,
+        FacilityState facilityState,
+        TerritoryAnalysis territoryAnalysis,
+        FacilityRuntimeAnalysis facilityRuntimeAnalysis,
+        BattleAuthoritativeRuntimeState authoritativeRuntime,
+        int playerTurnIndex,
+        BattlePhase phase,
+        BattleOutcome outcome,
+        BattleEndReason endReason)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(authoritativeRuntime);
+        if (source.AuthoritativeRuntime is null)
+        {
+            throw new ArgumentException(
+                "Authoritative battle transition requires an authoritative source state.",
+                nameof(source));
+        }
+
+        return new BattleState(
+            board,
+            repetitionHistory,
+            facilityState,
+            territoryAnalysis,
+            facilityRuntimeAnalysis,
+            source.RngState,
+            source.RuntimePolicy,
+            playerTurnIndex,
+            phase,
+            outcome,
+            endReason,
+            authoritativeRuntime);
+    }
+
+    private string BuildCanonicalText() => AuthoritativeRuntime is null
+        ? BuildLegacyCanonicalText()
+        : BuildAuthoritativeCanonicalText();
+
+    private string BuildLegacyCanonicalText() => string.Join(
         '\n',
         EncodingVersion,
         $"player_turn_index={PlayerTurnIndex.ToString(CultureInfo.InvariantCulture)}",
@@ -194,6 +286,35 @@ public sealed class BattleState
         "territory_begin",
         TerritoryToCanonicalText(TerritoryAnalysis),
         "territory_end",
+        "rng_begin",
+        RngState.ToCanonicalText(),
+        "rng_end");
+
+    private string BuildAuthoritativeCanonicalText() => string.Join(
+        '\n',
+        AuthoritativeEncodingVersion,
+        $"player_turn_index={PlayerTurnIndex.ToString(CultureInfo.InvariantCulture)}",
+        $"phase={PhaseId}",
+        $"outcome={OutcomeId}",
+        $"end_reason={EndReasonId}",
+        "policy_begin",
+        RuntimePolicy.ToCanonicalText(),
+        "policy_end",
+        "board_topology_begin",
+        StoneTopologyKey.FromBoard(Board).ToCanonicalText(),
+        "board_topology_end",
+        "repetition_history_begin",
+        RepetitionHistory.ToCanonicalText(),
+        "repetition_history_end",
+        "facility_state_begin",
+        FacilityState.ToCanonicalText(),
+        "facility_state_end",
+        "territory_begin",
+        TerritoryToCanonicalText(TerritoryAnalysis),
+        "territory_end",
+        "authoritative_runtime_begin",
+        AuthoritativeRuntime!.ToCanonicalText(),
+        "authoritative_runtime_end",
         "rng_begin",
         RngState.ToCanonicalText(),
         "rng_end");
@@ -239,7 +360,8 @@ public sealed class BattleState
         FacilityState facilityState,
         TerritoryAnalysis territoryAnalysis,
         FacilityRuntimeAnalysis facilityRuntimeAnalysis,
-        BattleRuntimePolicy runtimePolicy)
+        BattleRuntimePolicy runtimePolicy,
+        BattleAuthoritativeRuntimeState? authoritativeRuntime)
     {
         if (!repetitionHistory.Current.Equals(StoneTopologyKey.FromBoard(board)))
         {
@@ -264,6 +386,20 @@ public sealed class BattleState
                 "Facility runtime analysis must belong to the exact battle snapshots and policy.",
                 nameof(facilityRuntimeAnalysis));
         }
+
+        if (authoritativeRuntime is not null &&
+            (!ReferenceEquals(authoritativeRuntime.StoneRuntimeState.SourceBoard, board) ||
+             !ReferenceEquals(
+                 authoritativeRuntime.TemporaryLibertyState.SourceStones,
+                 authoritativeRuntime.StoneRuntimeState) ||
+             !ReferenceEquals(
+                 authoritativeRuntime.ContinuousLibertySnapshot.SourceStones,
+                 authoritativeRuntime.StoneRuntimeState)))
+        {
+            throw new ArgumentException(
+                "Authoritative runtime must belong to the exact battle board and stone snapshot.",
+                nameof(authoritativeRuntime));
+        }
     }
 
     private static void ValidateLifecycle(
@@ -271,7 +407,8 @@ public sealed class BattleState
         BattlePhase phase,
         BattleOutcome outcome,
         BattleEndReason endReason,
-        BattleRuntimePolicy runtimePolicy)
+        BattleRuntimePolicy runtimePolicy,
+        BattleAuthoritativeRuntimeState? authoritativeRuntime)
     {
         if (playerTurnIndex <= 0 || playerTurnIndex > runtimePolicy.PlayerTurnLimit)
         {
@@ -296,12 +433,32 @@ public sealed class BattleState
             }
 
             BattleEndReasonRules.ValidateTerminalPair(outcome, endReason);
+            if (authoritativeRuntime?.EnemyActionStage is not null ||
+                authoritativeRuntime?.PendingAtEnemyTurnStart is not null)
+            {
+                throw new ArgumentException(
+                    "Ended authoritative battle state cannot retain an enemy action boundary.");
+            }
+
             return;
         }
 
         if (outcome != BattleOutcome.Ongoing || endReason != BattleEndReason.None)
         {
             throw new ArgumentException("Ongoing battle phase cannot contain a terminal outcome or reason.");
+        }
+
+        if (authoritativeRuntime is null)
+        {
+            return;
+        }
+
+        var hasEnemyBoundary = authoritativeRuntime.EnemyActionStage is not null &&
+            authoritativeRuntime.PendingAtEnemyTurnStart is not null;
+        if ((phase == BattlePhase.EnemyAction) != hasEnemyBoundary)
+        {
+            throw new ArgumentException(
+                "Authoritative enemy phase and enemy action boundary state must agree.");
         }
     }
 }

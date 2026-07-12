@@ -29,6 +29,21 @@ public static class HeadlessBattleStateMachine
             OrderedCommandLog.Create(replayMetadata));
     }
 
+    public static HeadlessBattleSession Start(
+        BattleAuthoritativeInitialSnapshot initialSnapshot,
+        ReplayMetadata replayMetadata)
+    {
+        ArgumentNullException.ThrowIfNull(initialSnapshot);
+        ArgumentNullException.ThrowIfNull(replayMetadata);
+
+        var state = BattleState.Start(
+            initialSnapshot,
+            AuthoritativeRngState.Create(replayMetadata.InitialSeed));
+        return new HeadlessBattleSession(
+            state,
+            OrderedCommandLog.Create(replayMetadata));
+    }
+
     public static BattleCommandResult Execute(
         HeadlessBattleSession session,
         IBattleCommand command)
@@ -55,6 +70,11 @@ public static class HeadlessBattleStateMachine
         if (session.State.IsTerminal)
         {
             return Reject(session, command, "battle_terminal");
+        }
+
+        if (session.State.AuthoritativeRuntime is not null)
+        {
+            return AuthoritativeEnemyTurnStateMachine.Execute(session, command);
         }
 
         return command switch
@@ -338,7 +358,7 @@ public static class HeadlessBattleStateMachine
             BattleEndReason.None);
     }
 
-    private static BattleCommandResult Accept(
+    internal static BattleCommandResult Accept(
         HeadlessBattleSession session,
         IBattleCommand command,
         BattleState stateAfter,
@@ -355,7 +375,7 @@ public static class HeadlessBattleStateMachine
             orderedFacts.ToArray());
     }
 
-    private static BattleCommandResult Reject(
+    internal static BattleCommandResult Reject(
         HeadlessBattleSession session,
         IBattleCommand command,
         string reasonId) =>

@@ -1,18 +1,17 @@
-using System.Collections.ObjectModel;
 using Igorogue.Application.Battle;
 
 namespace Igorogue.Application.Replay;
 
-public static class BattleReplayRunner
+public static class BattleReplayRunnerV2
 {
     public static BattleReplayResult Replay(
-        BattleReplayDocument document,
+        BattleReplayDocumentV2 document,
         HeadlessBattleSession initialSession)
     {
         ArgumentNullException.ThrowIfNull(document);
         ArgumentNullException.ThrowIfNull(initialSession);
         document.ValidateIntegrity();
-        BattleReplayV1SessionValidation.RequireLegacyV1(initialSession);
+        BattleReplayV2SessionValidation.RequireAuthoritativeV2(initialSession);
 
         if (!string.Equals(
                 document.Metadata.ToCanonicalText(),
@@ -48,7 +47,7 @@ public static class BattleReplayRunner
         var results = new List<BattleCommandResult>(document.Attempts.Count);
         foreach (var attempt in document.Attempts)
         {
-            BattleReplayV1SessionValidation.RequireLegacyV1(
+            BattleReplayV2SessionValidation.RequireAuthoritativeV2(
                 session,
                 attempt.AttemptSequence);
             if (!string.Equals(
@@ -66,11 +65,11 @@ public static class BattleReplayRunner
                     attempt.AttemptSequence);
             }
 
-            var command = BattleReplayCommandCodec.Decode(
+            var command = BattleReplayCommandCodecV2.Decode(
                 attempt,
                 session.State.Board.Geometry);
             var result = HeadlessBattleStateMachine.Execute(session, command);
-            BattleReplayV1SessionValidation.RequireLegacyV1(
+            BattleReplayV2SessionValidation.RequireAuthoritativeV2(
                 result.SessionAfter,
                 attempt.AttemptSequence);
             if (result.Accepted != attempt.Accepted)
@@ -146,25 +145,4 @@ public static class BattleReplayRunner
 
         return new BattleReplayResult(session, results);
     }
-}
-
-public sealed class BattleReplayResult
-{
-    private readonly BattleCommandResult[] commandResults;
-    private readonly ReadOnlyCollection<BattleCommandResult> commandResultView;
-
-    internal BattleReplayResult(
-        HeadlessBattleSession finalSession,
-        IEnumerable<BattleCommandResult> commandResults)
-    {
-        ArgumentNullException.ThrowIfNull(finalSession);
-        ArgumentNullException.ThrowIfNull(commandResults);
-        FinalSession = finalSession;
-        this.commandResults = commandResults.ToArray();
-        commandResultView = Array.AsReadOnly(this.commandResults);
-    }
-
-    public HeadlessBattleSession FinalSession { get; }
-
-    public IReadOnlyList<BattleCommandResult> CommandResults => commandResultView;
 }

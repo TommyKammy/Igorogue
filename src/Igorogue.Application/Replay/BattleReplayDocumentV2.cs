@@ -6,12 +6,12 @@ using Igorogue.Domain.Determinism;
 
 namespace Igorogue.Application.Replay;
 
-public sealed class BattleReplayDocument
+public sealed class BattleReplayDocumentV2
 {
     private readonly BattleReplayAttempt[] attempts;
     private readonly ReadOnlyCollection<BattleReplayAttempt> attemptView;
 
-    private BattleReplayDocument(
+    private BattleReplayDocumentV2(
         ReplayMetadata metadata,
         string initialStateChecksum,
         string initialLogChecksum,
@@ -36,6 +36,8 @@ public sealed class BattleReplayDocument
 
     public ReplayMetadata Metadata { get; }
 
+    public string StateProjection => BattleReplayFormatV2.StateProjection;
+
     public string InitialStateChecksum { get; }
 
     public string InitialLogChecksum { get; }
@@ -48,34 +50,34 @@ public sealed class BattleReplayDocument
 
     public BattleReplayTerminal Terminal { get; }
 
-    public string IntegrityScheme => BattleReplayFormat.IntegrityScheme;
+    public string IntegrityScheme => BattleReplayFormatV2.IntegrityScheme;
 
     public string AttemptsChecksum { get; }
 
     public string DocumentChecksum { get; }
 
-    public static BattleReplayDocument Capture(
+    public static BattleReplayDocumentV2 Capture(
         HeadlessBattleSession initialSession,
         IEnumerable<BattleCommandResult> commandResults)
     {
         ArgumentNullException.ThrowIfNull(initialSession);
         ArgumentNullException.ThrowIfNull(commandResults);
-        BattleReplayV1SessionValidation.RequireLegacyV1(initialSession);
+        BattleReplayV2SessionValidation.RequireAuthoritativeV2(initialSession);
 
         var attempts = new List<BattleReplayAttempt>();
         var current = initialSession;
-        var attemptChain = BattleReplayIntegrity.InitialAttemptChecksum(
+        var attemptChain = BattleReplayIntegrityV2.InitialAttemptChecksum(
             initialSession.CommandLog.Metadata,
             initialSession.State.Checksum,
             initialSession.CommandLog.CurrentChecksum);
         foreach (var result in commandResults)
         {
             ArgumentNullException.ThrowIfNull(result);
-            if (attempts.Count >= BattleReplayFormat.MaxAttempts)
+            if (attempts.Count >= BattleReplayFormatV2.MaxAttempts)
             {
                 throw new ReplayValidationException(
                     "replay_too_many_attempts",
-                    $"Replay capture exceeds the {BattleReplayFormat.MaxAttempts} attempt limit.");
+                    $"Replay capture exceeds the {BattleReplayFormatV2.MaxAttempts} attempt limit.");
             }
 
             if (!ReferenceEquals(result.SessionBefore, current))
@@ -86,10 +88,10 @@ public sealed class BattleReplayDocument
                     attempts.Count);
             }
 
-            BattleReplayV1SessionValidation.RequireLegacyV1(
+            BattleReplayV2SessionValidation.RequireAuthoritativeV2(
                 result.SessionBefore,
                 attempts.Count);
-            BattleReplayV1SessionValidation.RequireLegacyV1(
+            BattleReplayV2SessionValidation.RequireAuthoritativeV2(
                 result.SessionAfter,
                 attempts.Count);
 
@@ -110,7 +112,8 @@ public sealed class BattleReplayDocument
                 result.StateChecksum,
                 result.LogChecksum,
                 attemptChecksum: string.Empty);
-            attemptChain = BattleReplayIntegrity.AppendAttempt(
+            BattleReplayCommandCodecV2.ValidateSupported(attemptWithoutChecksum);
+            attemptChain = BattleReplayIntegrityV2.AppendAttempt(
                 attemptChain,
                 attemptWithoutChecksum);
             attempts.Add(attemptWithoutChecksum.WithAttemptChecksum(attemptChain));
@@ -128,11 +131,12 @@ public sealed class BattleReplayDocument
                 current.State.IsTerminal,
                 current.State.OutcomeId,
                 current.State.EndReasonId),
+            persistedStateProjection: null,
             persistedAttemptsChecksum: null,
             persistedDocumentChecksum: null);
     }
 
-    internal static BattleReplayDocument CreateValidated(
+    internal static BattleReplayDocumentV2 CreateValidated(
         ReplayMetadata metadata,
         string initialStateChecksum,
         string initialLogChecksum,
@@ -140,12 +144,24 @@ public sealed class BattleReplayDocument
         string finalStateChecksum,
         string finalLogChecksum,
         BattleReplayTerminal terminal,
+        string? persistedStateProjection,
         string? persistedAttemptsChecksum,
         string? persistedDocumentChecksum)
     {
         ArgumentNullException.ThrowIfNull(metadata);
         ArgumentNullException.ThrowIfNull(attempts);
         ArgumentNullException.ThrowIfNull(terminal);
+        if (persistedStateProjection is not null &&
+            !string.Equals(
+                persistedStateProjection,
+                BattleReplayFormatV2.StateProjection,
+                StringComparison.Ordinal))
+        {
+            throw new ReplayValidationException(
+                "unsupported_state_projection",
+                "Replay state projection is not supported by replay schema 2.");
+        }
+
         ValidateChecksum(initialStateChecksum, "initial_state_checksum");
         ValidateChecksum(initialLogChecksum, "initial_log_checksum");
         ValidateChecksum(finalStateChecksum, "final_state_checksum");
@@ -153,11 +169,11 @@ public sealed class BattleReplayDocument
         ValidateTerminal(terminal);
 
         var copiedAttempts = attempts.ToArray();
-        if (copiedAttempts.Length > BattleReplayFormat.MaxAttempts)
+        if (copiedAttempts.Length > BattleReplayFormatV2.MaxAttempts)
         {
             throw new ReplayValidationException(
                 "replay_too_many_attempts",
-                $"Replay document exceeds the {BattleReplayFormat.MaxAttempts} attempt limit.");
+                $"Replay document exceeds the {BattleReplayFormatV2.MaxAttempts} attempt limit.");
         }
 
         var geometry = BoardGeometry.Create(BoardGeometry.AcceptedSize);
@@ -174,7 +190,7 @@ public sealed class BattleReplayDocument
 
         var expectedStateChecksum = initialStateChecksum;
         var expectedLogChecksum = initialLogChecksum;
-        var attemptChain = BattleReplayIntegrity.InitialAttemptChecksum(
+        var attemptChain = BattleReplayIntegrityV2.InitialAttemptChecksum(
             metadata,
             initialStateChecksum,
             initialLogChecksum);
@@ -201,7 +217,7 @@ public sealed class BattleReplayDocument
                     index);
             }
 
-            var command = BattleReplayCommandCodec.Decode(attempt, geometry);
+            var command = BattleReplayCommandCodecV2.Decode(attempt, geometry);
             if (attempt.Accepted)
             {
                 if (!string.Equals(attempt.ReasonId, "accepted", StringComparison.Ordinal))
@@ -251,7 +267,7 @@ public sealed class BattleReplayDocument
                     index);
             }
 
-            attemptChain = BattleReplayIntegrity.AppendAttempt(attemptChain, attempt);
+            attemptChain = BattleReplayIntegrityV2.AppendAttempt(attemptChain, attempt);
             if (!string.Equals(
                     attempt.AttemptChecksum,
                     attemptChain,
@@ -289,7 +305,7 @@ public sealed class BattleReplayDocument
             }
         }
 
-        var documentChecksum = BattleReplayIntegrity.DocumentChecksum(
+        var documentChecksum = BattleReplayIntegrityV2.DocumentChecksum(
             metadata,
             initialStateChecksum,
             initialLogChecksum,
@@ -311,7 +327,7 @@ public sealed class BattleReplayDocument
             }
         }
 
-        return new BattleReplayDocument(
+        return new BattleReplayDocumentV2(
             metadata,
             initialStateChecksum,
             initialLogChecksum,
@@ -331,6 +347,7 @@ public sealed class BattleReplayDocument
         FinalStateChecksum,
         FinalLogChecksum,
         Terminal,
+        StateProjection,
         AttemptsChecksum,
         DocumentChecksum);
 
@@ -418,115 +435,29 @@ public sealed class BattleReplayDocument
     }
 }
 
-internal static class BattleReplayV1SessionValidation
-{
-    internal static void RequireLegacyV1(
-        HeadlessBattleSession session,
-        int? attemptIndex = null)
-    {
-        ArgumentNullException.ThrowIfNull(session);
-        if (!string.Equals(
-                session.State.StateProjectionId,
-                BattleState.EncodingVersion,
-                StringComparison.Ordinal) ||
-            session.State.AuthoritativeRuntime is not null)
-        {
-            throw new ReplayValidationException(
-                "unsupported_state_projection",
-                "Replay schema 1 requires a legacy headless battle state v1 session.",
-                attemptIndex);
-        }
-    }
-}
-
-public sealed class BattleReplayAttempt
-{
-    internal BattleReplayAttempt(
-        int attemptSequence,
-        string commandType,
-        int commandSchemaVersion,
-        string canonicalPayload,
-        string beforeStateChecksum,
-        string beforeLogChecksum,
-        bool accepted,
-        string reasonId,
-        string stateChecksum,
-        string logChecksum,
-        string attemptChecksum)
-    {
-        AttemptSequence = attemptSequence;
-        CommandType = commandType;
-        CommandSchemaVersion = commandSchemaVersion;
-        CanonicalPayload = canonicalPayload;
-        BeforeStateChecksum = beforeStateChecksum;
-        BeforeLogChecksum = beforeLogChecksum;
-        Accepted = accepted;
-        ReasonId = reasonId;
-        StateChecksum = stateChecksum;
-        LogChecksum = logChecksum;
-        AttemptChecksum = attemptChecksum;
-    }
-
-    public int AttemptSequence { get; }
-
-    public string CommandType { get; }
-
-    public int CommandSchemaVersion { get; }
-
-    public string CanonicalPayload { get; }
-
-    public string BeforeStateChecksum { get; }
-
-    public string BeforeLogChecksum { get; }
-
-    public bool Accepted { get; }
-
-    public string ReasonId { get; }
-
-    public string StateChecksum { get; }
-
-    public string LogChecksum { get; }
-
-    public string AttemptChecksum { get; }
-
-    internal BattleReplayAttempt WithAttemptChecksum(string attemptChecksum) => new(
-        AttemptSequence,
-        CommandType,
-        CommandSchemaVersion,
-        CanonicalPayload,
-        BeforeStateChecksum,
-        BeforeLogChecksum,
-        Accepted,
-        ReasonId,
-        StateChecksum,
-        LogChecksum,
-        attemptChecksum);
-}
-
-public sealed record BattleReplayTerminal(
-    bool IsTerminal,
-    string OutcomeId,
-    string EndReasonId);
-
-internal static class BattleReplayFormat
+internal static class BattleReplayFormatV2
 {
     internal const string SchemaId = "igorogue.battle-replay";
-    internal const int SchemaVersion = 1;
+    internal const int SchemaVersion = 2;
+    internal const string StateProjection = "headless-battle-state-v2";
     internal const string IntegrityScheme = "sha256-length-prefixed-v1";
-    internal const string AttemptHeaderVersion = "igorogue-battle-replay-attempt-chain-v1";
-    internal const string AttemptEntryVersion = "igorogue-battle-replay-attempt-v1";
-    internal const string DocumentVersion = "igorogue-battle-replay-document-v1";
+    internal const string AttemptHeaderVersion = "igorogue-battle-replay-attempt-chain-v2";
+    internal const string AttemptEntryVersion = "igorogue-battle-replay-attempt-v2";
+    internal const string DocumentVersion = "igorogue-battle-replay-document-v2";
     internal const int MaxAttempts = 4096;
 }
 
-internal static class BattleReplayIntegrity
+internal static class BattleReplayIntegrityV2
 {
     internal static string InitialAttemptChecksum(
         ReplayMetadata metadata,
         string initialStateChecksum,
         string initialLogChecksum) =>
         DeterministicChecksum.Combine(
-            BattleReplayFormat.AttemptHeaderVersion,
+            BattleReplayFormatV2.AttemptHeaderVersion,
+            BattleReplayFormatV2.SchemaId,
+            BattleReplayFormatV2.SchemaVersion.ToString(CultureInfo.InvariantCulture),
+            BattleReplayFormatV2.StateProjection,
             metadata.ToCanonicalText(),
             initialStateChecksum,
             initialLogChecksum);
@@ -535,7 +466,10 @@ internal static class BattleReplayIntegrity
         string previousChecksum,
         BattleReplayAttempt attempt) =>
         DeterministicChecksum.Combine(
-            BattleReplayFormat.AttemptEntryVersion,
+            BattleReplayFormatV2.AttemptEntryVersion,
+            BattleReplayFormatV2.SchemaId,
+            BattleReplayFormatV2.SchemaVersion.ToString(CultureInfo.InvariantCulture),
+            BattleReplayFormatV2.StateProjection,
             previousChecksum,
             attempt.AttemptSequence.ToString(CultureInfo.InvariantCulture),
             attempt.CommandType,
@@ -557,10 +491,11 @@ internal static class BattleReplayIntegrity
         string finalLogChecksum,
         BattleReplayTerminal terminal) =>
         DeterministicChecksum.Combine(
-            BattleReplayFormat.DocumentVersion,
-            BattleReplayFormat.SchemaId,
-            BattleReplayFormat.SchemaVersion.ToString(CultureInfo.InvariantCulture),
-            BattleReplayFormat.IntegrityScheme,
+            BattleReplayFormatV2.DocumentVersion,
+            BattleReplayFormatV2.SchemaId,
+            BattleReplayFormatV2.SchemaVersion.ToString(CultureInfo.InvariantCulture),
+            BattleReplayFormatV2.StateProjection,
+            BattleReplayFormatV2.IntegrityScheme,
             metadata.ToCanonicalText(),
             initialStateChecksum,
             initialLogChecksum,
@@ -570,4 +505,25 @@ internal static class BattleReplayIntegrity
             terminal.IsTerminal ? "1" : "0",
             terminal.OutcomeId,
             terminal.EndReasonId);
+}
+
+internal static class BattleReplayV2SessionValidation
+{
+    internal static void RequireAuthoritativeV2(
+        HeadlessBattleSession session,
+        int? attemptIndex = null)
+    {
+        ArgumentNullException.ThrowIfNull(session);
+        if (!string.Equals(
+                session.State.StateProjectionId,
+                BattleReplayFormatV2.StateProjection,
+                StringComparison.Ordinal) ||
+            session.State.AuthoritativeRuntime is null)
+        {
+            throw new ReplayValidationException(
+                "unsupported_state_projection",
+                "Replay schema 2 requires an authoritative headless battle state v2 session.",
+                attemptIndex);
+        }
+    }
 }

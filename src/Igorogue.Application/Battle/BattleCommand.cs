@@ -70,6 +70,93 @@ public sealed class AuthorizedStonePlacementCommand : IBattleCommand
         $"access_mode={BattleCommandValidation.AccessModeId(AccessMode)}\n";
 }
 
+public sealed class AuthorizedRuntimeStonePlacementCommand : IBattleCommand
+{
+    public AuthorizedRuntimeStonePlacementCommand(
+        string expectedStateChecksum,
+        string expectedLogChecksum,
+        StoneColor actor,
+        CanonicalPoint point,
+        PlacementAccessMode accessMode,
+        string stoneInstanceId,
+        string stoneKindId,
+        IEnumerable<string> orderedEffectMetadata)
+    {
+        ExpectedStateChecksum = BattleCommandValidation.CanonicalChecksum(
+            expectedStateChecksum,
+            nameof(expectedStateChecksum));
+        ExpectedLogChecksum = BattleCommandValidation.CanonicalChecksum(
+            expectedLogChecksum,
+            nameof(expectedLogChecksum));
+        if (actor != StoneColor.White)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(actor),
+                actor,
+                "Authorized runtime placement is limited to scripted white actions.");
+        }
+
+        ArgumentNullException.ThrowIfNull(point);
+        if (accessMode is not PlacementAccessMode.Normal and
+            not PlacementAccessMode.TerminalCapture)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(accessMode),
+                accessMode,
+                "Unknown placement access mode.");
+        }
+
+        Actor = actor;
+        Point = point;
+        AccessMode = accessMode;
+        PlacementDescriptor = new StoneRuntimePlacementDescriptor(
+            stoneInstanceId,
+            stoneKindId,
+            orderedEffectMetadata);
+    }
+
+    public string CommandType => "battle.authorized_runtime_stone_placement";
+
+    public int CommandSchemaVersion => 1;
+
+    public string ExpectedStateChecksum { get; }
+
+    public string ExpectedLogChecksum { get; }
+
+    public StoneColor Actor { get; }
+
+    public CanonicalPoint Point { get; }
+
+    public PlacementAccessMode AccessMode { get; }
+
+    public StoneRuntimePlacementDescriptor PlacementDescriptor { get; }
+
+    public string StoneInstanceId => PlacementDescriptor.InstanceId;
+
+    public string StoneKindId => PlacementDescriptor.KindId;
+
+    public IReadOnlyList<string> OrderedEffectMetadata =>
+        PlacementDescriptor.OrderedEffectMetadata;
+
+    public string ToCanonicalPayload()
+    {
+        var lines = new List<string>
+        {
+            "authorized-runtime-stone-placement-v1",
+            $"expected_state_checksum={ExpectedStateChecksum}",
+            $"expected_log_checksum={ExpectedLogChecksum}",
+            $"actor={BattleCommandValidation.ColorId(Actor)}",
+            $"point={Point.X.ToString(CultureInfo.InvariantCulture)},{Point.Y.ToString(CultureInfo.InvariantCulture)}",
+            $"access_mode={BattleCommandValidation.AccessModeId(AccessMode)}",
+            $"stone_instance_id={StoneInstanceId}",
+            $"stone_kind_id={StoneKindId}",
+            $"effect_metadata_count={OrderedEffectMetadata.Count.ToString(CultureInfo.InvariantCulture)}",
+        };
+        lines.AddRange(OrderedEffectMetadata.Select(value => $"effect_metadata={value}"));
+        return string.Join('\n', lines) + "\n";
+    }
+}
+
 public sealed class AuthorizedFacilityBuildCommand : IBattleCommand
 {
     public AuthorizedFacilityBuildCommand(

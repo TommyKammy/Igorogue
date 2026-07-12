@@ -25,6 +25,9 @@ public sealed class TerritoryDeltaResolverTests
                 StoneColor.Black));
 
         Assert.Equal(StoneColor.Black, fact.SourceActor);
+        Assert.Equal(TerritoryEstablishmentSourceKind.Placement, fact.SourceKind);
+        Assert.Equal(TerritoryDeltaResolver.StonePlacementSourceReasonId, fact.SourceReasonId);
+        Assert.True(fact.ImplicitMomentumEligible);
         Assert.Equal(
             Geometry.CanonicalPoints.Where(point => point != C(7, 7)),
             fact.ChangedPoints);
@@ -62,10 +65,59 @@ public sealed class TerritoryDeltaResolverTests
                 black,
                 StoneColor.White));
         Assert.Equal(StoneColor.White, whiteSourceFact.SourceActor);
+        Assert.Equal(
+            TerritoryEstablishmentSourceKind.Placement,
+            whiteSourceFact.SourceKind);
+        Assert.Equal(
+            TerritoryDeltaResolver.StonePlacementSourceReasonId,
+            whiteSourceFact.SourceReasonId);
+        Assert.False(whiteSourceFact.ImplicitMomentumEligible);
         Assert.Null(TerritoryDeltaResolver.ResolveCore(
             neutral,
             white,
             StoneColor.Black));
+    }
+
+    [Fact]
+    public void TemporaryLibertyExpiryEstablishesCanonicalTerritoryWithoutImplicitMomentum()
+    {
+        var (before, expiry) = CenterTerritoryExpiry();
+
+        var fact = Assert.IsType<TerritoryEstablishedFact>(
+            TerritoryDeltaResolver.ResolveAfterExpiry(before, expiry));
+
+        var captured = Assert.Single(expiry.CapturedGroups);
+        Assert.Equal(StoneColor.White, captured.Color);
+        Assert.Equal(C(4, 4), captured.Anchor);
+        Assert.Equal(StoneColor.White, fact.SourceActor);
+        Assert.Equal(
+            TerritoryEstablishmentSourceKind.TemporaryLibertyExpiry,
+            fact.SourceKind);
+        Assert.Equal(
+            TemporaryLibertyExpiryResolver.TopologySourceReasonId,
+            fact.SourceReasonId);
+        Assert.False(fact.ImplicitMomentumEligible);
+        Assert.Equal([C(4, 4)], fact.ChangedPoints);
+    }
+
+    [Fact]
+    public void ExpiryTerritoryDeltaRejectsForeignAndStaleBeforeSnapshots()
+    {
+        var (_, expiry) = CenterTerritoryExpiry();
+        var source = expiry.SourceStones.SourceBoard;
+        var foreignBoard = BoardState.Create(
+            Geometry,
+            source.OccupiedStones.Select(stone => new BoardStone(
+                stone.Color,
+                stone.IsKing,
+                stone.Point)));
+        var foreignBefore = TerritoryAnalyzer.Analyze(foreignBoard);
+        var staleBefore = TerritoryAnalyzer.Analyze(expiry.BoardAfterResolution);
+
+        Assert.Throws<ArgumentException>(() =>
+            TerritoryDeltaResolver.ResolveAfterExpiry(foreignBefore, expiry));
+        Assert.Throws<ArgumentException>(() =>
+            TerritoryDeltaResolver.ResolveAfterExpiry(staleBefore, expiry));
     }
 
     [Fact]
@@ -154,6 +206,53 @@ public sealed class TerritoryDeltaResolverTests
             analysis.Groups.Select(group => new GroupEffectiveLiberty(
                 group,
                 group.RealLibertyCount)));
+
+    private static StoneRuntimeState StoneRuntime(BoardState board)
+    {
+        var instances = board.OccupiedStones
+            .Select((stone, index) => new StoneRuntimeInstance(
+                $"stone_{index + 1}",
+                stone,
+                stone.IsKing ? "king" : "standard",
+                index + 1L,
+                []))
+            .ToArray();
+        return StoneRuntimeState.Create(board, instances, instances.Length + 1L);
+    }
+
+    private static (
+        TerritoryAnalysis Before,
+        TemporaryLibertyExpiryResolution Expiry) CenterTerritoryExpiry()
+    {
+        var source = Board(
+            Stone(StoneColor.Black, 4, 3),
+            Stone(StoneColor.Black, 3, 4),
+            Stone(StoneColor.White, 4, 4),
+            Stone(StoneColor.Black, 5, 4),
+            Stone(StoneColor.Black, 4, 5));
+        var stones = StoneRuntime(source);
+        var white = Assert.IsType<StoneRuntimeInstance>(stones.InstanceAt(C(4, 4)));
+        var temporary = TemporaryLibertyState.Create(
+            stones,
+            [
+                new TemporaryLibertyEffect(
+                    "territory_guard",
+                    1,
+                    StoneColor.White,
+                    white.InstanceId,
+                    "test",
+                    1,
+                    12),
+            ],
+            2);
+        var expiry = TemporaryLibertyExpiryResolver.Resolve(
+            stones,
+            temporary,
+            ContinuousLibertySnapshot.Empty(stones),
+            BattleRepetitionHistory.Start(source),
+            12);
+        return (TerritoryAnalyzer.Analyze(source), expiry);
+    }
 
     private static BoardState Board(params BoardStone[] stones) =>
         BoardState.Create(Geometry, stones);

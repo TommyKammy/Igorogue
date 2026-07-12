@@ -1,0 +1,1253 @@
+{
+  "schema_id": "igorogue.temporary-liberty-golden",
+  "schema_version": 2,
+  "state_projection": "headless-battle-state-v2",
+  "fact_projection": "igorogue-tle-battle-fact-v2",
+  "game_version": "v0.2.10",
+  "content_hash": "sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06",
+  "source_catalogs": [
+    {
+      "path": "game_data/fixtures/temporary_liberty_expiry_fixtures.json",
+      "sha256": "9f9a74ee9e1407c2b0882b6ccd1aa86ae950dd750fb0bfb4bc3bf12faae20e60"
+    },
+    {
+      "path": "game_data/balance/system.json",
+      "sha256": "61f79a653c3ad74d811839e96d1abea6ce984fed166cc280479732b1324724a1"
+    },
+    {
+      "path": "game_data/content/board_conditions.json",
+      "sha256": "b92a9e169b191014d91fa8eef2d9b03d5a767ba2bc217fb468db41e7f94f0f83"
+    },
+    {
+      "path": "game_data/content/cards.json",
+      "sha256": "46b44c43a09d4145eaac3f165517e9e69f0bbe8f78b8f7cd92af5831b5658b54"
+    },
+    {
+      "path": "game_data/content/relics.json",
+      "sha256": "4114b62d71b17be8b6116bb7b0c30de683d0b424b40f0a7c7b5e224fd1893560"
+    },
+    {
+      "path": "game_data/content/seals.json",
+      "sha256": "74deb7213b08e699ca1e015d0cc82896fb1937d9a98fd49409bba3a94a4162c2"
+    },
+    {
+      "path": "game_data/content/styles.json",
+      "sha256": "d4c8474f681950883a1bfe7671f180b9cb9ab6f8ef4b56cdef62e36be774ab9a"
+    }
+  ],
+  "claims": {
+    "momentum_event_count": 0,
+    "brilliant_event_count": 0,
+    "counterattack_fixture_coverage_claim_count": 0
+  },
+  "cases": [
+    {
+      "id": "TLE-01",
+      "title": "single protected black stone dies when \u002B1 expires",
+      "source_fixture_id": "TLE-01",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "297e90bb52c9b0efdec02f155340aa27c3a3999e4e93248e90f2ec97f187e739",
+        "state_checksum": "523c3428e39bc84d3c5abb891eb98d4ffd5f74842979f087e8e7bd3f3c0bec4f",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=523c3428e39bc84d3c5abb891eb98d4ffd5f74842979f087e8e7bd3f3c0bec4f\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "d8798d24a7f94da383ac79b78c77d3aa5a0ecdf4d8a8803c7d582f70e878e49e",
+          "log_checksum": "d61e1f1fb0e86184db3fa273e33a608dda936e14229693e02ea9fb4f77ff7436",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=d8798d24a7f94da383ac79b78c77d3aa5a0ecdf4d8a8803c7d582f70e878e49e\nexpected_log_checksum=d61e1f1fb0e86184db3fa273e33a608dda936e14229693e02ea9fb4f77ff7436\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "1e35aa7caad42cf261fcad514b8462e57b5b489d1738c4ef50d023f524916954",
+          "log_checksum": "ab6eb25b8446bc12c5abeb524cf87db4169ed840c6ba33db0109c7566d28ebd3",
+          "ordered_facts": [
+            "boundary_stage|turn=1|stage=enemy_normal_action",
+            "enemy_passed|turn=1",
+            "boundary_stage|turn=1|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=1|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=1",
+            "liberty_expired|id=effect_01|sequence=1",
+            "expiry_group_captured|color=black|by=white|anchor=4,4|stones=4,4|king=0",
+            "topology_registered|cells=.................W.....W.W.....W.................|observations=2|first_seen=1|reason=temporary_liberty_expired",
+            "capture_batch_started|id=temporary_liberty_expiry_1",
+            "capture_batch_resolved|id=temporary_liberty_expiry_1|suppressed=0",
+            "expiry_resolved|turn=1|groups=1|terminal=0",
+            "boundary_stage|turn=1|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=20|gained=32|after=32|delta=12|pending_before=0|pending_after=0",
+            "boundary_stage|turn=1|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "1e35aa7caad42cf261fcad514b8462e57b5b489d1738c4ef50d023f524916954",
+        "log_checksum": "ab6eb25b8446bc12c5abeb524cf87db4169ed840c6ba33db0109c7566d28ebd3",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 2,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 0,
+        "deferred_choices": [],
+        "first_use_flags": [],
+        "counterattack_gauge_units": 32,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-02",
+      "title": "two effects expire together and capture group once",
+      "source_fixture_id": "TLE-02",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "d0bb1a9c3f82f1eb0a5fc0d8d876fbe5340243498bac65e3816b0064b3a1c3f6",
+        "state_checksum": "e438288f058b9cc7b1a12842024c17fe4b7b292e8ee965b60f87b54eab93084b",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=e438288f058b9cc7b1a12842024c17fe4b7b292e8ee965b60f87b54eab93084b\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "e9d0d2da9679f6e400dc86c1c5c7f9ad4dc46dd10294ca953b3bf0af15f13eb5",
+          "log_checksum": "93573c66b3d35470c0514575d7af45edb53085b047d9cf35b9f48cd81dfe326e",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=e9d0d2da9679f6e400dc86c1c5c7f9ad4dc46dd10294ca953b3bf0af15f13eb5\nexpected_log_checksum=93573c66b3d35470c0514575d7af45edb53085b047d9cf35b9f48cd81dfe326e\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "dfa3236198793c680fd72657a5a7764013af979075676cf45b42207a438c2403",
+          "log_checksum": "f9fb8c9776c325a8d1181724d6ff80956cc0f56cde6b57a4dc872ff2a1023ed4",
+          "ordered_facts": [
+            "boundary_stage|turn=2|stage=enemy_normal_action",
+            "enemy_passed|turn=2",
+            "boundary_stage|turn=2|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=2|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=2",
+            "liberty_expired|id=effect_a|sequence=1",
+            "liberty_expired|id=effect_b|sequence=2",
+            "expiry_group_captured|color=black|by=white|anchor=4,4|stones=4,4|king=0",
+            "topology_registered|cells=.................W.....W.W.....W.................|observations=2|first_seen=1|reason=temporary_liberty_expired",
+            "capture_batch_started|id=temporary_liberty_expiry_2",
+            "capture_batch_resolved|id=temporary_liberty_expiry_2|suppressed=0",
+            "expiry_resolved|turn=2|groups=1|terminal=0",
+            "boundary_stage|turn=2|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=20|gained=32|after=32|delta=12|pending_before=0|pending_after=0",
+            "boundary_stage|turn=2|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "dfa3236198793c680fd72657a5a7764013af979075676cf45b42207a438c2403",
+        "log_checksum": "f9fb8c9776c325a8d1181724d6ff80956cc0f56cde6b57a4dc872ff2a1023ed4",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 2,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 0,
+        "deferred_choices": [],
+        "first_use_flags": [],
+        "counterattack_gauge_units": 32,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-03",
+      "title": "two separate groups die from one snapshot in anchor order",
+      "source_fixture_id": "TLE-03",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "dc22e2f5178cdc42171ff07d39f47abe3c4f61017e2fe7e5bea77b6c792075bb",
+        "state_checksum": "d027b83b66d14aaca1c7c799c1e745404467c08a08186e15b92a8106ad7a2778",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=d027b83b66d14aaca1c7c799c1e745404467c08a08186e15b92a8106ad7a2778\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "1483e0d21b23ccff2d796d425cd5ab162e326a6934c718e29501e5d9d104147f",
+          "log_checksum": "999b1f072a1fb6d3782b5ae74d3e428abefabe880f16152ed97d65ed29697ee3",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=1483e0d21b23ccff2d796d425cd5ab162e326a6934c718e29501e5d9d104147f\nexpected_log_checksum=999b1f072a1fb6d3782b5ae74d3e428abefabe880f16152ed97d65ed29697ee3\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "a307e59d6ab190bc316c38fb148dc72ccda8ea3ebbe14101dbabed8f95a41d5b",
+          "log_checksum": "387679c4331418100c91ea9ecc2e21ddfd46933cc35886786c050e3e23ddde89",
+          "ordered_facts": [
+            "boundary_stage|turn=3|stage=enemy_normal_action",
+            "enemy_passed|turn=3",
+            "boundary_stage|turn=3|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=3|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=3",
+            "liberty_expired|id=low|sequence=1",
+            "liberty_expired|id=high|sequence=2",
+            "expiry_group_captured|color=black|by=white|anchor=2,2|stones=2,2|king=0",
+            "expiry_group_captured|color=black|by=white|anchor=6,6|stones=6,6|king=0",
+            "topology_registered|cells=.W.....W.W.....W.................W.....W.W.....W.|observations=2|first_seen=1|reason=temporary_liberty_expired",
+            "capture_batch_started|id=temporary_liberty_expiry_3",
+            "capture_batch_resolved|id=temporary_liberty_expiry_3|suppressed=0",
+            "expiry_resolved|turn=3|groups=2|terminal=0",
+            "boundary_stage|turn=3|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=20|gained=32|after=32|delta=12|pending_before=0|pending_after=0",
+            "boundary_stage|turn=3|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "a307e59d6ab190bc316c38fb148dc72ccda8ea3ebbe14101dbabed8f95a41d5b",
+        "log_checksum": "387679c4331418100c91ea9ecc2e21ddfd46933cc35886786c050e3e23ddde89",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 2,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 0,
+        "deferred_choices": [],
+        "first_use_flags": [],
+        "counterattack_gauge_units": 32,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-04",
+      "title": "future timed effect keeps group alive",
+      "source_fixture_id": "TLE-04",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "675a22b8ec114941e65eaf9d5c404dd2951a6bdb98d48356d8abc72868b4a253",
+        "state_checksum": "3e8f12333c70af41a15caded6dba55fbae8ce708310726ba2740d394c29aa64c",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=3e8f12333c70af41a15caded6dba55fbae8ce708310726ba2740d394c29aa64c\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "198a82d69c3a24dcaaac4e551020e61cb9c6aee4ddf4ea60aeaa31020ad81ba6",
+          "log_checksum": "3d9019ff7206696412778713d2050b76336dfe723750a3411322bc72658bf9c6",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=198a82d69c3a24dcaaac4e551020e61cb9c6aee4ddf4ea60aeaa31020ad81ba6\nexpected_log_checksum=3d9019ff7206696412778713d2050b76336dfe723750a3411322bc72658bf9c6\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "8959331adf135f77b502c9bc79dc277b2944a52ca34320462c366f6a16630940",
+          "log_checksum": "36596ab7d6a3f50c1a91680d92099cc34f4ebadeb28ad68dc222161f72919598",
+          "ordered_facts": [
+            "boundary_stage|turn=4|stage=enemy_normal_action",
+            "enemy_passed|turn=4",
+            "boundary_stage|turn=4|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=4|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=4",
+            "liberty_expired|id=due|sequence=1",
+            "expiry_resolved|turn=4|groups=0|terminal=0",
+            "boundary_stage|turn=4|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=20|gained=32|after=32|delta=12|pending_before=0|pending_after=0",
+            "boundary_stage|turn=4|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "8959331adf135f77b502c9bc79dc277b2944a52ca34320462c366f6a16630940",
+        "log_checksum": "36596ab7d6a3f50c1a91680d92099cc34f4ebadeb28ad68dc222161f72919598",
+        "temporary_effect_ids": [
+          "future"
+        ],
+        "topology_observation_count": 1,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 0,
+        "deferred_choices": [],
+        "first_use_flags": [],
+        "counterattack_gauge_units": 32,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-05",
+      "title": "continuous spring modifier survives timed expiry",
+      "source_fixture_id": "TLE-05",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "46bde13f834ab10e3e35bd4399e734ff51689e7e9fa5e5b0aad151c98f856b9d",
+        "state_checksum": "27b9f24fc8635e0e22ed5d09d27bef99b68187c2fde80146f4c96c06e14f0bbb",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=27b9f24fc8635e0e22ed5d09d27bef99b68187c2fde80146f4c96c06e14f0bbb\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "9fdd824d0a204d0c1b9b37e0ad917486a4f7e2623f46b8bc5a832bf186f6df65",
+          "log_checksum": "7d1fddd1f56ec9c96f6ca3587d4bd47557b8c92ea5b195b32e03f7cf70f00602",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=9fdd824d0a204d0c1b9b37e0ad917486a4f7e2623f46b8bc5a832bf186f6df65\nexpected_log_checksum=7d1fddd1f56ec9c96f6ca3587d4bd47557b8c92ea5b195b32e03f7cf70f00602\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "3a5a5029dc3c88fc20c6b40db8ceebf7edf56909bc1bd3cd74b5a25cb091edd9",
+          "log_checksum": "82227f515d8ed0caddfbef30b53e326a96acbb75c9be52a6da0050d85554bff6",
+          "ordered_facts": [
+            "boundary_stage|turn=5|stage=enemy_normal_action",
+            "enemy_passed|turn=5",
+            "boundary_stage|turn=5|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=5|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=5",
+            "liberty_expired|id=due|sequence=1",
+            "expiry_resolved|turn=5|groups=0|terminal=0",
+            "boundary_stage|turn=5|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=20|gained=32|after=32|delta=12|pending_before=0|pending_after=0",
+            "boundary_stage|turn=5|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "3a5a5029dc3c88fc20c6b40db8ceebf7edf56909bc1bd3cd74b5a25cb091edd9",
+        "log_checksum": "82227f515d8ed0caddfbef30b53e326a96acbb75c9be52a6da0050d85554bff6",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 1,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 0,
+        "deferred_choices": [],
+        "first_use_flags": [],
+        "counterattack_gauge_units": 32,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-06",
+      "title": "anchor effect follows a merged group",
+      "source_fixture_id": "TLE-06",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "29d7bf451ae460bd50499eb11e63e2343473b46f0a03fcccd458d75393da9eb6",
+        "state_checksum": "3e3dac7c9faba4818ff4c15c147e40e87e5ce731dcd0bec94b4b85e9e9223755",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=3e3dac7c9faba4818ff4c15c147e40e87e5ce731dcd0bec94b4b85e9e9223755\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "abb8544107a0e5efa94269cb441719f758cacb7b251ee3bb1c198bab7a17c35e",
+          "log_checksum": "743d8b2f020095ced413fb40a3a8601a22b311a6c2f0b0042df8dd9c2b439a36",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=abb8544107a0e5efa94269cb441719f758cacb7b251ee3bb1c198bab7a17c35e\nexpected_log_checksum=743d8b2f020095ced413fb40a3a8601a22b311a6c2f0b0042df8dd9c2b439a36\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "e32ee14f688d64eae009c09b770ff317e8b225075dae9a58b9a0675922e76bfc",
+          "log_checksum": "b769a42298daedba19e5a26605141a063a23412dcce3060e549b39237660ffb2",
+          "ordered_facts": [
+            "boundary_stage|turn=6|stage=enemy_normal_action",
+            "enemy_passed|turn=6",
+            "boundary_stage|turn=6|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=6|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=6",
+            "liberty_expired|id=merged|sequence=1",
+            "expiry_resolved|turn=6|groups=0|terminal=0",
+            "boundary_stage|turn=6|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=20|gained=32|after=32|delta=12|pending_before=0|pending_after=0",
+            "boundary_stage|turn=6|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "e32ee14f688d64eae009c09b770ff317e8b225075dae9a58b9a0675922e76bfc",
+        "log_checksum": "b769a42298daedba19e5a26605141a063a23412dcce3060e549b39237660ffb2",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 1,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 0,
+        "deferred_choices": [],
+        "first_use_flags": [],
+        "counterattack_gauge_units": 32,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-07",
+      "title": "black king death loses before benefit triggers",
+      "source_fixture_id": "TLE-07",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "6c65e577caab604ba25a3c1fc0989b7315ea5653a0a9a2a214fb357f34766c8f",
+        "state_checksum": "d0c844183cea848738bda8fd34d368f1f14bbf07e6eabb2498341f75a7008e6d",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=d0c844183cea848738bda8fd34d368f1f14bbf07e6eabb2498341f75a7008e6d\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "7812b3734dc45eff9a0e420629c700febec43c65213423ce2a959991b5e6382d",
+          "log_checksum": "2aa9e5915f645eb9d458f50b0058a1c1233f9d1495586e5a0dfad5608b018dbf",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=7812b3734dc45eff9a0e420629c700febec43c65213423ce2a959991b5e6382d\nexpected_log_checksum=2aa9e5915f645eb9d458f50b0058a1c1233f9d1495586e5a0dfad5608b018dbf\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "4f21bc7924458656832e0f79b7a12a45a8be5fdc401ae7f484363f7917300d71",
+          "log_checksum": "7649f07a7878c83b98f58fae023fa32700f5b8c46c676a3409f918cc521b0924",
+          "ordered_facts": [
+            "boundary_stage|turn=7|stage=enemy_normal_action",
+            "enemy_passed|turn=7",
+            "boundary_stage|turn=7|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=7|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=7",
+            "liberty_expired|id=king_guard|sequence=1",
+            "expiry_group_captured|color=black|by=white|anchor=4,4|stones=4,4|king=1",
+            "topology_registered|cells=.................W.....W.W.....W.................|observations=2|first_seen=1|reason=temporary_liberty_expired",
+            "expiry_king_gate|outcome=loss|reason=black_king_captured|black=1|white=0",
+            "capture_benefit_suppressed|reason=terminal_king_capture",
+            "expiry_resolved|turn=7|groups=1|terminal=1",
+            "battle_ended|outcome=loss|reason=black_king_captured"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep"
+      ],
+      "final": {
+        "state_checksum": "4f21bc7924458656832e0f79b7a12a45a8be5fdc401ae7f484363f7917300d71",
+        "log_checksum": "7649f07a7878c83b98f58fae023fa32700f5b8c46c676a3409f918cc521b0924",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 2,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 0,
+        "deferred_choices": [],
+        "first_use_flags": [
+          "seal_sacrifice.first_capture=0",
+          "style_sacrifice.first_capture=0"
+        ],
+        "counterattack_gauge_units": 28,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": true,
+        "outcome": "loss",
+        "end_reason": "black_king_captured"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-08",
+      "title": "simultaneous king deaths are a player loss",
+      "source_fixture_id": "TLE-08",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "4630307900aece3587bb24819e100b0949b7dfaf90af1f0986dc654ea92d0da5",
+        "state_checksum": "04d57c051e8ef1114df2e7538efd7855002fb9446b75ef831b8f22a5505574cd",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=04d57c051e8ef1114df2e7538efd7855002fb9446b75ef831b8f22a5505574cd\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "e8ba28acb7e5d6cefa1ca227c38d28a2c2c4876848f95e09859da065ab293084",
+          "log_checksum": "69ded15f95cef33ad84711e0c689afa1edb1590895371bd94b4da98d068330ed",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=e8ba28acb7e5d6cefa1ca227c38d28a2c2c4876848f95e09859da065ab293084\nexpected_log_checksum=69ded15f95cef33ad84711e0c689afa1edb1590895371bd94b4da98d068330ed\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "357666ef1d872d2e14fd8e7e51114cd771e2609f17bbf6f134ea4fccb41d77f5",
+          "log_checksum": "5f3505c8bdd1dfdf6821ed4c4690706ec73d087946c76a604e77925e7885a7ed",
+          "ordered_facts": [
+            "boundary_stage|turn=8|stage=enemy_normal_action",
+            "enemy_passed|turn=8",
+            "boundary_stage|turn=8|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=8|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=8",
+            "liberty_expired|id=black_king|sequence=1",
+            "liberty_expired|id=white_king|sequence=2",
+            "expiry_group_captured|color=black|by=white|anchor=2,2|stones=2,2|king=1",
+            "expiry_group_captured|color=white|by=black|anchor=6,6|stones=6,6|king=1",
+            "topology_registered|cells=.W.....W.W.....W.................B.....B.B.....B.|observations=2|first_seen=1|reason=temporary_liberty_expired",
+            "expiry_king_gate|outcome=loss|reason=both_kings_captured|black=1|white=1",
+            "capture_benefit_suppressed|reason=terminal_king_capture",
+            "expiry_resolved|turn=8|groups=2|terminal=1",
+            "battle_ended|outcome=loss|reason=both_kings_captured"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep"
+      ],
+      "final": {
+        "state_checksum": "357666ef1d872d2e14fd8e7e51114cd771e2609f17bbf6f134ea4fccb41d77f5",
+        "log_checksum": "5f3505c8bdd1dfdf6821ed4c4690706ec73d087946c76a604e77925e7885a7ed",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 2,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 0,
+        "deferred_choices": [],
+        "first_use_flags": [],
+        "counterattack_gauge_units": 20,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": true,
+        "outcome": "loss",
+        "end_reason": "both_kings_captured"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-09",
+      "title": "lure blood style and seal triggers use stable closed-window order",
+      "source_fixture_id": "TLE-09",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "b47f2c37d61d606363259501385225e3c34cd939e936ddd73f12ec40fe8be17c",
+        "state_checksum": "a456786118e1c8aa06e29d2ddcd45f7053be5ba7c45f57e986310c3b9e7e298e",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=a456786118e1c8aa06e29d2ddcd45f7053be5ba7c45f57e986310c3b9e7e298e\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "84bef2d14262e144a819f3b90b017f5d61150e66adf6c330fbc42b2abc42d770",
+          "log_checksum": "74510b86e2b49636545f4e8fbe48d0088ccb97373b857f65f395e4db0d8e27aa",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=84bef2d14262e144a819f3b90b017f5d61150e66adf6c330fbc42b2abc42d770\nexpected_log_checksum=74510b86e2b49636545f4e8fbe48d0088ccb97373b857f65f395e4db0d8e27aa\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "bb58208c8ff33e1138c2ae9fadc1654e785e3c58e6f93c36a241c25bb5f63f7b",
+          "log_checksum": "6fb3928fdc197dfd0455c3956120f5c3ea28dea267f719d07f31f81c60694216",
+          "ordered_facts": [
+            "boundary_stage|turn=9|stage=enemy_normal_action",
+            "enemy_passed|turn=9",
+            "boundary_stage|turn=9|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=9|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=9",
+            "liberty_expired|id=group_guard|sequence=1",
+            "expiry_group_captured|color=black|by=white|anchor=3,4|stones=3,4;4,4|king=0",
+            "topology_registered|cells=................WW....W..W....WW.................|observations=2|first_seen=1|reason=temporary_liberty_expired",
+            "capture_batch_started|id=temporary_liberty_expiry_9",
+            "reserved_draw_changed|trigger=lure.stone_lure|event=lure:stone_lure:reserve_draw_2|before=0|after=2|delta=2",
+            "reserved_draw_changed|trigger=blood.stone_blood|event=blood:stone_blood:reserve_draw_1|before=2|after=3|delta=1",
+            "soul_changed|trigger=blood.stone_blood|event=blood:stone_blood:soul_1|before=0|after=1|delta=1",
+            "reserved_draw_changed|trigger=style_sacrifice.first_capture|event=style_sacrifice:first_capture:reserve_draw_2|before=3|after=5|delta=2",
+            "first_use_consumed|trigger=style_sacrifice.first_capture|flag=style_sacrifice.first_capture",
+            "reserved_draw_changed|trigger=seal_sacrifice.first_capture|event=seal_sacrifice:first_capture:reserve_draw_2|before=5|after=7|delta=2",
+            "first_use_consumed|trigger=seal_sacrifice.first_capture|flag=seal_sacrifice.first_capture",
+            "sacrifice_remainder_changed|stones=2|before=0|after=2",
+            "capture_batch_resolved|id=temporary_liberty_expiry_9|suppressed=0",
+            "expiry_resolved|turn=9|groups=1|terminal=0",
+            "boundary_stage|turn=9|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=28|gained=42|after=42|delta=14|pending_before=0|pending_after=0",
+            "boundary_stage|turn=9|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "bb58208c8ff33e1138c2ae9fadc1654e785e3c58e6f93c36a241c25bb5f63f7b",
+        "log_checksum": "6fb3928fdc197dfd0455c3956120f5c3ea28dea267f719d07f31f81c60694216",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 2,
+        "reserved_draw": 7,
+        "reserved_qi": 0,
+        "soul": 1,
+        "deferred_choices": [],
+        "first_use_flags": [
+          "seal_sacrifice.first_capture=1",
+          "style_sacrifice.first_capture=1"
+        ],
+        "counterattack_gauge_units": 42,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 2
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-10",
+      "title": "white expiry capture credits black and defers closed-window rewards",
+      "source_fixture_id": "TLE-10",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "4c421553ac159cd50158cfb99271fd1d62eb2a74b208d09df674251987f33b01",
+        "state_checksum": "5b7220c5702dbafa55c8af3eab8311b3113033e81237eae4bc453ea5794ad8e1",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=5b7220c5702dbafa55c8af3eab8311b3113033e81237eae4bc453ea5794ad8e1\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "55fcb0d38fb979e9d445d57aeb49a668babfe8e2eb98da5639e3b747e03cd8de",
+          "log_checksum": "11f0e537baf82e085964be5b34ac16ba48e3e8abfaf7580d8fec72c034953225",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=55fcb0d38fb979e9d445d57aeb49a668babfe8e2eb98da5639e3b747e03cd8de\nexpected_log_checksum=11f0e537baf82e085964be5b34ac16ba48e3e8abfaf7580d8fec72c034953225\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "15d7910246293c8df836e266f6c09bf3fddacf2c4b6ccaecc8b7cd1c2a9aad9b",
+          "log_checksum": "f6c793af2be5d070c71ae6937911074dd56c4d17e556f73e62c8b6f35452af14",
+          "ordered_facts": [
+            "boundary_stage|turn=10|stage=enemy_normal_action",
+            "enemy_passed|turn=10",
+            "boundary_stage|turn=10|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=10|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=10",
+            "liberty_expired|id=white_guard|sequence=1",
+            "expiry_group_captured|color=white|by=black|anchor=4,4|stones=4,4|king=0",
+            "topology_registered|cells=.................B.....B.B.....B.................|observations=2|first_seen=1|reason=temporary_liberty_expired",
+            "capture_batch_started|id=temporary_liberty_expiry_10",
+            "soul_changed|trigger=standard_capture.soul|event=standard_capture:soul_1|before=0|after=1|delta=1",
+            "reserved_qi_changed|trigger=capture_chain.armed|event=capture_chain:reserve_qi_1|before=0|after=1|delta=1",
+            "reserved_draw_changed|trigger=capture_chain.armed|event=capture_chain:reserve_draw_2|before=0|after=2|delta=2",
+            "deferred_choice_created|trigger=seal_bone.first_capture|event=seal_bone:deferred_choice|choice=seal_bone:qi_or_draw|sequence=1",
+            "first_use_consumed|trigger=seal_bone.first_capture|flag=seal_bone.first_capture",
+            "reserved_qi_changed|trigger=relic_hungry_furnace.capture|event=relic_hungry_furnace:reserve_qi_2|before=1|after=3|delta=2",
+            "capture_batch_resolved|id=temporary_liberty_expiry_10|suppressed=0",
+            "territory_established|actor=white|source=temporary_liberty_expiry|reason=temporary_liberty_expired|implicit_momentum_eligible=0|points=4,4",
+            "expiry_resolved|turn=10|groups=1|terminal=0",
+            "boundary_stage|turn=10|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=36|gained=52|after=52|delta=16|pending_before=0|pending_after=0",
+            "boundary_stage|turn=10|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "15d7910246293c8df836e266f6c09bf3fddacf2c4b6ccaecc8b7cd1c2a9aad9b",
+        "log_checksum": "f6c793af2be5d070c71ae6937911074dd56c4d17e556f73e62c8b6f35452af14",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 2,
+        "reserved_draw": 2,
+        "reserved_qi": 3,
+        "soul": 1,
+        "deferred_choices": [
+          "seal_bone:qi_or_draw"
+        ],
+        "first_use_flags": [
+          "seal_bone.first_capture=1"
+        ],
+        "counterattack_gauge_units": 52,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-11",
+      "title": "mandatory expiry capture may revisit a seen topology",
+      "source_fixture_id": "TLE-11",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "69deb3671222d01262fc968625116ac3e63bdd4514c12d6859f154833041a6de",
+        "state_checksum": "9d3928ec9cee53efeba0a27d45f987983af55714a32bcf7043b43161a61eca3b",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=9d3928ec9cee53efeba0a27d45f987983af55714a32bcf7043b43161a61eca3b\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "ec7af9cd11280f4445aec5059f312041c7ce6999acea64cc1695c53b72adfd13",
+          "log_checksum": "d2a541313bd1fa727bc4b565b6f96d8ea4dfef738ccd5a17d4fa4de5a5ee018a",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=ec7af9cd11280f4445aec5059f312041c7ce6999acea64cc1695c53b72adfd13\nexpected_log_checksum=d2a541313bd1fa727bc4b565b6f96d8ea4dfef738ccd5a17d4fa4de5a5ee018a\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "58b31eed814476e414e665d747a362842bc5136a5254e4f7cdf0a746452a3ef5",
+          "log_checksum": "165707d01946f3d7659a48e3bb6ec7f4f25f284673b834e3b5920505ea5aadfd",
+          "ordered_facts": [
+            "boundary_stage|turn=11|stage=enemy_normal_action",
+            "enemy_passed|turn=11",
+            "boundary_stage|turn=11|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=11|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=11",
+            "liberty_expired|id=repeat_guard|sequence=1",
+            "expiry_group_captured|color=black|by=white|anchor=4,4|stones=4,4|king=0",
+            "topology_registered|cells=.................W.....W.W.....W.................|observations=3|first_seen=0|reason=temporary_liberty_expired",
+            "capture_batch_started|id=temporary_liberty_expiry_11",
+            "capture_batch_resolved|id=temporary_liberty_expiry_11|suppressed=0",
+            "expiry_resolved|turn=11|groups=1|terminal=0",
+            "boundary_stage|turn=11|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=20|gained=32|after=32|delta=12|pending_before=0|pending_after=0",
+            "boundary_stage|turn=11|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "58b31eed814476e414e665d747a362842bc5136a5254e4f7cdf0a746452a3ef5",
+        "log_checksum": "165707d01946f3d7659a48e3bb6ec7f4f25f284673b834e3b5920505ea5aadfd",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 3,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 0,
+        "deferred_choices": [],
+        "first_use_flags": [],
+        "counterattack_gauge_units": 32,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-12",
+      "title": "expiry capture creates income territory without implicit momentum or brilliant",
+      "source_fixture_id": "TLE-12",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "7057d1a3a92fe655326f4abd33e3aa7de98c62f23085ea3ee564e2155ca18f29",
+        "state_checksum": "8386b138c655136b39a03e15031266a29939879a3e3275e9488431a1ee7de3e7",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=8386b138c655136b39a03e15031266a29939879a3e3275e9488431a1ee7de3e7\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "7d274f819fc570a032ef0c72a5d6ca8ea1d9cfa61d6f2e8766f41e62e5238142",
+          "log_checksum": "590326aad13e1900b6a0ef4cec7d2ee6d5f6d1191783e65861558cf376ef2446",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=7d274f819fc570a032ef0c72a5d6ca8ea1d9cfa61d6f2e8766f41e62e5238142\nexpected_log_checksum=590326aad13e1900b6a0ef4cec7d2ee6d5f6d1191783e65861558cf376ef2446\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "38a9062e18635ca091430b4d1acbc8e1fc2539a20e7e2e1b56206bbd1b73dbbc",
+          "log_checksum": "4af2edc88d1b381df74200b8e8a21cc206a5b45161f98d52f61d9ba3ebee3194",
+          "ordered_facts": [
+            "boundary_stage|turn=12|stage=enemy_normal_action",
+            "enemy_passed|turn=12",
+            "boundary_stage|turn=12|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=12|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=12",
+            "liberty_expired|id=territory_guard|sequence=1",
+            "expiry_group_captured|color=white|by=black|anchor=4,4|stones=4,4|king=0",
+            "topology_registered|cells=.................B.....B.B.....B.................|observations=2|first_seen=1|reason=temporary_liberty_expired",
+            "capture_batch_started|id=temporary_liberty_expiry_12",
+            "soul_changed|trigger=standard_capture.soul|event=standard_capture:soul_1|before=0|after=1|delta=1",
+            "capture_batch_resolved|id=temporary_liberty_expiry_12|suppressed=0",
+            "territory_established|actor=white|source=temporary_liberty_expiry|reason=temporary_liberty_expired|implicit_momentum_eligible=0|points=4,4",
+            "expiry_resolved|turn=12|groups=1|terminal=0",
+            "boundary_stage|turn=12|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=20|gained=32|after=32|delta=12|pending_before=0|pending_after=0",
+            "boundary_stage|turn=12|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "38a9062e18635ca091430b4d1acbc8e1fc2539a20e7e2e1b56206bbd1b73dbbc",
+        "log_checksum": "4af2edc88d1b381df74200b8e8a21cc206a5b45161f98d52f61d9ba3ebee3194",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 2,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 1,
+        "deferred_choices": [],
+        "first_use_flags": [],
+        "counterattack_gauge_units": 32,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-13",
+      "title": "no due effects produces no expiry sweep events",
+      "source_fixture_id": "TLE-13",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "f528aeb10aecf037ace0fa2e4cade2cf34e785ae32b867dc78436ab7118b7cb2",
+        "state_checksum": "a6965d944a2e925ddfc79b183b76ae312ddf0b740eac9ab62e2d1d14c6f08dd4",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=a6965d944a2e925ddfc79b183b76ae312ddf0b740eac9ab62e2d1d14c6f08dd4\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "bcc808dce3ab35ae245b8fe3f99109873f64c51310079b008b6b6773a10f2a5c",
+          "log_checksum": "c2456e7a01e513220e6105ab7ddf949fbd7338a30f7dff6954c72e77fdd0d863",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=bcc808dce3ab35ae245b8fe3f99109873f64c51310079b008b6b6773a10f2a5c\nexpected_log_checksum=c2456e7a01e513220e6105ab7ddf949fbd7338a30f7dff6954c72e77fdd0d863\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "2746ba5b6a8ab3ad7b79469ef63123474ad85e65f11fb341239a7b2d307524b6",
+          "log_checksum": "74cd350c0f292efc1e971d671359af461fb41e3fa90bc0d3b17742961fe2a502",
+          "ordered_facts": [
+            "boundary_stage|turn=13|stage=enemy_normal_action",
+            "enemy_passed|turn=13",
+            "boundary_stage|turn=13|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=13|stage=temporary_liberty_expiry_sweep",
+            "boundary_stage|turn=13|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=20|gained=32|after=32|delta=12|pending_before=0|pending_after=0",
+            "boundary_stage|turn=13|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "2746ba5b6a8ab3ad7b79469ef63123474ad85e65f11fb341239a7b2d307524b6",
+        "log_checksum": "74cd350c0f292efc1e971d671359af461fb41e3fa90bc0d3b17742961fe2a502",
+        "temporary_effect_ids": [
+          "future"
+        ],
+        "topology_observation_count": 1,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 0,
+        "deferred_choices": [],
+        "first_use_flags": [],
+        "counterattack_gauge_units": 32,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-14",
+      "title": "normal and counterattack actions precede expiry and base gain follows it",
+      "source_fixture_id": "TLE-14",
+      "source_operation": "phase_order",
+      "adapter": "phase_boundary_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "b8139ebfa4221d3e0640e19b7213cca9cb9c7f14bc095d27defe19b9a56a7fcf",
+        "state_checksum": "7eb0ce7b00861f818e16ec2aa7fdbe1c85a83cd93ced29f95c3b1b1444b83cdc",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=7eb0ce7b00861f818e16ec2aa7fdbe1c85a83cd93ced29f95c3b1b1444b83cdc\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "a589015960f4f9fcf5bd0cc413bb74b84a9ae91bbef6e254dd1de91311bbd513",
+          "log_checksum": "fdff7a38862b09342c554bede61f4a31a83d5f2f0c32dd0e3910a507c49bfa04",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=a589015960f4f9fcf5bd0cc413bb74b84a9ae91bbef6e254dd1de91311bbd513\nexpected_log_checksum=fdff7a38862b09342c554bede61f4a31a83d5f2f0c32dd0e3910a507c49bfa04\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "9edc1faef1ed8c3a17de715bc7b93431026b12f7723285a9a40963ad2e899bbb",
+          "log_checksum": "f41da04c1e698c84e283d78cf08f7cddf8260a17a53fb76cd08fe5f9aa3946eb",
+          "ordered_facts": [
+            "boundary_stage|turn=14|stage=enemy_normal_action",
+            "enemy_passed|turn=14"
+          ]
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=9edc1faef1ed8c3a17de715bc7b93431026b12f7723285a9a40963ad2e899bbb\nexpected_log_checksum=f41da04c1e698c84e283d78cf08f7cddf8260a17a53fb76cd08fe5f9aa3946eb\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "3f256335f9512bcaae425456c44edff21e7d931faf7b3507d355e623ac7cb5e0",
+          "log_checksum": "24f8da3a1f2bc426bfc57b11ad049895812df7a3f1ab8bc7942e32534c639cfc",
+          "ordered_facts": [
+            "boundary_stage|turn=14|stage=enemy_counterattack_action",
+            "enemy_passed|turn=14",
+            "boundary_stage|turn=14|stage=consume_current_pending_and_reprime_overflow",
+            "counterattack_pending_consumed|reprimed=0",
+            "boundary_stage|turn=14|stage=temporary_liberty_expiry_sweep",
+            "boundary_stage|turn=14|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=20|gained=32|after=32|delta=12|pending_before=0|pending_after=0",
+            "boundary_stage|turn=14|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "enemy_counterattack_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "3f256335f9512bcaae425456c44edff21e7d931faf7b3507d355e623ac7cb5e0",
+        "log_checksum": "24f8da3a1f2bc426bfc57b11ad049895812df7a3f1ab8bc7942e32534c639cfc",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 1,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 0,
+        "deferred_choices": [],
+        "first_use_flags": [],
+        "counterattack_gauge_units": 32,
+        "counterattack_pending": false,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    },
+    {
+      "id": "TLE-15",
+      "title": "sacrifice pressure from expiry precedes natural enemy-turn gain",
+      "source_fixture_id": "TLE-15",
+      "source_operation": "expiry_sweep",
+      "adapter": "expiry_sweep_adapter",
+      "seed": 42,
+      "initial": {
+        "snapshot_checksum": "37a2ebac927c66106cdb96bb1c2a691471a04e75c2e16b7b84abb4d43a26eb87",
+        "state_checksum": "e41ef760dae790d20ea81b3a7f98513399271fc1b04761a775028b6924d747b9",
+        "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
+      },
+      "commands": [
+        {
+          "type": "battle.end_player_turn",
+          "schema_version": 1,
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=e41ef760dae790d20ea81b3a7f98513399271fc1b04761a775028b6924d747b9\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "79f5c541eced7b9e6f368393defe756fbc9867a6f202592f630e643ca385c32a",
+          "log_checksum": "df245f236930e3685083f9e0e43290466c5c458976e154758461bab769f4de19",
+          "ordered_facts": []
+        },
+        {
+          "type": "battle.resolve_enemy_pass",
+          "schema_version": 1,
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=79f5c541eced7b9e6f368393defe756fbc9867a6f202592f630e643ca385c32a\nexpected_log_checksum=df245f236930e3685083f9e0e43290466c5c458976e154758461bab769f4de19\n",
+          "accepted": true,
+          "reason": "accepted",
+          "state_checksum": "833e0eec8291675d57d47847cc856f026d75158fcba997f8cce76e865c6c28d6",
+          "log_checksum": "b8f50540e6dff6b481ab223b081bfa88c373e4fbc2c02c45158638d63f0361e8",
+          "ordered_facts": [
+            "boundary_stage|turn=15|stage=enemy_normal_action",
+            "enemy_passed|turn=15",
+            "boundary_stage|turn=15|stage=consume_current_pending_and_reprime_overflow",
+            "boundary_stage|turn=15|stage=temporary_liberty_expiry_sweep",
+            "expiry_started|turn=15",
+            "liberty_expired|id=three_guard|sequence=1",
+            "expiry_group_captured|color=black|by=white|anchor=3,4|stones=3,4;4,4;5,4|king=0",
+            "topology_registered|cells=................WWW...W...W...WWW................|observations=2|first_seen=1|reason=temporary_liberty_expired",
+            "capture_batch_started|id=temporary_liberty_expiry_15",
+            "sacrifice_remainder_changed|stones=3|before=0|after=0",
+            "sacrifice_batch_advanced|stones=3|batches=1|before=0|after=0|delta=30",
+            "counterattack_advanced|reason=sacrifice_batch|before=160|gained=190|after=190|delta=30|pending_before=0|pending_after=0",
+            "capture_batch_resolved|id=temporary_liberty_expiry_15|suppressed=0",
+            "expiry_resolved|turn=15|groups=1|terminal=0",
+            "boundary_stage|turn=15|stage=enemy_turn_end_counterattack_gain",
+            "counterattack_advanced|reason=enemy_turn_end|before=190|gained=202|after=2|delta=12|pending_before=0|pending_after=1",
+            "counterattack_pending_primed|reason=threshold_crossed|residual=2",
+            "boundary_stage|turn=15|stage=plan_next_intents"
+          ]
+        }
+      ],
+      "stage_trace": [
+        "enemy_normal_action",
+        "consume_current_pending_and_reprime_overflow",
+        "temporary_liberty_expiry_sweep",
+        "enemy_turn_end_counterattack_gain",
+        "plan_next_intents"
+      ],
+      "final": {
+        "state_checksum": "833e0eec8291675d57d47847cc856f026d75158fcba997f8cce76e865c6c28d6",
+        "log_checksum": "b8f50540e6dff6b481ab223b081bfa88c373e4fbc2c02c45158638d63f0361e8",
+        "temporary_effect_ids": [],
+        "topology_observation_count": 2,
+        "reserved_draw": 0,
+        "reserved_qi": 0,
+        "soul": 0,
+        "deferred_choices": [],
+        "first_use_flags": [
+          "style_sacrifice.first_capture=1"
+        ],
+        "counterattack_gauge_units": 2,
+        "counterattack_pending": true,
+        "sacrifice_remainder": 0
+      },
+      "terminal": {
+        "is_terminal": false,
+        "outcome": "ongoing",
+        "end_reason": "none"
+      },
+      "momentum_event_count": 0,
+      "brilliant_event_count": 0,
+      "counterattack_fixture_coverage_claim_count": 0
+    }
+  ]
+}
