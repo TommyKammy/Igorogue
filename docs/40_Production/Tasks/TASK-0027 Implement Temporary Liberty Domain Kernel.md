@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0027
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: critical
@@ -97,6 +97,8 @@ stable stone instance identity、timed／continuous effective-liberty state、gr
 
 2026-07-12 — independent implementation fixed-HEAD focused reviewが`6427287e8e8bc69d7de080ca2e1788052f8ea63e`を`origin/main` `90dda9dd41b96864a24e19a7969285f56c4593b4`と比較。全Acceptance、TLE-01〜08／11〜13 production evidence、Non-goalsを照合し、findingなし、`APPROVE`。後続のreview-evidence文書commitを含むPR最終treeのreview結果は、commit自身への循環参照を避けてPR #17の外部review recordへ記録する。
 
+2026-07-12 — PR #17を人間merge。merged head `f582134ba3d63c1188614d2aeed26f270d6f8422`、merge commit／fixed `origin/main` `ad50fe7ae7a7170e308c322971380c4e66a2dcb0`を確認した。post-merge main CI run `29183647493`のGovernance `86625797646`、Pure .NET `86625818827`、Godot／Windows export `86625880445`がすべてsuccessのため、本TASKを`done`へ遷移した。
+
 ## Evidence
 
 - [[FEAT-011 Temporary Liberty Expiry Fixtures]] TLE-01〜08／11〜13。
@@ -110,6 +112,7 @@ stable stone instance identity、timed／continuous effective-liberty state、gr
 - `git diff --check` — exit 0。Rules Canon、Accepted ADR／Feature Spec、`game_data/`、Application、Godot assetに変更なし。
 - independent preflight／API・determinism review — exact snapshot、ordering、state invariant、scope evidenceを再監査し、追加findingなし、`APPROVE`。
 - independent implementation fixed-HEAD review — `6427287e8e8bc69d7de080ca2e1788052f8ea63e`、base `90dda9dd41b96864a24e19a7969285f56c4593b4`、findingなし、`APPROVE`。PR最終treeのreview resultはPR #17の外部review recordへ記録する。
+- PR #17 merged head `f582134ba3d63c1188614d2aeed26f270d6f8422`／merge commit `ad50fe7ae7a7170e308c322971380c4e66a2dcb0`／post-merge main CI run `29183647493`全3 job success。
 
 ## Known issues
 

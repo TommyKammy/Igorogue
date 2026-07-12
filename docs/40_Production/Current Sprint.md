@@ -9,17 +9,16 @@ sprint: S0
 
 ## Goal
 
-Complete TASK-0027 temporary-liberty Domain kernel and exact TLE-01〜08／11〜13 owned-projection E3 closeout.
+Complete TASK-0028 closed-window capture benefits and exact TLE-09／10／15 Domain E3 evidence.
 
 ## Blocked
 
-- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — blocked／TASK-0027 human merge
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — blocked／TASK-0028 human merge
 
 ## In review
 
-- [[TASK-0027 Implement Temporary Liberty Domain Kernel]]
-  - stone runtime、effective liberty、simultaneous expiry、mandatory topology、king gate、TLE owned-projection E3 evidence
+- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]]
+  - common capture batch、closed-window resources、minimal counterattack boundary、TLE-09／10／15 E3 evidence
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -45,10 +44,11 @@ Complete TASK-0027 temporary-liberty Domain kernel and exact TLE-01〜08／11〜
 - [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]]
 - [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — Option 1
 - [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]]
+- [[TASK-0027 Implement Temporary Liberty Domain Kernel]]
 
-## Next after TASK-0027
+## Next after TASK-0028
 
-- After TASK-0027 human merge, make TASK-0028 `ready` and execute TASK-0028 → TASK-0029 serially.
+- After TASK-0028 human merge, make TASK-0029 `ready` and execute it.
 - Complete TASK-0012 two-human paper sign-off.
 - Re-audit M1 exit before making any Gate 2 task `ready`.
 
