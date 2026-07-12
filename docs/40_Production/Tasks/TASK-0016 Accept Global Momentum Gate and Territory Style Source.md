@@ -6,7 +6,7 @@ project: Igorogue
 milestone: M-1
 priority: critical
 dependencies: [TASK-0015]
-updated: 2026-07-10
+updated: 2026-07-12
 ---
 # TASK-0016 Accept Global Momentum Gate and Territory Style Source
 
@@ -89,6 +89,7 @@ python tools/check_all.py
 ## Known issues
 
 - checkerは仕様モデルであり、製品Rules Kernelではない。M1で同fixtureを共有Kernelへ移植する。
+- 2026-07-12 disposition: 上記M1記述は完了時の計画を保存する歴史的記録。[[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] Option 1により、現行のMOM-01〜19 production unit／golden migrationはM3に配置する。
 - 地合い流の施設sourceが強すぎるかはM3で検証する。
 - 余勢前進ドローが定石化を促す可能性があるため、発火率と初手分布を計測する。
 - A-6の全流儀rule同期とA-7反攻再設計は別タスク。

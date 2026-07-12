@@ -3,12 +3,12 @@ type: spec-fixture
 status: accepted
 project: Igorogue
 feature: FEAT-002
-updated: 2026-07-10
+updated: 2026-07-12
 ---
 # FEAT-002 Momentum Gate Fixtures
 
 機械可読正本は`game_data/fixtures/momentum_gate_fixtures.json`。
-本fixtureは仕様checker用であり、M1で共有Rules Kernelのunit/golden replayへ移植する。
+本fixtureは仕様checker用であり、M3のMomentum production implementationで共有Rules Kernelのunit/golden replayへ移植する。
 
 | ID | 検証内容 | 期待 |
 |---|---|---|

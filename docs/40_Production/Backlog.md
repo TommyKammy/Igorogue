@@ -34,7 +34,11 @@ updated: 2026-07-12
 - [[TASK-0024 Authorized Facility Build Battle Command]] — done
 - [[TASK-0009 Golden Board Fixtures]] — done
 - [[TASK-0011 Replay Round Trip Verification]] — done
-- [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] — blocked／MOM／CTR DECISION-0005 + TLE M1 E3 gap
+- [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] — done
+- [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]] — review／current
+- [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — blocked／TASK-0026
+- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — blocked／TASK-0027
+- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — blocked／TASK-0028
 
 See [[Codex Task Queue]] for gate order and concurrency rules.
 

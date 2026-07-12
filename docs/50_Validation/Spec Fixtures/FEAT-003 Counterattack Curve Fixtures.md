@@ -3,7 +3,7 @@ type: spec-fixtures
 id: FEAT-003-FIXTURES
 status: accepted
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-12
 source_feature: FEAT-003
 source_decision: ADR-0013
 ---
@@ -54,6 +54,6 @@ game_data/fixtures/counterattack_curve_fixtures.json
 | CTR-24 | 戦闘開始でコミ式へresetし、流儀counterを初期化 |
 | CTR-25 | 戦闘終了後の増加は無視 |
 
-## M1 migration
+## M3 migration
 
-M1ではcheckerの小型状態機械を製品コードとして流用しない。共有Rules Kernelへ同じ入力と期待event列を移植し、turn-boundary checksumをgolden化する。
+M3のcounterattack production implementationではcheckerの小型状態機械を製品コードとして流用しない。共有Rules Kernelへ同じ入力と期待event列を移植し、turn-boundary checksumをgolden化する。

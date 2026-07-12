@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0011 Replay Round Trip Verification]]はPR #14でmerge、post-merge main CI green。[[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]]はMOM／CTR milestone conflictとTLE M1 implementation gapを検出し、[[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]]のowner判断待ち。
+> [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]]はPR #15でmerge、post-merge main CI green。[[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] Option 1によりMOM／CTR migrationはM3、TLE-01〜15はM1に確定。[[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]]がsourcesとTLE直列workstreamを同期中。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -78,8 +78,12 @@ cssclasses:
 - [[TASK-0024 Authorized Facility Build Battle Command]] — done
 - [[TASK-0009 Golden Board Fixtures]] — done
 - [[TASK-0011 Replay Round Trip Verification]] — done
-- [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] — blocked／current
-- [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — open／blocking TASK-0025
+- [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] — done
+- [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — resolved／Option 1
+- [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]] — review／current
+- [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — blocked／TASK-0026
+- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — blocked／TASK-0027
+- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — blocked／TASK-0028
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

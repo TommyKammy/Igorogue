@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0025
-status: blocked
+status: done
 project: Igorogue
 milestone: M1
 priority: high
@@ -79,22 +79,27 @@ Gate 1／M1のAccepted exit statementsを、fixed main HEADの共有Rules Kernel
 
 2026-07-12 — draft PR #15 initial CI run `29172280775`をHEAD `f4af7a20d080e0e15b6b065f3e93ed8557610826`で確認。Governance `86595312917`、Pure .NET `86595329953`、Godot／Windows export `86595381458`は全てsuccess、PRはmergeable clean。
 
+2026-07-12 — PR #15を人間merge。merged head `1e629504284e9a198d794fb9dada9417cf46e2e3`、merge commit `6c34a4fffe00b0fbec9dc5dd3033d84c6229a56d`、post-merge main CI run `29173263652`の全3 job成功を確認した。
+
+2026-07-12 — Project ownerが[[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] Option 1を明示選択。fixed-baseline auditとsource conflict resolutionが閉じたため本TASKを`done`とした。現在のM1 technical exitはTLE E3 gapのため`NOT PASSED`、Gate 2 entryはTASK-0012 human sign-offも残る。
+
 ## Evidence
 
 - [[TASK-0025 Gate 1 Deterministic Foundation Audit]] — fixed main HEAD、exit evidence matrix、formal simulator境界、MOM／CTR conflict、TLE M1 gap、human-only gateを記録。
 - PR #14 human merge commit `6398ec1e4f1e4ecf0c8eeaf71e33bb6ddeff6875`。
 - post-merge main CI run `29171325730` — Governance `86592900387`、Pure .NET `86592921178`、Godot／Windows export `86592965176`すべてsuccess。
-- [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — open、TASK-0025 blocking。
+- [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — resolved／Option 1。MOM／CTR migrationはM3、TLE migrationはM1に確定。
 - `tools/dev/check` ×2 — exit 0。documentation／wikilink／content／fixture／governance check成功、content snapshot一致。
 - `tools/dev/test` ×2 — exit 0。.NET SDK 8.0.422、Domain 190、Application 54、Architecture 15、計259 tests、warning 0／error 0。
 - `tools/dev/sim-smoke` ×2 — exit 0。両runで`checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`。正式board simulation evidenceではない。
 - independent substantive-audit review — `6e4a41dd02fe1db4daebaeecaf60ac1745b227fd`、findingなし、`APPROVE`。reviewer validationもcheck／259 tests／sim-smoke／diff check全成功。
 - independent closeout-evidence review — `f4af7a20d080e0e15b6b065f3e93ed8557610826`、`6e4a41d..f4af7a2`の3行evidence-only diffにfindingなし、`APPROVE`。diff check／clean worktree成功。
 - GitHub draft PR #15 initial CI run `29172280775` — HEAD `f4af7a20d080e0e15b6b065f3e93ed8557610826`、Governance `86595312917`、Pure .NET `86595329953`、Godot／Windows export `86595381458`すべてsuccess、mergeable clean。
+- PR #15 human merge／post-merge main CI — merge commit `6c34a4fffe00b0fbec9dc5dd3033d84c6229a56d`、run `29173263652`のGovernance `86597785406`、Pure .NET `86597803448`、Godot／Windows export `86597846465`すべてsuccess。
 - `git diff --check` — exit 0。変更はdocumentation／evidenceだけ。
 
 ## Known issues
 
-MOM／CTRのM1 migrationとGate 3／M3所属が矛盾している。TLEはconflictではなく、現Accepted scopeで未実装のM1 gapである。DECISION-0005解決、TLE bounded follow-up／E3 evidence完了までGate 1／M1はopen、M2 TASKはnot-readyを維持する。
+MOM／CTR conflictはDECISION-0005 Option 1で解決した。TLEは現Accepted scopeで未実装のM1 gapであり、TASK-0027〜0029のE3 evidence完了までM1はopen、M2 TASKはnot-readyを維持する。
 
 TASK-0012の二人human paper sign-offもpendingであり、Codex reviewでは代替できない。
