@@ -12,7 +12,7 @@ updated: 2026-07-13
 
 ## Sprint goal
 
-Implement TASK-0032's typed Core Duel content boundary without selecting a starting recipe or resolving gameplay effects.
+Review／merge TASK-0032's typed Core Duel content boundary without selecting a starting recipe or resolving gameplay effects.
 
 ## Health
 
@@ -69,10 +69,10 @@ Implement TASK-0032's typed Core Duel content boundary without selecting a start
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — review; human sign-off evidence not retained
 - [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved owner waiver; not human evidence
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done; PR #21 merge／post-merge CI green
-- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — in progress／current
+- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — review／fixed-HEAD `APPROVE`
 
 ## Next
 
-1. Implement／review／merge [[TASK-0032 Implement Typed Core Duel Content Catalog]]
+1. Human review／merge [[TASK-0032 Implement Typed Core Duel Content Catalog]]
 2. Keep [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] blocked until TASK-0032 human merge
 3. Resolve [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] before TASK-0038 applies the default recipe／Development scope
