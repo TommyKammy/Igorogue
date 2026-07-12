@@ -381,6 +381,50 @@ public sealed class GainSoulCaptureBenefitOperation : CaptureBenefitOperation
         $"gain_soul:{Amount.ToString(CultureInfo.InvariantCulture)}";
 }
 
+public sealed class GainStandardCaptureSoulOperation : CaptureBenefitOperation
+{
+    public GainStandardCaptureSoulOperation(
+        int soulPerCapturedGroup,
+        int capturedWhiteGroupCount,
+        int battleRewardLimit)
+    {
+        SoulPerCapturedGroup = ValidatePositive(
+            soulPerCapturedGroup,
+            nameof(soulPerCapturedGroup));
+        CapturedWhiteGroupCount = ValidatePositive(
+            capturedWhiteGroupCount,
+            nameof(capturedWhiteGroupCount));
+        BattleRewardLimit = ValidatePositive(
+            battleRewardLimit,
+            nameof(battleRewardLimit));
+    }
+
+    public int SoulPerCapturedGroup { get; }
+
+    public int CapturedWhiteGroupCount { get; }
+
+    public int BattleRewardLimit { get; }
+
+    internal override string ToCanonicalText() =>
+        $"gain_standard_capture_soul:" +
+        $"{SoulPerCapturedGroup.ToString(CultureInfo.InvariantCulture)}:" +
+        $"{CapturedWhiteGroupCount.ToString(CultureInfo.InvariantCulture)}:" +
+        BattleRewardLimit.ToString(CultureInfo.InvariantCulture);
+
+    private static int ValidatePositive(int value, string parameterName)
+    {
+        if (value <= 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                parameterName,
+                value,
+                "Standard capture reward values must be positive.");
+        }
+
+        return value;
+    }
+}
+
 public sealed class CreateDeferredChoiceCaptureBenefitOperation : CaptureBenefitOperation
 {
     public CreateDeferredChoiceCaptureBenefitOperation(
@@ -449,6 +493,26 @@ public sealed class CaptureBenefitTrigger
         foreach (var operation in operations)
         {
             ArgumentNullException.ThrowIfNull(operation);
+        }
+
+        var standardRewardOperationCount = operations.Count(operation =>
+            operation is GainStandardCaptureSoulOperation);
+        var uncappedSoulOperationCount = operations.Count(operation =>
+            operation is GainSoulCaptureBenefitOperation);
+        if (standardRewardOperationCount > 0 &&
+            source.Kind != CaptureBenefitSourceKind.StandardAccounting)
+        {
+            throw new ArgumentException(
+                "Standard capture reward operations belong only to standard accounting.",
+                nameof(orderedOperations));
+        }
+
+        if (source.Kind == CaptureBenefitSourceKind.StandardAccounting &&
+            uncappedSoulOperationCount > 0)
+        {
+            throw new ArgumentException(
+                "Standard accounting cannot bypass its battle cap with uncapped Soul operations.",
+                nameof(orderedOperations));
         }
 
         var sacrificeOperationCount = operations
@@ -794,6 +858,50 @@ public sealed class ClosedWindowCaptureBenefitResolution
 
 public static class ClosedWindowCaptureBenefitResolver
 {
+    public static ClosedWindowCaptureBenefitResolution ResolvePlacement(
+        CaptureBatch captureBatch,
+        ClosedWindowResourceState sourceResources,
+        CounterattackBoundaryState sourceCounterattack,
+        CounterattackBoundaryPolicy policy,
+        IEnumerable<CaptureBenefitTrigger> triggers)
+    {
+        ArgumentNullException.ThrowIfNull(captureBatch);
+        ArgumentNullException.ThrowIfNull(sourceResources);
+        ArgumentNullException.ThrowIfNull(sourceCounterattack);
+        ArgumentNullException.ThrowIfNull(policy);
+        if (captureBatch.Boundary != CaptureBoundary.PlacementResolution)
+        {
+            throw new ArgumentException(
+                "Placement capture benefit resolution requires a placement capture batch.",
+                nameof(captureBatch));
+        }
+
+        if (captureBatch.ContainsKing)
+        {
+            return new ClosedWindowCaptureBenefitResolution(
+                captureBatch,
+                sourceResources,
+                sourceCounterattack,
+                policy,
+                sourceResources,
+                sourceCounterattack,
+                true,
+                [],
+                [
+                    new CaptureBatchStartedFact(captureBatch),
+                    new CaptureBenefitSuppressedFact("terminal_king_capture"),
+                    new CaptureBatchResolvedFact(captureBatch.BatchId, true),
+                ]);
+        }
+
+        return Resolve(
+            captureBatch,
+            sourceResources,
+            sourceCounterattack,
+            policy,
+            triggers);
+    }
+
     public static ClosedWindowCaptureBenefitResolution Resolve(
         CaptureBatch captureBatch,
         ClosedWindowResourceState sourceResources,
@@ -885,6 +993,39 @@ public static class ClosedWindowCaptureBenefitResolver
                 nameof(triggers));
         }
 
+        var standardTriggers = canonicalTriggers
+            .Where(trigger =>
+                trigger.Source.Kind == CaptureBenefitSourceKind.StandardAccounting)
+            .ToArray();
+        if (standardTriggers.Length > 1)
+        {
+            throw new ArgumentException(
+                "Capture benefit batches permit at most one standard-accounting source.",
+                nameof(triggers));
+        }
+
+        var standardRewardOperations = standardTriggers
+            .SelectMany(trigger => trigger.OrderedOperations)
+            .OfType<GainStandardCaptureSoulOperation>()
+            .ToArray();
+        if (standardRewardOperations.Length > 1)
+        {
+            throw new ArgumentException(
+                "Capture benefit batches permit at most one standard capture reward operation.",
+                nameof(triggers));
+        }
+
+        var capturedWhiteGroupCount = captureBatch.CapturedGroups.Count(group =>
+            group.Color == StoneColor.White &&
+            group.CapturingColor == StoneColor.Black);
+        if (standardRewardOperations.Any(operation =>
+                operation.CapturedWhiteGroupCount != capturedWhiteGroupCount))
+        {
+            throw new ArgumentException(
+                "Standard capture reward group count must match the capture batch.",
+                nameof(triggers));
+        }
+
         var resources = sourceResources;
         var counterattack = sourceCounterattack;
         foreach (var boundTrigger in boundTriggers)
@@ -934,6 +1075,36 @@ public static class ClosedWindowCaptureBenefitResolver
                             before,
                             resources.Soul,
                             soul.Amount));
+                        break;
+                    }
+                    case GainStandardCaptureSoulOperation standardSoul:
+                    {
+                        var remainingRewards = Math.Max(
+                            0,
+                            standardSoul.BattleRewardLimit -
+                                resources.StandardCaptureRewardsClaimed);
+                        var appliedRewardCount = Math.Min(
+                            standardSoul.CapturedWhiteGroupCount,
+                            remainingRewards);
+                        if (appliedRewardCount == 0)
+                        {
+                            break;
+                        }
+
+                        var soulAmount = checked(
+                            appliedRewardCount * standardSoul.SoulPerCapturedGroup);
+                        var before = resources.Soul;
+                        resources = resources.AddStandardCaptureSoul(
+                            appliedRewardCount,
+                            standardSoul.SoulPerCapturedGroup);
+                        orderedFacts.Add(new SoulChangedFact(
+                            trigger.TriggerId,
+                            EventId(
+                                trigger,
+                                $"soul_{soulAmount.ToString(CultureInfo.InvariantCulture)}"),
+                            before,
+                            resources.Soul,
+                            soulAmount));
                         break;
                     }
                     case CreateDeferredChoiceCaptureBenefitOperation deferred:

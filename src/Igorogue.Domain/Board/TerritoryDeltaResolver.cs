@@ -4,12 +4,33 @@ using Igorogue.Domain.Facilities;
 
 namespace Igorogue.Domain.Board;
 
+public enum TerritoryEstablishmentSourceKind : byte
+{
+    Placement = 1,
+    TemporaryLibertyExpiry = 2,
+}
+
 public sealed class TerritoryEstablishedFact : IBattleFact
 {
     private readonly ReadOnlyCollection<CanonicalPoint> changedPointView;
 
     internal TerritoryEstablishedFact(
         StoneColor sourceActor,
+        CanonicalPoint[] canonicalChangedPoints)
+        : this(
+            sourceActor,
+            TerritoryEstablishmentSourceKind.Placement,
+            TerritoryDeltaResolver.StonePlacementSourceReasonId,
+            sourceActor == StoneColor.Black,
+            canonicalChangedPoints)
+    {
+    }
+
+    internal TerritoryEstablishedFact(
+        StoneColor sourceActor,
+        TerritoryEstablishmentSourceKind sourceKind,
+        string sourceReasonId,
+        bool implicitMomentumEligible,
         CanonicalPoint[] canonicalChangedPoints)
     {
         if (sourceActor is not StoneColor.Black and not StoneColor.White)
@@ -18,6 +39,26 @@ public sealed class TerritoryEstablishedFact : IBattleFact
                 nameof(sourceActor),
                 sourceActor,
                 "Unknown territory-establishment source actor.");
+        }
+
+        if (sourceKind is < TerritoryEstablishmentSourceKind.Placement or
+            > TerritoryEstablishmentSourceKind.TemporaryLibertyExpiry)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(sourceKind),
+                sourceKind,
+                "Unknown territory-establishment source kind.");
+        }
+
+        SourceReasonId = StableDomainId.Validate(
+            sourceReasonId,
+            nameof(sourceReasonId));
+        if (sourceKind == TerritoryEstablishmentSourceKind.TemporaryLibertyExpiry &&
+            implicitMomentumEligible)
+        {
+            throw new ArgumentException(
+                "Mandatory temporary-liberty expiry cannot be eligible for implicit Momentum.",
+                nameof(implicitMomentumEligible));
         }
 
         ArgumentNullException.ThrowIfNull(canonicalChangedPoints);
@@ -41,16 +82,26 @@ public sealed class TerritoryEstablishedFact : IBattleFact
         }
 
         SourceActor = sourceActor;
+        SourceKind = sourceKind;
+        ImplicitMomentumEligible = implicitMomentumEligible;
         changedPointView = Array.AsReadOnly(changedPoints);
     }
 
     public StoneColor SourceActor { get; }
+
+    public TerritoryEstablishmentSourceKind SourceKind { get; }
+
+    public string SourceReasonId { get; }
+
+    public bool ImplicitMomentumEligible { get; }
 
     public IReadOnlyList<CanonicalPoint> ChangedPoints => changedPointView;
 }
 
 public static class TerritoryDeltaResolver
 {
+    public const string StonePlacementSourceReasonId = "stone_placement";
+
     public static TerritoryEstablishedFact? Resolve(
         TerritoryAnalysis before,
         TerritoryAnalysis after,
@@ -81,10 +132,55 @@ public static class TerritoryDeltaResolver
         return ResolveCore(before, after, sourceActor);
     }
 
+    public static TerritoryEstablishedFact? ResolveAfterExpiry(
+        TerritoryAnalysis before,
+        TemporaryLibertyExpiryResolution expiry)
+    {
+        ArgumentNullException.ThrowIfNull(before);
+        ArgumentNullException.ThrowIfNull(expiry);
+        if (!ReferenceEquals(before.SourceBoard, expiry.SourceStones.SourceBoard))
+        {
+            throw new ArgumentException(
+                "Before territory analysis must belong to the expiry resolution's exact source board.",
+                nameof(before));
+        }
+
+        if (!ReferenceEquals(
+                expiry.TerritoryAfterResolution.SourceBoard,
+                expiry.BoardAfterResolution))
+        {
+            throw new ArgumentException(
+                "Expiry territory analysis must belong to the expiry resolution's exact result board.",
+                nameof(expiry));
+        }
+
+        return ResolveCore(
+            before,
+            expiry.TerritoryAfterResolution,
+            StoneColor.White,
+            TerritoryEstablishmentSourceKind.TemporaryLibertyExpiry,
+            TemporaryLibertyExpiryResolver.TopologySourceReasonId,
+            implicitMomentumEligible: false);
+    }
+
     internal static TerritoryEstablishedFact? ResolveCore(
         TerritoryAnalysis before,
         TerritoryAnalysis after,
-        StoneColor sourceActor)
+        StoneColor sourceActor) => ResolveCore(
+            before,
+            after,
+            sourceActor,
+            TerritoryEstablishmentSourceKind.Placement,
+            StonePlacementSourceReasonId,
+            sourceActor == StoneColor.Black);
+
+    private static TerritoryEstablishedFact? ResolveCore(
+        TerritoryAnalysis before,
+        TerritoryAnalysis after,
+        StoneColor sourceActor,
+        TerritoryEstablishmentSourceKind sourceKind,
+        string sourceReasonId,
+        bool implicitMomentumEligible)
     {
         ArgumentNullException.ThrowIfNull(before);
         ArgumentNullException.ThrowIfNull(after);
@@ -121,6 +217,11 @@ public static class TerritoryDeltaResolver
 
         return changedPoints.Count == 0
             ? null
-            : new TerritoryEstablishedFact(sourceActor, changedPoints.ToArray());
+            : new TerritoryEstablishedFact(
+                sourceActor,
+                sourceKind,
+                sourceReasonId,
+                implicitMomentumEligible,
+                changedPoints.ToArray());
     }
 }

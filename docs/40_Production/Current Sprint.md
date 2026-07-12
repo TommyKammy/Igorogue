@@ -9,16 +9,12 @@ sprint: S0
 
 ## Goal
 
-Complete TASK-0028 closed-window capture benefits and exact TLE-09／10／15 Domain E3 evidence.
-
-## Blocked
-
-- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — blocked／TASK-0028 human merge
+Review and merge TASK-0029 Application enemy boundary and versioned TLE-01〜15 golden replay evidence.
 
 ## In review
 
-- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]]
-  - common capture batch、closed-window resources、minimal counterattack boundary、TLE-09／10／15 E3 evidence
+- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]
+  - authoritative initial snapshot、normal／bonus boundary、TLE-01〜15 Application golden／replay implemented; human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -45,10 +41,10 @@ Complete TASK-0028 closed-window capture benefits and exact TLE-09／10／15 Dom
 - [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — Option 1
 - [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]]
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]]
+- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]]
 
-## Next after TASK-0028
+## Next after TASK-0029
 
-- After TASK-0028 human merge, make TASK-0029 `ready` and execute it.
 - Complete TASK-0012 two-human paper sign-off.
 - Re-audit M1 exit before making any Gate 2 task `ready`.
 

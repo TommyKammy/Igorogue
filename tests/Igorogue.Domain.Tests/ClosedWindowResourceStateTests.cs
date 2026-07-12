@@ -21,11 +21,19 @@ public sealed class ClosedWindowResourceStateTests
             new KeyValuePair<string, bool>("flag_a", false),
         };
 
-        var first = ClosedWindowResourceState.Create(2, 3, 4, choices, flags, 3);
+        var first = ClosedWindowResourceState.Create(
+            2,
+            3,
+            4,
+            2,
+            choices,
+            flags,
+            3);
         var reversed = ClosedWindowResourceState.Create(
             2,
             3,
             4,
+            2,
             choices.Reverse(),
             flags.Reverse(),
             3);
@@ -34,6 +42,7 @@ public sealed class ClosedWindowResourceStateTests
         Assert.Equal(["source_a:choice_a", "source_b:choice_b"],
             first.DeferredPlayerChoices.Select(choice => choice.Id));
         Assert.Equal(["flag_a", "flag_b"], first.FirstUseFlags.Keys);
+        Assert.Equal(2, first.StandardCaptureRewardsClaimed);
         Assert.False(first.IsFirstUseConsumed("flag_a"));
         Assert.True(first.IsFirstUseConsumed("flag_b"));
     }
@@ -88,6 +97,8 @@ public sealed class ClosedWindowResourceStateTests
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             ClosedWindowResourceState.Create(-1, 0, 0, [], [], 1));
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            ClosedWindowResourceState.Create(0, 0, 0, -1, [], [], 1));
         Assert.Throws<ArgumentException>(() =>
             ClosedWindowResourceState.Create(
                 0,

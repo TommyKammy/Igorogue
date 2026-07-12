@@ -105,6 +105,97 @@ public sealed class ContinuousLibertySnapshot
         return new ContinuousLibertySnapshot(sourceStones, canonicalModifiers);
     }
 
+    public ContinuousLibertySnapshot Rebind(StoneRuntimeState resultStones)
+    {
+        ArgumentNullException.ThrowIfNull(resultStones);
+        if (ReferenceEquals(SourceStones, resultStones))
+        {
+            return this;
+        }
+
+        if (!ReferenceEquals(
+                SourceStones.SourceBoard.Geometry,
+                resultStones.SourceBoard.Geometry))
+        {
+            throw new ArgumentException(
+                "Continuous liberty rebind requires the exact source geometry.",
+                nameof(resultStones));
+        }
+
+        foreach (var sourceInstance in SourceStones.Instances)
+        {
+            var resultById = resultStones.InstanceById(sourceInstance.InstanceId);
+            if (resultById is not null && !ReferenceEquals(resultById, sourceInstance))
+            {
+                throw new ArgumentException(
+                    $"Continuous liberty rebind replaced stone runtime identity {sourceInstance.InstanceId}.",
+                    nameof(resultStones));
+            }
+
+            var resultAtPoint = resultStones.InstanceAt(sourceInstance.Point);
+            if (resultAtPoint is not null && !ReferenceEquals(resultAtPoint, sourceInstance))
+            {
+                throw new ArgumentException(
+                    $"Continuous liberty rebind replaced the source stone at {sourceInstance.Point}.",
+                    nameof(resultStones));
+            }
+
+            if (ReferenceEquals(
+                    resultStones.SourceBoard.StoneAt(sourceInstance.Point),
+                    sourceInstance.Stone) &&
+                !ReferenceEquals(resultAtPoint, sourceInstance))
+            {
+                throw new ArgumentException(
+                    $"Continuous liberty rebind recreated surviving stone runtime identity {sourceInstance.InstanceId}.",
+                    nameof(resultStones));
+            }
+        }
+
+        var introducedInstances = resultStones.Instances
+            .Where(resultInstance =>
+                SourceStones.InstanceById(resultInstance.InstanceId) is null)
+            .ToArray();
+        if (introducedInstances.Length > 1)
+        {
+            throw new ArgumentException(
+                "Continuous liberty rebind permits at most one newly placed stone runtime instance.",
+                nameof(resultStones));
+        }
+
+        if (introducedInstances.Length == 0)
+        {
+            if (resultStones.NextCreatedSequence != SourceStones.NextCreatedSequence)
+            {
+                throw new ArgumentException(
+                    "Removal-only continuous liberty rebind must preserve the next stone sequence.",
+                    nameof(resultStones));
+            }
+        }
+        else
+        {
+            var introduced = introducedInstances[0];
+            if (SourceStones.InstanceAt(introduced.Point) is not null ||
+                introduced.CreatedSequence != SourceStones.NextCreatedSequence ||
+                resultStones.NextCreatedSequence !=
+                    checked(SourceStones.NextCreatedSequence + 1L))
+            {
+                throw new ArgumentException(
+                    "Continuous liberty rebind introduced a foreign or out-of-sequence stone runtime instance.",
+                    nameof(resultStones));
+            }
+        }
+
+        var retainedModifiers = modifierView.Where(modifier =>
+        {
+            var sourceAnchor = SourceStones.InstanceById(modifier.AnchorStoneInstanceId)
+                ?? throw new InvalidOperationException(
+                    $"Continuous modifier {modifier.ModifierInstanceId} lost its source anchor.");
+            var resultAnchor = resultStones.InstanceById(modifier.AnchorStoneInstanceId);
+            return ReferenceEquals(resultAnchor, sourceAnchor);
+        });
+        return Create(resultStones, retainedModifiers);
+    }
+
     public string ToCanonicalText()
     {
         var lines = new List<string>(2 + (modifierView.Count * 6))

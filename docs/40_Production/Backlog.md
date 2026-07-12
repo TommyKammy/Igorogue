@@ -37,8 +37,8 @@ updated: 2026-07-12
 - [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] — done
 - [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]] — done
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
-- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — review／current
-- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — blocked／TASK-0028
+- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — done
+- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — review／current
 
 See [[Codex Task Queue]] for gate order and concurrency rules.
 

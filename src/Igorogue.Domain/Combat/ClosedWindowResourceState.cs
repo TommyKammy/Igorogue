@@ -35,7 +35,7 @@ public sealed class DeferredPlayerChoice
 
 public sealed class ClosedWindowResourceState
 {
-    public const string EncodingVersion = "closed-window-resource-state-v1";
+    public const string EncodingVersion = "closed-window-resource-state-v2";
 
     private readonly ReadOnlyCollection<DeferredPlayerChoice> deferredChoiceView;
     private readonly ReadOnlyDictionary<string, bool> firstUseFlagView;
@@ -44,6 +44,7 @@ public sealed class ClosedWindowResourceState
         int turnReservedDraw,
         int turnReservedQi,
         int soul,
+        int standardCaptureRewardsClaimed,
         DeferredPlayerChoice[] deferredChoices,
         SortedDictionary<string, bool> firstUseFlags,
         long nextDeferredChoiceSequence)
@@ -51,6 +52,7 @@ public sealed class ClosedWindowResourceState
         TurnReservedDraw = turnReservedDraw;
         TurnReservedQi = turnReservedQi;
         Soul = soul;
+        StandardCaptureRewardsClaimed = standardCaptureRewardsClaimed;
         deferredChoiceView = Array.AsReadOnly(
             (DeferredPlayerChoice[])deferredChoices.Clone());
         firstUseFlagView = new ReadOnlyDictionary<string, bool>(
@@ -64,6 +66,8 @@ public sealed class ClosedWindowResourceState
 
     public int Soul { get; }
 
+    public int StandardCaptureRewardsClaimed { get; }
+
     public IReadOnlyList<DeferredPlayerChoice> DeferredPlayerChoices => deferredChoiceView;
 
     public IReadOnlyDictionary<string, bool> FirstUseFlags => firstUseFlagView;
@@ -76,11 +80,30 @@ public sealed class ClosedWindowResourceState
         int soul,
         IEnumerable<DeferredPlayerChoice> deferredChoices,
         IEnumerable<KeyValuePair<string, bool>> firstUseFlags,
+        long nextDeferredChoiceSequence) => Create(
+            turnReservedDraw,
+            turnReservedQi,
+            soul,
+            standardCaptureRewardsClaimed: 0,
+            deferredChoices,
+            firstUseFlags,
+            nextDeferredChoiceSequence);
+
+    public static ClosedWindowResourceState Create(
+        int turnReservedDraw,
+        int turnReservedQi,
+        int soul,
+        int standardCaptureRewardsClaimed,
+        IEnumerable<DeferredPlayerChoice> deferredChoices,
+        IEnumerable<KeyValuePair<string, bool>> firstUseFlags,
         long nextDeferredChoiceSequence)
     {
         ValidateNonnegative(turnReservedDraw, nameof(turnReservedDraw));
         ValidateNonnegative(turnReservedQi, nameof(turnReservedQi));
         ValidateNonnegative(soul, nameof(soul));
+        ValidateNonnegative(
+            standardCaptureRewardsClaimed,
+            nameof(standardCaptureRewardsClaimed));
         ArgumentNullException.ThrowIfNull(deferredChoices);
         ArgumentNullException.ThrowIfNull(firstUseFlags);
         if (nextDeferredChoiceSequence <= 0)
@@ -148,6 +171,7 @@ public sealed class ClosedWindowResourceState
             turnReservedDraw,
             turnReservedQi,
             soul,
+            standardCaptureRewardsClaimed,
             canonicalChoices,
             canonicalFlags,
             nextDeferredChoiceSequence);
@@ -174,6 +198,7 @@ public sealed class ClosedWindowResourceState
             $"turn_reserved_draw={TurnReservedDraw.ToString(CultureInfo.InvariantCulture)}",
             $"turn_reserved_qi={TurnReservedQi.ToString(CultureInfo.InvariantCulture)}",
             $"soul={Soul.ToString(CultureInfo.InvariantCulture)}",
+            $"standard_capture_rewards_claimed={StandardCaptureRewardsClaimed.ToString(CultureInfo.InvariantCulture)}",
             $"next_deferred_choice_sequence={NextDeferredChoiceSequence.ToString(CultureInfo.InvariantCulture)}",
             $"deferred_choice_count={deferredChoiceView.Count.ToString(CultureInfo.InvariantCulture)}",
         };
@@ -218,6 +243,7 @@ public sealed class ClosedWindowResourceState
             TurnReservedDraw,
             TurnReservedQi,
             Soul,
+            StandardCaptureRewardsClaimed,
             choices,
             CopyFirstUseFlags(),
             checked(NextDeferredChoiceSequence + 1));
@@ -239,6 +265,7 @@ public sealed class ClosedWindowResourceState
             TurnReservedDraw,
             TurnReservedQi,
             Soul,
+            StandardCaptureRewardsClaimed,
             deferredChoiceView.ToArray(),
             flags,
             NextDeferredChoiceSequence);
@@ -247,14 +274,42 @@ public sealed class ClosedWindowResourceState
     private ClosedWindowResourceState Recreate(
         int? turnReservedDraw = null,
         int? turnReservedQi = null,
-        int? soul = null) =>
+        int? soul = null,
+        int? standardCaptureRewardsClaimed = null) =>
         new(
             turnReservedDraw ?? TurnReservedDraw,
             turnReservedQi ?? TurnReservedQi,
             soul ?? Soul,
+            standardCaptureRewardsClaimed ?? StandardCaptureRewardsClaimed,
             deferredChoiceView.ToArray(),
             CopyFirstUseFlags(),
             NextDeferredChoiceSequence);
+
+    internal ClosedWindowResourceState AddStandardCaptureSoul(
+        int capturedGroupCount,
+        int soulPerCapturedGroup)
+    {
+        if (capturedGroupCount <= 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(capturedGroupCount),
+                capturedGroupCount,
+                "Applied standard capture reward count must be positive.");
+        }
+
+        if (soulPerCapturedGroup <= 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(soulPerCapturedGroup),
+                soulPerCapturedGroup,
+                "Standard capture Soul per group must be positive.");
+        }
+
+        return Recreate(
+            soul: checked(Soul + (capturedGroupCount * soulPerCapturedGroup)),
+            standardCaptureRewardsClaimed: checked(
+                StandardCaptureRewardsClaimed + capturedGroupCount));
+    }
 
     private SortedDictionary<string, bool> CopyFirstUseFlags() =>
         new(firstUseFlagView, StringComparer.Ordinal);

@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0028
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: critical
@@ -98,6 +98,8 @@ updated: 2026-07-12
 
 2026-07-12 — independent fixed-HEAD reviewがimplementation commit `7562f3430486db15047b7de28ca74627a5adba56`をbase `ad50fe7ae7a7170e308c322971380c4e66a2dcb0`と比較。正本、全Acceptance、TLE-09／10／15、scope、canonical／terminal／typed binding／pending tokenを照合し、actionable findingなし、`APPROVE`。repository wrapperもgreenのため本TASKを`review`へ遷移した。
 
+2026-07-12 — PR #18を人間merge。merged head `fb53bc3f644f8d7a6498c46b12db56da33ed07c3`、merge commit／fixed `origin/main` `ddccd57db12219847646d0b2de85c18b2c94b120`を確認した。post-merge main CI run `29187053532`のGovernance `86634981261`、Pure .NET `86635001823`、Godot／Windows export `86635049311`がすべてsuccessのため、本TASKを`done`へ遷移した。
+
 ## Evidence
 
 - [[FEAT-011 Temporary Liberty Expiry Fixtures]] TLE-09／10／15。
@@ -111,6 +113,7 @@ updated: 2026-07-12
 - `tools/dev/build` — exit 0、warning 0／error 0。`git diff --check` — exit 0。
 - Rules／API preflight、determinism preflight — 指摘修正後はいずれもfindingなし、`APPROVE`。
 - independent implementation fixed-HEAD review — `7562f3430486db15047b7de28ca74627a5adba56`、base `ad50fe7ae7a7170e308c322971380c4e66a2dcb0`、actionable findingなし、`APPROVE`。
+- PR #18 merged head `fb53bc3f644f8d7a6498c46b12db56da33ed07c3`／merge commit `ddccd57db12219847646d0b2de85c18b2c94b120`／post-merge main CI run `29187053532`全3 job success。
 
 ## Known issues
 
