@@ -2,7 +2,7 @@
 type: milestone-plan
 status: accepted
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-12
 ---
 # Milestones and Exit Gates
 
@@ -24,6 +24,7 @@ updated: 2026-07-10
 - 盤面、呼吸点、捕獲、領地
 - seed、コマンドログ、リプレイ
 - UIなし一戦処理
+- timed仮呼吸点の失効sweepとTLE-01〜15の共有Rules Kernel unit／golden evidence
 
 ## M2 v0.1.1 Graybox
 
@@ -38,6 +39,7 @@ updated: 2026-07-10
 - 12〜16カード
 - 遺物4
 - 施設、余勢、触媒、反攻、妙手
+- MOM-01〜19／CTR-01〜25のproduction Rules Kernel unit／golden migration
 - 仕込み→発火→反攻が人間プレイで成立
 
 ## M4 v0.2 Vertical Slice

@@ -9,17 +9,18 @@ sprint: S0
 
 ## Goal
 
-Audit Gate 1／M1 exit evidence and stop on source conflict or missing E3 evidence.
+Resolve DECISION-0005 Option 1 across accepted／active sources and define the serial TLE M1 production／E3 workstream.
 
 ## Blocked
 
-- [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]]
-  - Gate 1 technical sequence complete; M1 result is `DECISION NEEDED`
-  - [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] owner decision pending for MOM／CTR
-  - TLE-01〜15 remain an independent M1 implementation／E3 migration gap
+- [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — blocked／TASK-0026 human merge
+- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — blocked／TASK-0027 human merge
+- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — blocked／TASK-0028 human merge
 
 ## In review
 
+- [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]]
+  - owner-selected Option 1 source sync and TLE workstream definition
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -42,17 +43,18 @@ Audit Gate 1／M1 exit evidence and stop on source conflict or missing E3 eviden
 - [[TASK-0024 Authorized Facility Build Battle Command]]
 - [[TASK-0009 Golden Board Fixtures]]
 - [[TASK-0011 Replay Round Trip Verification]]
+- [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]]
+- [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — Option 1
 
-## Next after TASK-0025 decision
+## Next after TASK-0026
 
-- Execute the owner-selected DECISION-0005 option.
-- Define and complete the bounded TLE M1 production／E3 follow-up required by current Accepted scope.
+- After TASK-0026 human merge, make TASK-0027 `ready` and execute TASK-0027 → TASK-0028 → TASK-0029 serially.
 - Complete TASK-0012 two-human paper sign-off.
 - Re-audit M1 exit before making any Gate 2 task `ready`.
 
 ## Review questions
 
-- Are MOM／CTR migration requirements kept in M1 or moved to Gate 3／M3 with all sources synchronized?
-- Does the bounded TLE follow-up expose every production dependency needed by TLE-01〜15 without elevating the spec checker to E3?
+- Does every current source place MOM-01〜19／CTR-01〜25 production migration in M3 and TLE-01〜15 in M1?
+- Do TASK-0027〜0029 expose stone identity、capture benefit、counterattack-boundary、golden／replay dependencies without pulling full MOM／CTR into M1?
 - Is Application headless battle evidence kept distinct from the bootstrap-only simulator smoke?
 - Is TASK-0012 human sign-off preserved as a separate, non-Codex gate?

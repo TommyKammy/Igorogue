@@ -3,7 +3,7 @@ type: balance-change
 id: BAL-0001
 status: accepted
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-12
 evidence_level: E1-desk-calculation
 ---
 # BAL-0001 Counterattack Curve v0.2.6
@@ -106,6 +106,6 @@ M3で次を測定する。
 
 ## Accept / reject
 
-**Accepted for M1 specification and M3 calibration.**
+**Accepted as the E1 specification baseline for M3 production implementation and calibration.**
 
 数値は製品バランス確定値ではない。M3のE4人間プレイテストで遭遇率と攻守分岐が外れた場合、`BAL-0002`で調整する。設計原則、固定小数点、pending／overflow方式を変更する場合は後継ADRが必要。

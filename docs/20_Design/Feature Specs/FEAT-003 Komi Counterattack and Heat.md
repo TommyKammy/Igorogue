@@ -4,7 +4,7 @@ id: FEAT-003
 status: accepted
 project: Igorogue
 version: 1.0.1
-updated: 2026-07-10
+updated: 2026-07-12
 source_decision: ADR-0013
 ---
 # FEAT-003 Komi Counterattack and Heat
@@ -292,4 +292,5 @@ CounterattackReset(komi, start_units)
 - 反攻追加行動は一敵ターン最大1で、overflowを保存する。
 - 戦闘間でゲージ、Pending、流儀counterを持ち越さない。
 - `CTR-01`〜`CTR-25`が仕様checkerを通る。
+- M3のcounterattack production implementationで、同fixtureを共有Rules Kernelのunit／golden replayへ移植する。
 - M3では爆発ラン中の反攻遭遇60%以上と、予告後の攻守分岐を人間テストで検証する。

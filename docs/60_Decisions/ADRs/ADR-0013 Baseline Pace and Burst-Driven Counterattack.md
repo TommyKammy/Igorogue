@@ -3,7 +3,7 @@ type: adr
 id: ADR-0013
 status: accepted
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-12
 supersedes: ADR-0008
 ---
 # ADR-0013 Baseline Pace and Burst-Driven Counterattack
@@ -96,7 +96,7 @@ heat units = 48 + 4K at first x3 crossing each player turn
 - [[BAL-0001 Counterattack Curve v0.2.6]]の机上表でコミ0〜9を比較する。
 - [[FEAT-003 Counterattack Curve Fixtures]]の`CTR-01`〜`CTR-25`を仕様checkerで検証する。
 - M3では、爆発ラン中の反攻遭遇60%以上、反攻予告後の攻撃継続／守備使用の両方が観測されることを確認する。
-- 正式Rules Kernel実装後に同fixtureをunit／golden replayへ移植する。
+- M3の正式counterattack Rules Kernel実装で同fixtureをunit／golden replayへ移植する。
 
 ## Superseded decision
 

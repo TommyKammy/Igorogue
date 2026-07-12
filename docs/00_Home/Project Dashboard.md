@@ -8,11 +8,11 @@ updated: 2026-07-12
 
 ## Phase
 
-`M0 Repository Bootstrap`からGate 1 ordered implementation sequenceまでは実装・review・CI・merge済み。M1 exitはMOM／CTR milestone Decision、TLE runtime／golden gap、TASK-0012 human sign-off待ち。
+`M0 Repository Bootstrap`からGate 1 ordered implementation sequenceまでは実装・review・CI・merge済み。DECISION-0005 Option 1でMOM／CTR migrationはM3へ確定。M1 exitはTLE-01〜15 production／E3 workstream、Gate 2 entryはさらにTASK-0012 human sign-off待ち。
 
 ## Sprint goal
 
-Audit Gate 1／M1 exit evidence without overstating E1 fixtures or bootstrap simulator smoke.
+Synchronize DECISION-0005 Option 1 and define the serial TLE M1 production／E3 workstream.
 
 ## Health
 
@@ -23,12 +23,11 @@ Audit Gate 1／M1 exit evidence without overstating E1 fixtures or bootstrap sim
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Gate 1 technical sequence green; M1 exit blocked by DECISION-0005, TLE E3 gap, and TASK-0012 human sign-off |
+| Validation | Yellow | Option 1 resolved; M1 technical exit remains `NOT PASSED` for TLE E3 gap |
 
 ## Blockers
 
-- [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — MOM／CTR M1 migration versus Gate 3／M3 conflict.
-- TLE-01〜15 production lifecycle／E3 migration — missing M1 evidence under current Accepted scope.
+- [[TASK-0027 Implement Temporary Liberty Domain Kernel]] → [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] → [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — TLE-01〜15 production／E3 evidence pending.
 - FEAT-009 independent two-person paper sign-off remains human-only.
 
 ## Current evidence
@@ -56,12 +55,14 @@ Audit Gate 1／M1 exit evidence without overstating E1 fixtures or bootstrap sim
 - schema-v1 golden suite with 19 cases、35 boundaries、source hashes、ordered facts、exact no-op rejection evidence
 - versioned replay envelope with 34 submitted attempts、accepted-only log chain、strict bounded Stream I/O、typed replay and fail-closed integrity evidence
 - PR #14 merge and post-merge main CI green at `6398ec1e4f1e4ecf0c8eeaf71e33bb6ddeff6875`
-- [[TASK-0025 Gate 1 Deterministic Foundation Audit]] — technical sequence complete、M1 exit `DECISION NEEDED`
+- PR #15 merge and post-merge main CI green at `6c34a4fffe00b0fbec9dc5dd3033d84c6229a56d`
+- [[TASK-0025 Gate 1 Deterministic Foundation Audit]] — fixed-baseline result `DECISION NEEDED`; Option 1 post-audit disposition recorded
+- [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — resolved／Option 1
 
 ## Next
 
-1. Resolve [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]]
-2. Define and complete the bounded TLE M1 production／E3 follow-up required by current Accepted scope
+1. Review／merge [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]]
+2. Execute TASK-0027 → TASK-0028 → TASK-0029 serially
 3. Complete FEAT-009 independent two-person sign-off
-4. Re-run／close [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]]
+4. Re-audit M1 exit after TLE E3 migration
 5. Define Gate 2 implementation TASKs only after the gates above permit it

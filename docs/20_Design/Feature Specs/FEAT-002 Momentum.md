@@ -3,7 +3,7 @@ type: feature-spec
 id: FEAT-002
 status: accepted
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-12
 version: 1.0.0
 ---
 # FEAT-002 Momentum
@@ -374,7 +374,7 @@ M3では次を集計する。
 - 余勢はターンをまたいで保持し、戦闘開始／終了で0へ戻る。
 - 前線前進ドローの距離、収入評価時点、1ターン上限が一義的である。
 - [[FEAT-002 Momentum Gate Fixtures]]のMOM-01〜MOM-19が仕様checkerを通る。
-- M1では同fixtureを共有Rules Kernelのunit/golden testsへ移植する。
+- M3のMomentum production implementationで、同fixtureを共有Rules Kernelのunit/golden testsへ移植する。
 
 ## Deferred decisions
 

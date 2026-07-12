@@ -25,7 +25,7 @@ updated: 2026-07-12
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] (`blocked`; Gate 1 technical sequence merged, M1 exit awaits MOM／CTR DECISION-0005, bounded TLE M1 E3 work, and TASK-0012 human sign-off).
+Current: [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]] (`review`; DECISION-0005 Option 1 source sync and serial TLE workstream definition).
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
@@ -39,16 +39,20 @@ Current: [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] (`blocke
 10. [[TASK-0024 Authorized Facility Build Battle Command]] — done
 11. [[TASK-0009 Golden Board Fixtures]] — done
 12. [[TASK-0011 Replay Round Trip Verification]] — done
-13. [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] — blocked／[[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]]
+13. [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] — done
+14. [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]] — review／current
+15. [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — blocked／TASK-0026
+16. [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — blocked／TASK-0027
+17. [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — blocked／TASK-0028
 
-Required follow-up before M1 exit: assign a TASK after DECISION-0005 to implement the bounded TLE production lifecycle and migrate TLE-01〜15 to E3 unit／golden evidence. The task must expose dependencies for TLE-09／10／14／15 and must not treat the specification checker as product evidence.
+[[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] resolved Option 1. TLE work runs strictly TASK-0027 → TASK-0028 → TASK-0029; do not parallelize their state contracts. After each human merge, only the immediate successor may move from `blocked` to `ready`. The specification checker remains E1 and cannot substitute for production E3 evidence.
 
 [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] resolved the post-TASK-0023 order as TASK-0010→TASK-0009→TASK-0011.
 The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] resolved the exact-fixture evidence contract as Option 1.
 
 ## Gate 2 — Core Duel
 
-Only after M1 exit evidence including TLE-01〜15 E3 migration, DECISION-0005 resolution, and the required TASK-0012 human sign-off:
+Only after M1 exit evidence including TLE-01〜15 E3 migration and the required TASK-0012 human sign-off:
 
 - basic deck/hand/qi loop;
 - 山賊棋士 intent execution;
@@ -61,10 +65,12 @@ Only after M1 exit evidence including TLE-01〜15 E3 migration, DECISION-0005 re
 Only after Core Duel shows meaningful per-turn decisions:
 
 - Momentum;
+- MOM-01〜19 production Rules Kernel unit／golden migration;
 - one facility engine;
 - one sacrifice engine;
 - limited catalysts;
 - counterattack;
+- CTR-01〜25 production Rules Kernel unit／golden migration;
 - two styles and two enemies.
 
 ## Items not to start early

@@ -2,7 +2,7 @@
 type: golden-index
 status: active
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-12
 ---
 # Golden Replay Index
 
@@ -30,13 +30,16 @@ updated: 2026-07-10
 - `game_data/fixtures/board_repetition_fixtures.json`
 - [[ADR-0012 Facility Intersection Fixtures]]: FAC-01〜FAC-09
 - `game_data/fixtures/facility_intersection_fixtures.json`
+- [[FEAT-011 Temporary Liberty Expiry Fixtures]]: TLE-01〜TLE-15
+- `game_data/fixtures/temporary_liberty_expiry_fixtures.json`
+
+M1では仕様checkerだけで完了とせず、共有Rules Kernelのunit evidence、event列、turn-boundary checksumをgolden化する。
+
+## M3への移植元
 
 - [[FEAT-002 Momentum Gate Fixtures]]: MOM-01〜MOM-19
 - `game_data/fixtures/momentum_gate_fixtures.json`
-
-M1では仕様checkerだけで完了とせず、共有Rules Kernelのイベント列とturn-boundary checksumをgolden化する。
-
 - [[FEAT-003 Counterattack Curve Fixtures]]: CTR-01〜CTR-25
 - `game_data/fixtures/counterattack_curve_fixtures.json`
-- [[FEAT-011 Temporary Liberty Expiry Fixtures]]: TLE-01〜TLE-15
-- `game_data/fixtures/temporary_liberty_expiry_fixtures.json`
+
+M3でMomentum／counterattackのproduction implementationを行うとき、仕様checkerの小型モデルを製品コードとして流用せず、共有Rules Kernelのunit／golden evidenceへ移植する。
