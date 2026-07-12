@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]]はPR #20でmerge、post-merge main CI green。M1 technical `PASS`と[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]のowner-attested二人human sign-offが揃い、Gate 2 entryはopen。現在は[[TASK-0031 Plan Gate 2 Core Duel Implementation]]でbounded implementation queueを確定中。
+> [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]]はPR #20でmerge、post-merge main CI green。M1 technical `PASS`は確定。[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]のhuman evidenceは未確認だが、[[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]]のowner waiverによりGate 2 entryはopen。現在は[[TASK-0031 Plan Gate 2 Core Duel Implementation]]でbounded implementation queueを確定中。
 
 > [!success] 実装ゲート
 > Gate 1は完了。Gate 2はTASK-0031の計画closeout後、typed contentからGodot graybox／UATまでを依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -86,7 +86,8 @@ cssclasses:
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — done
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — done
 - [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — done
-- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — done／two-person sign-off owner attestation
+- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — review／human evidence not retained
+- [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved／Gate 2 evidence prerequisite waived
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — in progress／current
 - [[TASK-0032 Implement Typed Core Duel Content Catalog]] — blocked／next safe production candidate after TASK-0031 merge
 

@@ -14,7 +14,12 @@ Complete and review TASK-0031's bounded Gate 2 decomposition without selecting a
 ## In progress
 
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]]
-  - close M1／human evidence, isolate DECISION-0006, and define TASK-0032〜0041 in dependency order
+  - close M1 evidence, record the human-evidence waiver, isolate DECISION-0006, and define TASK-0032〜0042 in dependency order
+
+## Open human evidence
+
+- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — `review`; worksheets／identities／results not retained
+- [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved; permits Gate 2 progression without claiming evidence completion
 
 ## Completed
 
@@ -42,13 +47,12 @@ Complete and review TASK-0031's bounded Gate 2 decomposition without selecting a
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]]
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]
 - [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — M1 technical `PASS`; PR #20 merged／CI green
-- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — two-person human sign-off completed by Project owner attestation
 
 ## Next after TASK-0031
 
 - [[TASK-0032 Implement Typed Core Duel Content Catalog]] — first safe production candidate after TASK-0031 merge.
-- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolve before default starting recipe is integrated in TASK-0038.
-- TASK-0033〜0041 remain blocked and advance only in dependency order.
+- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolve before TASK-0038 applies the starting recipe／Development scope.
+- TASK-0033〜0042 remain blocked and advance only in dependency order.
 
 ## Review questions
 
@@ -56,4 +60,4 @@ Complete and review TASK-0031's bounded Gate 2 decomposition without selecting a
 - Is typed Content projection scheduled before deck／hand／qi and all gameplay consumers?
 - Are Domain／Application kept free of Godot types, with UI limited to commands and read-only queries?
 - Does the Godot graybox task explicitly authorize asset edits and require headless／export／human visual evidence?
-- Is the human sign-off recorded only as Project owner attestation without fabricated worksheets or identities?
+- Is the owner instruction recorded as a gate waiver rather than fabricated sign-off evidence?

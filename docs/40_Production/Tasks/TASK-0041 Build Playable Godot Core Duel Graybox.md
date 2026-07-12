@@ -1,14 +1,14 @@
 ---
 type: task
-id: TASK-0040
+id: TASK-0041
 status: blocked
 project: Igorogue
 milestone: M2
 priority: critical
-dependencies: [TASK-0039]
+dependencies: [TASK-0040]
 updated: 2026-07-12
 ---
-# TASK-0040 Build Playable Godot Core Duel Graybox
+# TASK-0041 Build Playable Godot Core Duel Graybox
 
 ## Outcome
 
@@ -49,4 +49,4 @@ Battle Screen、Interaction、graybox scopeは`proposed`のvisual／interaction 
 
 ## Known issues
 
-TASK-0039 mergeまで`blocked`。visible scopeはgrayboxでありfinal presentationではない。
+TASK-0040 mergeまで`blocked`。visible scopeはgrayboxでありfinal presentationではない。

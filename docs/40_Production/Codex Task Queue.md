@@ -17,15 +17,16 @@ updated: 2026-07-12
 - [[TASK-0001 Decide Engine and Repository]]
 - [[TASK-0020 Review Repository Bootstrap Runtime Evidence]]
 
-### Completed human-only gate
+### Human-only evidence and owner waiver
 
-- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — two-person paper fixture sign-off completed by Project owner attestation; raw worksheets／identities are not stored in the repository
+- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — `review`; two-person paper evidence is not retained
+- [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved; Project owner waived the Gate 2 evidence prerequisite without certifying execution／agreement
 
 ## Gate 1 — deterministic foundation
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Status: complete. [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] established M1 technical exit `PASS`, PR #20 was human-merged, post-merge CI is green, and the separate TASK-0012 human gate is closed.
+Status: technical work complete. [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] established M1 technical exit `PASS`, PR #20 was human-merged, and post-merge CI is green. TASK-0012 evidence remains unverified and is tracked separately from the owner waiver.
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
@@ -53,7 +54,7 @@ The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DEC
 
 ## Gate 2 — Core Duel
 
-Entry is open because M1 exit evidence including TLE-01〜15 E3 migration and the required TASK-0012 human sign-off are complete.
+Entry is owner-authorized open because M1 exit evidence including TLE-01〜15 E3 migration is complete and DECISION-0007 explicitly waives the unverified TASK-0012 human-evidence prerequisite.
 
 Current: [[TASK-0031 Plan Gate 2 Core Duel Implementation]] (`in_progress`; docs-only decomposition).
 
@@ -62,14 +63,15 @@ Current: [[TASK-0031 Plan Gate 2 Core Duel Implementation]] (`in_progress`; docs
 3. [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — blocked by TASK-0032
 4. [[TASK-0034 Implement Atomic Basic Stone Card Play]] — blocked by TASK-0033
 5. [[TASK-0035 Implement Starter Stone Card Effects]] — blocked by TASK-0034
-6. [[TASK-0036 Implement Starter Technique and Development Effects]] — blocked by TASK-0035
+6. [[TASK-0036 Implement Starter Reinforce Effect]] — blocked by TASK-0035
 7. [[TASK-0037 Implement Bandit Intent Planning and Execution]] — blocked by TASK-0036
-8. [[TASK-0038 Integrate Headless Core Duel and Replay]] — blocked by TASK-0037 and [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]]
-9. [[TASK-0039 Implement Core Duel Preview Queries]] — blocked by TASK-0038
-10. [[TASK-0040 Build Playable Godot Core Duel Graybox]] — blocked by TASK-0039
-11. [[TASK-0041 Validate M2 Core Duel Graybox]] — blocked by TASK-0040
+8. [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — blocked by TASK-0037 and [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]]
+9. [[TASK-0039 Integrate Headless Core Duel and Replay]] — blocked by TASK-0038
+10. [[TASK-0040 Implement Core Duel Preview Queries]] — blocked by TASK-0039
+11. [[TASK-0041 Build Playable Godot Core Duel Graybox]] — blocked by TASK-0040
+12. [[TASK-0042 Validate M2 Core Duel Graybox]] — blocked by TASK-0041
 
-DECISION-0006 does not block TASK-0032 or a generic injected-recipe deck kernel. It must be resolved before TASK-0038 selects the default starting recipe and final M2 facility scope. No meta progression or broad relic content enters Gate 2.
+DECISION-0006 does not block TASK-0032 or a generic injected-recipe deck kernel. It must be resolved before TASK-0038 writes the default starting recipe, changes Accepted M2／M3 scope, or connects Development. No meta progression or broad relic content enters Gate 2.
 
 ## Gate 3 — Acceleration Lab
 

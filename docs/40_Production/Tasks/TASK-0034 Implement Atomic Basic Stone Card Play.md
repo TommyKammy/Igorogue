@@ -36,7 +36,7 @@ hand内の`card_basic_stone` instanceを指定して気コスト、target／mode
 
 - commandはcard instance ID、Canonical target、明示modeをbindし、hand外／stale／insufficient qi／target不正をexact no-opで拒否する。
 - legality確定前にqi、card zone、RNG、board、historyを変更しない。
-- accepted時だけqiを消費し、cardをhand → resolving → discardへ移し、既存authorized placement／capture／facility／territory／terminal pipelineを一度だけ通す。
+- accepted時だけqiを消費し、cardをhand → resolvingへ移して解決済みとしてturn-endまで保持し、既存authorized placement／capture／facility／territory／terminal pipelineを一度だけ通す。discardへの移動はAccepted Deck ruleどおりturn-end pipelineが行う。
 - content ID別数値switchを置かず、typed operationを受ける。
 - ordered facts、accepted-only command log、canonical checksumがsame inputで一致する。
 

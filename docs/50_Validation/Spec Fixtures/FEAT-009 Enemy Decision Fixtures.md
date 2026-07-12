@@ -122,7 +122,7 @@ updated: 2026-07-12
 
 | reviewer | date | cases | result | notes |
 |---|---|---|---|---|
-| Human reviewer 1 | not retained | F09-01〜08 | signed off | completion attested by Project owner on 2026-07-12; identity／worksheet not stored |
-| Human reviewer 2 | not retained | F09-01〜08 | signed off | completion attested by Project owner on 2026-07-12; identity／worksheet not stored |
+| Reviewer A |  | F09-01〜08 | evidence not retained | identity／worksheet／actual result not stored |
+| Reviewer B |  | F09-01〜08 | evidence not retained | identity／worksheet／actual result not stored |
 
-Project ownerは2026-07-12、独立二人human sign-offが実施済みという前提で先へ進むよう明示した。このowner attestationを二人の一致完了根拠として[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]を`done`へ移した。raw worksheet、実施日、signer identityはrepositoryに保存されておらず、Codex reviewで補完しない。
+Project ownerは2026-07-12、「TASK-0012の二人human sign-offは行った前提で先に進めてください」と明示した。[[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]]はこの指示をowner-authorized assumption／gate waiverとして記録する。実施、一致、reviewer identityを証明するものではなく、[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]は`review`を維持する。

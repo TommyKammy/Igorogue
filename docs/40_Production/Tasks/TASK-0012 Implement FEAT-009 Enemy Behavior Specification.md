@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0012
-status: done
+status: review
 project: Igorogue
 milestone: M-1
 priority: critical
@@ -79,18 +79,18 @@ python tools/check_all.py
 
 ### 2026-07-12
 
-- Project ownerが、TASK-0012の独立二人human sign-offは実施済みという前提で先へ進むよう明示した。この指示を、二人が独立にfixtureを紙上解決して同一結果へ到達したことに対するowner attestationとして記録し、本TASKを`done`へ遷移した。
-- raw worksheetとsign-off identityはrepositoryへ保存されていない。Codexによる再現や人物情報を補っておらず、証跡の粒度はowner attestationに限定する。
+- Project ownerが「TASK-0012の二人human sign-offは行った前提で先に進めてください」と明示した。これは先行を許可するowner-authorized assumption／gate waiverとして記録し、二人が実際に独立解答して一致したevidenceとは扱わない。
+- raw worksheet、実施日、signer identityはrepositoryへ保存されていないため、本TASKは`review`を維持する。[[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]]だけが、この未完了evidenceによるGate 2 blockを解除する。
 
 ## Evidence
 
 - `python tools/check_enemy_behaviors.py`: PASS。指定済み敵2体、決定フィクスチャ8件。
 - `python tools/check_all.py`: PASS。文書、Wikilink、content、敵行動、抽象モデル既存テストを通過。
-- 紙上レビュー2名: Project owner attestationにより完了、2026-07-12。raw worksheet／identityはrepository未保存。
+- 紙上レビュー2名: repository evidenceなし。Project ownerは2026-07-12、実施済みと仮定して先へ進むことを許可した。
 
 ## Known issues
 
 - A-2は[[ADR-0011 Battle-Local Stone Topology Repetition Ban]]としてAccepted。製品Kernel実装時に敵候補フィルターへ同fixtureを移植する。
 - 施設点意味論は[[ADR-0012 Facility Sites Are Empty Intersections]]でAcceptedされ、`white_facility_invasion`は合法確定時だけ施設を破壊する。
-- human sign-offのraw worksheet／identityはrepositoryに保存されていない。完了根拠は2026-07-12のProject owner attestationであり、Codex evidenceへの置換ではない。
-- FEAT-009のproduction enemy planner／executionはM2の後続TASKで実装する。本TASKの`done`は仕様とhuman paper gateの完了を表し、runtime実装済みを意味しない。
+- human sign-offのraw worksheet／identityはrepositoryに保存されておらず、Acceptanceの一致evidenceは未確認。本TASKは`review`を維持する。
+- FEAT-009のproduction enemy planner／executionはM2の後続TASKで実装する。本TASKのspecification workは完了しているが、human evidence未確認のためstatusは`review`を維持する。

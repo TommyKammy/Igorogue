@@ -8,7 +8,7 @@ updated: 2026-07-12
 
 ## Phase
 
-`M0 Repository Bootstrap`からTLE-01〜15を含むM1 implementation workstreamまでは実装・review・CI・merge済み。DECISION-0005 Option 1でMOM／CTR migrationはM3へ確定。TASK-0030のindependent reviewによりM1 technical exitは`PASS`、TASK-0012の二人human sign-offはProject owner attestationにより完了し、Gate 2 entryはopen。
+`M0 Repository Bootstrap`からTLE-01〜15を含むM1 implementation workstreamまでは実装・review・CI・merge済み。DECISION-0005 Option 1でMOM／CTR migrationはM3へ確定。TASK-0030のindependent reviewによりM1 technical exitは`PASS`。TASK-0012の二人human evidenceは未確認だが、DECISION-0007のProject owner waiverによりGate 2 entryはopen。
 
 ## Sprint goal
 
@@ -23,11 +23,11 @@ Close the bounded Gate 2 plan in TASK-0031, then make only the first dependency-
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Green | M1 technical exit `PASS`; TASK-0012 human gate closed by owner attestation |
+| Validation | Yellow | M1 technical exit `PASS`; TASK-0012 human evidence not retained; owner waiver permits Gate 2 |
 
 ## Blockers
 
-- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — blocks default deck selection and TASK-0038 integration, but not TASK-0032 typed content.
+- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — blocks TASK-0038 resolved recipe／Development scope application, but not TASK-0032 typed content.
 
 ## Current evidence
 
@@ -66,11 +66,12 @@ Close the bounded Gate 2 plan in TASK-0031, then make only the first dependency-
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — done
 - [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — done
 - PR #20 merge and post-merge main CI green at `d1f69e10672ed7289c056cee32c4875964494fe4`
-- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — done by Project owner attestation of two-person human sign-off
+- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — review; human sign-off evidence not retained
+- [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved owner waiver; not human evidence
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — in progress／current
 
 ## Next
 
 1. Complete／review／merge [[TASK-0031 Plan Gate 2 Core Duel Implementation]]
-2. Resolve [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] before TASK-0038 needs the default recipe
+2. Resolve [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] before TASK-0038 applies the default recipe／Development scope
 3. Start [[TASK-0032 Implement Typed Core Duel Content Catalog]] after TASK-0031 merge; keep later tasks blocked by dependency order

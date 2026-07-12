@@ -29,7 +29,7 @@ updated: 2026-07-12
 
 - card instance IDとcontent ID、全zone順、重複禁止、zone間排他をimmutable／canonicalに保持する。
 - named `gameplay` RNGでbattle-start shuffleとdiscard reshuffleを行い、seed／消費順／no-op時非消費を固定する。
-- draw不足時のdiscard reshuffle、空deck、hand discard、resolving完了、exhaustをstable orderで処理する。
+- draw不足時のdiscard reshuffle、空deck、resolving完了、exhaustをstable orderで処理する。使用済みcardは解決後もturn-endまでresolved stateとして保持し、turn endで残りhandとともにdiscardへ移す。
 - 既存turn-start pipelineのturn-scoped flag reset → DeferredPlayerChoice → 領地再計算を保持し、その後にbase qi＋territory income＋reserved qi → base draw＋reserved drawの順で適用して予約値をexact resetする。
 - base qi／drawはinjected policyを使い、`game_data`値をDomainへ直書きしない。
 - state checksumがRNG、全zone、qi、reserved resourcesを含み、same seed／recipe／commandsで一致する。

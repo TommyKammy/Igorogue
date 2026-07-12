@@ -12,11 +12,12 @@ updated: 2026-07-12
 
 ## Outcome
 
-`game_data/`のstarter card候補6種と`enemy_bandit`を、content hashへbindされたimmutable／typed Content projectionとしてload／validateし、後続Domain／Applicationへcontent ID別switchなしで渡せる境界を作る。
+`game_data/`のstarter card候補6種、`enemy_bandit`、Core Duel system policy（base qi／base draw）を、content hashへbindされたimmutable／typed projectionとしてload／validateしてpure Domain definitionsへ変換し、後続Applicationへcontent ID別switchなしで渡せる境界を作る。
 
 ## Source of truth
 
 - [[Architecture]]
+- [[Engine Toolchain and Repository Layout]]
 - [[Deck and Card System]]
 - [[FEAT-009 Enemy Action Planning and Placement]]
 - `game_data/content/cards.json`
@@ -31,22 +32,23 @@ updated: 2026-07-12
 
 ## Allowed areas
 
-- `src/Igorogue.Content/`。
+- `src/Igorogue.Content/`とContent → Domainのapproved project reference。
+- content definitionに必要な最小`src/Igorogue.Domain/` value types。
 - Content／Architecture tests。
 - 本TASKとstatus文書。
 
 ## Acceptance criteria
 
-- starter候補6種と山賊棋士のID、cost／type／target／placement tags／ordered operations、behavior parameters／priority／fallbackをtyped immutable projectionへ欠落なく変換する。
+- starter候補6種と山賊棋士のID、cost／type／target／placement tags／ordered operations、behavior parameters／priority／fallback、および`system.json`のbase qi／base drawをtyped immutable Domain definitionsへ欠落なく変換する。
 - unknown／duplicate ID、unsupported operation shape、dangling reference、invalid stable orderをfail-closedで拒否する。
 - canonical projectionとcontent hashが入力key順に依存せず、same snapshotから同一結果になる。
-- Contentはルール結果を決めず、Domain／Application／Godot型へ依存しない。
+- ContentはAccepted architectureどおりpure Domain definitionsへ変換できるが、ルール結果を決めず、Application／Godot型へ依存しない。Domain definitionはfilesystem／JSON型へ依存しない。
 - DECISION-0006のstarting recipe／facility採用を先取りしない。
 
 ## Validation
 
 - `tools/dev/check`、`tools/dev/test`、`tools/dev/build`。
-- malformed content negatives、input enumeration reversal、architecture boundary。
+- malformed card／enemy／system policy negatives、input enumeration reversal、Content → Domain／Application非依存architecture boundary。
 - independent fixed-HEAD review、CI全job。
 
 ## Known issues

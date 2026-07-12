@@ -92,7 +92,7 @@ PR #19 merge後のfixed main HEADでM1 Headless Rules KernelのAccepted exit sta
 
 2026-07-12 — PR #20を人間merge。merged head `5f194a9987ba314a2eefe9f30b020d31901fc79e`、merge commit／post-merge main HEAD `d1f69e10672ed7289c056cee32c4875964494fe4`を確認した。main push CI run `29193892563`のGovernance `86653293786`、Pure .NET `86653311052`、Godot／Windows export `86653371594`はすべてsuccess。本TASKを`done`へ遷移した。
 
-2026-07-12 — 後続のProject owner attestationによりTASK-0012の二人human sign-offも完了扱いとなった。re-audit時点の`GATE 2 ENTRY: BLOCKED`判定を履歴として保持しつつ、別条件のcloseout後はGate 2 entryをopenとする。
+2026-07-12 — 後続のProject owner指示はTASK-0012 sign-offを実施済みと仮定して先行するgate waiverとして記録した。re-audit時点の`GATE 2 ENTRY: BLOCKED`判定とhuman evidence未確認を履歴として保持しつつ、[[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]]によりGate 2 entryをowner-authorized openとする。
 
 ## Evidence
 
@@ -108,4 +108,4 @@ PR #19 merge後のfixed main HEADでM1 Headless Rules KernelのAccepted exit sta
 
 ## Known issues
 
-本re-audit reportのGate 2 `BLOCKED`はaudited fixed HEAD時点の結論として保持する。後続のProject owner attestationにより[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]は完了したが、raw worksheet／identityはrepository未保存である。M1 technical `PASS`とhuman gate closeoutが揃ったため、Gate 2 entryは後続TASKでopenとする。
+本re-audit reportのGate 2 `BLOCKED`はaudited fixed HEAD時点の結論として保持する。[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]のraw worksheet／identityはrepository未保存で、TASK statusは`review`のままである。後続のowner-authorized assumption／gate waiverを[[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]]へ記録したため、human evidence完了とは主張せずGate 2 entryだけをopenとする。

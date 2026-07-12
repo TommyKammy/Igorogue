@@ -1,14 +1,14 @@
 ---
 type: task
-id: TASK-0039
+id: TASK-0040
 status: blocked
 project: Igorogue
 milestone: M2
 priority: high
-dependencies: [TASK-0038]
+dependencies: [TASK-0039]
 updated: 2026-07-12
 ---
-# TASK-0039 Implement Core Duel Preview Queries
+# TASK-0040 Implement Core Duel Preview Queries
 
 ## Outcome
 
@@ -38,4 +38,4 @@ updated: 2026-07-12
 
 ## Known issues
 
-TASK-0038 mergeまで`blocked`。
+TASK-0039 mergeまで`blocked`。

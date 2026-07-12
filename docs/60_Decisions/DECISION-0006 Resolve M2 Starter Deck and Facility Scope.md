@@ -21,7 +21,7 @@ starting recipe、開拓の採用、M2施設境界はプレイヤー可視のcon
 
 ## Options
 
-1. **Recommended:** M2の「初期6カード」をstarter 6種類と解釈し、Initial Card Setの12枚recipe（`card_basic_stone: 5`、`card_extend: 2`、`card_contact: 2`、`card_reinforce: 1`、`card_development: 1`、`card_lure_stone: 1`）を採用する。`card_development`と既存facility kernelをM2の限定例外として許可し、proposed graybox scopeへ「開拓1種だけ」を明記する。
+1. **Recommended:** M2の「初期6カード」をstarter 6種類と解釈し、Initial Card Setの12枚recipe（`card_basic_stone: 5`、`card_extend: 2`、`card_contact: 2`、`card_reinforce: 1`、`card_development: 1`、`card_lure_stone: 1`）を採用する。`card_development`と既存facility kernelをM2の限定例外として許可し、Accepted [[Milestones and Exit Gates]]のM2／M3境界とproposed graybox scopeへ「開拓1種だけ」の例外を明記する。
 2. 施設なしの12枚deckを維持する。`card_development`を除外し、既存の非施設starterから代替カードとexact multisetをownerが指定する。
 3. M2を文字どおり6枚deckとし、starter 6種を各1枚採用する。Accepted Deck and Card Systemの初期12枚記述を明示的にsupersedeする。
 
@@ -33,11 +33,12 @@ Option 1はAcceptedな12枚deck、既存の6 starter definitions、既実装faci
 
 - starter候補6種と`enemy_bandit`をread-only typed Content projectionへ変換する。
 - starting recipeを外部注入するgeneric deck／hand／qi kernelを実装する。
-- candidate card effectsと山賊棋士plannerを、default deck採用とは分離して実装する。
+- `card_development`を除くcandidate card effectsと山賊棋士plannerを、default deck採用とは分離して実装する。
 
 ## Blocked work
 
 - default M2 starting deck recipeの生成。
+- `card_development`のproduction effect接続。
 - playable Core Duelの`StartBattle` content selection。
 - grayboxへ表示する最終starter deck／facility scopeの確定。
 
