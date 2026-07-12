@@ -123,12 +123,12 @@ internal static class AuthoritativeEnemyTurnStateMachine
                 "stone_occupied");
         }
 
-        if (runtime.StoneRuntimeState.InstanceById(command.StoneInstanceId) is not null)
+        if (runtime.HasUsedStoneInstanceId(command.StoneInstanceId))
         {
             return HeadlessBattleStateMachine.Reject(
                 session,
                 command,
-                "stone_instance_exists");
+                "stone_instance_already_used");
         }
 
         var provisionalPlaced = new StoneRuntimeInstance(
@@ -202,7 +202,10 @@ internal static class AuthoritativeEnemyTurnStateMachine
                 legalPlacement.Candidate.CapturedGroups);
             var selectedTriggers = captureBatch.ContainsKing
                 ? Array.Empty<CaptureBenefitTrigger>()
-                : runtime.CaptureBenefitTriggerPlan.SelectFor(captureBatch);
+                : SelectCaptureBenefitTriggers(
+                    source,
+                    facilityCommit.FacilityStateAfterCommit,
+                    captureBatch);
             benefits = ClosedWindowCaptureBenefitResolver.ResolvePlacement(
                 captureBatch,
                 runtime.ClosedWindowResources,
@@ -222,7 +225,8 @@ internal static class AuthoritativeEnemyTurnStateMachine
             closedWindowResources:
                 benefits?.ResourcesAfterResolution ?? runtime.ClosedWindowResources,
             counterattackState:
-                benefits?.CounterattackAfterResolution ?? runtime.CounterattackState);
+                benefits?.CounterattackAfterResolution ?? runtime.CounterattackState,
+            registeredStoneInstanceId: command.StoneInstanceId);
 
         if (facilityCommit.KingCaptureResult.IsTerminal)
         {
@@ -404,7 +408,10 @@ internal static class AuthoritativeEnemyTurnStateMachine
                 resources,
                 counterattack,
                 runtime.CounterattackPolicy,
-                runtime.CaptureBenefitTriggerPlan.SelectFor(expiry.CaptureBatch));
+                SelectCaptureBenefitTriggers(
+                    source,
+                    source.FacilityState,
+                    expiry.CaptureBatch));
             resources = benefits.ResourcesAfterResolution;
             counterattack = benefits.CounterattackAfterResolution;
             facts.AddRange(benefits.OrderedFacts);
@@ -507,6 +514,41 @@ internal static class AuthoritativeEnemyTurnStateMachine
             postCaptureTemporary,
             postCaptureContinuous,
             candidate.GroupsAfterCapture);
+    }
+
+    private static IReadOnlyList<CaptureBenefitTrigger> SelectCaptureBenefitTriggers(
+        BattleState source,
+        FacilityState eligibleFacilityState,
+        CaptureBatch captureBatch)
+    {
+        var runtime = RequiredRuntime(source);
+        return runtime.CaptureBenefitTriggerPlan.SelectFor(captureBatch)
+            .Where(trigger => trigger.Source.Kind != CaptureBenefitSourceKind.Facility ||
+                IsEligibleFacilityTrigger(
+                    source,
+                    eligibleFacilityState,
+                    trigger.Source))
+            .ToArray();
+    }
+
+    private static bool IsEligibleFacilityTrigger(
+        BattleState source,
+        FacilityState eligibleFacilityState,
+        CaptureBenefitSource triggerSource)
+    {
+        var sourceFacility = source.FacilityState.FacilityById(triggerSource.SourceId);
+        var eligibleFacility = eligibleFacilityState.FacilityById(triggerSource.SourceId);
+        if (sourceFacility is null ||
+            !ReferenceEquals(sourceFacility, eligibleFacility) ||
+            triggerSource.FacilityPoint is null ||
+            !sourceFacility.Point.Equals(triggerSource.FacilityPoint))
+        {
+            return false;
+        }
+
+        return source.FacilityRuntimeAnalysis
+            .OperatingStateFor(sourceFacility)
+            .IsActive;
     }
 
     private static List<IBattleFact> OrderedPlacementFacts(

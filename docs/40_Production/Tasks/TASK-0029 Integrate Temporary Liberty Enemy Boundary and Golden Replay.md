@@ -98,7 +98,11 @@ TASK-0027／0028のDomain kernelをheadless Application battleへ接続し、scr
 
 2026-07-12 — replay schema 2を新設し、authoritative state projection、metadata、attempt chain、terminal、16 MiB／4096 attempts、JSON duplicate／unknown／trailing／depth制限をfail-closedで検証した。全TLE caseをsave／load／runner 2回でbytes、state、log、factsまで照合する。独立security preflightの指摘を受け、schema 1のvalid bytes／legacy behaviorを変えずv2 projectionを逆方向でも拒否し、v2でunsupported facility-build rejected attemptも完全round tripするようにした。再確認はfindingなし、`APPROVED`。
 
-2026-07-12 — `tests/golden/v2/temporary_liberty_cases.json`へTLE-01〜15を生成した。source expectedをinitial inputへ使わず、source fixture／runtime content SHA、seed 42、canonical initial、全command boundary、ordered facts、terminalを固定した。catalog SHA-256 `8485b4827b9c416e5b617ca0c682957ccf821684b74bbf65c28969e6424f27ca`、source fixture SHA-256 `9f9a74ee9e1407c2b0882b6ccd1aa86ae950dd750fb0bfb4bc3bf12faae20e60`。v1 golden／`game_data/`は未変更。
+2026-07-12 — `tests/golden/v2/temporary_liberty_cases.json`へTLE-01〜15を生成した。source expectedをinitial inputへ使わず、source fixture／runtime content SHA、seed 42、canonical initial、全command boundary、ordered facts、terminalを固定した。catalog SHA-256 `9f6486d9776ec05a0c6972f6fdb1ab6dfc49cdd5c653b05831a83216dea8d180`、source fixture SHA-256 `9f9a74ee9e1407c2b0882b6ccd1aa86ae950dd750fb0bfb4bc3bf12faae20e60`。v1 golden／`game_data/`は未変更。
+
+2026-07-12 — fixed-HEAD reviewで`arm_next_capture`がfuture captureにも残る点と、captured stone instance IDを後から再利用できる点を検出した。armed captureへ宣言済みfirst-use flagを付けて最初のeligible batchで消費し、2 enemy boundaryで再発火しないことを固定した。authoritative runtimeへbattle-lifetime used stone ID registryをcanonical化し、live／capturedを問わずID再利用を`stone_instance_already_used` exact no-opで拒否する。
+
+2026-07-12 — 同reviewで通常capture Soulの戦闘上限とstatic source lifetimeを追加確認した。standard accounting専用typed operationへSoul単位／group数／injected limitをbindし、resource stateへclaimed countをcanonical化した。上限到達後もcaptured-stone追加Soulは発火する。CapturedStoneSelfの誤条件、uncapped standard Soul、foreign standard operationをconstruction時に拒否し、facility triggerはcurrent activeかつmandatory placement後も同一instanceがsurviveする場合だけ選択する。
 
 ## Evidence
 
@@ -107,7 +111,7 @@ TASK-0027／0028のDomain kernelをheadless Application battleへ接続し、scr
 - PR #18 merge commit `ddccd57db12219847646d0b2de85c18b2c94b120`／post-merge main CI run `29187053532`全3 job success。
 - authoritative boundary evidence — exact initial snapshot、normal／bonus pass・placement、conditional capture benefits、terminal／turn-limit precedence、TLE-13 no Domain sweep events、TLE-14 exact typed stage trace。
 - replay v2 evidence — schema／projection専用integrity、tamper・resource limits・cross-version rejection、unsupported facility attempt exact no-op、TLE-01〜15の二重round trip。
-- golden v2 — `tests/golden/v2/temporary_liberty_cases.json`、catalog SHA-256 `8485b4827b9c416e5b617ca0c682957ccf821684b74bbf65c28969e6424f27ca`、source fixture SHA-256 `9f9a74ee9e1407c2b0882b6ccd1aa86ae950dd750fb0bfb4bc3bf12faae20e60`、Momentum／Brilliant／CTR coverage claim各0。
+- golden v2 — `tests/golden/v2/temporary_liberty_cases.json`、catalog SHA-256 `9f6486d9776ec05a0c6972f6fdb1ab6dfc49cdd5c653b05831a83216dea8d180`、source fixture SHA-256 `9f9a74ee9e1407c2b0882b6ccd1aa86ae950dd750fb0bfb4bc3bf12faae20e60`、Momentum／Brilliant／CTR coverage claim各0。
 - rules preflight — placement capture pipeline、expiry conditional trigger、facility command surface、territory source、initial exact-bindingの指摘を修正。security preflight — inverse projection guard／rejected facility attempt保持を修正後、findingなし`APPROVED`。
 
 ## Known issues

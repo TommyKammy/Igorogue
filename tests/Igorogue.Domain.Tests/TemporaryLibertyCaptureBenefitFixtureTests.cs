@@ -345,13 +345,13 @@ public sealed class TemporaryLibertyCaptureBenefitFixtureTests
             CaptureBenefitSource.StandardAccounting("same_logical_source", 0),
             "source.one",
             ["source_one"],
-            [new GainSoulCaptureBenefitOperation(1)],
+            [new ReserveDrawCaptureBenefitOperation(1)],
             firstUseFlagId: null);
         var reorderedSourceTwo = new CaptureBenefitTrigger(
             CaptureBenefitSource.StandardAccounting("same_logical_source", 99),
             "source.two",
             ["source_two"],
-            [new GainSoulCaptureBenefitOperation(1)],
+            [new ReserveDrawCaptureBenefitOperation(1)],
             firstUseFlagId: null);
 
         Assert.Throws<ArgumentException>(() => Resolve(

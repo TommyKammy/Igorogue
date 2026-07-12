@@ -381,6 +381,50 @@ public sealed class GainSoulCaptureBenefitOperation : CaptureBenefitOperation
         $"gain_soul:{Amount.ToString(CultureInfo.InvariantCulture)}";
 }
 
+public sealed class GainStandardCaptureSoulOperation : CaptureBenefitOperation
+{
+    public GainStandardCaptureSoulOperation(
+        int soulPerCapturedGroup,
+        int capturedWhiteGroupCount,
+        int battleRewardLimit)
+    {
+        SoulPerCapturedGroup = ValidatePositive(
+            soulPerCapturedGroup,
+            nameof(soulPerCapturedGroup));
+        CapturedWhiteGroupCount = ValidatePositive(
+            capturedWhiteGroupCount,
+            nameof(capturedWhiteGroupCount));
+        BattleRewardLimit = ValidatePositive(
+            battleRewardLimit,
+            nameof(battleRewardLimit));
+    }
+
+    public int SoulPerCapturedGroup { get; }
+
+    public int CapturedWhiteGroupCount { get; }
+
+    public int BattleRewardLimit { get; }
+
+    internal override string ToCanonicalText() =>
+        $"gain_standard_capture_soul:" +
+        $"{SoulPerCapturedGroup.ToString(CultureInfo.InvariantCulture)}:" +
+        $"{CapturedWhiteGroupCount.ToString(CultureInfo.InvariantCulture)}:" +
+        BattleRewardLimit.ToString(CultureInfo.InvariantCulture);
+
+    private static int ValidatePositive(int value, string parameterName)
+    {
+        if (value <= 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                parameterName,
+                value,
+                "Standard capture reward values must be positive.");
+        }
+
+        return value;
+    }
+}
+
 public sealed class CreateDeferredChoiceCaptureBenefitOperation : CaptureBenefitOperation
 {
     public CreateDeferredChoiceCaptureBenefitOperation(
@@ -449,6 +493,26 @@ public sealed class CaptureBenefitTrigger
         foreach (var operation in operations)
         {
             ArgumentNullException.ThrowIfNull(operation);
+        }
+
+        var standardRewardOperationCount = operations.Count(operation =>
+            operation is GainStandardCaptureSoulOperation);
+        var uncappedSoulOperationCount = operations.Count(operation =>
+            operation is GainSoulCaptureBenefitOperation);
+        if (standardRewardOperationCount > 0 &&
+            source.Kind != CaptureBenefitSourceKind.StandardAccounting)
+        {
+            throw new ArgumentException(
+                "Standard capture reward operations belong only to standard accounting.",
+                nameof(orderedOperations));
+        }
+
+        if (source.Kind == CaptureBenefitSourceKind.StandardAccounting &&
+            uncappedSoulOperationCount > 0)
+        {
+            throw new ArgumentException(
+                "Standard accounting cannot bypass its battle cap with uncapped Soul operations.",
+                nameof(orderedOperations));
         }
 
         var sacrificeOperationCount = operations
@@ -978,6 +1042,36 @@ public static class ClosedWindowCaptureBenefitResolver
                             before,
                             resources.Soul,
                             soul.Amount));
+                        break;
+                    }
+                    case GainStandardCaptureSoulOperation standardSoul:
+                    {
+                        var remainingRewards = Math.Max(
+                            0,
+                            standardSoul.BattleRewardLimit -
+                                resources.StandardCaptureRewardsClaimed);
+                        var appliedRewardCount = Math.Min(
+                            standardSoul.CapturedWhiteGroupCount,
+                            remainingRewards);
+                        if (appliedRewardCount == 0)
+                        {
+                            break;
+                        }
+
+                        var soulAmount = checked(
+                            appliedRewardCount * standardSoul.SoulPerCapturedGroup);
+                        var before = resources.Soul;
+                        resources = resources.AddStandardCaptureSoul(
+                            appliedRewardCount,
+                            standardSoul.SoulPerCapturedGroup);
+                        orderedFacts.Add(new SoulChangedFact(
+                            trigger.TriggerId,
+                            EventId(
+                                trigger,
+                                $"soul_{soulAmount.ToString(CultureInfo.InvariantCulture)}"),
+                            before,
+                            resources.Soul,
+                            soulAmount));
                         break;
                     }
                     case CreateDeferredChoiceCaptureBenefitOperation deferred:

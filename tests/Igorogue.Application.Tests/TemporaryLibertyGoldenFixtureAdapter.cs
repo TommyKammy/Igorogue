@@ -26,9 +26,10 @@ internal static class TemporaryLibertyGoldenFixtureAdapter
         "sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06";
     internal const long Seed = 42;
 
-    // These two values are accepted player-visible rules without duplicated
+    // These values are accepted player-visible rules without duplicated
     // runtime fields in game_data. They remain test-adapter constants only.
     private const int StandardWhiteCaptureSoul = 1;
+    private const int StandardWhiteCaptureRewardLimit = 3;
     private const int AcceptedStyleSacrificeFirstCaptureDraw = 2;
 
     private static readonly string[] RuntimeSourcePaths =
@@ -422,14 +423,20 @@ internal static class TemporaryLibertyGoldenFixtureAdapter
                 CaptureBenefitSource.StandardAccounting("standard_capture", 0),
                 "standard_capture.soul",
                 ["standard_capture"],
-                [new GainSoulCaptureBenefitOperation(StandardWhiteCaptureSoul)],
+                [new GainStandardCaptureSoulOperation(
+                    StandardWhiteCaptureSoul,
+                    capturedWhiteGroupCount: 1,
+                    StandardWhiteCaptureRewardLimit)],
                 null),
             CaptureBenefitTriggerCondition.CapturedWhiteGroup,
-            CaptureBenefitTriggerMaterializationMode.GainSoulPerCapturedWhiteGroup));
+            CaptureBenefitTriggerMaterializationMode
+                .GainStandardCaptureSoulPerWhiteGroup));
 
         if (source.ArmedCaptureChain)
         {
             var arm = content.CaptureChainArm;
+            const string flagId = "capture_chain.armed";
+            flags.Add(flagId, false);
             entries.Add(new CaptureBenefitTriggerPlanEntry(
                 new CaptureBenefitTrigger(
                     CaptureBenefitSource.SourceOrArmedEffect("capture_chain", 0),
@@ -439,7 +446,7 @@ internal static class TemporaryLibertyGoldenFixtureAdapter
                         new ReserveQiCaptureBenefitOperation(arm.Qi),
                         new ReserveDrawCaptureBenefitOperation(arm.Draw),
                     ],
-                    null),
+                    flagId),
                 CaptureBenefitTriggerCondition.CapturedWhiteGroup));
         }
 
@@ -933,6 +940,8 @@ internal static class TemporaryLibertyGoldenFixtureAdapter
                 ReservedDraw = runtime.ClosedWindowResources.TurnReservedDraw,
                 ReservedQi = runtime.ClosedWindowResources.TurnReservedQi,
                 Soul = runtime.ClosedWindowResources.Soul,
+                StandardCaptureRewardsClaimed = runtime.ClosedWindowResources
+                    .StandardCaptureRewardsClaimed,
                 DeferredChoices = runtime.ClosedWindowResources.DeferredPlayerChoices
                     .Select(choice => choice.Id).ToArray(),
                 FirstUseFlags = runtime.ClosedWindowResources.FirstUseFlags
@@ -1414,6 +1423,9 @@ internal sealed record TemporaryLibertyGoldenFinal
 
     [JsonPropertyName("soul")]
     public required int Soul { get; init; }
+
+    [JsonPropertyName("standard_capture_rewards_claimed")]
+    public required int StandardCaptureRewardsClaimed { get; init; }
 
     [JsonPropertyName("deferred_choices")]
     public required IReadOnlyList<string> DeferredChoices { get; init; }

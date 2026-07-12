@@ -63,7 +63,7 @@ public sealed class ClosedWindowCaptureBenefitPlacementTests
             CaptureBenefitSource.StandardAccounting("standard_capture", 0),
             "standard.capture",
             ["standard_capture"],
-            [new GainSoulCaptureBenefitOperation(1)],
+            [new GainStandardCaptureSoulOperation(1, 1, 3)],
             firstUseFlagId: null);
 
         var resolution = ClosedWindowCaptureBenefitResolver.ResolvePlacement(
@@ -75,6 +75,9 @@ public sealed class ClosedWindowCaptureBenefitPlacementTests
 
         Assert.False(resolution.BenefitsSuppressed);
         Assert.Equal(1, resolution.ResourcesAfterResolution.Soul);
+        Assert.Equal(
+            1,
+            resolution.ResourcesAfterResolution.StandardCaptureRewardsClaimed);
         Assert.Collection(
             resolution.OrderedFacts,
             fact => Assert.IsType<CaptureBatchStartedFact>(fact),

@@ -99,7 +99,7 @@ public sealed class CaptureBenefitTriggerPlanTests
             CaptureBenefitSource.StandardAccounting("standard_source", 0),
             "trigger.standard",
             "standard_event",
-            new GainSoulCaptureBenefitOperation(1));
+            new GainStandardCaptureSoulOperation(1, 1, 3));
         var capturedBlack = Trigger(
             CaptureBenefitSource.Style("black_capture_source"),
             "trigger.black",
@@ -124,7 +124,7 @@ public sealed class CaptureBenefitTriggerPlanTests
                 standardTemplate,
                 CaptureBenefitTriggerCondition.CapturedWhiteGroup,
                 CaptureBenefitTriggerMaterializationMode
-                    .GainSoulPerCapturedWhiteGroup),
+                    .GainStandardCaptureSoulPerWhiteGroup),
             new CaptureBenefitTriggerPlanEntry(
                 capturedBlack,
                 CaptureBenefitTriggerCondition.CapturedNonKingBlackStone),
@@ -160,9 +160,11 @@ public sealed class CaptureBenefitTriggerPlanTests
             selected.Select(trigger => trigger.TriggerId));
         var materialized = Assert.Single(selected, trigger =>
             trigger.TriggerId == standardTemplate.TriggerId);
-        var soul = Assert.IsType<GainSoulCaptureBenefitOperation>(
+        var soul = Assert.IsType<GainStandardCaptureSoulOperation>(
             Assert.Single(materialized.OrderedOperations));
-        Assert.Equal(2, soul.Amount);
+        Assert.Equal(1, soul.SoulPerCapturedGroup);
+        Assert.Equal(2, soul.CapturedWhiteGroupCount);
+        Assert.Equal(3, soul.BattleRewardLimit);
         Assert.DoesNotContain(selected, trigger =>
             trigger.TriggerId == foreignSource.TriggerId);
 
@@ -195,31 +197,119 @@ public sealed class CaptureBenefitTriggerPlanTests
                 wrongSource,
                 CaptureBenefitTriggerCondition.CapturedWhiteGroup,
                 CaptureBenefitTriggerMaterializationMode
-                    .GainSoulPerCapturedWhiteGroup));
+                    .GainStandardCaptureSoulPerWhiteGroup));
 
         var wrongCondition = Trigger(
             CaptureBenefitSource.StandardAccounting("standard", 0),
             "trigger.standard",
             "standard_event",
-            new GainSoulCaptureBenefitOperation(1));
+            new GainStandardCaptureSoulOperation(1, 1, 3));
         Assert.Throws<ArgumentException>(() =>
             new CaptureBenefitTriggerPlanEntry(
                 wrongCondition,
                 CaptureBenefitTriggerCondition.AnyCapture,
                 CaptureBenefitTriggerMaterializationMode
-                    .GainSoulPerCapturedWhiteGroup));
+                    .GainStandardCaptureSoulPerWhiteGroup));
 
-        var wrongTemplateAmount = Trigger(
+        var wrongTemplateGroupCount = Trigger(
             CaptureBenefitSource.StandardAccounting("standard_two", 0),
             "trigger.standard_two",
             "standard_two_event",
-            new GainSoulCaptureBenefitOperation(2));
+            new GainStandardCaptureSoulOperation(1, 2, 3));
         Assert.Throws<ArgumentException>(() =>
             new CaptureBenefitTriggerPlanEntry(
-                wrongTemplateAmount,
+                wrongTemplateGroupCount,
                 CaptureBenefitTriggerCondition.CapturedWhiteGroup,
                 CaptureBenefitTriggerMaterializationMode
-                    .GainSoulPerCapturedWhiteGroup));
+                    .GainStandardCaptureSoulPerWhiteGroup));
+
+        var capturedStoneWrongCondition = Trigger(
+            CaptureBenefitSource.CapturedStoneSelf("stone.captured"),
+            "trigger.captured",
+            "captured_event",
+            new GainSoulCaptureBenefitOperation(1));
+        Assert.Throws<ArgumentException>(() =>
+            new CaptureBenefitTriggerPlanEntry(
+                capturedStoneWrongCondition,
+                CaptureBenefitTriggerCondition.AnyCapture));
+
+        Assert.Throws<ArgumentException>(() => new CaptureBenefitTrigger(
+            CaptureBenefitSource.StandardAccounting("uncapped", 0),
+            "trigger.uncapped",
+            ["uncapped"],
+            [new GainSoulCaptureBenefitOperation(1)],
+            null));
+        Assert.Throws<ArgumentException>(() => new CaptureBenefitTrigger(
+            CaptureBenefitSource.Style("wrong_standard_source"),
+            "trigger.wrong_standard_source",
+            ["wrong_standard_source"],
+            [new GainStandardCaptureSoulOperation(1, 1, 3)],
+            null));
+    }
+
+    [Fact]
+    public void StandardCaptureSoulStopsAtInjectedBattleLimitButExtraSoulStillFires()
+    {
+        var (batch, _, blackStoneInstanceId) = MixedCaptureBatches();
+        var template = Trigger(
+            CaptureBenefitSource.StandardAccounting("standard", 0),
+            "trigger.standard",
+            "standard_event",
+            new GainStandardCaptureSoulOperation(1, 1, 3));
+        var plan = CaptureBenefitTriggerPlan.CreateConditional(
+        [
+            new CaptureBenefitTriggerPlanEntry(
+                template,
+                CaptureBenefitTriggerCondition.CapturedWhiteGroup,
+                CaptureBenefitTriggerMaterializationMode
+                    .GainStandardCaptureSoulPerWhiteGroup),
+        ]);
+        var extraSoul = Trigger(
+            CaptureBenefitSource.CapturedStoneSelf(blackStoneInstanceId),
+            "trigger.extra_soul",
+            "extra_soul_event",
+            new GainSoulCaptureBenefitOperation(2));
+        var policy = new CounterattackBoundaryPolicy(200, 12, 3, 30);
+        var counterattack = CounterattackBoundaryState.Create(0, false, 0, policy);
+
+        var first = ClosedWindowCaptureBenefitResolver.Resolve(
+            batch,
+            ClosedWindowResourceState.Empty([]),
+            counterattack,
+            policy,
+            plan.SelectFor(batch));
+        Assert.Equal(2, first.ResourcesAfterResolution.Soul);
+        Assert.Equal(
+            2,
+            first.ResourcesAfterResolution.StandardCaptureRewardsClaimed);
+
+        var second = ClosedWindowCaptureBenefitResolver.Resolve(
+            batch,
+            first.ResourcesAfterResolution,
+            first.CounterattackAfterResolution,
+            policy,
+            plan.SelectFor(batch));
+        Assert.Equal(3, second.ResourcesAfterResolution.Soul);
+        Assert.Equal(
+            3,
+            second.ResourcesAfterResolution.StandardCaptureRewardsClaimed);
+        Assert.Equal(
+            1,
+            Assert.Single(second.OrderedFacts.OfType<SoulChangedFact>()).Delta);
+
+        var third = ClosedWindowCaptureBenefitResolver.Resolve(
+            batch,
+            second.ResourcesAfterResolution,
+            second.CounterattackAfterResolution,
+            policy,
+            [.. plan.SelectFor(batch), extraSoul]);
+        Assert.Equal(5, third.ResourcesAfterResolution.Soul);
+        Assert.Equal(
+            3,
+            third.ResourcesAfterResolution.StandardCaptureRewardsClaimed);
+        var applied = Assert.Single(third.OrderedFacts.OfType<SoulChangedFact>());
+        Assert.Equal("trigger.extra_soul", applied.TriggerId);
+        Assert.Equal(2, applied.Delta);
     }
 
     [Fact]

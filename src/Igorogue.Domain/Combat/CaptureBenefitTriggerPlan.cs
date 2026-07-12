@@ -18,7 +18,7 @@ public enum CaptureBenefitTriggerCondition : byte
 public enum CaptureBenefitTriggerMaterializationMode : byte
 {
     Fixed = 1,
-    GainSoulPerCapturedWhiteGroup = 2,
+    GainStandardCaptureSoulPerWhiteGroup = 2,
 }
 
 public sealed class CaptureBenefitTriggerPlanEntry
@@ -80,8 +80,9 @@ public sealed class CaptureBenefitTriggerPlanEntry
         return MaterializationMode switch
         {
             CaptureBenefitTriggerMaterializationMode.Fixed => Trigger,
-            CaptureBenefitTriggerMaterializationMode.GainSoulPerCapturedWhiteGroup =>
-                MaterializeSoul(capturedWhiteGroupCount),
+            CaptureBenefitTriggerMaterializationMode
+                    .GainStandardCaptureSoulPerWhiteGroup =>
+                MaterializeStandardCaptureSoul(capturedWhiteGroupCount),
             _ => throw new InvalidOperationException(
                 "Capture benefit trigger plan entry contains an unknown materialization mode."),
         };
@@ -99,7 +100,8 @@ public sealed class CaptureBenefitTriggerPlanEntry
         return belongsToBatch;
     }
 
-    private CaptureBenefitTrigger MaterializeSoul(int capturedWhiteGroupCount)
+    private CaptureBenefitTrigger MaterializeStandardCaptureSoul(
+        int capturedWhiteGroupCount)
     {
         if (capturedWhiteGroupCount <= 0)
         {
@@ -107,11 +109,15 @@ public sealed class CaptureBenefitTriggerPlanEntry
                 "Per-white-group standard accounting requires a captured white group.");
         }
 
+        var template = (GainStandardCaptureSoulOperation)Trigger.OrderedOperations[0];
         return new CaptureBenefitTrigger(
             Trigger.Source,
             Trigger.TriggerId,
             Trigger.EventPath,
-            [new GainSoulCaptureBenefitOperation(capturedWhiteGroupCount)],
+            [new GainStandardCaptureSoulOperation(
+                template.SoulPerCapturedGroup,
+                capturedWhiteGroupCount,
+                template.BattleRewardLimit)],
             Trigger.FirstUseFlagId);
     }
 
@@ -140,7 +146,8 @@ public sealed class CaptureBenefitTriggerPlanEntry
         CaptureBenefitTriggerMaterializationMode materializationMode)
     {
         if (materializationMode is < CaptureBenefitTriggerMaterializationMode.Fixed or
-            > CaptureBenefitTriggerMaterializationMode.GainSoulPerCapturedWhiteGroup)
+            > CaptureBenefitTriggerMaterializationMode
+                .GainStandardCaptureSoulPerWhiteGroup)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(materializationMode),
@@ -156,8 +163,28 @@ public sealed class CaptureBenefitTriggerPlanEntry
                 nameof(trigger));
         }
 
+        if (trigger.Source.Kind == CaptureBenefitSourceKind.CapturedStoneSelf &&
+            condition != CaptureBenefitTriggerCondition.CapturedSourceStone)
+        {
+            throw new ArgumentException(
+                "Captured-stone-self sources require a captured-source-stone condition.",
+                nameof(trigger));
+        }
+
+        var containsStandardCaptureReward = trigger.OrderedOperations.Any(operation =>
+            operation is GainStandardCaptureSoulOperation);
+        if (containsStandardCaptureReward &&
+            materializationMode != CaptureBenefitTriggerMaterializationMode
+                .GainStandardCaptureSoulPerWhiteGroup)
+        {
+            throw new ArgumentException(
+                "Standard capture Soul operations require standard per-white-group materialization.",
+                nameof(trigger));
+        }
+
         if (materializationMode !=
-            CaptureBenefitTriggerMaterializationMode.GainSoulPerCapturedWhiteGroup)
+            CaptureBenefitTriggerMaterializationMode
+                .GainStandardCaptureSoulPerWhiteGroup)
         {
             return;
         }
@@ -166,11 +193,11 @@ public sealed class CaptureBenefitTriggerPlanEntry
             trigger.Source.Kind != CaptureBenefitSourceKind.StandardAccounting ||
             trigger.FirstUseFlagId is not null ||
             trigger.OrderedOperations.Count != 1 ||
-            trigger.OrderedOperations[0] is not GainSoulCaptureBenefitOperation soul ||
-            soul.Amount != 1)
+            trigger.OrderedOperations[0] is not GainStandardCaptureSoulOperation standard ||
+            standard.CapturedWhiteGroupCount != 1)
         {
             throw new ArgumentException(
-                "Per-white-group Soul materialization requires an unguarded standard-accounting trigger with one GainSoul(1) template operation.",
+                "Per-white-group standard Soul materialization requires an unguarded standard-accounting trigger with one single-group standard reward template operation.",
                 nameof(trigger));
         }
     }
@@ -193,8 +220,9 @@ public sealed class CaptureBenefitTriggerPlanEntry
         materializationMode switch
         {
             CaptureBenefitTriggerMaterializationMode.Fixed => "fixed",
-            CaptureBenefitTriggerMaterializationMode.GainSoulPerCapturedWhiteGroup =>
-                "gain_soul_per_captured_white_group",
+            CaptureBenefitTriggerMaterializationMode
+                    .GainStandardCaptureSoulPerWhiteGroup =>
+                "gain_standard_capture_soul_per_white_group",
             _ => throw new InvalidOperationException(
                 "Capture benefit trigger plan entry contains an unknown materialization mode."),
         };

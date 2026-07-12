@@ -49,29 +49,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "297e90bb52c9b0efdec02f155340aa27c3a3999e4e93248e90f2ec97f187e739",
-        "state_checksum": "523c3428e39bc84d3c5abb891eb98d4ffd5f74842979f087e8e7bd3f3c0bec4f",
+        "snapshot_checksum": "c1506d0cc1c9f555090f1375d97f0cc2e42bca0405d8a871f6ea5a111c132816",
+        "state_checksum": "28f20147d452fc29c728c62fd7f4690e4b5a2800e1f957653c3620a31ab98f1b",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=523c3428e39bc84d3c5abb891eb98d4ffd5f74842979f087e8e7bd3f3c0bec4f\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=28f20147d452fc29c728c62fd7f4690e4b5a2800e1f957653c3620a31ab98f1b\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "d8798d24a7f94da383ac79b78c77d3aa5a0ecdf4d8a8803c7d582f70e878e49e",
-          "log_checksum": "d61e1f1fb0e86184db3fa273e33a608dda936e14229693e02ea9fb4f77ff7436",
+          "state_checksum": "928bfb9b5c79a2fe0cb3416d9828fd3c281ee8d40a9783ef2a4bb53b1438d651",
+          "log_checksum": "aec6307ade4a58e56e2f30ff0734299b854d19f9b9bc698cd69ffd77f13477cf",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=d8798d24a7f94da383ac79b78c77d3aa5a0ecdf4d8a8803c7d582f70e878e49e\nexpected_log_checksum=d61e1f1fb0e86184db3fa273e33a608dda936e14229693e02ea9fb4f77ff7436\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=928bfb9b5c79a2fe0cb3416d9828fd3c281ee8d40a9783ef2a4bb53b1438d651\nexpected_log_checksum=aec6307ade4a58e56e2f30ff0734299b854d19f9b9bc698cd69ffd77f13477cf\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "1e35aa7caad42cf261fcad514b8462e57b5b489d1738c4ef50d023f524916954",
-          "log_checksum": "ab6eb25b8446bc12c5abeb524cf87db4169ed840c6ba33db0109c7566d28ebd3",
+          "state_checksum": "88103efb62953add8b909b25b5a1f857ef02b2b0693ceea950ec712cd32ddaf4",
+          "log_checksum": "027dfcb58e2d9e2edef32867576a153ae86498b1af581a701393fc5ac2ce36da",
           "ordered_facts": [
             "boundary_stage|turn=1|stage=enemy_normal_action",
             "enemy_passed|turn=1",
@@ -98,13 +98,14 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "1e35aa7caad42cf261fcad514b8462e57b5b489d1738c4ef50d023f524916954",
-        "log_checksum": "ab6eb25b8446bc12c5abeb524cf87db4169ed840c6ba33db0109c7566d28ebd3",
+        "state_checksum": "88103efb62953add8b909b25b5a1f857ef02b2b0693ceea950ec712cd32ddaf4",
+        "log_checksum": "027dfcb58e2d9e2edef32867576a153ae86498b1af581a701393fc5ac2ce36da",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 0,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [],
         "counterattack_gauge_units": 32,
@@ -128,29 +129,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "d0bb1a9c3f82f1eb0a5fc0d8d876fbe5340243498bac65e3816b0064b3a1c3f6",
-        "state_checksum": "e438288f058b9cc7b1a12842024c17fe4b7b292e8ee965b60f87b54eab93084b",
+        "snapshot_checksum": "56f0675ab1d97ba4c52eee4d9b11722ebdd17bdac36ade2e92e577a1001553db",
+        "state_checksum": "c708f7fc70b01b694fb20b3f68f906ab8815c526c70d679157f70cc1d609a445",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=e438288f058b9cc7b1a12842024c17fe4b7b292e8ee965b60f87b54eab93084b\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=c708f7fc70b01b694fb20b3f68f906ab8815c526c70d679157f70cc1d609a445\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "e9d0d2da9679f6e400dc86c1c5c7f9ad4dc46dd10294ca953b3bf0af15f13eb5",
-          "log_checksum": "93573c66b3d35470c0514575d7af45edb53085b047d9cf35b9f48cd81dfe326e",
+          "state_checksum": "d1017963e622302fa672f2e2a2633a27b5a5ee250112d8249320d9aff5f82740",
+          "log_checksum": "6297fc24bf55ab11ca5ee10ea5addb586d8b9fb1788a3f78ef1d7db73b092c8b",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=e9d0d2da9679f6e400dc86c1c5c7f9ad4dc46dd10294ca953b3bf0af15f13eb5\nexpected_log_checksum=93573c66b3d35470c0514575d7af45edb53085b047d9cf35b9f48cd81dfe326e\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=d1017963e622302fa672f2e2a2633a27b5a5ee250112d8249320d9aff5f82740\nexpected_log_checksum=6297fc24bf55ab11ca5ee10ea5addb586d8b9fb1788a3f78ef1d7db73b092c8b\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "dfa3236198793c680fd72657a5a7764013af979075676cf45b42207a438c2403",
-          "log_checksum": "f9fb8c9776c325a8d1181724d6ff80956cc0f56cde6b57a4dc872ff2a1023ed4",
+          "state_checksum": "2a7e73ce26375287f2c049282b46e81d31922f3f9d5be59c806a08f3329cb6b9",
+          "log_checksum": "47f9e08241ea390151c422d5f42956cceedc3f0d802e1dafed030a214aeabef7",
           "ordered_facts": [
             "boundary_stage|turn=2|stage=enemy_normal_action",
             "enemy_passed|turn=2",
@@ -178,13 +179,14 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "dfa3236198793c680fd72657a5a7764013af979075676cf45b42207a438c2403",
-        "log_checksum": "f9fb8c9776c325a8d1181724d6ff80956cc0f56cde6b57a4dc872ff2a1023ed4",
+        "state_checksum": "2a7e73ce26375287f2c049282b46e81d31922f3f9d5be59c806a08f3329cb6b9",
+        "log_checksum": "47f9e08241ea390151c422d5f42956cceedc3f0d802e1dafed030a214aeabef7",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 0,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [],
         "counterattack_gauge_units": 32,
@@ -208,29 +210,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "dc22e2f5178cdc42171ff07d39f47abe3c4f61017e2fe7e5bea77b6c792075bb",
-        "state_checksum": "d027b83b66d14aaca1c7c799c1e745404467c08a08186e15b92a8106ad7a2778",
+        "snapshot_checksum": "a5218b999f69ff7b20de36451778caeef68b3690815c404b77276b33a7b99309",
+        "state_checksum": "b9fcc22a305802fe59ebd9085a961c805ce58727a11bd310e88a7acd68f16131",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=d027b83b66d14aaca1c7c799c1e745404467c08a08186e15b92a8106ad7a2778\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=b9fcc22a305802fe59ebd9085a961c805ce58727a11bd310e88a7acd68f16131\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "1483e0d21b23ccff2d796d425cd5ab162e326a6934c718e29501e5d9d104147f",
-          "log_checksum": "999b1f072a1fb6d3782b5ae74d3e428abefabe880f16152ed97d65ed29697ee3",
+          "state_checksum": "b326280c409e876fd33c9d8ac40a965ec640970b50f627110f84d0e0d413c480",
+          "log_checksum": "3c0dca21159674f5f1d5bd91e2a8bd72a904b043b2e257fdd7232f8cfba24829",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=1483e0d21b23ccff2d796d425cd5ab162e326a6934c718e29501e5d9d104147f\nexpected_log_checksum=999b1f072a1fb6d3782b5ae74d3e428abefabe880f16152ed97d65ed29697ee3\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=b326280c409e876fd33c9d8ac40a965ec640970b50f627110f84d0e0d413c480\nexpected_log_checksum=3c0dca21159674f5f1d5bd91e2a8bd72a904b043b2e257fdd7232f8cfba24829\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "a307e59d6ab190bc316c38fb148dc72ccda8ea3ebbe14101dbabed8f95a41d5b",
-          "log_checksum": "387679c4331418100c91ea9ecc2e21ddfd46933cc35886786c050e3e23ddde89",
+          "state_checksum": "e28cb280bda8ebeba3f6e8ff43511ea369084c02c97d0872a010a09427343444",
+          "log_checksum": "13eeb08c4dfd7ecd5c5a4ed63f2a71a2e1a39856739e8d237594477a7eda72af",
           "ordered_facts": [
             "boundary_stage|turn=3|stage=enemy_normal_action",
             "enemy_passed|turn=3",
@@ -259,13 +261,14 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "a307e59d6ab190bc316c38fb148dc72ccda8ea3ebbe14101dbabed8f95a41d5b",
-        "log_checksum": "387679c4331418100c91ea9ecc2e21ddfd46933cc35886786c050e3e23ddde89",
+        "state_checksum": "e28cb280bda8ebeba3f6e8ff43511ea369084c02c97d0872a010a09427343444",
+        "log_checksum": "13eeb08c4dfd7ecd5c5a4ed63f2a71a2e1a39856739e8d237594477a7eda72af",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 0,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [],
         "counterattack_gauge_units": 32,
@@ -289,29 +292,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "675a22b8ec114941e65eaf9d5c404dd2951a6bdb98d48356d8abc72868b4a253",
-        "state_checksum": "3e8f12333c70af41a15caded6dba55fbae8ce708310726ba2740d394c29aa64c",
+        "snapshot_checksum": "38b1a02cb251faa8f8876414942cbcd1eba10df2ce8515ef8a2645334a7dbb81",
+        "state_checksum": "bac22ff38ec8f48a5c7c580876c9058fd8456251cb31d8d49785e2b5772e433a",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=3e8f12333c70af41a15caded6dba55fbae8ce708310726ba2740d394c29aa64c\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=bac22ff38ec8f48a5c7c580876c9058fd8456251cb31d8d49785e2b5772e433a\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "198a82d69c3a24dcaaac4e551020e61cb9c6aee4ddf4ea60aeaa31020ad81ba6",
-          "log_checksum": "3d9019ff7206696412778713d2050b76336dfe723750a3411322bc72658bf9c6",
+          "state_checksum": "51e59de8bb48438bb1f3ff6fdfdc850210386ec32a05b43a23537c0d6ec2d599",
+          "log_checksum": "74f6d3a0dd557bfbea3eaf353d36369ea2a0da6f7fef817e7e935ba7daef058e",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=198a82d69c3a24dcaaac4e551020e61cb9c6aee4ddf4ea60aeaa31020ad81ba6\nexpected_log_checksum=3d9019ff7206696412778713d2050b76336dfe723750a3411322bc72658bf9c6\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=51e59de8bb48438bb1f3ff6fdfdc850210386ec32a05b43a23537c0d6ec2d599\nexpected_log_checksum=74f6d3a0dd557bfbea3eaf353d36369ea2a0da6f7fef817e7e935ba7daef058e\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "8959331adf135f77b502c9bc79dc277b2944a52ca34320462c366f6a16630940",
-          "log_checksum": "36596ab7d6a3f50c1a91680d92099cc34f4ebadeb28ad68dc222161f72919598",
+          "state_checksum": "feb07b62951eca0cf1e1c05c735b4ee2e8175dcf0a59e973fe2e3b51a86e91d2",
+          "log_checksum": "36b3c299d791df957041c6ab5261c62a998d95a7fc3d142484468e2270db1690",
           "ordered_facts": [
             "boundary_stage|turn=4|stage=enemy_normal_action",
             "enemy_passed|turn=4",
@@ -334,8 +337,8 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "8959331adf135f77b502c9bc79dc277b2944a52ca34320462c366f6a16630940",
-        "log_checksum": "36596ab7d6a3f50c1a91680d92099cc34f4ebadeb28ad68dc222161f72919598",
+        "state_checksum": "feb07b62951eca0cf1e1c05c735b4ee2e8175dcf0a59e973fe2e3b51a86e91d2",
+        "log_checksum": "36b3c299d791df957041c6ab5261c62a998d95a7fc3d142484468e2270db1690",
         "temporary_effect_ids": [
           "future"
         ],
@@ -343,6 +346,7 @@
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 0,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [],
         "counterattack_gauge_units": 32,
@@ -366,29 +370,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "46bde13f834ab10e3e35bd4399e734ff51689e7e9fa5e5b0aad151c98f856b9d",
-        "state_checksum": "27b9f24fc8635e0e22ed5d09d27bef99b68187c2fde80146f4c96c06e14f0bbb",
+        "snapshot_checksum": "9c43fc901ca2a9431bc7242dce38187e9825311b13249549bd589d934764707e",
+        "state_checksum": "9878d016a96d3bd0c505e720993d1529789ff1690a006d633b20a039a901baa5",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=27b9f24fc8635e0e22ed5d09d27bef99b68187c2fde80146f4c96c06e14f0bbb\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=9878d016a96d3bd0c505e720993d1529789ff1690a006d633b20a039a901baa5\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "9fdd824d0a204d0c1b9b37e0ad917486a4f7e2623f46b8bc5a832bf186f6df65",
-          "log_checksum": "7d1fddd1f56ec9c96f6ca3587d4bd47557b8c92ea5b195b32e03f7cf70f00602",
+          "state_checksum": "90989df7bf9385102d9aa4bb040656b6c636eab0d5f54a797e7e5453d3abf4a9",
+          "log_checksum": "ec64931ba45fb78cebd9c6e9583506ef9dd6b79e607ac11bc0fb19c7baaceba0",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=9fdd824d0a204d0c1b9b37e0ad917486a4f7e2623f46b8bc5a832bf186f6df65\nexpected_log_checksum=7d1fddd1f56ec9c96f6ca3587d4bd47557b8c92ea5b195b32e03f7cf70f00602\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=90989df7bf9385102d9aa4bb040656b6c636eab0d5f54a797e7e5453d3abf4a9\nexpected_log_checksum=ec64931ba45fb78cebd9c6e9583506ef9dd6b79e607ac11bc0fb19c7baaceba0\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "3a5a5029dc3c88fc20c6b40db8ceebf7edf56909bc1bd3cd74b5a25cb091edd9",
-          "log_checksum": "82227f515d8ed0caddfbef30b53e326a96acbb75c9be52a6da0050d85554bff6",
+          "state_checksum": "de1526ae738a87689883f1065fe665fce0a5efb0d36b674bbb215e11b34da887",
+          "log_checksum": "1f910c1703f2269f83e908a85869643094c1b166b85ab65650e867d94db6bbd0",
           "ordered_facts": [
             "boundary_stage|turn=5|stage=enemy_normal_action",
             "enemy_passed|turn=5",
@@ -411,13 +415,14 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "3a5a5029dc3c88fc20c6b40db8ceebf7edf56909bc1bd3cd74b5a25cb091edd9",
-        "log_checksum": "82227f515d8ed0caddfbef30b53e326a96acbb75c9be52a6da0050d85554bff6",
+        "state_checksum": "de1526ae738a87689883f1065fe665fce0a5efb0d36b674bbb215e11b34da887",
+        "log_checksum": "1f910c1703f2269f83e908a85869643094c1b166b85ab65650e867d94db6bbd0",
         "temporary_effect_ids": [],
         "topology_observation_count": 1,
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 0,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [],
         "counterattack_gauge_units": 32,
@@ -441,29 +446,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "29d7bf451ae460bd50499eb11e63e2343473b46f0a03fcccd458d75393da9eb6",
-        "state_checksum": "3e3dac7c9faba4818ff4c15c147e40e87e5ce731dcd0bec94b4b85e9e9223755",
+        "snapshot_checksum": "9df2eda21d5cf12c04502119e32230e1b863defdaa21e8613a325b764e70044e",
+        "state_checksum": "416055a7ec5e1e7f545e46258e00bb218d570d0f13a4fc531a485d138826cef3",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=3e3dac7c9faba4818ff4c15c147e40e87e5ce731dcd0bec94b4b85e9e9223755\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=416055a7ec5e1e7f545e46258e00bb218d570d0f13a4fc531a485d138826cef3\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "abb8544107a0e5efa94269cb441719f758cacb7b251ee3bb1c198bab7a17c35e",
-          "log_checksum": "743d8b2f020095ced413fb40a3a8601a22b311a6c2f0b0042df8dd9c2b439a36",
+          "state_checksum": "ad82d9430488a6e577f4204bacbecec93495d4242fa3d882caae115d341deca5",
+          "log_checksum": "c30da957467bc58ecfc2903df2a93048e96e94bf501a7b5fc316661421e3d19f",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=abb8544107a0e5efa94269cb441719f758cacb7b251ee3bb1c198bab7a17c35e\nexpected_log_checksum=743d8b2f020095ced413fb40a3a8601a22b311a6c2f0b0042df8dd9c2b439a36\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=ad82d9430488a6e577f4204bacbecec93495d4242fa3d882caae115d341deca5\nexpected_log_checksum=c30da957467bc58ecfc2903df2a93048e96e94bf501a7b5fc316661421e3d19f\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "e32ee14f688d64eae009c09b770ff317e8b225075dae9a58b9a0675922e76bfc",
-          "log_checksum": "b769a42298daedba19e5a26605141a063a23412dcce3060e549b39237660ffb2",
+          "state_checksum": "017ae3b32e8e8b95250e30fb101a3776a56126c5eb503bb61f819251a191fbc2",
+          "log_checksum": "d963da99d82c6ab0721744e63a24b5d19f4f6d3318ca7f9044d932a8b2b86062",
           "ordered_facts": [
             "boundary_stage|turn=6|stage=enemy_normal_action",
             "enemy_passed|turn=6",
@@ -486,13 +491,14 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "e32ee14f688d64eae009c09b770ff317e8b225075dae9a58b9a0675922e76bfc",
-        "log_checksum": "b769a42298daedba19e5a26605141a063a23412dcce3060e549b39237660ffb2",
+        "state_checksum": "017ae3b32e8e8b95250e30fb101a3776a56126c5eb503bb61f819251a191fbc2",
+        "log_checksum": "d963da99d82c6ab0721744e63a24b5d19f4f6d3318ca7f9044d932a8b2b86062",
         "temporary_effect_ids": [],
         "topology_observation_count": 1,
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 0,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [],
         "counterattack_gauge_units": 32,
@@ -516,29 +522,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "6c65e577caab604ba25a3c1fc0989b7315ea5653a0a9a2a214fb357f34766c8f",
-        "state_checksum": "d0c844183cea848738bda8fd34d368f1f14bbf07e6eabb2498341f75a7008e6d",
+        "snapshot_checksum": "470d41000a5991986d33f2726f829117380729f784e7001792f0d78933e42aef",
+        "state_checksum": "ee58807a17fe050500e9f015ca449d1a3ec8be95f750edf738cf7118484a655e",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=d0c844183cea848738bda8fd34d368f1f14bbf07e6eabb2498341f75a7008e6d\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=ee58807a17fe050500e9f015ca449d1a3ec8be95f750edf738cf7118484a655e\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "7812b3734dc45eff9a0e420629c700febec43c65213423ce2a959991b5e6382d",
-          "log_checksum": "2aa9e5915f645eb9d458f50b0058a1c1233f9d1495586e5a0dfad5608b018dbf",
+          "state_checksum": "1bbbcacf2526a7ca63eb3dbafbe2e2c345b597b43e5cef057f4a2a29938b84ea",
+          "log_checksum": "1d278596025e2b1aa3f94419c7174dd8a1eef44f10a5dc7022a9ff15a4407f4d",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=7812b3734dc45eff9a0e420629c700febec43c65213423ce2a959991b5e6382d\nexpected_log_checksum=2aa9e5915f645eb9d458f50b0058a1c1233f9d1495586e5a0dfad5608b018dbf\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=1bbbcacf2526a7ca63eb3dbafbe2e2c345b597b43e5cef057f4a2a29938b84ea\nexpected_log_checksum=1d278596025e2b1aa3f94419c7174dd8a1eef44f10a5dc7022a9ff15a4407f4d\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "4f21bc7924458656832e0f79b7a12a45a8be5fdc401ae7f484363f7917300d71",
-          "log_checksum": "7649f07a7878c83b98f58fae023fa32700f5b8c46c676a3409f918cc521b0924",
+          "state_checksum": "3aa5ea0456fe2157b22d5efbb9d378d726c8b0e59bbbba669eddea8466c97945",
+          "log_checksum": "b68171d6b438545e2fd448b2ca0bf7228ace34fa28cf84be89064c429a01bd9d",
           "ordered_facts": [
             "boundary_stage|turn=7|stage=enemy_normal_action",
             "enemy_passed|turn=7",
@@ -561,13 +567,14 @@
         "temporary_liberty_expiry_sweep"
       ],
       "final": {
-        "state_checksum": "4f21bc7924458656832e0f79b7a12a45a8be5fdc401ae7f484363f7917300d71",
-        "log_checksum": "7649f07a7878c83b98f58fae023fa32700f5b8c46c676a3409f918cc521b0924",
+        "state_checksum": "3aa5ea0456fe2157b22d5efbb9d378d726c8b0e59bbbba669eddea8466c97945",
+        "log_checksum": "b68171d6b438545e2fd448b2ca0bf7228ace34fa28cf84be89064c429a01bd9d",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 0,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [
           "seal_sacrifice.first_capture=0",
@@ -594,29 +601,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "4630307900aece3587bb24819e100b0949b7dfaf90af1f0986dc654ea92d0da5",
-        "state_checksum": "04d57c051e8ef1114df2e7538efd7855002fb9446b75ef831b8f22a5505574cd",
+        "snapshot_checksum": "08950f4558bca4e94ef79f187b27e4911267b3e376fece2be08ba2550bf0d677",
+        "state_checksum": "267030233b82f9927bad026ba2e41aaa91d804cec2e40a9e2ba4ea7e08396d65",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=04d57c051e8ef1114df2e7538efd7855002fb9446b75ef831b8f22a5505574cd\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=267030233b82f9927bad026ba2e41aaa91d804cec2e40a9e2ba4ea7e08396d65\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "e8ba28acb7e5d6cefa1ca227c38d28a2c2c4876848f95e09859da065ab293084",
-          "log_checksum": "69ded15f95cef33ad84711e0c689afa1edb1590895371bd94b4da98d068330ed",
+          "state_checksum": "d76734c0705bc3cdca165f3eeee517265ac7b36ca27f382c38680e299c654a27",
+          "log_checksum": "07b695fb730422396f00ea2ceb18d7ccedcb61b066ba2405fd20031cfdb5675b",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=e8ba28acb7e5d6cefa1ca227c38d28a2c2c4876848f95e09859da065ab293084\nexpected_log_checksum=69ded15f95cef33ad84711e0c689afa1edb1590895371bd94b4da98d068330ed\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=d76734c0705bc3cdca165f3eeee517265ac7b36ca27f382c38680e299c654a27\nexpected_log_checksum=07b695fb730422396f00ea2ceb18d7ccedcb61b066ba2405fd20031cfdb5675b\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "357666ef1d872d2e14fd8e7e51114cd771e2609f17bbf6f134ea4fccb41d77f5",
-          "log_checksum": "5f3505c8bdd1dfdf6821ed4c4690706ec73d087946c76a604e77925e7885a7ed",
+          "state_checksum": "9eb2baa62b8f2005881fdc058d8036da6f4b328d09b629da9faa604178e6ada1",
+          "log_checksum": "cda079a00f64838989bf4cffdd98b40ebbf44537d85e1efa0b0126c2fc5c43fe",
           "ordered_facts": [
             "boundary_stage|turn=8|stage=enemy_normal_action",
             "enemy_passed|turn=8",
@@ -641,13 +648,14 @@
         "temporary_liberty_expiry_sweep"
       ],
       "final": {
-        "state_checksum": "357666ef1d872d2e14fd8e7e51114cd771e2609f17bbf6f134ea4fccb41d77f5",
-        "log_checksum": "5f3505c8bdd1dfdf6821ed4c4690706ec73d087946c76a604e77925e7885a7ed",
+        "state_checksum": "9eb2baa62b8f2005881fdc058d8036da6f4b328d09b629da9faa604178e6ada1",
+        "log_checksum": "cda079a00f64838989bf4cffdd98b40ebbf44537d85e1efa0b0126c2fc5c43fe",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 0,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [],
         "counterattack_gauge_units": 20,
@@ -671,29 +679,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "b47f2c37d61d606363259501385225e3c34cd939e936ddd73f12ec40fe8be17c",
-        "state_checksum": "a456786118e1c8aa06e29d2ddcd45f7053be5ba7c45f57e986310c3b9e7e298e",
+        "snapshot_checksum": "97e8dd6f13bfc78a007230b7cd56c3f3f043616ec3edbe7aaa505144f0c2fb75",
+        "state_checksum": "c8ce6961b5e0f28c2e245949e2cc81c8cf33d8fe38876178e5c4b7fa5235600d",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=a456786118e1c8aa06e29d2ddcd45f7053be5ba7c45f57e986310c3b9e7e298e\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=c8ce6961b5e0f28c2e245949e2cc81c8cf33d8fe38876178e5c4b7fa5235600d\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "84bef2d14262e144a819f3b90b017f5d61150e66adf6c330fbc42b2abc42d770",
-          "log_checksum": "74510b86e2b49636545f4e8fbe48d0088ccb97373b857f65f395e4db0d8e27aa",
+          "state_checksum": "c1a71bf289012362332b5ca380cc6025a7dde6e64ca74f729c97ec048c3143fa",
+          "log_checksum": "044108eed9272ba72f3b9878b69b395ec71f8f31d12697774ac6d0934504370c",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=84bef2d14262e144a819f3b90b017f5d61150e66adf6c330fbc42b2abc42d770\nexpected_log_checksum=74510b86e2b49636545f4e8fbe48d0088ccb97373b857f65f395e4db0d8e27aa\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=c1a71bf289012362332b5ca380cc6025a7dde6e64ca74f729c97ec048c3143fa\nexpected_log_checksum=044108eed9272ba72f3b9878b69b395ec71f8f31d12697774ac6d0934504370c\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "bb58208c8ff33e1138c2ae9fadc1654e785e3c58e6f93c36a241c25bb5f63f7b",
-          "log_checksum": "6fb3928fdc197dfd0455c3956120f5c3ea28dea267f719d07f31f81c60694216",
+          "state_checksum": "6359be5b870000417346a5f7c3bce3afd23fb123a092895f8c09f5ee8b14cc87",
+          "log_checksum": "b6a66f5016ba719ab1d71890db0a4fbb7d6d133d97fa7118b0ac16f9ff0f3600",
           "ordered_facts": [
             "boundary_stage|turn=9|stage=enemy_normal_action",
             "enemy_passed|turn=9",
@@ -728,13 +736,14 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "bb58208c8ff33e1138c2ae9fadc1654e785e3c58e6f93c36a241c25bb5f63f7b",
-        "log_checksum": "6fb3928fdc197dfd0455c3956120f5c3ea28dea267f719d07f31f81c60694216",
+        "state_checksum": "6359be5b870000417346a5f7c3bce3afd23fb123a092895f8c09f5ee8b14cc87",
+        "log_checksum": "b6a66f5016ba719ab1d71890db0a4fbb7d6d133d97fa7118b0ac16f9ff0f3600",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 7,
         "reserved_qi": 0,
         "soul": 1,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [
           "seal_sacrifice.first_capture=1",
@@ -761,29 +770,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "4c421553ac159cd50158cfb99271fd1d62eb2a74b208d09df674251987f33b01",
-        "state_checksum": "5b7220c5702dbafa55c8af3eab8311b3113033e81237eae4bc453ea5794ad8e1",
+        "snapshot_checksum": "3149522d88d140088d509426e2941e76ce4039aac33360e07ea7e53e1659a26e",
+        "state_checksum": "5b840886bf7e90f379595e93bf173b4e44304df3908acea15a0fd00b8f48c95b",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=5b7220c5702dbafa55c8af3eab8311b3113033e81237eae4bc453ea5794ad8e1\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=5b840886bf7e90f379595e93bf173b4e44304df3908acea15a0fd00b8f48c95b\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "55fcb0d38fb979e9d445d57aeb49a668babfe8e2eb98da5639e3b747e03cd8de",
-          "log_checksum": "11f0e537baf82e085964be5b34ac16ba48e3e8abfaf7580d8fec72c034953225",
+          "state_checksum": "f812defc9d3b8ed4b953cff777f54cca167aef82317ae983f0c081514e153544",
+          "log_checksum": "7ad7bd877f973079cd429af79117912e969aa315bdd91060d48bdf1cdc4ac849",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=55fcb0d38fb979e9d445d57aeb49a668babfe8e2eb98da5639e3b747e03cd8de\nexpected_log_checksum=11f0e537baf82e085964be5b34ac16ba48e3e8abfaf7580d8fec72c034953225\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=f812defc9d3b8ed4b953cff777f54cca167aef82317ae983f0c081514e153544\nexpected_log_checksum=7ad7bd877f973079cd429af79117912e969aa315bdd91060d48bdf1cdc4ac849\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "15d7910246293c8df836e266f6c09bf3fddacf2c4b6ccaecc8b7cd1c2a9aad9b",
-          "log_checksum": "f6c793af2be5d070c71ae6937911074dd56c4d17e556f73e62c8b6f35452af14",
+          "state_checksum": "771b9b4fe9e360e48901ce9e4e7aec9e932ac6f9e7c80587b3916416efbe1144",
+          "log_checksum": "ce48cfe1dc90f3e55ad5fdb44d9bb5f9e33ae77f402665b9739eecef301d7dde",
           "ordered_facts": [
             "boundary_stage|turn=10|stage=enemy_normal_action",
             "enemy_passed|turn=10",
@@ -797,6 +806,7 @@
             "soul_changed|trigger=standard_capture.soul|event=standard_capture:soul_1|before=0|after=1|delta=1",
             "reserved_qi_changed|trigger=capture_chain.armed|event=capture_chain:reserve_qi_1|before=0|after=1|delta=1",
             "reserved_draw_changed|trigger=capture_chain.armed|event=capture_chain:reserve_draw_2|before=0|after=2|delta=2",
+            "first_use_consumed|trigger=capture_chain.armed|flag=capture_chain.armed",
             "deferred_choice_created|trigger=seal_bone.first_capture|event=seal_bone:deferred_choice|choice=seal_bone:qi_or_draw|sequence=1",
             "first_use_consumed|trigger=seal_bone.first_capture|flag=seal_bone.first_capture",
             "reserved_qi_changed|trigger=relic_hungry_furnace.capture|event=relic_hungry_furnace:reserve_qi_2|before=1|after=3|delta=2",
@@ -817,17 +827,19 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "15d7910246293c8df836e266f6c09bf3fddacf2c4b6ccaecc8b7cd1c2a9aad9b",
-        "log_checksum": "f6c793af2be5d070c71ae6937911074dd56c4d17e556f73e62c8b6f35452af14",
+        "state_checksum": "771b9b4fe9e360e48901ce9e4e7aec9e932ac6f9e7c80587b3916416efbe1144",
+        "log_checksum": "ce48cfe1dc90f3e55ad5fdb44d9bb5f9e33ae77f402665b9739eecef301d7dde",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 2,
         "reserved_qi": 3,
         "soul": 1,
+        "standard_capture_rewards_claimed": 1,
         "deferred_choices": [
           "seal_bone:qi_or_draw"
         ],
         "first_use_flags": [
+          "capture_chain.armed=1",
           "seal_bone.first_capture=1"
         ],
         "counterattack_gauge_units": 52,
@@ -851,29 +863,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "69deb3671222d01262fc968625116ac3e63bdd4514c12d6859f154833041a6de",
-        "state_checksum": "9d3928ec9cee53efeba0a27d45f987983af55714a32bcf7043b43161a61eca3b",
+        "snapshot_checksum": "6feb86f5497b266408770fc0e15c25f70c877d90ee9fd3478e31b9e30ff90a24",
+        "state_checksum": "4d0a4d0925a5ea905c8f6015370f86c4fc7db10a866cfac9bd5fbe2d752c900c",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=9d3928ec9cee53efeba0a27d45f987983af55714a32bcf7043b43161a61eca3b\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=4d0a4d0925a5ea905c8f6015370f86c4fc7db10a866cfac9bd5fbe2d752c900c\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "ec7af9cd11280f4445aec5059f312041c7ce6999acea64cc1695c53b72adfd13",
-          "log_checksum": "d2a541313bd1fa727bc4b565b6f96d8ea4dfef738ccd5a17d4fa4de5a5ee018a",
+          "state_checksum": "8755b60e18a231add6975c7ad0409e8f74d15be3b553e3b1a84e337ad927384d",
+          "log_checksum": "c5b9f60bcbb1d09fca7de7d5d3e4f40409a78da7754455609079511f03d9437e",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=ec7af9cd11280f4445aec5059f312041c7ce6999acea64cc1695c53b72adfd13\nexpected_log_checksum=d2a541313bd1fa727bc4b565b6f96d8ea4dfef738ccd5a17d4fa4de5a5ee018a\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=8755b60e18a231add6975c7ad0409e8f74d15be3b553e3b1a84e337ad927384d\nexpected_log_checksum=c5b9f60bcbb1d09fca7de7d5d3e4f40409a78da7754455609079511f03d9437e\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "58b31eed814476e414e665d747a362842bc5136a5254e4f7cdf0a746452a3ef5",
-          "log_checksum": "165707d01946f3d7659a48e3bb6ec7f4f25f284673b834e3b5920505ea5aadfd",
+          "state_checksum": "82bcd82babbcd238555740cd2ab111a7bfbf323041e5e122549c4831f45b0bc7",
+          "log_checksum": "e8b57df7432f08aee9a4f3465eae6e797dee970ff5341791d713f9719a04b191",
           "ordered_facts": [
             "boundary_stage|turn=11|stage=enemy_normal_action",
             "enemy_passed|turn=11",
@@ -900,13 +912,14 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "58b31eed814476e414e665d747a362842bc5136a5254e4f7cdf0a746452a3ef5",
-        "log_checksum": "165707d01946f3d7659a48e3bb6ec7f4f25f284673b834e3b5920505ea5aadfd",
+        "state_checksum": "82bcd82babbcd238555740cd2ab111a7bfbf323041e5e122549c4831f45b0bc7",
+        "log_checksum": "e8b57df7432f08aee9a4f3465eae6e797dee970ff5341791d713f9719a04b191",
         "temporary_effect_ids": [],
         "topology_observation_count": 3,
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 0,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [],
         "counterattack_gauge_units": 32,
@@ -930,29 +943,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "7057d1a3a92fe655326f4abd33e3aa7de98c62f23085ea3ee564e2155ca18f29",
-        "state_checksum": "8386b138c655136b39a03e15031266a29939879a3e3275e9488431a1ee7de3e7",
+        "snapshot_checksum": "a21b76eb324aa4064698cae8e054a99dd1e94cd6ac4efe289e50ffb2e6e82ec7",
+        "state_checksum": "5e6143982074033ec83feeea6307eb90b576596ddb89c548b994bb68bf0565f0",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=8386b138c655136b39a03e15031266a29939879a3e3275e9488431a1ee7de3e7\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=5e6143982074033ec83feeea6307eb90b576596ddb89c548b994bb68bf0565f0\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "7d274f819fc570a032ef0c72a5d6ca8ea1d9cfa61d6f2e8766f41e62e5238142",
-          "log_checksum": "590326aad13e1900b6a0ef4cec7d2ee6d5f6d1191783e65861558cf376ef2446",
+          "state_checksum": "8329f2a10c2ed0ae2fc558f24662e18b4a001071444b44048b08e2bdee8029a9",
+          "log_checksum": "349d0ca1382ccd236c9723b25ea50892d7543f7c12f437525ceb19a3bf8caf07",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=7d274f819fc570a032ef0c72a5d6ca8ea1d9cfa61d6f2e8766f41e62e5238142\nexpected_log_checksum=590326aad13e1900b6a0ef4cec7d2ee6d5f6d1191783e65861558cf376ef2446\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=8329f2a10c2ed0ae2fc558f24662e18b4a001071444b44048b08e2bdee8029a9\nexpected_log_checksum=349d0ca1382ccd236c9723b25ea50892d7543f7c12f437525ceb19a3bf8caf07\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "38a9062e18635ca091430b4d1acbc8e1fc2539a20e7e2e1b56206bbd1b73dbbc",
-          "log_checksum": "4af2edc88d1b381df74200b8e8a21cc206a5b45161f98d52f61d9ba3ebee3194",
+          "state_checksum": "5b36998f3225b658cf45f5c8293f206cc930c56af42eb28f2c94d81097937620",
+          "log_checksum": "4bb4f1f57e77c1a9d536b019baef918fcd823fe8935a6025e286e4c7d23aad99",
           "ordered_facts": [
             "boundary_stage|turn=12|stage=enemy_normal_action",
             "enemy_passed|turn=12",
@@ -981,13 +994,14 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "38a9062e18635ca091430b4d1acbc8e1fc2539a20e7e2e1b56206bbd1b73dbbc",
-        "log_checksum": "4af2edc88d1b381df74200b8e8a21cc206a5b45161f98d52f61d9ba3ebee3194",
+        "state_checksum": "5b36998f3225b658cf45f5c8293f206cc930c56af42eb28f2c94d81097937620",
+        "log_checksum": "4bb4f1f57e77c1a9d536b019baef918fcd823fe8935a6025e286e4c7d23aad99",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 1,
+        "standard_capture_rewards_claimed": 1,
         "deferred_choices": [],
         "first_use_flags": [],
         "counterattack_gauge_units": 32,
@@ -1011,29 +1025,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "f528aeb10aecf037ace0fa2e4cade2cf34e785ae32b867dc78436ab7118b7cb2",
-        "state_checksum": "a6965d944a2e925ddfc79b183b76ae312ddf0b740eac9ab62e2d1d14c6f08dd4",
+        "snapshot_checksum": "0e48b3a3d4a79f59b124d257fd24d9d7b73441d0cd9c7f65bbf53d9ef5a8c0bc",
+        "state_checksum": "436cedfa9f7bbd47c2d3b69252cbff7ed03c56577bd64b179884922db4e2929d",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=a6965d944a2e925ddfc79b183b76ae312ddf0b740eac9ab62e2d1d14c6f08dd4\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=436cedfa9f7bbd47c2d3b69252cbff7ed03c56577bd64b179884922db4e2929d\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "bcc808dce3ab35ae245b8fe3f99109873f64c51310079b008b6b6773a10f2a5c",
-          "log_checksum": "c2456e7a01e513220e6105ab7ddf949fbd7338a30f7dff6954c72e77fdd0d863",
+          "state_checksum": "79764209253cefa62a0d8514e5a9efb8e6b87c891042ca105b4c6df5277d9081",
+          "log_checksum": "a957c9d7691bef5e46b4ef7b4c0cca12d7983633a3d1b66b70f6f2676129a7f0",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=bcc808dce3ab35ae245b8fe3f99109873f64c51310079b008b6b6773a10f2a5c\nexpected_log_checksum=c2456e7a01e513220e6105ab7ddf949fbd7338a30f7dff6954c72e77fdd0d863\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=79764209253cefa62a0d8514e5a9efb8e6b87c891042ca105b4c6df5277d9081\nexpected_log_checksum=a957c9d7691bef5e46b4ef7b4c0cca12d7983633a3d1b66b70f6f2676129a7f0\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "2746ba5b6a8ab3ad7b79469ef63123474ad85e65f11fb341239a7b2d307524b6",
-          "log_checksum": "74cd350c0f292efc1e971d671359af461fb41e3fa90bc0d3b17742961fe2a502",
+          "state_checksum": "86d14faccf6a30b2fd649fba0424971234e5906efb24bbcb80c0f6d90680e5ec",
+          "log_checksum": "a24e76e3765fa26a73f04869e8c7f2e2195a4dead13f8a2bb1fd8ace30c1bcf3",
           "ordered_facts": [
             "boundary_stage|turn=13|stage=enemy_normal_action",
             "enemy_passed|turn=13",
@@ -1053,8 +1067,8 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "2746ba5b6a8ab3ad7b79469ef63123474ad85e65f11fb341239a7b2d307524b6",
-        "log_checksum": "74cd350c0f292efc1e971d671359af461fb41e3fa90bc0d3b17742961fe2a502",
+        "state_checksum": "86d14faccf6a30b2fd649fba0424971234e5906efb24bbcb80c0f6d90680e5ec",
+        "log_checksum": "a24e76e3765fa26a73f04869e8c7f2e2195a4dead13f8a2bb1fd8ace30c1bcf3",
         "temporary_effect_ids": [
           "future"
         ],
@@ -1062,6 +1076,7 @@
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 0,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [],
         "counterattack_gauge_units": 32,
@@ -1085,29 +1100,29 @@
       "adapter": "phase_boundary_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "b8139ebfa4221d3e0640e19b7213cca9cb9c7f14bc095d27defe19b9a56a7fcf",
-        "state_checksum": "7eb0ce7b00861f818e16ec2aa7fdbe1c85a83cd93ced29f95c3b1b1444b83cdc",
+        "snapshot_checksum": "df4aac4cf7b19941f16e87f9bb5ac95b7d8d7f2618b1cd54a4f805c2229193e8",
+        "state_checksum": "9693b014b5cf79da5f2c23ba6f1d2d3f80aa89d828d4ac39a695b561b0a18f9e",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=7eb0ce7b00861f818e16ec2aa7fdbe1c85a83cd93ced29f95c3b1b1444b83cdc\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=9693b014b5cf79da5f2c23ba6f1d2d3f80aa89d828d4ac39a695b561b0a18f9e\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "a589015960f4f9fcf5bd0cc413bb74b84a9ae91bbef6e254dd1de91311bbd513",
-          "log_checksum": "fdff7a38862b09342c554bede61f4a31a83d5f2f0c32dd0e3910a507c49bfa04",
+          "state_checksum": "ce207e9b7298e0bc408204bfe6af378cb0447d3f8d5e017103f27c48c4e9cda3",
+          "log_checksum": "ac8dd51a28db5717371df68e31cc2ff80461bd650e1eb9457e479c743b16bd62",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=a589015960f4f9fcf5bd0cc413bb74b84a9ae91bbef6e254dd1de91311bbd513\nexpected_log_checksum=fdff7a38862b09342c554bede61f4a31a83d5f2f0c32dd0e3910a507c49bfa04\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=ce207e9b7298e0bc408204bfe6af378cb0447d3f8d5e017103f27c48c4e9cda3\nexpected_log_checksum=ac8dd51a28db5717371df68e31cc2ff80461bd650e1eb9457e479c743b16bd62\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "9edc1faef1ed8c3a17de715bc7b93431026b12f7723285a9a40963ad2e899bbb",
-          "log_checksum": "f41da04c1e698c84e283d78cf08f7cddf8260a17a53fb76cd08fe5f9aa3946eb",
+          "state_checksum": "2b829b7737a31d8de2ccca95190f30c34e87d0934a0800a513471fd81dc11053",
+          "log_checksum": "08c4bc5776dc5d45e25e29b9cb5300cb7ae3aaa2586c5289e11ded56523c55ec",
           "ordered_facts": [
             "boundary_stage|turn=14|stage=enemy_normal_action",
             "enemy_passed|turn=14"
@@ -1116,11 +1131,11 @@
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=9edc1faef1ed8c3a17de715bc7b93431026b12f7723285a9a40963ad2e899bbb\nexpected_log_checksum=f41da04c1e698c84e283d78cf08f7cddf8260a17a53fb76cd08fe5f9aa3946eb\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=2b829b7737a31d8de2ccca95190f30c34e87d0934a0800a513471fd81dc11053\nexpected_log_checksum=08c4bc5776dc5d45e25e29b9cb5300cb7ae3aaa2586c5289e11ded56523c55ec\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "3f256335f9512bcaae425456c44edff21e7d931faf7b3507d355e623ac7cb5e0",
-          "log_checksum": "24f8da3a1f2bc426bfc57b11ad049895812df7a3f1ab8bc7942e32534c639cfc",
+          "state_checksum": "c1a13df65df724760d86915a8797b0ba5359c355500ae0c4b97176271735fbd5",
+          "log_checksum": "93dad2abc345f4a8501090d39fc22f1b7137423947086e7f2f795c921d299b6f",
           "ordered_facts": [
             "boundary_stage|turn=14|stage=enemy_counterattack_action",
             "enemy_passed|turn=14",
@@ -1142,13 +1157,14 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "3f256335f9512bcaae425456c44edff21e7d931faf7b3507d355e623ac7cb5e0",
-        "log_checksum": "24f8da3a1f2bc426bfc57b11ad049895812df7a3f1ab8bc7942e32534c639cfc",
+        "state_checksum": "c1a13df65df724760d86915a8797b0ba5359c355500ae0c4b97176271735fbd5",
+        "log_checksum": "93dad2abc345f4a8501090d39fc22f1b7137423947086e7f2f795c921d299b6f",
         "temporary_effect_ids": [],
         "topology_observation_count": 1,
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 0,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [],
         "counterattack_gauge_units": 32,
@@ -1172,29 +1188,29 @@
       "adapter": "expiry_sweep_adapter",
       "seed": 42,
       "initial": {
-        "snapshot_checksum": "37a2ebac927c66106cdb96bb1c2a691471a04e75c2e16b7b84abb4d43a26eb87",
-        "state_checksum": "e41ef760dae790d20ea81b3a7f98513399271fc1b04761a775028b6924d747b9",
+        "snapshot_checksum": "7bff73fcf8b2cb842fbdeffdb25d1a1a9b656b8ff5fb917a99e9f2a831ee6247",
+        "state_checksum": "9db29ec3c33db1f91a60f2ae7857656baa6af5cae5faf1c82a1f8d4f16d4c231",
         "log_checksum": "9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7"
       },
       "commands": [
         {
           "type": "battle.end_player_turn",
           "schema_version": 1,
-          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=e41ef760dae790d20ea81b3a7f98513399271fc1b04761a775028b6924d747b9\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
+          "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=9db29ec3c33db1f91a60f2ae7857656baa6af5cae5faf1c82a1f8d4f16d4c231\nexpected_log_checksum=9852109a3870536498266426d34a87c7cf14ee30c7ab431c4b1df18c394d14d7\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "79f5c541eced7b9e6f368393defe756fbc9867a6f202592f630e643ca385c32a",
-          "log_checksum": "df245f236930e3685083f9e0e43290466c5c458976e154758461bab769f4de19",
+          "state_checksum": "626589b16ec9ca40ff3386b14e285a0a1be3803c96d0d337df34f681f394dd40",
+          "log_checksum": "62231198600ea0bf1336ad7d1ec461f42df06842ca2b46fd4e2e922211761b69",
           "ordered_facts": []
         },
         {
           "type": "battle.resolve_enemy_pass",
           "schema_version": 1,
-          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=79f5c541eced7b9e6f368393defe756fbc9867a6f202592f630e643ca385c32a\nexpected_log_checksum=df245f236930e3685083f9e0e43290466c5c458976e154758461bab769f4de19\n",
+          "canonical_payload": "resolve-enemy-pass-v1\nexpected_state_checksum=626589b16ec9ca40ff3386b14e285a0a1be3803c96d0d337df34f681f394dd40\nexpected_log_checksum=62231198600ea0bf1336ad7d1ec461f42df06842ca2b46fd4e2e922211761b69\n",
           "accepted": true,
           "reason": "accepted",
-          "state_checksum": "833e0eec8291675d57d47847cc856f026d75158fcba997f8cce76e865c6c28d6",
-          "log_checksum": "b8f50540e6dff6b481ab223b081bfa88c373e4fbc2c02c45158638d63f0361e8",
+          "state_checksum": "74f447a942014a952fe9a8c1d4f9c45aec7ce7abcbc3d24b47610baf70da2499",
+          "log_checksum": "6cf592735d726f75d87bb1dc8a826b4e2f6a43cfea2799236144d82b8a77e1f8",
           "ordered_facts": [
             "boundary_stage|turn=15|stage=enemy_normal_action",
             "enemy_passed|turn=15",
@@ -1225,13 +1241,14 @@
         "plan_next_intents"
       ],
       "final": {
-        "state_checksum": "833e0eec8291675d57d47847cc856f026d75158fcba997f8cce76e865c6c28d6",
-        "log_checksum": "b8f50540e6dff6b481ab223b081bfa88c373e4fbc2c02c45158638d63f0361e8",
+        "state_checksum": "74f447a942014a952fe9a8c1d4f9c45aec7ce7abcbc3d24b47610baf70da2499",
+        "log_checksum": "6cf592735d726f75d87bb1dc8a826b4e2f6a43cfea2799236144d82b8a77e1f8",
         "temporary_effect_ids": [],
         "topology_observation_count": 2,
         "reserved_draw": 0,
         "reserved_qi": 0,
         "soul": 0,
+        "standard_capture_rewards_claimed": 0,
         "deferred_choices": [],
         "first_use_flags": [
           "style_sacrifice.first_capture=1"

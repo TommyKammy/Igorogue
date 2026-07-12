@@ -180,6 +180,207 @@ public sealed class AuthoritativeEnemyTurnStateMachineTests
     }
 
     [Fact]
+    public void ArmedCaptureEffectIsConsumedByTheFirstEligibleExpiryBatch()
+    {
+        var board = Board(
+            Stone(StoneColor.White, 2, 2),
+            Stone(StoneColor.Black, 2, 1),
+            Stone(StoneColor.Black, 1, 2),
+            Stone(StoneColor.Black, 3, 2),
+            Stone(StoneColor.Black, 2, 3),
+            Stone(StoneColor.White, 6, 6),
+            Stone(StoneColor.Black, 6, 5),
+            Stone(StoneColor.Black, 5, 6),
+            Stone(StoneColor.Black, 7, 6),
+            Stone(StoneColor.Black, 6, 7));
+        var stones = Runtime(board);
+        var firstWhite = stones.InstanceAt(C(2, 2))!;
+        var secondWhite = stones.InstanceAt(C(6, 6))!;
+        var temporary = TemporaryLibertyState.Create(
+            stones,
+            [
+                new TemporaryLibertyEffect(
+                    "effect.first_guard",
+                    1,
+                    StoneColor.White,
+                    firstWhite.InstanceId,
+                    "test.guard",
+                    1,
+                    1),
+                new TemporaryLibertyEffect(
+                    "effect.second_guard",
+                    1,
+                    StoneColor.White,
+                    secondWhite.InstanceId,
+                    "test.guard",
+                    2,
+                    2),
+            ],
+            3);
+        const string armedFlag = "capture_chain.armed";
+        var plan = CaptureBenefitTriggerPlan.CreateConditional(
+        [
+            new CaptureBenefitTriggerPlanEntry(
+                new CaptureBenefitTrigger(
+                    CaptureBenefitSource.SourceOrArmedEffect("capture_chain", 0),
+                    "capture_chain.armed",
+                    ["capture_chain"],
+                    [
+                        new ReserveQiCaptureBenefitOperation(1),
+                        new ReserveDrawCaptureBenefitOperation(2),
+                    ],
+                    armedFlag),
+                CaptureBenefitTriggerCondition.CapturedWhiteGroup),
+        ]);
+        var initial = Start(
+            stones,
+            temporary,
+            triggerPlan: plan,
+            resources: ClosedWindowResourceState.Empty(
+            [
+                new KeyValuePair<string, bool>(armedFlag, false),
+            ]));
+
+        var first = EnemyPass(EndTurn(initial).SessionAfter);
+
+        Assert.True(first.Accepted);
+        Assert.Equal(BattlePhase.PlayerAction, first.SessionAfter.State.Phase);
+        Assert.Single(first.OrderedFacts.OfType<TurnReservedQiChangedFact>());
+        Assert.Single(first.OrderedFacts.OfType<TurnReservedDrawChangedFact>());
+        Assert.Equal(
+            armedFlag,
+            Assert.Single(first.OrderedFacts.OfType<FirstUseFlagConsumedFact>())
+                .FlagId);
+        var afterFirst = first.SessionAfter.State.AuthoritativeRuntime!;
+        Assert.Equal(1, afterFirst.ClosedWindowResources.TurnReservedQi);
+        Assert.Equal(2, afterFirst.ClosedWindowResources.TurnReservedDraw);
+        Assert.True(afterFirst.ClosedWindowResources.IsFirstUseConsumed(armedFlag));
+
+        var second = EnemyPass(EndTurn(first.SessionAfter).SessionAfter);
+
+        Assert.True(second.Accepted);
+        Assert.Single(second.OrderedFacts.OfType<CaptureBatchStartedFact>());
+        Assert.Empty(second.OrderedFacts.OfType<TurnReservedQiChangedFact>());
+        Assert.Empty(second.OrderedFacts.OfType<TurnReservedDrawChangedFact>());
+        Assert.Empty(second.OrderedFacts.OfType<FirstUseFlagConsumedFact>());
+        var afterSecond = second.SessionAfter.State.AuthoritativeRuntime!;
+        Assert.Equal(1, afterSecond.ClosedWindowResources.TurnReservedQi);
+        Assert.Equal(2, afterSecond.ClosedWindowResources.TurnReservedDraw);
+        Assert.True(afterSecond.ClosedWindowResources.IsFirstUseConsumed(armedFlag));
+    }
+
+    [Theory]
+    [InlineData(StoneColor.Black, true)]
+    [InlineData(StoneColor.White, false)]
+    public void ExpiryFacilityTriggerRequiresAnActiveSurvivingFacility(
+        StoneColor facilityOwner,
+        bool expectedToFire)
+    {
+        var board = Board(
+            Stone(StoneColor.White, 4, 4),
+            Stone(StoneColor.Black, 4, 3),
+            Stone(StoneColor.Black, 3, 4),
+            Stone(StoneColor.Black, 5, 4),
+            Stone(StoneColor.Black, 4, 5));
+        var stones = Runtime(board);
+        var guarded = stones.InstanceAt(C(4, 4))!;
+        var temporary = TemporaryLibertyState.Create(
+            stones,
+            [new TemporaryLibertyEffect(
+                "effect.facility_trigger_guard",
+                1,
+                StoneColor.White,
+                guarded.InstanceId,
+                "test.guard",
+                1,
+                1)],
+            2);
+        var facility = new FacilityInstance(
+            "facility.capture_trigger",
+            "default",
+            facilityOwner,
+            C(1, 1),
+            1);
+        var facilities = FacilityState.Create(board, [facility], 2);
+        var trigger = new CaptureBenefitTrigger(
+            CaptureBenefitSource.Facility(facility.InstanceId, facility.Point),
+            "facility.capture_trigger",
+            ["facility", "capture_trigger"],
+            [new GainSoulCaptureBenefitOperation(5)],
+            null);
+        var plan = CaptureBenefitTriggerPlan.CreateConditional(
+        [
+            new CaptureBenefitTriggerPlanEntry(
+                trigger,
+                CaptureBenefitTriggerCondition.CapturedWhiteGroup),
+        ]);
+        var initial = Start(
+            stones,
+            temporary,
+            triggerPlan: plan,
+            facilities: facilities);
+        Assert.Equal(
+            expectedToFire,
+            initial.State.FacilityRuntimeAnalysis.OperatingStateFor(facility).IsActive);
+
+        var result = EnemyPass(EndTurn(initial).SessionAfter);
+
+        Assert.True(result.Accepted);
+        Assert.Equal(
+            expectedToFire ? 5 : 0,
+            result.SessionAfter.State.AuthoritativeRuntime!.ClosedWindowResources.Soul);
+        Assert.Equal(
+            expectedToFire ? 1 : 0,
+            result.OrderedFacts.OfType<SoulChangedFact>().Count());
+    }
+
+    [Fact]
+    public void PlacementCaptureDoesNotFireTheFacilityItDestroys()
+    {
+        var board = Board(
+            Stone(StoneColor.Black, 2, 2),
+            Stone(StoneColor.White, 2, 1),
+            Stone(StoneColor.White, 1, 2),
+            Stone(StoneColor.White, 3, 2));
+        var stones = Runtime(board);
+        var facility = new FacilityInstance(
+            "facility.capture_target",
+            "default",
+            StoneColor.Black,
+            C(2, 3),
+            1);
+        var facilities = FacilityState.Create(board, [facility], 2);
+        var trigger = new CaptureBenefitTrigger(
+            CaptureBenefitSource.Facility(facility.InstanceId, facility.Point),
+            "facility.destroyed_capture_trigger",
+            ["facility", "destroyed_capture_trigger"],
+            [new GainSoulCaptureBenefitOperation(5)],
+            null);
+        var plan = CaptureBenefitTriggerPlan.CreateConditional(
+        [
+            new CaptureBenefitTriggerPlanEntry(
+                trigger,
+                CaptureBenefitTriggerCondition.CapturedNonKingBlackStone),
+        ]);
+        var initial = Start(stones, triggerPlan: plan, facilities: facilities);
+
+        var result = Place(
+            EndTurn(initial).SessionAfter,
+            2,
+            3,
+            "stone.enemy.destroy_facility");
+
+        Assert.True(result.Accepted);
+        Assert.Single(result.OrderedFacts.OfType<FacilityDestroyedFact>());
+        Assert.Empty(result.OrderedFacts.OfType<SoulChangedFact>());
+        Assert.Null(result.SessionAfter.State.FacilityState.FacilityById(
+            facility.InstanceId));
+        Assert.Equal(
+            0,
+            result.SessionAfter.State.AuthoritativeRuntime!.ClosedWindowResources.Soul);
+    }
+
+    [Fact]
     public void TerminalExpiryOnTurnTwentySuppressesBenefitsAndTurnLimit()
     {
         var board = Board(
@@ -202,7 +403,7 @@ public sealed class AuthoritativeEnemyTurnStateMachineTests
                 20)],
             2);
         var trigger = new CaptureBenefitTrigger(
-            CaptureBenefitSource.StandardAccounting("terminal.test", 0),
+            CaptureBenefitSource.ScoreOrTelemetry("terminal.test", 0),
             "terminal.test",
             ["terminal", "test"],
             [new GainSoulCaptureBenefitOperation(99)],
@@ -451,6 +652,42 @@ public sealed class AuthoritativeEnemyTurnStateMachineTests
     }
 
     [Fact]
+    public void CapturedStoneInstanceIdCannotBeReusedByALaterPlacement()
+    {
+        var board = Board(
+            Stone(StoneColor.Black, 2, 2),
+            Stone(StoneColor.White, 2, 1),
+            Stone(StoneColor.White, 1, 2),
+            Stone(StoneColor.White, 3, 2));
+        var stones = Runtime(board);
+        var capturedId = stones.InstanceAt(C(2, 2))!.InstanceId;
+        var initial = Start(stones);
+        var capture = Place(
+            EndTurn(initial).SessionAfter,
+            2,
+            3,
+            "stone.enemy.capture");
+
+        Assert.True(capture.Accepted);
+        var afterCapture = capture.SessionAfter.State.AuthoritativeRuntime!;
+        Assert.Null(afterCapture.StoneRuntimeState.InstanceById(capturedId));
+        Assert.Contains(capturedId, afterCapture.UsedStoneInstanceIds);
+        Assert.Contains("stone.enemy.capture", afterCapture.UsedStoneInstanceIds);
+        var usedIds = Assert.IsAssignableFrom<ICollection<string>>(
+            afterCapture.UsedStoneInstanceIds);
+        Assert.True(usedIds.IsReadOnly);
+        Assert.Throws<NotSupportedException>(() => usedIds.Add("stone.illegal"));
+        var nextEnemyTurn = EndTurn(capture.SessionAfter).SessionAfter;
+
+        var reuse = Place(nextEnemyTurn, 4, 4, capturedId);
+
+        AssertRejectedExactNoOp(
+            nextEnemyTurn,
+            reuse,
+            "stone_instance_already_used");
+    }
+
+    [Fact]
     public void AuthoritativeV2RejectsFacilityBuildAsAnExactNoOp()
     {
         var initial = Start(Runtime(Board()));
@@ -531,7 +768,7 @@ public sealed class AuthoritativeEnemyTurnStateMachineTests
         var triggers = new[]
         {
             new CaptureBenefitTrigger(
-                CaptureBenefitSource.StandardAccounting("source.a", 1),
+                CaptureBenefitSource.ScoreOrTelemetry("source.a", 1),
                 "trigger.a",
                 ["event", "a"],
                 [new GainSoulCaptureBenefitOperation(1)],

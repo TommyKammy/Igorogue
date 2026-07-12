@@ -86,6 +86,7 @@ public sealed class TemporaryLibertyGoldenFixtureTests
             Assert.Equal(0, fixture.MomentumEventCount);
             Assert.Equal(0, fixture.BrilliantEventCount);
             Assert.Equal(0, fixture.CounterattackFixtureCoverageClaimCount);
+            Assert.InRange(fixture.Final.StandardCaptureRewardsClaimed, 0, 3);
             Assert.Matches("^[0-9a-f]{64}$", fixture.Initial.SnapshotChecksum);
             Assert.Matches("^[0-9a-f]{64}$", fixture.Initial.StateChecksum);
             Assert.Matches("^[0-9a-f]{64}$", fixture.Initial.LogChecksum);
@@ -308,6 +309,8 @@ public sealed class TemporaryLibertyGoldenFixtureTests
         Assert.Equal(
             ["seal_bone:qi_or_draw"],
             tle10.ClosedWindowResources.DeferredPlayerChoices.Select(choice => choice.Id));
+        Assert.True(tle10.ClosedWindowResources.IsFirstUseConsumed(
+            "capture_chain.armed"));
         Assert.Equal(52, tle10.CounterattackState.GaugeUnits);
 
         var tle15Run = TemporaryLibertyGoldenFixtureAdapter.ExecuteCase("TLE-15");

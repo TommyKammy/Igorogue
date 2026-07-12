@@ -216,10 +216,47 @@ public sealed class BattleAuthoritativeInitialSnapshotTests
     }
 
     [Fact]
+    public void CreateRejectsStandardCaptureRewardCountBeyondTriggerPlanLimit()
+    {
+        var stones = Runtime(Board());
+        var trigger = new CaptureBenefitTrigger(
+            CaptureBenefitSource.StandardAccounting("standard", 0),
+            "trigger.standard",
+            ["standard"],
+            [new GainStandardCaptureSoulOperation(1, 1, 3)],
+            null);
+        var plan = CaptureBenefitTriggerPlan.CreateConditional(
+        [
+            new CaptureBenefitTriggerPlanEntry(
+                trigger,
+                CaptureBenefitTriggerCondition.CapturedWhiteGroup,
+                CaptureBenefitTriggerMaterializationMode
+                    .GainStandardCaptureSoulPerWhiteGroup),
+        ]);
+        var resources = ClosedWindowResourceState.Create(
+            0,
+            0,
+            4,
+            4,
+            [],
+            [],
+            1);
+
+        var exception = Assert.Throws<ArgumentException>(() => CreateSnapshot(
+            stones,
+            resources: resources,
+            triggerPlan: plan));
+
+        Assert.Equal("resources", exception.ParamName);
+        Assert.Contains("bounded by exactly one trigger-plan limit", exception.Message);
+    }
+
+    [Fact]
     public void ConditionalTriggerConditionChangesSnapshotCanonicalTextAndChecksum()
     {
         var stones = Runtime(Board(Stone(StoneColor.Black, 1, 1)));
-        var trigger = Trigger(CaptureBenefitSource.StandardAccounting("standard", 0));
+        var trigger = Trigger(
+            CaptureBenefitSource.SourceOrArmedEffect("conditional", 0));
         var anyCaptureEntry = new CaptureBenefitTriggerPlanEntry(
             trigger,
             CaptureBenefitTriggerCondition.AnyCapture);

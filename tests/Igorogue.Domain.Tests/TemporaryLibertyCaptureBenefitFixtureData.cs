@@ -49,6 +49,13 @@ internal static partial class TemporaryLibertyCaptureBenefitFixtureData
         CaptureBatch captureBatch)
     {
         var flags = new List<KeyValuePair<string, bool>>();
+        if (fixture.ArmedCaptureChain)
+        {
+            flags.Add(new KeyValuePair<string, bool>(
+                "capture_chain.armed",
+                false));
+        }
+
         if (fixture.StyleId is not null &&
             captureBatch.NonKingBlackStoneCount > 0 &&
             ContentPolicy.Value.StyleRules[fixture.StyleId]
@@ -88,7 +95,10 @@ internal static partial class TemporaryLibertyCaptureBenefitFixtureData
                 CaptureBenefitSource.StandardAccounting("standard_capture", 0),
                 "standard.capture",
                 ["standard_capture"],
-                [new GainSoulCaptureBenefitOperation(whiteGroupCount)],
+                [new GainStandardCaptureSoulOperation(
+                    soulPerCapturedGroup: 1,
+                    capturedWhiteGroupCount: whiteGroupCount,
+                    battleRewardLimit: 3)],
                 firstUseFlagId: null));
         }
 
@@ -99,7 +109,7 @@ internal static partial class TemporaryLibertyCaptureBenefitFixtureData
                 "armed.capture_chain",
                 ["capture_chain"],
                 ContentPolicy.Value.CaptureChainOperations,
-                firstUseFlagId: null));
+                firstUseFlagId: "capture_chain.armed"));
         }
 
         for (var groupIndex = 0; groupIndex < captureBatch.CapturedGroups.Count; groupIndex++)

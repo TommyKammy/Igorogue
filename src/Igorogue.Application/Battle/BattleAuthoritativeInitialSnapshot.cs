@@ -1,4 +1,6 @@
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Text;
 
 using Igorogue.Domain.Board;
 using Igorogue.Domain.Combat;
@@ -208,6 +210,23 @@ public sealed class BattleAuthoritativeInitialSnapshot
         ClosedWindowResourceState resources,
         CaptureBenefitTriggerPlan plan)
     {
+        var standardRewardLimits = plan.Triggers
+            .SelectMany(trigger => trigger.OrderedOperations)
+            .OfType<GainStandardCaptureSoulOperation>()
+            .Select(operation => operation.BattleRewardLimit)
+            .Distinct()
+            .ToArray();
+        if (standardRewardLimits.Length > 1 ||
+            (standardRewardLimits.Length == 0 &&
+             resources.StandardCaptureRewardsClaimed != 0) ||
+            (standardRewardLimits.Length == 1 &&
+             resources.StandardCaptureRewardsClaimed > standardRewardLimits[0]))
+        {
+            throw new ArgumentException(
+                "Standard capture reward state must be bounded by exactly one trigger-plan limit.",
+                nameof(resources));
+        }
+
         foreach (var trigger in plan.Triggers)
         {
             if (trigger.FirstUseFlagId is not null)
@@ -243,6 +262,8 @@ public sealed class BattleAuthoritativeRuntimeState
 {
     public const string EncodingVersion = "battle-authoritative-runtime-state-v1";
 
+    private readonly ReadOnlyCollection<string> usedStoneInstanceIdView;
+
     internal BattleAuthoritativeRuntimeState(
         StoneRuntimeState stoneRuntimeState,
         TemporaryLibertyState temporaryLibertyState,
@@ -251,6 +272,7 @@ public sealed class BattleAuthoritativeRuntimeState
         CaptureBenefitTriggerPlan captureBenefitTriggerPlan,
         CounterattackBoundaryState counterattackState,
         CounterattackBoundaryPolicy counterattackPolicy,
+        IEnumerable<string> usedStoneInstanceIds,
         EnemyActionStage? enemyActionStage,
         CounterattackPendingAtStartSnapshot? pendingAtEnemyTurnStart)
     {
@@ -261,6 +283,7 @@ public sealed class BattleAuthoritativeRuntimeState
         ArgumentNullException.ThrowIfNull(captureBenefitTriggerPlan);
         ArgumentNullException.ThrowIfNull(counterattackState);
         ArgumentNullException.ThrowIfNull(counterattackPolicy);
+        ArgumentNullException.ThrowIfNull(usedStoneInstanceIds);
         if (!ReferenceEquals(temporaryLibertyState.SourceStones, stoneRuntimeState) ||
             !ReferenceEquals(continuousLibertySnapshot.SourceStones, stoneRuntimeState))
         {
@@ -298,6 +321,35 @@ public sealed class BattleAuthoritativeRuntimeState
                 nameof(pendingAtEnemyTurnStart));
         }
 
+        var canonicalUsedStoneInstanceIds = usedStoneInstanceIds.ToArray();
+        foreach (var instanceId in canonicalUsedStoneInstanceIds)
+        {
+            ValidateStableId(instanceId, nameof(usedStoneInstanceIds));
+        }
+
+        Array.Sort(canonicalUsedStoneInstanceIds, StringComparer.Ordinal);
+        if (canonicalUsedStoneInstanceIds
+            .Zip(canonicalUsedStoneInstanceIds.Skip(1))
+            .Any(pair => StringComparer.Ordinal.Equals(pair.First, pair.Second)))
+        {
+            throw new ArgumentException(
+                "Used stone instance IDs must be unique.",
+                nameof(usedStoneInstanceIds));
+        }
+
+        foreach (var liveStone in stoneRuntimeState.Instances)
+        {
+            if (Array.BinarySearch(
+                    canonicalUsedStoneInstanceIds,
+                    liveStone.InstanceId,
+                    StringComparer.Ordinal) < 0)
+            {
+                throw new ArgumentException(
+                    $"Live stone instance {liveStone.InstanceId} is missing from the used-ID registry.",
+                    nameof(usedStoneInstanceIds));
+            }
+        }
+
         StoneRuntimeState = stoneRuntimeState;
         TemporaryLibertyState = temporaryLibertyState;
         ContinuousLibertySnapshot = continuousLibertySnapshot;
@@ -305,6 +357,7 @@ public sealed class BattleAuthoritativeRuntimeState
         CaptureBenefitTriggerPlan = captureBenefitTriggerPlan;
         CounterattackState = counterattackState;
         CounterattackPolicy = counterattackPolicy;
+        usedStoneInstanceIdView = Array.AsReadOnly(canonicalUsedStoneInstanceIds);
         EnemyActionStage = enemyActionStage;
         PendingAtEnemyTurnStart = pendingAtEnemyTurnStart;
         CanonicalText = CreateCanonicalText();
@@ -324,6 +377,8 @@ public sealed class BattleAuthoritativeRuntimeState
 
     public CounterattackBoundaryPolicy CounterattackPolicy { get; }
 
+    public IReadOnlyList<string> UsedStoneInstanceIds => usedStoneInstanceIdView;
+
     public EnemyActionStage? EnemyActionStage { get; }
 
     public CounterattackPendingAtStartSnapshot? PendingAtEnemyTurnStart { get; }
@@ -342,6 +397,7 @@ public sealed class BattleAuthoritativeRuntimeState
             initial.CaptureBenefitTriggerPlan,
             initial.CounterattackState,
             initial.CounterattackPolicy,
+            initial.StoneRuntimeState.Instances.Select(instance => instance.InstanceId),
             null,
             null);
 
@@ -351,6 +407,7 @@ public sealed class BattleAuthoritativeRuntimeState
         ContinuousLibertySnapshot? continuousLibertySnapshot = null,
         ClosedWindowResourceState? closedWindowResources = null,
         CounterattackBoundaryState? counterattackState = null,
+        string? registeredStoneInstanceId = null,
         EnemyActionStage? enemyActionStage = null,
         CounterattackPendingAtStartSnapshot? pendingAtEnemyTurnStart = null,
         bool clearEnemyActionBoundary = false) =>
@@ -362,37 +419,73 @@ public sealed class BattleAuthoritativeRuntimeState
             CaptureBenefitTriggerPlan,
             counterattackState ?? CounterattackState,
             CounterattackPolicy,
+            registeredStoneInstanceId is null
+                ? usedStoneInstanceIdView
+                : usedStoneInstanceIdView.Append(registeredStoneInstanceId),
             clearEnemyActionBoundary ? null : enemyActionStage ?? EnemyActionStage,
             clearEnemyActionBoundary
                 ? null
                 : pendingAtEnemyTurnStart ?? PendingAtEnemyTurnStart);
 
-    private string CreateCanonicalText() => string.Join(
-        '\n',
-        EncodingVersion,
-        $"enemy_action_stage={EnemyActionStageId(EnemyActionStage)}",
-        $"pending_at_enemy_turn_start={PendingAtEnemyTurnStart switch { null => "none", { PendingAtStart: true } => "1", _ => "0" }}",
-        "stone_runtime_begin",
-        StoneRuntimeState.ToCanonicalText(),
-        "stone_runtime_end",
-        "temporary_liberties_begin",
-        TemporaryLibertyState.ToCanonicalText(),
-        "temporary_liberties_end",
-        "continuous_liberties_begin",
-        ContinuousLibertySnapshot.ToCanonicalText(),
-        "continuous_liberties_end",
-        "closed_window_resources_begin",
-        ClosedWindowResources.ToCanonicalText(),
-        "closed_window_resources_end",
-        "capture_benefit_trigger_plan_begin",
-        CaptureBenefitTriggerPlan.ToCanonicalText(),
-        "capture_benefit_trigger_plan_end",
-        "counterattack_policy_begin",
-        CounterattackPolicy.ToCanonicalText(),
-        "counterattack_policy_end",
-        "counterattack_state_begin",
-        CounterattackState.ToCanonicalText(),
-        "counterattack_state_end");
+    private string CreateCanonicalText()
+    {
+        var lines = new List<string>
+        {
+            EncodingVersion,
+            $"enemy_action_stage={EnemyActionStageId(EnemyActionStage)}",
+            $"pending_at_enemy_turn_start={PendingAtEnemyTurnStart switch { null => "none", { PendingAtStart: true } => "1", _ => "0" }}",
+            $"used_stone_instance_count={usedStoneInstanceIdView.Count.ToString(CultureInfo.InvariantCulture)}",
+        };
+        lines.AddRange(usedStoneInstanceIdView.Select(instanceId =>
+            $"used_stone_instance_id={EncodeStableText(instanceId)}"));
+        lines.AddRange(
+        [
+            "stone_runtime_begin",
+            StoneRuntimeState.ToCanonicalText(),
+            "stone_runtime_end",
+            "temporary_liberties_begin",
+            TemporaryLibertyState.ToCanonicalText(),
+            "temporary_liberties_end",
+            "continuous_liberties_begin",
+            ContinuousLibertySnapshot.ToCanonicalText(),
+            "continuous_liberties_end",
+            "closed_window_resources_begin",
+            ClosedWindowResources.ToCanonicalText(),
+            "closed_window_resources_end",
+            "capture_benefit_trigger_plan_begin",
+            CaptureBenefitTriggerPlan.ToCanonicalText(),
+            "capture_benefit_trigger_plan_end",
+            "counterattack_policy_begin",
+            CounterattackPolicy.ToCanonicalText(),
+            "counterattack_policy_end",
+            "counterattack_state_begin",
+            CounterattackState.ToCanonicalText(),
+            "counterattack_state_end",
+        ]);
+        return string.Join('\n', lines);
+    }
+
+    internal bool HasUsedStoneInstanceId(string instanceId)
+    {
+        ValidateStableId(instanceId, nameof(instanceId));
+        return usedStoneInstanceIdView.Contains(instanceId, StringComparer.Ordinal);
+    }
+
+    private static void ValidateStableId(string value, string parameterName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(value, parameterName);
+        if (value.Any(character =>
+                !char.IsAsciiLetterOrDigit(character) &&
+                character is not '.' and not '_' and not '-'))
+        {
+            throw new ArgumentException(
+                "Stable IDs may contain only ASCII letters, digits, '.', '_', or '-'.",
+                parameterName);
+        }
+    }
+
+    private static string EncodeStableText(string value) =>
+        Convert.ToBase64String(Encoding.UTF8.GetBytes(value));
 
     private static string EnemyActionStageId(EnemyActionStage? stage) => stage switch
     {
