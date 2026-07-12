@@ -68,7 +68,7 @@ Close the bounded Gate 2 plan in TASK-0031, then make only the first dependency-
 - PR #20 merge and post-merge main CI green at `d1f69e10672ed7289c056cee32c4875964494fe4`
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — review; human sign-off evidence not retained
 - [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved owner waiver; not human evidence
-- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — in progress／current
+- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — review／current; independent review approved
 
 ## Next
 

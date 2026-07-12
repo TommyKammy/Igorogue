@@ -88,7 +88,7 @@ cssclasses:
 - [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — done
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — review／human evidence not retained
 - [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved／Gate 2 evidence prerequisite waived
-- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — in progress／current
+- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — review／current; independent review approved
 - [[TASK-0032 Implement Typed Core Duel Content Catalog]] — blocked／next safe production candidate after TASK-0031 merge
 
 ## Latest design repairs

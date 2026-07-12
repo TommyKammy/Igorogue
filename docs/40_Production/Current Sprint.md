@@ -11,10 +11,10 @@ sprint: S0
 
 Complete and review TASK-0031's bounded Gate 2 decomposition without selecting an unresolved starter recipe or starting production implementation early.
 
-## In progress
+## In review
 
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]]
-  - close M1 evidence, record the human-evidence waiver, isolate DECISION-0006, and define TASK-0032〜0042 in dependency order
+  - independent fixed-HEAD review approved; human merge pending
 
 ## Open human evidence
 
