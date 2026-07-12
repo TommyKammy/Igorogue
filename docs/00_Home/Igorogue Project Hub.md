@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]]はPR #18でmerge、post-merge main CI green。[[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] Option 1によりMOM／CTR migrationはM3、TLE-01〜15はM1に確定。[[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]はApplication enemy boundaryとversioned golden／replay evidenceを実装し、human merge待ちのreview中。
+> [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]はPR #19でmerge、post-merge main CI green。[[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]]でTLE-01〜15を含むfixed main evidenceを再監査中。technical resultはcandidate `PASS`だが、Gate 2はTASK-0012二人human sign-off待ち。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -83,7 +83,8 @@ cssclasses:
 - [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]] — done
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — done
-- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — review／current
+- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — done
+- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — in progress／current
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0029
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: critical
@@ -110,6 +110,8 @@ TASK-0027／0028のDomain kernelをheadless Application battleへ接続し、scr
 
 2026-07-12 — independent fixed-HEAD reviewがimplementation commit `5984d373e70f91a5d9bed23a5b703cb068713ed1`をbase `ddccd57db12219847646d0b2de85c18b2c94b120`と比較。正本、全Acceptance、runtime／replay／golden境界、trigger lifetime、standard accounting、negative testsを照合し、actionable findingなし、`APPROVED`。repository wrapperもgreenのため本TASKを`review`へ遷移した。
 
+2026-07-12 — PR #19を人間merge。merged head `141f431c70cf905c2bb0af8b05e72ee382be8c6e`、merge commit／fixed `origin/main` `35139bedb927f4c15b4e62a02c423947d5bdb1da`を確認した。post-merge main CI run `29190754762`のGovernance `86644893062`、Pure .NET `86644908211`、Godot／Windows export `86644948844`がすべてsuccessのため、本TASKを`done`へ遷移した。
+
 ## Evidence
 
 - [[FEAT-011 Temporary Liberty Expiry Fixtures]] TLE-01〜15。
@@ -125,6 +127,7 @@ TASK-0027／0028のDomain kernelをheadless Application battleへ接続し、scr
 - `tools/dev/sim-smoke` ×2 — 連続exit 0。`checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`が両runで一致。bootstrap determinism evidenceとしてのみ使用。
 - `tools/dev/build` — exit 0、warning 0／error 0。`git diff --check` — exit 0。
 - independent implementation fixed-HEAD review — `5984d373e70f91a5d9bed23a5b703cb068713ed1`、base `ddccd57db12219847646d0b2de85c18b2c94b120`、actionable findingなし、`APPROVED`。
+- PR #19 merged head `141f431c70cf905c2bb0af8b05e72ee382be8c6e`／merge commit `35139bedb927f4c15b4e62a02c423947d5bdb1da`／post-merge main CI run `29190754762`全3 job success。
 
 ## Known issues
 
