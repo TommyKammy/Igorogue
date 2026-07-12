@@ -73,7 +73,7 @@ Gate 1／M1のAccepted exit statementsを、fixed main HEADの共有Rules Kernel
 
 2026-07-12 — fixed main-derived worktreeで`tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`を各2回実行し全成功。259 tests、build warning 0／error 0、両sim runのchecksum一致を確認した。`sim-smoke`はbootstrap determinism evidenceだけとして分類した。
 
-2026-07-12 — 独立Codexがfixed HEAD `6e4a41dd02fe1db4daebaeecaf60ac1745b227fd`をroot `CODE_REVIEW.md`に従い再監査。findingなし、`APPROVE`。独立実行の`tools/dev/check`、259／259 tests、`tools/dev/sim-smoke`、docs-only diff／`git diff --check`も全成功した。
+2026-07-12 — 独立Codexがsubstantive audit HEAD `6e4a41dd02fe1db4daebaeecaf60ac1745b227fd`をroot `CODE_REVIEW.md`に従い再監査。findingなし、`APPROVE`。独立実行の`tools/dev/check`、259／259 tests、`tools/dev/sim-smoke`、docs-only diff／`git diff --check`も全成功した。
 
 2026-07-12 — review evidenceを記録したcloseout docs-only HEAD `f4af7a20d080e0e15b6b065f3e93ed8557610826`も独立再監査。`6e4a41d..f4af7a2`は本TASKへ3行のreview evidenceを追記しただけで、findingなし、`APPROVE`。reviewerは記録内容の正確性、`git diff --check`、clean worktreeを確認し、evidence-only diffのためfull test rerunは不要と判断した。
 
