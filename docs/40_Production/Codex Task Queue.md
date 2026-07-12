@@ -25,7 +25,7 @@ updated: 2026-07-12
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] (`in_progress`; Application enemy boundary and TLE-01〜15 versioned golden／replay evidence).
+Current: [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] (`review`; Application enemy boundary and TLE-01〜15 versioned golden／replay evidence implemented; human merge pending).
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
@@ -43,7 +43,7 @@ Current: [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Repla
 14. [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]] — done
 15. [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
 16. [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — done
-17. [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — in progress／current
+17. [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — review／current
 
 [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] resolved Option 1. TLE work runs strictly TASK-0027 → TASK-0028 → TASK-0029; do not parallelize their state contracts. After each human merge, only the immediate successor may move from `blocked` to `ready`. The specification checker remains E1 and cannot substitute for production E3 evidence.
 

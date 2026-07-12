@@ -12,7 +12,7 @@ updated: 2026-07-12
 
 ## Sprint goal
 
-Complete TASK-0029 Application enemy boundary and versioned TLE-01〜15 golden replay evidence.
+Review and merge TASK-0029 Application enemy boundary and versioned TLE-01〜15 golden replay evidence.
 
 ## Health
 
@@ -23,11 +23,11 @@ Complete TASK-0029 Application enemy boundary and versioned TLE-01〜15 golden r
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | Option 1 resolved; M1 technical exit remains `NOT PASSED` for TLE E3 gap |
+| Validation | Yellow | TLE E3 implementation is in review; M1 technical exit awaits merge／re-audit |
 
 ## Blockers
 
-- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — remaining TLE Application／golden replay E3 evidence pending.
+- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — implementation reviewed; human merge／M1 re-audit pending.
 - FEAT-009 independent two-person paper sign-off remains human-only.
 
 ## Current evidence
@@ -63,7 +63,7 @@ Complete TASK-0029 Application enemy boundary and versioned TLE-01〜15 golden r
 - [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — resolved／Option 1
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — done
-- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — in progress／current
+- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — review／current
 
 ## Next
 

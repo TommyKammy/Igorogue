@@ -9,15 +9,12 @@ sprint: S0
 
 ## Goal
 
-Complete TASK-0029 Application enemy boundary and versioned TLE-01〜15 golden replay evidence.
-
-## In progress
-
-- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]
-  - authoritative initial snapshot、normal／bonus boundary、TLE-01〜15 Application golden／replay
+Review and merge TASK-0029 Application enemy boundary and versioned TLE-01〜15 golden replay evidence.
 
 ## In review
 
+- [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]
+  - authoritative initial snapshot、normal／bonus boundary、TLE-01〜15 Application golden／replay implemented; human merge pending
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 

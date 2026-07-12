@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0029
-status: in_progress
+status: review
 project: Igorogue
 milestone: M1
 priority: critical
@@ -104,15 +104,27 @@ TASK-0027／0028のDomain kernelをheadless Application battleへ接続し、scr
 
 2026-07-12 — 同reviewで通常capture Soulの戦闘上限とstatic source lifetimeを追加確認した。standard accounting専用typed operationへSoul単位／group数／injected limitをbindし、resource stateへclaimed countをcanonical化した。上限到達後もcaptured-stone追加Soulは発火する。CapturedStoneSelfの誤条件、uncapped standard Soul、foreign standard operationをconstruction時に拒否し、facility triggerはcurrent activeかつmandatory placement後も同一instanceがsurviveする場合だけ選択する。
 
+2026-07-12 — fixed-HEAD reviewでstandard accountingを異なるsource IDから複数投入できる点と、公開resolverへbatch-derived white group数を偽装できる点を検出した。conditional plan／resolverの双方でstandard sourceを一意化し、resolverではstandard reward operationを最大1件、申告group数をactual black-captures-white group数とexact照合して、state mutation前に拒否する負例を追加した。
+
+2026-07-12 — closeout候補に対して`tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`を各2回連続実行し、全6 commandがexit 0。両runでcontent snapshot、418 tests、simulation checksumが一致し、`tools/dev/build`と`git diff --check`もexit 0。
+
+2026-07-12 — independent fixed-HEAD reviewがimplementation commit `5984d373e70f91a5d9bed23a5b703cb068713ed1`をbase `ddccd57db12219847646d0b2de85c18b2c94b120`と比較。正本、全Acceptance、runtime／replay／golden境界、trigger lifetime、standard accounting、negative testsを照合し、actionable findingなし、`APPROVED`。repository wrapperもgreenのため本TASKを`review`へ遷移した。
+
 ## Evidence
 
 - [[FEAT-011 Temporary Liberty Expiry Fixtures]] TLE-01〜15。
 - [[TASK-0011 Replay Round Trip Verification]] v1 replay／golden integrity contract。
 - PR #18 merge commit `ddccd57db12219847646d0b2de85c18b2c94b120`／post-merge main CI run `29187053532`全3 job success。
+- implementation commits — `70c5e589e073146517bd95a7e4cca2af0b64ba7a`、`5921a4fc305e71297355d8cb39f3db67b3c664bc`、`ca720cf0aadaf144b660a5a5a20fe6604b54ceb6`、`5984d373e70f91a5d9bed23a5b703cb068713ed1`。
 - authoritative boundary evidence — exact initial snapshot、normal／bonus pass・placement、conditional capture benefits、terminal／turn-limit precedence、TLE-13 no Domain sweep events、TLE-14 exact typed stage trace。
 - replay v2 evidence — schema／projection専用integrity、tamper・resource limits・cross-version rejection、unsupported facility attempt exact no-op、TLE-01〜15の二重round trip。
 - golden v2 — `tests/golden/v2/temporary_liberty_cases.json`、catalog SHA-256 `9f6486d9776ec05a0c6972f6fdb1ab6dfc49cdd5c653b05831a83216dea8d180`、source fixture SHA-256 `9f9a74ee9e1407c2b0882b6ccd1aa86ae950dd750fb0bfb4bc3bf12faae20e60`、Momentum／Brilliant／CTR coverage claim各0。
 - rules preflight — placement capture pipeline、expiry conditional trigger、facility command surface、territory source、initial exact-bindingの指摘を修正。security preflight — inverse projection guard／rejected facility attempt保持を修正後、findingなし`APPROVED`。
+- `tools/dev/check` ×2 — 連続exit 0。47 content IDs、content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`が両runで一致。
+- `tools/dev/test` ×2 — 連続exit 0。.NET SDK 8.0.422、Domain 293、Application 105、Architecture 20、計418 tests、warning 0／error 0が両runで一致。
+- `tools/dev/sim-smoke` ×2 — 連続exit 0。`checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`が両runで一致。bootstrap determinism evidenceとしてのみ使用。
+- `tools/dev/build` — exit 0、warning 0／error 0。`git diff --check` — exit 0。
+- independent implementation fixed-HEAD review — `5984d373e70f91a5d9bed23a5b703cb068713ed1`、base `ddccd57db12219847646d0b2de85c18b2c94b120`、actionable findingなし、`APPROVED`。
 
 ## Known issues
 
