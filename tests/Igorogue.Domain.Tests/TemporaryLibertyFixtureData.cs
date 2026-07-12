@@ -61,7 +61,10 @@ internal static class TemporaryLibertyFixtureData
             ?? throw new ArgumentException(
                 $"Fixture {fixture.Id} does not define an enemy-turn index.",
                 nameof(fixture));
-        var stones = CreateStoneRuntime(board, reverseEnumeration);
+        var stones = CreateStoneRuntime(
+            board,
+            fixture.StoneOverrides,
+            reverseEnumeration);
         var effects = fixture.Effects
             .Select(effect => effect.ToDomain(stones))
             .ToArray();
@@ -96,17 +99,38 @@ internal static class TemporaryLibertyFixtureData
 
     internal static StoneRuntimeState CreateStoneRuntime(
         BoardState board,
+        bool reverseEnumeration = false) =>
+        CreateStoneRuntime(board, [], reverseEnumeration);
+
+    internal static StoneRuntimeState CreateStoneRuntime(
+        BoardState board,
+        IReadOnlyList<TemporaryLibertyFixtureStoneOverride> stoneOverrides,
         bool reverseEnumeration = false)
     {
         ArgumentNullException.ThrowIfNull(board);
+        ArgumentNullException.ThrowIfNull(stoneOverrides);
+        var overridesByPoint = stoneOverrides.ToDictionary(
+            item => item.Point,
+            item => item);
         var instances = board.OccupiedStones
-            .Select((stone, index) => new StoneRuntimeInstance(
-                $"stone_{(index + 1).ToString("D2", CultureInfo.InvariantCulture)}",
-                stone,
-                stone.IsKing ? "king" : "standard",
-                index + 1L,
-                []))
+            .Select((stone, index) =>
+            {
+                overridesByPoint.TryGetValue(stone.Point, out var itemOverride);
+                return new StoneRuntimeInstance(
+                    itemOverride?.InstanceId ??
+                        $"stone_{(index + 1).ToString("D2", CultureInfo.InvariantCulture)}",
+                    stone,
+                    itemOverride?.KindId ?? (stone.IsKing ? "king" : "standard"),
+                    index + 1L,
+                    []);
+            })
             .ToArray();
+
+        if (overridesByPoint.Keys.Any(point => board.StoneAt(point) is null))
+        {
+            throw new InvalidDataException(
+                "Temporary-liberty stone override targets an empty point.");
+        }
 
         return StoneRuntimeState.Create(
             board,
@@ -175,6 +199,14 @@ internal static class TemporaryLibertyFixtureData
                 .Select(point => ParsePoint(point, $"{id}/territory_queries"))
                 .ToArray()
             : [];
+        var stoneOverrides = element.TryGetProperty(
+                "stone_overrides",
+                out var overrideElement)
+            ? overrideElement
+                .EnumerateArray()
+                .Select(item => ParseStoneOverride(item, id))
+                .ToArray()
+            : [];
 
         return new TemporaryLibertyFixture(
             id,
@@ -186,6 +218,7 @@ internal static class TemporaryLibertyFixtureData
             element.TryGetProperty("board", out var board)
                 ? ParseBoard(board, $"{id}/board")
                 : null,
+            stoneOverrides,
             effects,
             modifiers,
             element.TryGetProperty("equipped_seals", out var equippedSeals)
@@ -194,14 +227,47 @@ internal static class TemporaryLibertyFixtureData
                     .Select(value => RequiredString(value, $"{id}/equipped_seals"))
                     .ToArray()
                 : [],
+            element.TryGetProperty("equipped_relics", out var equippedRelics)
+                ? equippedRelics
+                    .EnumerateArray()
+                    .Select(value => RequiredString(value, $"{id}/equipped_relics"))
+                    .ToArray()
+                : [],
             element.TryGetProperty("style_id", out var styleId)
                 ? RequiredString(styleId, $"{id}/style_id")
                 : null,
+            element.TryGetProperty("armed_capture_chain", out var captureChain) &&
+                captureChain.GetBoolean(),
+            element.TryGetProperty("style_first_capture_used", out var styleUsed) &&
+                styleUsed.GetBoolean(),
+            element.TryGetProperty("seal_first_capture_used", out var sealUsed) &&
+                sealUsed.GetBoolean(),
+            element.TryGetProperty("start_sacrifice_remainder", out var remainder)
+                ? remainder.GetInt32()
+                : 0,
+            element.TryGetProperty("start_counterattack_units", out var counterattackUnits)
+                ? counterattackUnits.GetInt32()
+                : null,
+            element.TryGetProperty("komi", out var komi) ? komi.GetInt32() : 0,
             element.TryGetProperty("result_topology_seen_before", out var resultSeen) &&
                 resultSeen.GetBoolean(),
             territoryQueries,
             ParseExpected(element.GetProperty("expected"), id));
     }
+
+    private static TemporaryLibertyFixtureStoneOverride ParseStoneOverride(
+        JsonElement element,
+        string fixtureId) =>
+        new(
+            ParsePoint(
+                element.GetProperty("point"),
+                $"{fixtureId}/stone_overrides/point"),
+            RequiredString(
+                element.GetProperty("instance_id"),
+                $"{fixtureId}/stone_overrides/instance_id"),
+            RequiredString(
+                element.GetProperty("kind"),
+                $"{fixtureId}/stone_overrides/kind"));
 
     private static TemporaryLibertyFixtureEffect ParseEffect(
         JsonElement element,
@@ -298,8 +364,40 @@ internal static class TemporaryLibertyFixtureData
             element.TryGetProperty("brilliant_delta", out var brilliantDelta)
                 ? brilliantDelta.GetDouble()
                 : null,
-            OptionalStrings(element, "event_order", fixtureId));
+            OptionalStrings(element, "event_order", fixtureId),
+            OptionalStrings(element, "capturing_colors", fixtureId),
+            element.TryGetProperty("reserved_qi_delta", out var reservedQiDelta)
+                ? reservedQiDelta.GetInt32()
+                : null,
+            OptionalStrings(element, "deferred_choices", fixtureId),
+            OptionalStrings(element, "benefit_event_order", fixtureId),
+            element.TryGetProperty("sacrifice_remainder", out var sacrificeRemainder)
+                ? sacrificeRemainder.GetInt32()
+                : null,
+            element.TryGetProperty("counterattack_advances", out var advances)
+                ? advances
+                    .EnumerateArray()
+                    .Select(advance => ParseCounterattackAdvance(advance, fixtureId))
+                    .ToArray()
+                : null,
+            element.TryGetProperty(
+                "end_counterattack_units",
+                out var endCounterattackUnits)
+                ? endCounterattackUnits.GetInt32()
+                : null,
+            element.TryGetProperty("pending", out var pending)
+                ? pending.GetBoolean()
+                : null);
     }
+
+    private static TemporaryLibertyFixtureCounterattackAdvance ParseCounterattackAdvance(
+        JsonElement element,
+        string fixtureId) =>
+        new(
+            RequiredString(
+                element.GetProperty("reason"),
+                $"{fixtureId}/expected/counterattack_advances/reason"),
+            element.GetProperty("delta_units").GetInt32());
 
     private static TemporaryLibertyFixtureCapturedGroup ParseCapturedGroup(
         JsonElement element,
@@ -437,6 +535,11 @@ internal static class TemporaryLibertyFixtureData
     }
 }
 
+internal sealed record TemporaryLibertyFixtureStoneOverride(
+    CanonicalPoint Point,
+    string InstanceId,
+    string KindId);
+
 internal sealed record TemporaryLibertyFixtureEffect(
     string EffectInstanceId,
     CanonicalPoint AnchorPoint,
@@ -497,6 +600,10 @@ internal sealed record TemporaryLibertyFixtureTerritory(
     int Size,
     int BasicIncome);
 
+internal sealed record TemporaryLibertyFixtureCounterattackAdvance(
+    string Reason,
+    int DeltaUnits);
+
 internal sealed record TemporaryLibertyFixtureExpected(
     IReadOnlyList<string>? ExpiredEffectIds,
     IReadOnlyList<string>? RemainingEffectIds,
@@ -515,7 +622,15 @@ internal sealed record TemporaryLibertyFixtureExpected(
     IReadOnlyDictionary<string, TemporaryLibertyFixtureTerritory> Territories,
     int? MomentumDelta,
     double? BrilliantDelta,
-    IReadOnlyList<string>? EventOrder);
+    IReadOnlyList<string>? EventOrder,
+    IReadOnlyList<string>? CapturingColors,
+    int? ReservedQiDelta,
+    IReadOnlyList<string>? DeferredChoices,
+    IReadOnlyList<string>? BenefitEventOrder,
+    int? SacrificeRemainder,
+    IReadOnlyList<TemporaryLibertyFixtureCounterattackAdvance>? CounterattackAdvances,
+    int? EndCounterattackUnits,
+    bool? Pending);
 
 internal sealed record TemporaryLibertyFixture(
     string Id,
@@ -523,10 +638,18 @@ internal sealed record TemporaryLibertyFixture(
     string Title,
     int? EnemyTurnIndex,
     BoardState? Board,
+    IReadOnlyList<TemporaryLibertyFixtureStoneOverride> StoneOverrides,
     IReadOnlyList<TemporaryLibertyFixtureEffect> Effects,
     IReadOnlyList<TemporaryLibertyFixtureContinuousModifier> ContinuousModifiers,
     IReadOnlyList<string> EquippedSeals,
+    IReadOnlyList<string> EquippedRelics,
     string? StyleId,
+    bool ArmedCaptureChain,
+    bool StyleFirstCaptureUsed,
+    bool SealFirstCaptureUsed,
+    int StartSacrificeRemainder,
+    int? StartCounterattackUnits,
+    int Komi,
     bool ResultTopologySeenBefore,
     IReadOnlyList<CanonicalPoint> TerritoryQueries,
     TemporaryLibertyFixtureExpected Expected);

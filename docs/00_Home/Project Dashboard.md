@@ -12,7 +12,7 @@ updated: 2026-07-12
 
 ## Sprint goal
 
-Complete TASK-0027 temporary-liberty Domain kernel and exact TLE-01〜08／11〜13 owned-projection E3 closeout.
+Complete TASK-0028 closed-window capture benefits and exact TLE-09／10／15 Domain E3 evidence.
 
 ## Health
 
@@ -27,7 +27,7 @@ Complete TASK-0027 temporary-liberty Domain kernel and exact TLE-01〜08／11〜
 
 ## Blockers
 
-- [[TASK-0027 Implement Temporary Liberty Domain Kernel]] → [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] → [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — TLE-01〜15 production／E3 evidence pending.
+- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] → [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — remaining TLE production／E3 evidence pending.
 - FEAT-009 independent two-person paper sign-off remains human-only.
 
 ## Current evidence
@@ -57,14 +57,16 @@ Complete TASK-0027 temporary-liberty Domain kernel and exact TLE-01〜08／11〜
 - PR #14 merge and post-merge main CI green at `6398ec1e4f1e4ecf0c8eeaf71e33bb6ddeff6875`
 - PR #15 merge and post-merge main CI green at `6c34a4fffe00b0fbec9dc5dd3033d84c6229a56d`
 - PR #16 merge and post-merge main CI green at `90dda9dd41b96864a24e19a7969285f56c4593b4`
+- PR #17 merge and post-merge main CI green at `ad50fe7ae7a7170e308c322971380c4e66a2dcb0`
 - [[TASK-0025 Gate 1 Deterministic Foundation Audit]] — fixed-baseline result `DECISION NEEDED`; Option 1 post-audit disposition recorded
 - [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — resolved／Option 1
-- [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — immutable stone runtime、timed／continuous effective liberty、simultaneous expiry、mandatory topology、king gateをproduction Domainへ実装しreview中
+- [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
+- [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — in progress／current
 
 ## Next
 
-1. Review／merge [[TASK-0027 Implement Temporary Liberty Domain Kernel]]
-2. TASK-0027 human merge後にTASK-0028 → TASK-0029を直列実行
+1. Implement／review [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]]
+2. TASK-0028 human merge後にTASK-0029を実行
 3. Complete FEAT-009 independent two-person sign-off
 4. Re-audit M1 exit after TLE E3 migration
 5. Define Gate 2 implementation TASKs only after the gates above permit it

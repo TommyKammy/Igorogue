@@ -17,7 +17,7 @@ updated: 2026-07-12
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | M1 technical exit `NOT PASSED`; TLE workstream pending | TASK-0027 review／current; TASK-0028／0029 blocked by serial dependencies |
+| Product Rules Kernel | M1 technical exit `NOT PASSED`; TLE workstream pending | TASK-0027 done; TASK-0028 in progress; TASK-0029 blocked by serial dependency |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,7 +35,7 @@ updated: 2026-07-12
 
 ## Current gate
 
-[[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]] was merged through PR #16 at `90dda9dd41b96864a24e19a7969285f56c4593b4`; post-merge main CI run `29180540418` is green. Project owner selected [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] Option 1: MOM／CTR production migration belongs to M3, while TLE-01〜15 remains in M1. [[TASK-0027 Implement Temporary Liberty Domain Kernel]] is review／current; TASK-0028→0029 remain serially blocked. M1 exit remains open for the remaining TLE E3 evidence; Gate 2 entry also requires the TASK-0012 human sign-off.
+[[TASK-0027 Implement Temporary Liberty Domain Kernel]] was merged through PR #17 at `ad50fe7ae7a7170e308c322971380c4e66a2dcb0`; post-merge main CI run `29183647493` is green. Project owner selected [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] Option 1: MOM／CTR production migration belongs to M3, while TLE-01〜15 remains in M1. [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] is in progress; TASK-0029 remains serially blocked. M1 exit remains open for the remaining TLE E3 evidence; Gate 2 entry also requires the TASK-0012 human sign-off.
 
 ## Next development sequence
 
@@ -53,8 +53,8 @@ updated: 2026-07-12
 12. TASK-0011 replay round trip — done
 13. TASK-0025 Gate 1／M1 exit audit — done
 14. TASK-0026 M1 MOM／CTR migration boundary — done
-15. TASK-0027 temporary-liberty Domain kernel — review／current
-16. TASK-0028 closed-window capture benefits — blocked／TASK-0027
+15. TASK-0027 temporary-liberty Domain kernel — done
+16. TASK-0028 closed-window capture benefits — in progress／current
 17. TASK-0029 enemy boundary／golden replay integration — blocked／TASK-0028
 
 ## Open human-only item

@@ -77,6 +77,16 @@ public sealed class TemporaryLibertyExpiryResolution
         capturedGroupView = Array.AsReadOnly((StoneGroup[])capturedGroups.Clone());
         capturedStoneInstanceView = Array.AsReadOnly(
             (StoneRuntimeInstance[])capturedStoneInstances.Clone());
+        CaptureBatch = capturedGroups.Length == 0
+            ? null
+            : Igorogue.Domain.Combat.CaptureBatch.Create(
+                $"temporary_liberty_expiry_{enemyTurnIndex.ToString(CultureInfo.InvariantCulture)}",
+                TemporaryLibertyExpiryResolver.TopologySourceReasonId,
+                CaptureBoundary.EnemyTurnTemporaryLibertyExpirySweep,
+                enemyTurnIndex,
+                CapturingWindow.ClosedPlayerWindow,
+                sourceStones,
+                capturedGroups);
         KingCaptureResult = kingCaptureResult;
         BenefitDisposition = benefitDisposition;
         TerritoryAfterResolution = territoryAfterResolution;
@@ -121,6 +131,8 @@ public sealed class TemporaryLibertyExpiryResolution
 
     public IReadOnlyList<StoneRuntimeInstance> CapturedStoneInstances =>
         capturedStoneInstanceView;
+
+    public CaptureBatch? CaptureBatch { get; }
 
     public KingCaptureResult KingCaptureResult { get; }
 

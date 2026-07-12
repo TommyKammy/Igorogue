@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0028
-status: blocked
+status: in_progress
 project: Igorogue
 milestone: M1
 priority: critical
@@ -78,10 +78,15 @@ updated: 2026-07-12
 
 2026-07-12 — DECISION-0005 Option 1のM1 TLE workstream第2段として[[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]]が定義。[[TASK-0027 Implement Temporary Liberty Domain Kernel]]のhuman mergeまで`blocked`。
 
+2026-07-12 — PR #17を人間merge。merged head `f582134ba3d63c1188614d2aeed26f270d6f8422`、merge commit／fixed `origin/main` `ad50fe7ae7a7170e308c322971380c4e66a2dcb0`を確認し、唯一のdependencyが閉じたため本TASKを`ready`へ遷移した。
+
+2026-07-12 — PR #17 post-merge main CI run `29183647493`のGovernance `86625797646`、Pure .NET `86625818827`、Godot／Windows export `86625880445`がすべてsuccessであることを確認した。Outcome、Non-goals、Acceptanceを再確認し、共通capture batch、pre-resolved typed operation、closed-window resource、最小counterattack boundaryだけをpure Domainへ追加する方針で本TASKを`in_progress`へ遷移した。
+
 ## Evidence
 
 - [[FEAT-011 Temporary Liberty Expiry Fixtures]] TLE-09／10／15。
 - [[TASK-0025 Gate 1 Deterministic Foundation Audit]] TLEのcapture-benefit／counterattack dependency。
+- PR #17 merge commit `ad50fe7ae7a7170e308c322971380c4e66a2dcb0`／post-merge main CI run `29183647493`全3 job success。
 
 ## Known issues
 

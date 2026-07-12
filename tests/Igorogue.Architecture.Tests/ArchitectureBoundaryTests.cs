@@ -163,6 +163,18 @@ public sealed class ArchitectureBoundaryTests
             typeof(TemporaryLibertyKingGateFact),
             typeof(CaptureBenefitSuppressedFact),
             typeof(TemporaryLibertyExpirySweepResolvedFact),
+            typeof(CaptureBatchStartedFact),
+            typeof(TurnReservedDrawChangedFact),
+            typeof(TurnReservedQiChangedFact),
+            typeof(SoulChangedFact),
+            typeof(DeferredPlayerChoiceCreatedFact),
+            typeof(FirstUseFlagConsumedFact),
+            typeof(SacrificeRemainderChangedFact),
+            typeof(SacrificeBatchAdvancedFact),
+            typeof(CounterattackAdvancedFact),
+            typeof(CounterattackPendingPrimedFact),
+            typeof(CounterattackPendingConsumedFact),
+            typeof(CaptureBatchResolvedFact),
         };
 
         Assert.All(factTypes, type =>
@@ -261,6 +273,146 @@ public sealed class ArchitectureBoundaryTests
     }
 
     [Fact]
+    public void ClosedWindowCapturePipelineUsesTypedInputsAndNonForgeableResults()
+    {
+        var createBatch = RequirePublicStaticMethod(
+            typeof(CaptureBatch),
+            nameof(CaptureBatch.Create),
+            typeof(string),
+            typeof(string),
+            typeof(CaptureBoundary),
+            typeof(int?),
+            typeof(CapturingWindow),
+            typeof(StoneRuntimeState),
+            typeof(IEnumerable<StoneGroup>));
+        Assert.Equal(typeof(CaptureBatch), createBatch.ReturnType);
+        var resolve = RequirePublicStaticMethod(
+            typeof(ClosedWindowCaptureBenefitResolver),
+            nameof(ClosedWindowCaptureBenefitResolver.Resolve),
+            typeof(CaptureBatch),
+            typeof(ClosedWindowResourceState),
+            typeof(CounterattackBoundaryState),
+            typeof(CounterattackBoundaryPolicy),
+            typeof(IEnumerable<CaptureBenefitTrigger>));
+        Assert.Equal(typeof(ClosedWindowCaptureBenefitResolution), resolve.ReturnType);
+        var triggerConstructor = Assert.Single(typeof(CaptureBenefitTrigger).GetConstructors());
+        Assert.Equal(
+            new[]
+            {
+                typeof(CaptureBenefitSource),
+                typeof(string),
+                typeof(IEnumerable<string>),
+                typeof(IEnumerable<CaptureBenefitOperation>),
+                typeof(string),
+            },
+            triggerConstructor.GetParameters().Select(parameter => parameter.ParameterType));
+        Assert.DoesNotContain(
+            typeof(CaptureBatch).Assembly.GetExportedTypes(),
+            type => type.Name == "CaptureBenefitOrderKey");
+
+        Assert.Empty(typeof(CaptureBatch).GetConstructors());
+        Assert.Empty(typeof(CapturedGroup).GetConstructors());
+        Assert.Empty(typeof(CaptureBenefitSource).GetConstructors());
+        Assert.Empty(typeof(ClosedWindowResourceState).GetConstructors());
+        Assert.Empty(typeof(ClosedWindowCaptureBenefitResolution).GetConstructors());
+        Assert.Empty(typeof(CounterattackBoundaryState).GetConstructors());
+        Assert.Empty(typeof(CounterattackBoundaryTransition).GetConstructors());
+        Assert.Empty(typeof(CounterattackPendingAtStartSnapshot).GetConstructors());
+        var createCounterattack = RequirePublicStaticMethod(
+            typeof(CounterattackBoundaryState),
+            nameof(CounterattackBoundaryState.Create),
+            typeof(int),
+            typeof(bool),
+            typeof(int),
+            typeof(CounterattackBoundaryPolicy));
+        Assert.Equal(typeof(CounterattackBoundaryState), createCounterattack.ReturnType);
+        Assert.All(
+            new[]
+            {
+                typeof(CaptureBatchStartedFact),
+                typeof(TurnReservedDrawChangedFact),
+                typeof(TurnReservedQiChangedFact),
+                typeof(SoulChangedFact),
+                typeof(DeferredPlayerChoiceCreatedFact),
+                typeof(FirstUseFlagConsumedFact),
+                typeof(SacrificeRemainderChangedFact),
+                typeof(SacrificeBatchAdvancedFact),
+                typeof(CounterattackAdvancedFact),
+                typeof(CounterattackPendingPrimedFact),
+                typeof(CounterattackPendingConsumedFact),
+                typeof(CaptureBatchResolvedFact),
+            },
+            type => Assert.Empty(type.GetConstructors()));
+    }
+
+    [Fact]
+    public void CounterattackBoundaryExposesOnlyTheTask0028Operations()
+    {
+        var methods = typeof(CounterattackBoundaryResolver)
+            .GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+            .OrderBy(method => method.Name, StringComparer.Ordinal)
+            .ToArray();
+
+        Assert.Equal(
+            [
+                nameof(CounterattackBoundaryResolver.AdvanceEnemyTurnEnd),
+                nameof(CounterattackBoundaryResolver.AdvanceSacrifice),
+                nameof(CounterattackBoundaryResolver.ConsumeAndReprimeOnce),
+                nameof(CounterattackBoundaryResolver.SnapshotPendingAtEnemyTurnStart),
+            ],
+            methods.Select(method => method.Name));
+        Assert.All(
+            methods.Where(method =>
+                method.Name != nameof(
+                    CounterattackBoundaryResolver.SnapshotPendingAtEnemyTurnStart)),
+            method => Assert.Equal(
+                typeof(CounterattackBoundaryTransition),
+                method.ReturnType));
+        Assert.Equal(
+            typeof(CounterattackPendingAtStartSnapshot),
+            RequirePublicStaticMethod(
+                typeof(CounterattackBoundaryResolver),
+                nameof(CounterattackBoundaryResolver.SnapshotPendingAtEnemyTurnStart),
+                typeof(CounterattackBoundaryState),
+                typeof(CounterattackBoundaryPolicy)).ReturnType);
+    }
+
+    [Fact]
+    public void Task0028DomainDoesNotInterpretContentIdsOrClaimDeferredSystems()
+    {
+        var root = FindRepositoryRoot();
+        var domainRoot = Path.Combine(root.FullName, "src", "Igorogue.Domain");
+        var sourceText = string.Join(
+            '\n',
+            Directory.EnumerateFiles(domainRoot, "*.cs", SearchOption.AllDirectories)
+                .OrderBy(path => path, StringComparer.Ordinal)
+                .Select(File.ReadAllText));
+
+        Assert.All(
+            new[]
+            {
+                "style_sacrifice",
+                "seal_bone",
+                "stone_lure",
+                "stone_blood",
+                "lure",
+                "blood",
+                "relic_hungry_furnace",
+                "seal_sacrifice",
+                "capture_chain",
+                "MOM-",
+                "CTR-",
+                "CounterattackIntent",
+                "Overextension",
+                "Brilliant",
+            },
+            forbidden => Assert.DoesNotContain(
+                forbidden,
+                sourceText,
+                StringComparison.Ordinal));
+    }
+
+    [Fact]
     public void FacilityAfterPlacementResolutionRequiresThePlacementCommit()
     {
         var reassociate = RequirePublicStaticMethod(
@@ -322,6 +474,18 @@ public sealed class ArchitectureBoundaryTests
                 typeof(StoneRuntimePlacementDescriptor),
                 typeof(StoneRuntimePlacementCommit),
                 typeof(StoneRuntimePlacementIntegrator),
+                typeof(CaptureBatch),
+                typeof(CaptureBenefitSource),
+                typeof(CaptureBenefitTrigger),
+                typeof(CaptureBenefitOperation),
+                typeof(ClosedWindowResourceState),
+                typeof(ClosedWindowCaptureBenefitResolver),
+                typeof(ClosedWindowCaptureBenefitResolution),
+                typeof(CounterattackBoundaryState),
+                typeof(CounterattackBoundaryPolicy),
+                typeof(CounterattackBoundaryResolver),
+                typeof(CounterattackBoundaryTransition),
+                typeof(CounterattackPendingAtStartSnapshot),
             ])
             .Distinct()
             .ToArray();
@@ -362,6 +526,18 @@ public sealed class ArchitectureBoundaryTests
             typeof(TemporaryLibertyKingGateFact),
             typeof(CaptureBenefitSuppressedFact),
             typeof(TemporaryLibertyExpirySweepResolvedFact),
+            typeof(CaptureBatchStartedFact),
+            typeof(TurnReservedDrawChangedFact),
+            typeof(TurnReservedQiChangedFact),
+            typeof(SoulChangedFact),
+            typeof(DeferredPlayerChoiceCreatedFact),
+            typeof(FirstUseFlagConsumedFact),
+            typeof(SacrificeRemainderChangedFact),
+            typeof(SacrificeBatchAdvancedFact),
+            typeof(CounterattackAdvancedFact),
+            typeof(CounterattackPendingPrimedFact),
+            typeof(CounterattackPendingConsumedFact),
+            typeof(CaptureBatchResolvedFact),
         };
 
         Assert.All(nonForgeableTypes, type => Assert.Empty(type.GetConstructors()));
