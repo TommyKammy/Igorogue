@@ -9,15 +9,12 @@ sprint: S0
 
 ## Goal
 
-Complete and independently review TASK-0030 M1 technical exit re-audit without opening Gate 2 before the human prerequisite.
-
-## In progress
-
-- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]]
-  - fixed main exit matrix、TLE E3 evidence、technical／human gate separation
+Review and merge TASK-0030 M1 technical exit re-audit without opening Gate 2 before the human prerequisite.
 
 ## In review
 
+- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]]
+  - independent fixed-HEAD review approved; M1 technical `PASS`／Gate 2 `BLOCKED`
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 

@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]はPR #19でmerge、post-merge main CI green。[[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]]でTLE-01〜15を含むfixed main evidenceを再監査中。technical resultはcandidate `PASS`だが、Gate 2はTASK-0012二人human sign-off待ち。
+> [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]はPR #19でmerge、post-merge main CI green。[[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]]はTLE-01〜15を含むfixed main evidenceを再監査し、independent reviewでM1 technical `PASS`。Gate 2はTASK-0012二人human sign-off待ち。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -84,7 +84,7 @@ cssclasses:
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — done
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — done
-- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — in progress／current
+- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — review／current
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

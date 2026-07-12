@@ -1,7 +1,7 @@
 ---
 type: gate-audit
 id: TASK-0030-M1-EXIT-REAUDIT
-status: review
+status: pass
 project: Igorogue
 milestone: M1
 updated: 2026-07-12
@@ -107,3 +107,4 @@ M1 technical exitは共有Rules Kernel／Application／golden／replayのE3 evid
 - `tools/dev/sim-smoke` ×2 — exit 0。同一checksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`。bootstrap determinism evidenceとしてのみ使用。
 - `tools/dev/build` — exit 0、warning 0／error 0。
 - `git diff --check` — exit 0。
+- independent fixed-HEAD review — substantive audit HEAD `d8f971c1fa594e2129fb31fdf5b75e6913cebc6e`をbase `35139bedb927f4c15b4e62a02c423947d5bdb1da`と比較。matrix、sources、artifact／tests、境界、docs-only scope、GitHub evidenceを直接照合し、actionable findingなし、`APPROVE`。

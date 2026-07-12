@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0030
-status: in_progress
+status: review
 project: Igorogue
 milestone: M1
 priority: critical
@@ -86,11 +86,20 @@ PR #19 merge後のfixed main HEADでM1 Headless Rules KernelのAccepted exit sta
 
 2026-07-12 — TASK-0012の二人human sign-offはpendingのため、technical resultと分離して`GATE 2 ENTRY: BLOCKED`、Gate 2 implementation TASKはnot-readyを維持した。
 
+2026-07-12 — fixed main-derived worktreeで`tools/dev/check`、`tools/dev/test`、`tools/dev/sim-smoke`を各2回実行し全成功。47 content IDs／content snapshot、418 tests、simulation checksumが両runで一致し、`tools/dev/build`と`git diff --check`もexit 0。変更は許可されたMarkdown 9件だけで、TASK-0025、production、tests、`game_data/`、toolchain、Godot assetsは不変である。
+
+2026-07-12 — independent fixed-HEAD reviewがsubstantive audit commit `d8f971c1fa594e2129fb31fdf5b75e6913cebc6e`をbase `35139bedb927f4c15b4e62a02c423947d5bdb1da`と比較。GitHub evidence、全matrix row、MOM／CTR／TLE境界、UI-less／formal simulator／card loop、TASK-0012 human gate、docs-only scopeを直接照合し、actionable findingなし、`APPROVE`。technical `PASS`を確定し、本TASKを`review`へ遷移した。
+
 ## Evidence
 
 - fixed main HEAD `35139bedb927f4c15b4e62a02c423947d5bdb1da`。
 - PR #19 human merge／post-merge main CI run `29190754762`全3 job success。
 - [[TASK-0030 M1 Headless Rules Kernel Exit Re-audit]] — fixed-HEAD exit matrix、TLE E3 migration、UI-less／formal-simulator／human-gate境界、technical `PASS`／Gate 2 `BLOCKED`判定。
+- `tools/dev/check` ×2 — exit 0。47 content IDs、content snapshot `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`一致。
+- `tools/dev/test` ×2 — exit 0。.NET SDK 8.0.422、Domain 293、Application 105、Architecture 20、計418 tests、warning 0／error 0。
+- `tools/dev/sim-smoke` ×2 — exit 0。同一checksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`。bootstrap determinism evidence限定。
+- `tools/dev/build`、`git diff --check` — exit 0。
+- independent fixed-HEAD review — `d8f971c1fa594e2129fb31fdf5b75e6913cebc6e`、base `35139bedb927f4c15b4e62a02c423947d5bdb1da`、actionable findingなし、`APPROVE`。
 
 ## Known issues
 

@@ -8,11 +8,11 @@ updated: 2026-07-12
 
 ## Phase
 
-`M0 Repository Bootstrap`からTLE-01〜15を含むM1 implementation workstreamまでは実装・review・CI・merge済み。DECISION-0005 Option 1でMOM／CTR migrationはM3へ確定。M1 technical exitをTASK-0030で再監査中であり、Gate 2 entryはTASK-0012 human sign-off待ち。
+`M0 Repository Bootstrap`からTLE-01〜15を含むM1 implementation workstreamまでは実装・review・CI・merge済み。DECISION-0005 Option 1でMOM／CTR migrationはM3へ確定。TASK-0030のindependent reviewによりM1 technical exitは`PASS`、Gate 2 entryはTASK-0012 human sign-off待ち。
 
 ## Sprint goal
 
-Complete and independently review TASK-0030 M1 technical exit re-audit without opening Gate 2 early.
+Review and merge TASK-0030 M1 technical exit re-audit while keeping Gate 2 blocked by its human prerequisite.
 
 ## Health
 
@@ -23,11 +23,11 @@ Complete and independently review TASK-0030 M1 technical exit re-audit without o
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | M1 technical result candidate `PASS`; independent review pending |
+| Validation | Yellow | M1 technical exit `PASS`; TASK-0012 human evidence pending |
 
 ## Blockers
 
-- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — independent fixed-HEAD review pending.
+- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — approved; human merge pending.
 - FEAT-009 independent two-person paper sign-off remains human-only.
 
 ## Current evidence
@@ -65,7 +65,7 @@ Complete and independently review TASK-0030 M1 technical exit re-audit without o
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — done
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — done
-- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — in progress／current
+- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — review／current
 
 ## Next
 

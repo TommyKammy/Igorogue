@@ -17,7 +17,7 @@ updated: 2026-07-12
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | M1 technical exit candidate `PASS`; independent re-audit review pending | TASK-0027〜0029 done; TASK-0030 in progress |
+| Product Rules Kernel | M1 technical exit `PASS` | TASK-0027〜0029 done; TASK-0030 approved／review |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,7 +35,7 @@ updated: 2026-07-12
 
 ## Current gate
 
-[[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] was merged through PR #19 at `35139bedb927f4c15b4e62a02c423947d5bdb1da`; post-merge main CI run `29190754762` is green. [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] is tracing the fixed main artifacts against every Accepted M1 statement. The substantive audit result is candidate `PASS`, pending independent review. Gate 2 remains blocked by the separate TASK-0012 two-human sign-off even if the technical result is approved.
+[[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] was merged through PR #19 at `35139bedb927f4c15b4e62a02c423947d5bdb1da`; post-merge main CI run `29190754762` is green. [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] traced every Accepted M1 statement to fixed-main E3 evidence; independent review approved `M1 TECHNICAL EXIT: PASS`. Gate 2 remains blocked by the separate TASK-0012 two-human sign-off.
 
 ## Next development sequence
 
@@ -56,7 +56,7 @@ updated: 2026-07-12
 15. TASK-0027 temporary-liberty Domain kernel — done
 16. TASK-0028 closed-window capture benefits — done
 17. TASK-0029 enemy boundary／golden replay integration — done
-18. TASK-0030 M1 Headless Rules Kernel exit re-audit — in progress／current
+18. TASK-0030 M1 Headless Rules Kernel exit re-audit — review／current
 
 ## Open human-only item
 

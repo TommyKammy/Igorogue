@@ -39,7 +39,7 @@ updated: 2026-07-12
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — done
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — done
-- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — in progress／current
+- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — review／current
 
 See [[Codex Task Queue]] for gate order and concurrency rules.
 
