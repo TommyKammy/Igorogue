@@ -9,18 +9,17 @@ sprint: S0
 
 ## Goal
 
-Resolve DECISION-0005 Option 1 across accepted／active sources and define the serial TLE M1 production／E3 workstream.
+Complete TASK-0027 temporary-liberty Domain kernel and exact TLE-01〜08／11〜13 owned-projection E3 closeout.
 
 ## Blocked
 
-- [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — blocked／TASK-0026 human merge
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — blocked／TASK-0027 human merge
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — blocked／TASK-0028 human merge
 
 ## In review
 
-- [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]]
-  - owner-selected Option 1 source sync and TLE workstream definition
+- [[TASK-0027 Implement Temporary Liberty Domain Kernel]]
+  - stone runtime、effective liberty、simultaneous expiry、mandatory topology、king gate、TLE owned-projection E3 evidence
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]
   - independent two-person paper sign-off pending
 
@@ -45,10 +44,11 @@ Resolve DECISION-0005 Option 1 across accepted／active sources and define the s
 - [[TASK-0011 Replay Round Trip Verification]]
 - [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]]
 - [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — Option 1
+- [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]]
 
-## Next after TASK-0026
+## Next after TASK-0027
 
-- After TASK-0026 human merge, make TASK-0027 `ready` and execute TASK-0027 → TASK-0028 → TASK-0029 serially.
+- After TASK-0027 human merge, make TASK-0028 `ready` and execute TASK-0028 → TASK-0029 serially.
 - Complete TASK-0012 two-human paper sign-off.
 - Re-audit M1 exit before making any Gate 2 task `ready`.
 

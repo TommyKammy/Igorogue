@@ -25,7 +25,7 @@ updated: 2026-07-12
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]] (`review`; DECISION-0005 Option 1 source sync and serial TLE workstream definition).
+Current: [[TASK-0027 Implement Temporary Liberty Domain Kernel]] (`review`; temporary-liberty Domain lifecycle and TLE owned-projection E3 evidence).
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
@@ -40,8 +40,8 @@ Current: [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]] (`re
 11. [[TASK-0009 Golden Board Fixtures]] — done
 12. [[TASK-0011 Replay Round Trip Verification]] — done
 13. [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] — done
-14. [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]] — review／current
-15. [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — blocked／TASK-0026
+14. [[TASK-0026 Resolve M1 Momentum Counterattack Migration Boundary]] — done
+15. [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — review／current
 16. [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — blocked／TASK-0027
 17. [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — blocked／TASK-0028
 

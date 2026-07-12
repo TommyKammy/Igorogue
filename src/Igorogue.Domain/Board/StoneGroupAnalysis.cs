@@ -9,16 +9,20 @@ public sealed class StoneGroupAnalysis
     private readonly StoneGroup?[] groupsByCanonicalIndex;
 
     internal StoneGroupAnalysis(
-        BoardGeometry geometry,
+        BoardState sourceBoard,
         StoneGroup[] groups,
         StoneGroup?[] groupsByCanonicalIndex)
     {
-        this.geometry = geometry;
+        ArgumentNullException.ThrowIfNull(sourceBoard);
+        SourceBoard = sourceBoard;
+        geometry = sourceBoard.Geometry;
         groupView = Array.AsReadOnly((StoneGroup[])groups.Clone());
         this.groupsByCanonicalIndex = (StoneGroup?[])groupsByCanonicalIndex.Clone();
     }
 
     public IReadOnlyList<StoneGroup> Groups => groupView;
+
+    public BoardState SourceBoard { get; }
 
     internal BoardGeometry Geometry => geometry;
 

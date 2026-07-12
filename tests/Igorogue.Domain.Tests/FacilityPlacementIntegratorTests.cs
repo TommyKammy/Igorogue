@@ -51,6 +51,8 @@ public sealed class FacilityPlacementIntegratorTests
         var topologyFact = Assert.IsType<StoneTopologyRegisteredFact>(commit.OrderedFacts[^2]);
         Assert.Same(commit.RegisteredTopologyKey, topologyFact.RegisteredTopologyKey);
         Assert.Same(commit.HistoryAfterCommit, topologyFact.HistoryAfterRegistration);
+        Assert.True(topologyFact.FirstSeen);
+        Assert.Equal("legal_placement", topologyFact.SourceReasonId);
         var kingFact = Assert.IsType<KingCaptureEvaluatedFact>(commit.OrderedFacts[^1]);
         Assert.Same(commit.KingCaptureResult, kingFact.Result);
 

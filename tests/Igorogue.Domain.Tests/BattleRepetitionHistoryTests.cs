@@ -114,6 +114,9 @@ public sealed class BattleRepetitionHistoryTests
         Assert.DoesNotContain(
             typeof(BattleRepetitionHistory).GetMethods(),
             method => method.Name == "RegisterLegalPlacement");
+        Assert.DoesNotContain(
+            typeof(BattleRepetitionHistory).GetMethods(),
+            method => method.Name.Contains("Mandatory", StringComparison.Ordinal));
     }
 
     [Fact]

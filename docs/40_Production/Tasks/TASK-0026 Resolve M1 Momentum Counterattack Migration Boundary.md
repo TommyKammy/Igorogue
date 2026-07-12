@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0026
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: high
@@ -79,6 +79,8 @@ Project ownerが選択した[[DECISION-0005 Resolve M1 Golden Migration and Gate
 
 2026-07-12 — independent fixed-HEAD reviewが`03fa1e6698a3d4cae053c464a02cc6d7a240e961`をparent／`origin/main` `6c34a4fffe00b0fbec9dc5dd3033d84c6229a56d`と比較。Option 1 source sync、fixed audit保存、status／dependency、TLE境界、docs-only scopeにfindingなし、`APPROVE`。
 
+2026-07-12 — PR #16を人間merge。merged head `eae7b616768ee7934795f31eec133a3940607390`、merge commit `90dda9dd41b96864a24e19a7969285f56c4593b4`、post-merge main CI run `29180540418`全3 job成功を確認し、本TASKを`done`へ遷移した。
+
 ## Evidence
 
 - PR #15 merged head `1e629504284e9a198d794fb9dada9417cf46e2e3`／merge commit `6c34a4fffe00b0fbec9dc5dd3033d84c6229a56d`。
@@ -90,7 +92,9 @@ Project ownerが選択した[[DECISION-0005 Resolve M1 Golden Migration and Gate
 - `tools/dev/sim-smoke` — exit 0。`checksum=3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`。bootstrap determinism evidenceとしてのみ使用。
 - `git diff --check` — exit 0。変更は22 Markdown filesだけで、production code、tests、`game_data/`、Godot assetにdiffなし。
 - independent fixed-HEAD review — `03fa1e6698a3d4cae053c464a02cc6d7a240e961`、findingなし、`APPROVE`。reviewer側もcheck、259 tests、sim-smoke、base diff checkすべてexit 0。
+- PR #16 merged head `eae7b616768ee7934795f31eec133a3940607390`／merge commit `90dda9dd41b96864a24e19a7969285f56c4593b4`。
+- post-merge main CI run `29180540418` — Governance `86617175981`、Pure .NET `86617194216`、Godot／Windows export `86617238452`すべてsuccess。
 
 ## Known issues
 
-TLE-01〜15のproduction／E3 evidenceとTASK-0012の二人human sign-offは未完了である。本TASKはそれらを実装済みまたはGate 2 entry済みと扱わない。TASK-0026のhuman mergeまではTASK-0027〜0029を`blocked`のまま維持する。
+TLE-01〜15のproduction／E3 evidenceとTASK-0012の二人human sign-offは未完了である。本TASKはそれらを実装済みまたはGate 2 entry済みと扱わない。TASK-0027をcurrentとし、TASK-0028／0029は各直前TASKのhuman mergeまで`blocked`を維持する。
