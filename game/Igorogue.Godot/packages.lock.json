@@ -30,7 +30,10 @@
         }
       },
       "igorogue.content": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "Igorogue.Domain": "[1.0.0, )"
+        }
       },
       "igorogue.domain": {
         "type": "Project"

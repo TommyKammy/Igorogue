@@ -143,8 +143,8 @@ def main() -> int:
     if app_refs != {"src/Igorogue.Domain/Igorogue.Domain.csproj"}:
         errors.append(f"Application refs mismatch: {sorted(app_refs)}")
     content_refs = normalized_project_refs(ROOT / "src/Igorogue.Content/Igorogue.Content.csproj")
-    if content_refs:
-        errors.append(f"Content must have no project references, got {sorted(content_refs)}")
+    if content_refs != {"src/Igorogue.Domain/Igorogue.Domain.csproj"}:
+        errors.append(f"Content refs mismatch: {sorted(content_refs)}")
     sim_refs = normalized_project_refs(ROOT / "tools/Igorogue.Sim.Cli/Igorogue.Sim.Cli.csproj")
     if sim_refs != {
         "src/Igorogue.Application/Igorogue.Application.csproj",

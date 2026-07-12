@@ -2,7 +2,7 @@
 type: backlog
 status: active
 project: Igorogue
-updated: 2026-07-12
+updated: 2026-07-13
 ---
 # Backlog
 
@@ -47,8 +47,8 @@ See [[Codex Task Queue]] for gate order and concurrency rules.
 ## M2 Core Duel ordered queue
 
 - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — open／blocks TASK-0038 resolved recipe／Development scope application
-- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — review／current; independent review approved
-- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — blocked／next safe production candidate after TASK-0031 merge
+- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
+- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — in progress／current
 - [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — blocked by TASK-0032
 - [[TASK-0034 Implement Atomic Basic Stone Card Play]] — blocked by TASK-0033
 - [[TASK-0035 Implement Starter Stone Card Effects]] — blocked by TASK-0034

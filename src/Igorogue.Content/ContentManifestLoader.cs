@@ -1,4 +1,6 @@
+using System.Buffers.Binary;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 
 namespace Igorogue.Content;
@@ -26,8 +28,12 @@ public sealed class ContentManifestLoader
             ?? throw new InvalidDataException("Generated content manifest is empty.");
 
         ValidateManifest(manifest);
-        ValidateFiles(fullPath, manifest);
-        return new ContentSnapshot(fullPath, manifest.ContentHash, manifest.Files);
+        var verifiedContent = ValidateFilesAndAggregateHash(fullPath, manifest);
+        return new ContentSnapshot(
+            fullPath,
+            manifest.ContentHash,
+            manifest.Files,
+            verifiedContent);
     }
 
     private static void ValidateManifest(ContentManifest manifest)
@@ -73,11 +79,15 @@ public sealed class ContentManifestLoader
         }
     }
 
-    private static void ValidateFiles(string manifestPath, ContentManifest manifest)
+    private static Dictionary<string, byte[]> ValidateFilesAndAggregateHash(
+        string manifestPath,
+        ContentManifest manifest)
     {
         var manifestDirectory = Path.GetDirectoryName(manifestPath)
             ?? throw new InvalidDataException("Manifest path has no parent directory.");
         var filesRoot = Path.GetFullPath(Path.Combine(manifestDirectory, "files"));
+        var verifiedContent = new Dictionary<string, byte[]>(StringComparer.Ordinal);
+        using var aggregate = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
 
         foreach (var file in manifest.Files)
         {
@@ -105,14 +115,43 @@ public sealed class ContentManifestLoader
                     $"Generated content length mismatch for '{file.Path}': expected {file.Bytes}, got {info.Length}.");
             }
 
-            using var stream = File.OpenRead(contentPath);
-            var actualHash = $"sha256:{Convert.ToHexString(SHA256.HashData(stream)).ToLowerInvariant()}";
+            var content = File.ReadAllBytes(contentPath);
+            var actualHash = $"sha256:{Convert.ToHexString(SHA256.HashData(content)).ToLowerInvariant()}";
             if (!string.Equals(actualHash, file.Sha256, StringComparison.Ordinal))
             {
                 throw new InvalidDataException(
                     $"Generated content hash mismatch for '{file.Path}'.");
             }
+
+            AppendAggregateFile(aggregate, file.Path, content);
+            verifiedContent.Add(file.Path, content);
         }
+
+        var aggregateHash =
+            $"sha256:{Convert.ToHexString(aggregate.GetHashAndReset()).ToLowerInvariant()}";
+        if (!string.Equals(aggregateHash, manifest.ContentHash, StringComparison.Ordinal))
+        {
+            throw new InvalidDataException("Generated aggregate content hash mismatch.");
+        }
+
+        return verifiedContent;
+    }
+
+    private static void AppendAggregateFile(
+        IncrementalHash aggregate,
+        string relativePath,
+        ReadOnlySpan<byte> content)
+    {
+        var pathBytes = Encoding.UTF8.GetBytes(relativePath);
+        Span<byte> pathLength = stackalloc byte[sizeof(uint)];
+        BinaryPrimitives.WriteUInt32LittleEndian(pathLength, checked((uint)pathBytes.Length));
+        aggregate.AppendData(pathLength);
+        aggregate.AppendData(pathBytes);
+
+        Span<byte> contentLength = stackalloc byte[sizeof(ulong)];
+        BinaryPrimitives.WriteUInt64LittleEndian(contentLength, checked((ulong)content.Length));
+        aggregate.AppendData(contentLength);
+        aggregate.AppendData(content);
     }
 
     private static void ValidateHash(string value, string fieldName)

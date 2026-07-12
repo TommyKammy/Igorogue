@@ -7,6 +7,7 @@ using Igorogue.Content;
 using Igorogue.Domain.Board;
 using Igorogue.Domain.Bootstrap;
 using Igorogue.Domain.Combat;
+using Igorogue.Domain.Content;
 using Igorogue.Domain.Facilities;
 
 namespace Igorogue.Architecture.Tests;
@@ -44,6 +45,38 @@ public sealed class ArchitectureBoundaryTests
             .ToArray();
 
         Assert.DoesNotContain(references, name => name.StartsWith("Godot", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void ContentAssemblyReferencesOnlyTheApprovedProductionLayer()
+    {
+        var productionReferences = typeof(CoreDuelContentCatalogLoader).Assembly
+            .GetReferencedAssemblies()
+            .Select(reference => reference.Name ?? string.Empty)
+            .Where(name => name.StartsWith("Igorogue.", StringComparison.Ordinal))
+            .OrderBy(name => name, StringComparer.Ordinal)
+            .ToArray();
+
+        Assert.Equal(new[] { "Igorogue.Domain" }, productionReferences);
+    }
+
+    [Fact]
+    public void DomainContentDefinitionsExposeNoHostOrJsonTypes()
+    {
+        var offenders = typeof(CoreDuelContentCatalog).Assembly
+            .GetExportedTypes()
+            .Where(type => type.Namespace == typeof(CoreDuelContentCatalog).Namespace)
+            .SelectMany(type => PublicSurfaceTypes(type).Select(signatureType => (type, signatureType)))
+            .SelectMany(pair => ExpandSignatureType(pair.signatureType)
+                .Select(expanded => (pair.type, signatureType: expanded)))
+            .Where(pair =>
+                pair.signatureType.Namespace?.StartsWith("System.IO", StringComparison.Ordinal) == true ||
+                pair.signatureType.Namespace?.StartsWith("System.Text.Json", StringComparison.Ordinal) == true ||
+                pair.signatureType.Namespace?.StartsWith("Godot", StringComparison.Ordinal) == true ||
+                pair.signatureType.Assembly.GetName().Name is "Igorogue.Application" or "Igorogue.Content")
+            .ToArray();
+
+        Assert.Empty(offenders);
     }
 
     [Fact]
@@ -608,7 +641,7 @@ public sealed class ArchitectureBoundaryTests
             new[] { "src/Igorogue.Domain/Igorogue.Domain.csproj" });
         AssertProjectReferences(
             Path.Combine(root.FullName, "src/Igorogue.Content/Igorogue.Content.csproj"),
-            Array.Empty<string>());
+            new[] { "src/Igorogue.Domain/Igorogue.Domain.csproj" });
         AssertProjectReferences(
             Path.Combine(root.FullName, "tools/Igorogue.Sim.Cli/Igorogue.Sim.Cli.csproj"),
             new[]

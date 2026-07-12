@@ -2,7 +2,7 @@
 type: roadmap
 status: active
 project: Igorogue
-updated: 2026-07-12
+updated: 2026-07-13
 ---
 # Codex Task Queue
 
@@ -56,10 +56,10 @@ The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DEC
 
 Entry is owner-authorized open because M1 exit evidence including TLE-01〜15 E3 migration is complete and DECISION-0007 explicitly waives the unverified TASK-0012 human-evidence prerequisite.
 
-Current: [[TASK-0031 Plan Gate 2 Core Duel Implementation]] (`review`; independent fixed-HEAD review approved; human merge pending).
+Current: [[TASK-0032 Implement Typed Core Duel Content Catalog]] (`in_progress`; PR #21 merged and dependency TASK-0031 is `done`).
 
-1. [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — review／current
-2. [[TASK-0032 Implement Typed Core Duel Content Catalog]] — blocked until TASK-0031 merge; first safe production candidate
+1. [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
+2. [[TASK-0032 Implement Typed Core Duel Content Catalog]] — in progress／current
 3. [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — blocked by TASK-0032
 4. [[TASK-0034 Implement Atomic Basic Stone Card Play]] — blocked by TASK-0033
 5. [[TASK-0035 Implement Starter Stone Card Effects]] — blocked by TASK-0034

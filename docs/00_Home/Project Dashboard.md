@@ -2,7 +2,7 @@
 type: dashboard
 status: active
 project: Igorogue
-updated: 2026-07-12
+updated: 2026-07-13
 ---
 # Project Dashboard
 
@@ -12,7 +12,7 @@ updated: 2026-07-12
 
 ## Sprint goal
 
-Close the bounded Gate 2 plan in TASK-0031, then make only the first dependency-safe production task eligible for work.
+Implement TASK-0032's typed Core Duel content boundary without selecting a starting recipe or resolving gameplay effects.
 
 ## Health
 
@@ -68,10 +68,11 @@ Close the bounded Gate 2 plan in TASK-0031, then make only the first dependency-
 - PR #20 merge and post-merge main CI green at `d1f69e10672ed7289c056cee32c4875964494fe4`
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — review; human sign-off evidence not retained
 - [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved owner waiver; not human evidence
-- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — review／current; independent review approved
+- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done; PR #21 merge／post-merge CI green
+- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — in progress／current
 
 ## Next
 
-1. Complete／review／merge [[TASK-0031 Plan Gate 2 Core Duel Implementation]]
-2. Resolve [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] before TASK-0038 applies the default recipe／Development scope
-3. Start [[TASK-0032 Implement Typed Core Duel Content Catalog]] after TASK-0031 merge; keep later tasks blocked by dependency order
+1. Implement／review／merge [[TASK-0032 Implement Typed Core Duel Content Catalog]]
+2. Keep [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] blocked until TASK-0032 human merge
+3. Resolve [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] before TASK-0038 applies the default recipe／Development scope

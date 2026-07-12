@@ -1,12 +1,12 @@
 ---
 type: task
 id: TASK-0032
-status: blocked
+status: in_progress
 project: Igorogue
 milestone: M2
 priority: critical
 dependencies: [TASK-0031]
-updated: 2026-07-12
+updated: 2026-07-13
 ---
 # TASK-0032 Implement Typed Core Duel Content Catalog
 
@@ -35,6 +35,10 @@ updated: 2026-07-12
 - `src/Igorogue.Content/`とContent → Domainのapproved project reference。
 - content definitionに必要な最小`src/Igorogue.Domain/` value types。
 - Content／Architecture tests。
+- `tests/Igorogue.Application.Tests/BootstrapApplicationTests.cs`の既存Content manifest integrity tests。
+- `tools/check_repository_bootstrap.py`のapproved Content → Domain reference assertion。
+- `tools/check_enemy_behaviors.py`と対応unit testのenemy schema-derived action budget assertion。
+- project reference変更で生成差分が生じる`packages.lock.json`。
 - 本TASKとstatus文書。
 
 ## Acceptance criteria
@@ -53,4 +57,28 @@ updated: 2026-07-12
 
 ## Known issues
 
-TASK-0031 human mergeまで`blocked`。merge後に唯一の次production TASKとして`ready`へ遷移できる。
+DECISION-0006のstarting recipe／facility scopeは未解決だが、本TASKのcandidate definition projectionをblockしない。starting recipeとeffect executionは実装しない。
+
+## Execution log
+
+2026-07-13 — PR #21 human mergeとpost-merge main CI successによりdependency TASK-0031が`done`。本TASKを唯一の次production taskとして`ready`にした。
+
+2026-07-13 — Project ownerの継続指示を本TASK選択として記録。fixed main `708852d900f84d0b4905706b99dd77415b6a0ae8`から専用worktree／branchを作成し、Outcome、Non-goals、Allowed areas、Acceptance、Validationを再確認して`in_progress`へ遷移した。
+
+2026-07-13 — accepted architectureと現governanceを照合。Content → Domain project referenceはTASKで承認済みだが、`tools/check_repository_bootstrap.py`とArchitecture testが旧no-reference境界を固定しているため、Allowed areasへ限定assertion更新とaffected lockfileを明記した。
+
+2026-07-13 — immutableなDomain content definitionsとtyped loaderを実装。starter候補6種のordered operations／capture trigger、山賊棋士のbehavior／priority／fallback、base qi／base drawをcontent hashへbindし、unknown／duplicate／dangling／cyclic／unsupported shapeをfail-closedにした。starting recipe、effect execution、deck／hand、enemy rankingは導入していない。
+
+2026-07-13 — independent pre-commit auditの3 findingを反映。manifest検証済みbytesをsnapshotへ保持して同一bytesをparseし、mandatory overrideと通常／反攻priorityの重複、enemy schema外action budgetを負例付きで拒否した。
+
+2026-07-13 — Content → Domain reference追加後に`tools/dev/update-locks`を実行し、影響する5つの`packages.lock.json`だけを再生成・確認した。最終差分に対してgovernance、Release build、全444 .NET test、simulator smokeを成功させた。
+
+## Evidence
+
+- PR #21 merge commit `708852d900f84d0b4905706b99dd77415b6a0ae8`／post-merge main CI run `29210667448`全3 job success。
+- `tools/dev/check` exit 0。47 content IDs、generated content hash `sha256:b411ddf2dfb8e876370d11f2259368b7d898fcfebe8a4e4fb24c30802968ee06`（7 files）。
+- `tools/dev/build` exit 0。exact .NET SDK `8.0.422`、0 warnings／0 errors。
+- `tools/dev/test` exit 0。Domain 293、Application 106、Architecture 45、合計444 tests pass。
+- governance unit tests exit 0。schema-derived action budget negativesを含む17 tests pass、abstract simulator 2 tests pass。
+- `tools/dev/sim-smoke` exit 0。checksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`、同一content hash、7 files。
+- `tools/dev/update-locks` exit 0。Content project dependency追加に伴うContent／Application.Tests／Architecture.Tests／Sim.Cli／Godotの5 lockfileを更新。
