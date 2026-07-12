@@ -25,7 +25,7 @@ updated: 2026-07-12
 
 Run serially unless a later architecture review explicitly permits parallel work.
 
-Current: [[TASK-0011 Replay Round Trip Verification]] (`review`; double validation、independent fixed-HEAD review、draft PR #14 initial CI green; human merge pending).
+Current: [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] (`blocked`; Gate 1 technical sequence merged, M1 exit awaits MOM／CTR DECISION-0005, bounded TLE M1 E3 work, and TASK-0012 human sign-off).
 
 1. [[TASK-0002 Deterministic RNG and Command Log]]
 2. [[TASK-0003 Board Coordinates and Orthogonal Neighbours]]
@@ -38,14 +38,17 @@ Current: [[TASK-0011 Replay Round Trip Verification]] (`review`; double validati
 9. [[TASK-0010 Headless Battle State Machine]] — done
 10. [[TASK-0024 Authorized Facility Build Battle Command]] — done
 11. [[TASK-0009 Golden Board Fixtures]] — done
-12. [[TASK-0011 Replay Round Trip Verification]] — review／current
+12. [[TASK-0011 Replay Round Trip Verification]] — done
+13. [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] — blocked／[[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]]
+
+Required follow-up before M1 exit: assign a TASK after DECISION-0005 to implement the bounded TLE production lifecycle and migrate TLE-01〜15 to E3 unit／golden evidence. The task must expose dependencies for TLE-09／10／14／15 and must not treat the specification checker as product evidence.
 
 [[DECISION-0003 Sequence Golden Replay After Battle State Machine]] resolved the post-TASK-0023 order as TASK-0010→TASK-0009→TASK-0011.
 The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] resolved the exact-fixture evidence contract as Option 1.
 
 ## Gate 2 — Core Duel
 
-Only after M1 exit evidence:
+Only after M1 exit evidence including TLE-01〜15 E3 migration, DECISION-0005 resolution, and the required TASK-0012 human sign-off:
 
 - basic deck/hand/qi loop;
 - 山賊棋士 intent execution;

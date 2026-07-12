@@ -17,7 +17,7 @@ updated: 2026-07-12
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | replay round trip implemented and independently approved | TASK-0002〜0010、TASK-0023、TASK-0024 merged; TASK-0011 review |
+| Product Rules Kernel | Gate 1 implementation sequence merged; M1 exit blocked | MOM／CTR decision、TLE M1 gap、TASK-0012 human sign-off pending |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,7 +35,7 @@ updated: 2026-07-12
 
 ## Current gate
 
-[[TASK-0009 Golden Board Fixtures]] was merged through PR #13 at `b2bfceca8bf88046aa100d563b62c6697d1afcd6`; post-merge main CI run `29155541603` is green. [[TASK-0011 Replay Round Trip Verification]] fixed HEAD `32226c661d159fd14de9620b9c2d2cbb8b286e84` passed double local validation and independent review; draft PR #14 initial CI is green and human merge remains.
+[[TASK-0011 Replay Round Trip Verification]] was merged through PR #14 at `6398ec1e4f1e4ecf0c8eeaf71e33bb6ddeff6875`; post-merge main CI run `29171325730` is green. [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] confirmed the ordered technical sequence but found a MOM／CTR M1-versus-M3 source conflict and an independent missing TLE M1 runtime／golden migration. [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] resolution, TLE E3 follow-up, and the TASK-0012 human sign-off block M1 exit／Gate 2 entry.
 
 ## Next development sequence
 
@@ -50,7 +50,8 @@ updated: 2026-07-12
 9. TASK-0010 state machine — done
 10. TASK-0024 authorized facility build command — done
 11. TASK-0009 golden fixtures — done
-12. TASK-0011 replay round trip — review／current
+12. TASK-0011 replay round trip — done
+13. TASK-0025 Gate 1／M1 exit audit — blocked／DECISION-0005
 
 ## Open human-only item
 

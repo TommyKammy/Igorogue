@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0011 Replay Round Trip Verification]]は19 golden cases／34 Application attemptsのdouble validationと独立fixed-HEAD reviewを完了。draft PR #14 initial CI green、人間merge待ち。
+> [[TASK-0011 Replay Round Trip Verification]]はPR #14でmerge、post-merge main CI green。[[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]]はMOM／CTR milestone conflictとTLE M1 implementation gapを検出し、[[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]]のowner判断待ち。
 
 > [!success] 実装ゲート
 > Gate 1は基盤と利用側を並列化せず、TASK-0002からTASK-0011まで依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -77,7 +77,9 @@ cssclasses:
 - [[DECISION-0004 Separate Exact Fixtures from Reachable Battle Replays]] — resolved／Option 1
 - [[TASK-0024 Authorized Facility Build Battle Command]] — done
 - [[TASK-0009 Golden Board Fixtures]] — done
-- [[TASK-0011 Replay Round Trip Verification]] — review／current
+- [[TASK-0011 Replay Round Trip Verification]] — done
+- [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]] — blocked／current
+- [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — open／blocking TASK-0025
 - FEAT-009 independent two-person paper sign-off
 
 ## Latest design repairs

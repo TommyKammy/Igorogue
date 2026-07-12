@@ -8,11 +8,11 @@ updated: 2026-07-12
 
 ## Phase
 
-`M0 Repository Bootstrap`からversioned golden board evidenceまでは実装・review・CI・merge済み。Gate 1のreplay round tripは実装・double validation・独立fixed-HEAD review済みで、人間merge待ち。
+`M0 Repository Bootstrap`からGate 1 ordered implementation sequenceまでは実装・review・CI・merge済み。M1 exitはMOM／CTR milestone Decision、TLE runtime／golden gap、TASK-0012 human sign-off待ち。
 
 ## Sprint goal
 
-Implement deterministic replay save／load／verification without bypassing Application commands.
+Audit Gate 1／M1 exit evidence without overstating E1 fixtures or bootstrap simulator smoke.
 
 ## Health
 
@@ -23,10 +23,12 @@ Implement deterministic replay save／load／verification without bypassing Appl
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | TASK-0011 draft PR #14 initial CI green; human merge pending |
+| Validation | Yellow | Gate 1 technical sequence green; M1 exit blocked by DECISION-0005, TLE E3 gap, and TASK-0012 human sign-off |
 
 ## Blockers
 
+- [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]] — MOM／CTR M1 migration versus Gate 3／M3 conflict.
+- TLE-01〜15 production lifecycle／E3 migration — missing M1 evidence under current Accepted scope.
 - FEAT-009 independent two-person paper sign-off remains human-only.
 
 ## Current evidence
@@ -53,9 +55,13 @@ Implement deterministic replay save／load／verification without bypassing Appl
 - canonical authorized facility build command with merged PR #12 evidence
 - schema-v1 golden suite with 19 cases、35 boundaries、source hashes、ordered facts、exact no-op rejection evidence
 - versioned replay envelope with 34 submitted attempts、accepted-only log chain、strict bounded Stream I/O、typed replay and fail-closed integrity evidence
+- PR #14 merge and post-merge main CI green at `6398ec1e4f1e4ecf0c8eeaf71e33bb6ddeff6875`
+- [[TASK-0025 Gate 1 Deterministic Foundation Audit]] — technical sequence complete、M1 exit `DECISION NEEDED`
 
 ## Next
 
-1. Review／merge [[TASK-0011 Replay Round Trip Verification]]
-2. FEAT-009 independent two-person sign-off
-3. A-6 style data/document synchronization checker
+1. Resolve [[DECISION-0005 Resolve M1 Golden Migration and Gate 2 Entry]]
+2. Define and complete the bounded TLE M1 production／E3 follow-up required by current Accepted scope
+3. Complete FEAT-009 independent two-person sign-off
+4. Re-run／close [[TASK-0025 Audit Gate 1 Deterministic Foundation Completion]]
+5. Define Gate 2 implementation TASKs only after the gates above permit it
