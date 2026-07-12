@@ -12,12 +12,12 @@ updated: 2026-07-12
 |---|---|---|
 | Core concept | promising, not play-validated | design review only |
 | Player-visible rules | major M-1 repairs accepted | specifications + deterministic fixtures |
-| Enemy intent | 山賊棋士／侵入者 specified | FEAT-009 + fixtures; human two-person sign-off pending |
+| Enemy intent | 山賊棋士／侵入者 specified; human evidence unverified | FEAT-009 + fixtures; Gate 2 progression authorized by DECISION-0007 waiver |
 | Engine architecture | accepted | ADR-0001 |
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Product Rules Kernel | M1 technical exit `PASS` | TASK-0027〜0029 done; TASK-0030 approved／review |
+| Product Rules Kernel | M1 technical exit `PASS` | TASK-0027〜0030 done; PR #20 merged／CI green |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
 | Human fun validation | not started | M3 required |
@@ -35,7 +35,7 @@ updated: 2026-07-12
 
 ## Current gate
 
-[[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] was merged through PR #19 at `35139bedb927f4c15b4e62a02c423947d5bdb1da`; post-merge main CI run `29190754762` is green. [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] traced every Accepted M1 statement to fixed-main E3 evidence; independent review approved `M1 TECHNICAL EXIT: PASS`. Gate 2 remains blocked by the separate TASK-0012 two-human sign-off.
+[[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] was merged through PR #20 at `d1f69e10672ed7289c056cee32c4875964494fe4`; post-merge main CI run `29193892563` is green. Its independent review approved `M1 TECHNICAL EXIT: PASS`. [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]の二人human sign-off evidenceはrepositoryで未確認だが、Project ownerは実施済みと仮定して先へ進むよう指示した。[[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]]がこの指示をevidence completionではなくgate waiverとして記録したため、Gate 2 entryはowner-authorized openである。[[TASK-0031 Plan Gate 2 Core Duel Implementation]] is independently approved and in `review`. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] blocks resolved recipe／Development scope application, but does not block the first typed-content task.
 
 ## Next development sequence
 
@@ -56,13 +56,15 @@ updated: 2026-07-12
 15. TASK-0027 temporary-liberty Domain kernel — done
 16. TASK-0028 closed-window capture benefits — done
 17. TASK-0029 enemy boundary／golden replay integration — done
-18. TASK-0030 M1 Headless Rules Kernel exit re-audit — review／current
+18. TASK-0030 M1 Headless Rules Kernel exit re-audit — done
+19. TASK-0012 FEAT-009 two-human paper evidence — review／not retained; Gate 2 prerequisite waived by DECISION-0007
+20. TASK-0031 Gate 2 Core Duel decomposition — review／current
+21. TASK-0032 typed Core Duel content catalog — blocked until TASK-0031 merge; next safe production candidate
+22. TASK-0033〜0042 — blocked in dependency order
 
-## Open human-only item
+## Human-only evidence waiver
 
-[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] remains in review until two independent humans solve the decision fixtures without reading expected outputs and agree on the same intents and placements.
-
-Codex review cannot be represented as two-human sign-off.
+[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] remains `review` because raw worksheets, signer identities, execution dates, and results are not stored. The Project owner's 2026-07-12 instruction authorizes proceeding on the assumption that sign-off occurred; [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] waives only the Gate 2 prerequisite and does not convert that assumption into human evidence.
 
 ## Evidence classes
 

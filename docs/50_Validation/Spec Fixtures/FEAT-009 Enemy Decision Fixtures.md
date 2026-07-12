@@ -3,7 +3,7 @@ type: spec-fixture
 status: active
 project: Igorogue
 feature: FEAT-009
-updated: 2026-07-10
+updated: 2026-07-12
 ---
 # FEAT-009 Enemy Decision Fixtures
 
@@ -122,7 +122,7 @@ updated: 2026-07-10
 
 | reviewer | date | cases | result | notes |
 |---|---|---|---|---|
-| Reviewer A |  | F09-01〜08 | pending |  |
-| Reviewer B |  | F09-01〜08 | pending |  |
+| Reviewer A |  | F09-01〜08 | evidence not retained | identity／worksheet／actual result not stored |
+| Reviewer B |  | F09-01〜08 | evidence not retained | identity／worksheet／actual result not stored |
 
-2名一致後、[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]を`validated`へ移す。
+Project ownerは2026-07-12、「TASK-0012の二人human sign-offは行った前提で先に進めてください」と明示した。[[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]]はこの指示をowner-authorized assumption／gate waiverとして記録する。実施、一致、reviewer identityを証明するものではなく、[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]は`review`を維持する。

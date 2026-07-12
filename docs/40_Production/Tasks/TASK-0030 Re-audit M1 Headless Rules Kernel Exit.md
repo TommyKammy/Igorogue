@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0030
-status: review
+status: done
 project: Igorogue
 milestone: M1
 priority: critical
@@ -90,6 +90,10 @@ PR #19 merge後のfixed main HEADでM1 Headless Rules KernelのAccepted exit sta
 
 2026-07-12 — independent fixed-HEAD reviewがsubstantive audit commit `d8f971c1fa594e2129fb31fdf5b75e6913cebc6e`をbase `35139bedb927f4c15b4e62a02c423947d5bdb1da`と比較。GitHub evidence、全matrix row、MOM／CTR／TLE境界、UI-less／formal simulator／card loop、TASK-0012 human gate、docs-only scopeを直接照合し、actionable findingなし、`APPROVE`。technical `PASS`を確定し、本TASKを`review`へ遷移した。
 
+2026-07-12 — PR #20を人間merge。merged head `5f194a9987ba314a2eefe9f30b020d31901fc79e`、merge commit／post-merge main HEAD `d1f69e10672ed7289c056cee32c4875964494fe4`を確認した。main push CI run `29193892563`のGovernance `86653293786`、Pure .NET `86653311052`、Godot／Windows export `86653371594`はすべてsuccess。本TASKを`done`へ遷移した。
+
+2026-07-12 — 後続のProject owner指示はTASK-0012 sign-offを実施済みと仮定して先行するgate waiverとして記録した。re-audit時点の`GATE 2 ENTRY: BLOCKED`判定とhuman evidence未確認を履歴として保持しつつ、[[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]]によりGate 2 entryをowner-authorized openとする。
+
 ## Evidence
 
 - fixed main HEAD `35139bedb927f4c15b4e62a02c423947d5bdb1da`。
@@ -100,7 +104,8 @@ PR #19 merge後のfixed main HEADでM1 Headless Rules KernelのAccepted exit sta
 - `tools/dev/sim-smoke` ×2 — exit 0。同一checksum `3b59c2c2c2f20ec64af8a325a38ea48e7647935fa4a90c06ce2251e49879bcdd`。bootstrap determinism evidence限定。
 - `tools/dev/build`、`git diff --check` — exit 0。
 - independent fixed-HEAD review — `d8f971c1fa594e2129fb31fdf5b75e6913cebc6e`、base `35139bedb927f4c15b4e62a02c423947d5bdb1da`、actionable findingなし、`APPROVE`。
+- PR #20 human merge — merged head `5f194a9987ba314a2eefe9f30b020d31901fc79e`、merge commit `d1f69e10672ed7289c056cee32c4875964494fe4`、post-merge main CI run `29193892563`全3 job success。
 
 ## Known issues
 
-[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]の独立した人間2名によるpaper sign-offはpendingであり、Codex reviewでは代替しない。本auditのtechnical resultにかかわらず、human evidenceが揃うまでGate 2 entryはblockedである。
+本re-audit reportのGate 2 `BLOCKED`はaudited fixed HEAD時点の結論として保持する。[[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]]のraw worksheet／identityはrepository未保存で、TASK statusは`review`のままである。後続のowner-authorized assumption／gate waiverを[[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]]へ記録したため、human evidence完了とは主張せずGate 2 entryだけをopenとする。

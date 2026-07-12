@@ -14,9 +14,10 @@ updated: 2026-07-12
 - [[TASK-0020 Review Repository Bootstrap Runtime Evidence]] — done
 - [[TASK-0002 Deterministic RNG and Command Log]] — done
 
-## M-1 remaining review
+## M-1 remaining evidence and waiver
 
-- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — two-person paper sign-off pending
+- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — review／two-person evidence not retained
+- [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved／Gate 2 prerequisite waived by Project owner
 - TASK-0013 through TASK-0019 — done
 - A-6 style data/document synchronization checker — P1
 - A-8 content reference validation expansion — P1
@@ -39,10 +40,24 @@ updated: 2026-07-12
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — done
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — done
-- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — review／current
+- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — done
 
 See [[Codex Task Queue]] for gate order and concurrency rules.
 
-## M2 and later
+## M2 Core Duel ordered queue
 
-Do not mark tasks ready until M1 exit evidence exists. Do not expand the full card/relic/meta content before Core Duel and Acceleration Lab validation.
+- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — open／blocks TASK-0038 resolved recipe／Development scope application
+- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — review／current; independent review approved
+- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — blocked／next safe production candidate after TASK-0031 merge
+- [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — blocked by TASK-0032
+- [[TASK-0034 Implement Atomic Basic Stone Card Play]] — blocked by TASK-0033
+- [[TASK-0035 Implement Starter Stone Card Effects]] — blocked by TASK-0034
+- [[TASK-0036 Implement Starter Reinforce Effect]] — blocked by TASK-0035
+- [[TASK-0037 Implement Bandit Intent Planning and Execution]] — blocked by TASK-0036
+- [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — blocked by TASK-0037 and open DECISION-0006
+- [[TASK-0039 Integrate Headless Core Duel and Replay]] — blocked by TASK-0038
+- [[TASK-0040 Implement Core Duel Preview Queries]] — blocked by TASK-0039
+- [[TASK-0041 Build Playable Godot Core Duel Graybox]] — blocked by TASK-0040
+- [[TASK-0042 Validate M2 Core Duel Graybox]] — blocked by TASK-0041
+
+Do not expand the full card／relic／meta content before Core Duel and Acceleration Lab validation.

@@ -8,27 +8,26 @@ updated: 2026-07-12
 
 ## Phase
 
-`M0 Repository Bootstrap`からTLE-01〜15を含むM1 implementation workstreamまでは実装・review・CI・merge済み。DECISION-0005 Option 1でMOM／CTR migrationはM3へ確定。TASK-0030のindependent reviewによりM1 technical exitは`PASS`、Gate 2 entryはTASK-0012 human sign-off待ち。
+`M0 Repository Bootstrap`からTLE-01〜15を含むM1 implementation workstreamまでは実装・review・CI・merge済み。DECISION-0005 Option 1でMOM／CTR migrationはM3へ確定。TASK-0030のindependent reviewによりM1 technical exitは`PASS`。TASK-0012の二人human evidenceは未確認だが、DECISION-0007のProject owner waiverによりGate 2 entryはopen。
 
 ## Sprint goal
 
-Review and merge TASK-0030 M1 technical exit re-audit while keeping Gate 2 blocked by its human prerequisite.
+Close the bounded Gate 2 plan in TASK-0031, then make only the first dependency-safe production task eligible for work.
 
 ## Health
 
 | Area | State | Note |
 |---|---|---|
 | Product vision | Green | Pillars documented |
-| Rules | Yellow | P0 specs complete; FEAT-009 independent paper sign-off remains |
+| Rules | Yellow | P0 specs complete; M2 starter deck／facility scope needs DECISION-0006 |
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
-| Validation | Yellow | M1 technical exit `PASS`; TASK-0012 human evidence pending |
+| Validation | Yellow | M1 technical exit `PASS`; TASK-0012 human evidence not retained; owner waiver permits Gate 2 |
 
 ## Blockers
 
-- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — approved; human merge pending.
-- FEAT-009 independent two-person paper sign-off remains human-only.
+- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — blocks TASK-0038 resolved recipe／Development scope application, but not TASK-0032 typed content.
 
 ## Current evidence
 
@@ -65,10 +64,14 @@ Review and merge TASK-0030 M1 technical exit re-audit while keeping Gate 2 block
 - [[TASK-0027 Implement Temporary Liberty Domain Kernel]] — done
 - [[TASK-0028 Implement Closed-Window Capture Benefits and TLE Boundary Pressure]] — done
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]] — done
-- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — review／current
+- [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — done
+- PR #20 merge and post-merge main CI green at `d1f69e10672ed7289c056cee32c4875964494fe4`
+- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — review; human sign-off evidence not retained
+- [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved owner waiver; not human evidence
+- [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — review／current; independent review approved
 
 ## Next
 
-1. Complete／review／merge [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]]
-2. Complete FEAT-009 independent two-person sign-off
-3. Define Gate 2 implementation TASKs only after both gates above permit it
+1. Complete／review／merge [[TASK-0031 Plan Gate 2 Core Duel Implementation]]
+2. Resolve [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] before TASK-0038 applies the default recipe／Development scope
+3. Start [[TASK-0032 Implement Typed Core Duel Content Catalog]] after TASK-0031 merge; keep later tasks blocked by dependency order
