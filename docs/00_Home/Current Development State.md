@@ -35,7 +35,7 @@ updated: 2026-07-13
 
 ## Current gate
 
-[[TASK-0031 Plan Gate 2 Core Duel Implementation]] was merged through PR #21 at `708852d900f84d0b4905706b99dd77415b6a0ae8`; post-merge main CI run `29210667448` is green. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[TASK-0032 Implement Typed Core Duel Content Catalog]] is addressing valid PR #22 review feedback; [[DECISION-0008 Align Reinforce Content Order with FEAT-011]] resolves the discovered order conflict. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] blocks resolved recipe／Development scope application, but not this typed candidate projection.
+[[TASK-0031 Plan Gate 2 Core Duel Implementation]] was merged through PR #21 at `708852d900f84d0b4905706b99dd77415b6a0ae8`; post-merge main CI run `29210667448` is green. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[TASK-0032 Implement Typed Core Duel Content Catalog]] addressed the valid PR #22 feedback and is independently approved at fixed HEAD `0ac66d1c9caa6299b5be347fec1328d3e9bd7e20`; [[DECISION-0008 Align Reinforce Content Order with FEAT-011]] resolves the discovered order conflict. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] blocks resolved recipe／Development scope application, but not this typed candidate projection.
 
 ## Next development sequence
 
@@ -59,7 +59,7 @@ updated: 2026-07-13
 18. TASK-0030 M1 Headless Rules Kernel exit re-audit — done
 19. TASK-0012 FEAT-009 two-human paper evidence — review／not retained; Gate 2 prerequisite waived by DECISION-0007
 20. TASK-0031 Gate 2 Core Duel decomposition — done
-21. TASK-0032 typed Core Duel content catalog — in progress／PR #22 review fixes
+21. TASK-0032 typed Core Duel content catalog — review／PR #22 fixes approved
 22. TASK-0033〜0042 — blocked in dependency order
 
 ## Human-only evidence waiver

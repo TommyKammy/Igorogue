@@ -11,11 +11,11 @@ sprint: S0
 
 Implement and review TASK-0032's typed Core Duel content catalog without selecting the unresolved starter recipe.
 
-## In progress
+## In review
 
 - [[TASK-0032 Implement Typed Core Duel Content Catalog]]
   - typed starter／Bandit／system policy projection, Content → Domain boundary, fail-closed validation
-  - valid PR #22 review feedback under remediation; TASK-0033 remains blocked
+  - PR #22 review fixes independently approved; human merge pending; TASK-0033 remains blocked
 
 ## Open human evidence
 
