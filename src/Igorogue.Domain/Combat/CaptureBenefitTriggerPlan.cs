@@ -298,6 +298,14 @@ public sealed class CaptureBenefitTriggerPlan
             entry => entry.Trigger.FirstUseFlagId!,
             "Capture benefit trigger plan first-use flag IDs must be unique.",
             nameof(entries));
+        if (canonicalEntries.Count(entry =>
+                entry.Trigger.Source.Kind ==
+                    CaptureBenefitSourceKind.StandardAccounting) > 1)
+        {
+            throw new ArgumentException(
+                "Capture benefit trigger plans permit exactly one standard-accounting source.",
+                nameof(entries));
+        }
 
         Array.Sort(canonicalEntries, CompareEntries);
         return new CaptureBenefitTriggerPlan(canonicalEntries);

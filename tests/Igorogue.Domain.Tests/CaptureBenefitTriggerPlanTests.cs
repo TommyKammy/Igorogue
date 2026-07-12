@@ -248,6 +248,36 @@ public sealed class CaptureBenefitTriggerPlanTests
     }
 
     [Fact]
+    public void ConditionalPlanRejectsMultipleStandardAccountingSources()
+    {
+        var first = Trigger(
+            CaptureBenefitSource.StandardAccounting("standard_one", 0),
+            "trigger.standard_one",
+            "standard_one_event",
+            new GainStandardCaptureSoulOperation(1, 1, 3));
+        var second = Trigger(
+            CaptureBenefitSource.StandardAccounting("standard_two", 1),
+            "trigger.standard_two",
+            "standard_two_event",
+            new GainStandardCaptureSoulOperation(1, 1, 3));
+
+        Assert.Throws<ArgumentException>(() =>
+            CaptureBenefitTriggerPlan.CreateConditional(
+            [
+                new CaptureBenefitTriggerPlanEntry(
+                    first,
+                    CaptureBenefitTriggerCondition.CapturedWhiteGroup,
+                    CaptureBenefitTriggerMaterializationMode
+                        .GainStandardCaptureSoulPerWhiteGroup),
+                new CaptureBenefitTriggerPlanEntry(
+                    second,
+                    CaptureBenefitTriggerCondition.CapturedWhiteGroup,
+                    CaptureBenefitTriggerMaterializationMode
+                        .GainStandardCaptureSoulPerWhiteGroup),
+            ]));
+    }
+
+    [Fact]
     public void StandardCaptureSoulStopsAtInjectedBattleLimitButExtraSoulStillFires()
     {
         var (batch, _, blackStoneInstanceId) = MixedCaptureBatches();
