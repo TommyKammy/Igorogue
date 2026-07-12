@@ -343,6 +343,60 @@ public sealed class CaptureBenefitTriggerPlanTests
     }
 
     [Fact]
+    public void ResolverRejectsForgedStandardAccountingProjection()
+    {
+        var (batch, _, _) = MixedCaptureBatches();
+        var policy = new CounterattackBoundaryPolicy(200, 12, 3, 30);
+        var counterattack = CounterattackBoundaryState.Create(0, false, 0, policy);
+        var forgedCount = Trigger(
+            CaptureBenefitSource.StandardAccounting("standard_forged", 0),
+            "trigger.standard_forged",
+            "standard_forged_event",
+            new GainStandardCaptureSoulOperation(1, 3, 3));
+        var first = Trigger(
+            CaptureBenefitSource.StandardAccounting("standard_one", 0),
+            "trigger.standard_one",
+            "standard_one_event",
+            new GainStandardCaptureSoulOperation(1, 2, 3));
+        var second = Trigger(
+            CaptureBenefitSource.StandardAccounting("standard_two", 1),
+            "trigger.standard_two",
+            "standard_two_event",
+            new GainStandardCaptureSoulOperation(1, 2, 3));
+        var duplicateOperations = new CaptureBenefitTrigger(
+            CaptureBenefitSource.StandardAccounting("standard_duplicate", 0),
+            "trigger.standard_duplicate",
+            ["standard_duplicate_event"],
+            [
+                new GainStandardCaptureSoulOperation(1, 2, 3),
+                new GainStandardCaptureSoulOperation(1, 2, 3),
+            ],
+            firstUseFlagId: null);
+
+        Assert.Throws<ArgumentException>(() =>
+            ClosedWindowCaptureBenefitResolver.Resolve(
+                batch,
+                ClosedWindowResourceState.Empty([]),
+                counterattack,
+                policy,
+                [forgedCount]));
+        Assert.Throws<ArgumentException>(() =>
+            ClosedWindowCaptureBenefitResolver.Resolve(
+                batch,
+                ClosedWindowResourceState.Empty([]),
+                counterattack,
+                policy,
+                [first, second]));
+        Assert.Throws<ArgumentException>(() =>
+            ClosedWindowCaptureBenefitResolver.Resolve(
+                batch,
+                ClosedWindowResourceState.Empty([]),
+                counterattack,
+                policy,
+                [duplicateOperations]));
+    }
+
+    [Fact]
     public void PlanRejectsNullAndDuplicateStaticIdentities()
     {
         var first = Trigger(

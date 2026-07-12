@@ -993,6 +993,39 @@ public static class ClosedWindowCaptureBenefitResolver
                 nameof(triggers));
         }
 
+        var standardTriggers = canonicalTriggers
+            .Where(trigger =>
+                trigger.Source.Kind == CaptureBenefitSourceKind.StandardAccounting)
+            .ToArray();
+        if (standardTriggers.Length > 1)
+        {
+            throw new ArgumentException(
+                "Capture benefit batches permit at most one standard-accounting source.",
+                nameof(triggers));
+        }
+
+        var standardRewardOperations = standardTriggers
+            .SelectMany(trigger => trigger.OrderedOperations)
+            .OfType<GainStandardCaptureSoulOperation>()
+            .ToArray();
+        if (standardRewardOperations.Length > 1)
+        {
+            throw new ArgumentException(
+                "Capture benefit batches permit at most one standard capture reward operation.",
+                nameof(triggers));
+        }
+
+        var capturedWhiteGroupCount = captureBatch.CapturedGroups.Count(group =>
+            group.Color == StoneColor.White &&
+            group.CapturingColor == StoneColor.Black);
+        if (standardRewardOperations.Any(operation =>
+                operation.CapturedWhiteGroupCount != capturedWhiteGroupCount))
+        {
+            throw new ArgumentException(
+                "Standard capture reward group count must match the capture batch.",
+                nameof(triggers));
+        }
+
         var resources = sourceResources;
         var counterattack = sourceCounterattack;
         foreach (var boundTrigger in boundTriggers)
