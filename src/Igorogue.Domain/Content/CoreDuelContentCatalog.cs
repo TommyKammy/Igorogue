@@ -6,6 +6,7 @@ public sealed class CoreDuelContentCatalog
 {
     private const int StarterCardTypeCount = 6;
     private const string BanditContentId = "enemy_bandit";
+    private const string StartingDeckRecipeId = "core_duel";
 
     private readonly ReadOnlyCollection<CardContentDefinition> starterCardView;
     private readonly ReadOnlyDictionary<string, CardContentDefinition> starterCardsById;
@@ -13,6 +14,7 @@ public sealed class CoreDuelContentCatalog
     private CoreDuelContentCatalog(
         string contentHash,
         CardContentDefinition[] starterCards,
+        StartingDeckRecipe startingDeck,
         EnemyContentDefinition bandit,
         CoreDuelSystemPolicy systemPolicy)
     {
@@ -20,6 +22,7 @@ public sealed class CoreDuelContentCatalog
         starterCardView = Array.AsReadOnly(starterCards);
         starterCardsById = new ReadOnlyDictionary<string, CardContentDefinition>(
             starterCards.ToDictionary(card => card.Id, StringComparer.Ordinal));
+        StartingDeck = startingDeck;
         Bandit = bandit;
         SystemPolicy = systemPolicy;
     }
@@ -27,6 +30,8 @@ public sealed class CoreDuelContentCatalog
     public string ContentHash { get; }
 
     public IReadOnlyList<CardContentDefinition> StarterCards => starterCardView;
+
+    public StartingDeckRecipe StartingDeck { get; }
 
     public EnemyContentDefinition Bandit { get; }
 
@@ -43,11 +48,13 @@ public sealed class CoreDuelContentCatalog
     public static CoreDuelContentCatalog Create(
         string contentHash,
         IEnumerable<CardContentDefinition> starterCards,
+        StartingDeckRecipe startingDeck,
         EnemyContentDefinition bandit,
         CoreDuelSystemPolicy systemPolicy)
     {
         ValidateContentHash(contentHash);
         ArgumentNullException.ThrowIfNull(starterCards);
+        ArgumentNullException.ThrowIfNull(startingDeck);
         ArgumentNullException.ThrowIfNull(bandit);
         ArgumentNullException.ThrowIfNull(systemPolicy);
 
@@ -79,6 +86,22 @@ public sealed class CoreDuelContentCatalog
             throw new ArgumentException("Starter card content IDs must be unique.", nameof(starterCards));
         }
 
+        if (!string.Equals(startingDeck.Id, StartingDeckRecipeId, StringComparison.Ordinal))
+        {
+            throw new ArgumentException(
+                $"Core Duel catalog requires starting-deck recipe {StartingDeckRecipeId}.",
+                nameof(startingDeck));
+        }
+
+        var starterCardIds = canonicalCards.Select(card => card.Id);
+        var recipeCardIds = startingDeck.Entries.Select(entry => entry.CardId);
+        if (!starterCardIds.SequenceEqual(recipeCardIds, StringComparer.Ordinal))
+        {
+            throw new ArgumentException(
+                "Core Duel starting-deck recipe must contain every starter card ID exactly once.",
+                nameof(startingDeck));
+        }
+
         if (!string.Equals(bandit.Id, BanditContentId, StringComparison.Ordinal))
         {
             throw new ArgumentException(
@@ -89,6 +112,7 @@ public sealed class CoreDuelContentCatalog
         return new CoreDuelContentCatalog(
             contentHash,
             canonicalCards,
+            startingDeck,
             bandit,
             systemPolicy);
     }

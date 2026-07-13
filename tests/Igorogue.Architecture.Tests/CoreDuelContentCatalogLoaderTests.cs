@@ -13,7 +13,7 @@ namespace Igorogue.Architecture.Tests;
 public sealed class CoreDuelContentCatalogLoaderTests
 {
     private const string ExpectedContentHash =
-        "sha256:cd53980e2edd69ad14b3815c800a3c5aab119f21d95d724d083afa2920c15ad6";
+        "sha256:aa26362f6c4b1cdc9c8dc9336654bd20fe5379f622eef3fa992257db62d86832";
 
     [Fact]
     public void RealGeneratedSnapshotProjectsTheExactCoreDuelCatalog()
@@ -47,6 +47,19 @@ public sealed class CoreDuelContentCatalogLoaderTests
                 .Select(operation => operation.Kind)
                 .Distinct()
                 .Order());
+
+        Assert.Equal("core_duel", catalog.StartingDeck.Id);
+        Assert.Equal(12, catalog.StartingDeck.TotalCards);
+        Assert.Equal(
+            [
+                ("card_basic_stone", 5),
+                ("card_contact", 2),
+                ("card_development", 1),
+                ("card_extend", 2),
+                ("card_lure_stone", 1),
+                ("card_reinforce", 1),
+            ],
+            catalog.StartingDeck.Entries.Select(entry => (entry.CardId, entry.Count)));
 
         var starterStones = StarterStoneCardPlayCatalog.FromCoreDuelCatalog(catalog);
         Assert.Equal(
@@ -123,11 +136,9 @@ public sealed class CoreDuelContentCatalogLoaderTests
             Enum.GetValues<EnemyIntentKind>(),
             catalog.Bandit.Intents.Select(intent => intent.Kind));
 
-        Assert.DoesNotContain(
-            typeof(CoreDuelContentCatalog).GetProperties(),
-            property =>
-                property.Name.Contains("Deck", StringComparison.Ordinal) ||
-                property.Name.Contains("Recipe", StringComparison.Ordinal));
+        Assert.Equal(
+            StartingDeckRecipe.EncodingVersion,
+            catalog.StartingDeck.ToCanonicalText().Split('\n')[0]);
     }
 
     [Fact]
@@ -146,6 +157,8 @@ public sealed class CoreDuelContentCatalogLoaderTests
             () => ((IList<CardOperationDefinition>)catalog.StarterCards[0].Effects).Clear());
         Assert.Throws<NotSupportedException>(
             () => ((IList<EnemyIntentDefinition>)catalog.Bandit.Intents).Clear());
+        Assert.Throws<NotSupportedException>(
+            () => ((IList<StartingDeckCardCount>)catalog.StartingDeck.Entries).Clear());
     }
 
     [Fact]
@@ -159,6 +172,9 @@ public sealed class CoreDuelContentCatalogLoaderTests
         reversedFixture.MutateJson(
             "content/enemies.json",
             root => ReverseArray(Bandit(root)["intents"]!.AsArray()));
+        reversedFixture.MutateJson(
+            "content/starting_decks.json",
+            root => ReverseArray(CoreDuelStartingDeck(root)["entries"]!.AsArray()));
 
         var loader = new CoreDuelContentCatalogLoader();
         var first = loader.Load(firstFixture.ManifestPath);
@@ -166,6 +182,191 @@ public sealed class CoreDuelContentCatalogLoaderTests
 
         Assert.NotEqual(first.ContentHash, reversed.ContentHash);
         Assert.Equal(ProjectionFingerprint(first), ProjectionFingerprint(reversed));
+    }
+
+    [Fact]
+    public void StartingDeckKeyAndEntryReversalProduceTheSameCanonicalProjection()
+    {
+        using var firstFixture = GeneratedContentFixture.Create();
+        using var reversedFixture = GeneratedContentFixture.Create();
+        reversedFixture.MutateJson(
+            "content/starting_decks.json",
+            root => ReverseArray(CoreDuelStartingDeck(root)["entries"]!.AsArray()));
+        reversedFixture.ReverseJsonObjectKeys("content/starting_decks.json");
+
+        var loader = new CoreDuelContentCatalogLoader();
+        var first = loader.Load(firstFixture.ManifestPath);
+        var reversed = loader.Load(reversedFixture.ManifestPath);
+
+        Assert.NotEqual(first.ContentHash, reversed.ContentHash);
+        Assert.Equal(
+            first.StartingDeck.ToCanonicalText(),
+            reversed.StartingDeck.ToCanonicalText());
+    }
+
+    [Fact]
+    public void ValidStartingDeckMutationChangesContentHashAndTypedProjection()
+    {
+        using var firstFixture = GeneratedContentFixture.Create();
+        using var changedFixture = GeneratedContentFixture.Create();
+        changedFixture.MutateJson(
+            "content/starting_decks.json",
+            root =>
+            {
+                var recipe = CoreDuelStartingDeck(root);
+                StartingDeckEntry(recipe, "card_basic_stone")["count"] = 4;
+                StartingDeckEntry(recipe, "card_contact")["count"] = 3;
+            });
+
+        var loader = new CoreDuelContentCatalogLoader();
+        var first = loader.Load(firstFixture.ManifestPath);
+        var changed = loader.Load(changedFixture.ManifestPath);
+
+        Assert.NotEqual(first.ContentHash, changed.ContentHash);
+        Assert.NotEqual(
+            first.StartingDeck.ToCanonicalText(),
+            changed.StartingDeck.ToCanonicalText());
+        Assert.Equal(12, changed.StartingDeck.TotalCards);
+    }
+
+    [Fact]
+    public void MissingRequiredStartingDeckFileIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.RemoveGeneratedFile("content/starting_decks.json");
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void MissingCoreDuelStartingDeckIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/starting_decks.json",
+            root => root.AsArray().Clear());
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Theory]
+    [InlineData("id")]
+    [InlineData("total_cards")]
+    [InlineData("entries")]
+    public void MissingStartingDeckRecipePropertyIsRejected(string propertyName)
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/starting_decks.json",
+            root => CoreDuelStartingDeck(root).Remove(propertyName));
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void MissingStarterScopeEntryIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/starting_decks.json",
+            root =>
+            {
+                var recipe = CoreDuelStartingDeck(root);
+                var entry = StartingDeckEntry(recipe, "card_development");
+                recipe["entries"]!.AsArray().Remove(entry);
+                recipe["total_cards"] = 11;
+            });
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void UnknownStartingDeckCardIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/starting_decks.json",
+            root => StartingDeckEntry(CoreDuelStartingDeck(root), "card_basic_stone")["card_id"] =
+                "card_unknown");
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void NonStarterStartingDeckCardIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/starting_decks.json",
+            root => StartingDeckEntry(CoreDuelStartingDeck(root), "card_basic_stone")["card_id"] =
+                "card_one_space_jump");
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void DuplicateStartingDeckCardIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/starting_decks.json",
+            root =>
+            {
+                var recipe = CoreDuelStartingDeck(root);
+                recipe["entries"]!.AsArray().Add(
+                    StartingDeckEntry(recipe, "card_basic_stone").DeepClone());
+                recipe["total_cards"] = 17;
+            });
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void NonPositiveStartingDeckCountIsRejected(int count)
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/starting_decks.json",
+            root => StartingDeckEntry(CoreDuelStartingDeck(root), "card_basic_stone")["count"] =
+                count);
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void StartingDeckDeclaredTotalMismatchIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/starting_decks.json",
+            root => CoreDuelStartingDeck(root)["total_cards"] = 13);
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void ExtraStartingDeckRecipePropertyIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/starting_decks.json",
+            root => CoreDuelStartingDeck(root)["extra"] = true);
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void ExtraStartingDeckEntryPropertyIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "content/starting_decks.json",
+            root => StartingDeckEntry(CoreDuelStartingDeck(root), "card_basic_stone")["extra"] =
+                true);
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
     }
 
     [Fact]
@@ -475,6 +676,21 @@ public sealed class CoreDuelContentCatalogLoaderTests
             "enemy_bandit",
             StringComparison.Ordinal));
 
+    private static JsonObject CoreDuelStartingDeck(JsonNode root) => root.AsArray()
+        .Select(node => node!.AsObject())
+        .Single(recipe => string.Equals(
+            recipe["id"]!.GetValue<string>(),
+            "core_duel",
+            StringComparison.Ordinal));
+
+    private static JsonObject StartingDeckEntry(JsonObject recipe, string cardId) =>
+        recipe["entries"]!.AsArray()
+            .Select(node => node!.AsObject())
+            .Single(entry => string.Equals(
+                entry["card_id"]!.GetValue<string>(),
+                cardId,
+                StringComparison.Ordinal));
+
     private static void ReverseArray(JsonArray array)
     {
         var reversed = array.Select(node => node!.DeepClone()).Reverse().ToArray();
@@ -503,6 +719,8 @@ public sealed class CoreDuelContentCatalogLoaderTests
             AppendOperations(builder, card.OnCaptured);
             builder.AppendLine();
         }
+
+        builder.Append(catalog.StartingDeck.ToCanonicalText()).AppendLine();
 
         var bandit = catalog.Bandit;
         builder.Append(bandit.Id).Append('|')
@@ -608,6 +826,22 @@ public sealed class CoreDuelContentCatalogLoaderTests
         public void TamperWithoutRefreshingManifest(string relativePath, string content) =>
             File.WriteAllText(ContentPath(relativePath), content, new UTF8Encoding(false));
 
+        public void ReverseJsonObjectKeys(string relativePath)
+        {
+            var path = ContentPath(relativePath);
+            var root = JsonNode.Parse(File.ReadAllText(path, Encoding.UTF8))
+                ?? throw new InvalidDataException($"Fixture JSON is empty: {relativePath}.");
+            using var buffer = new MemoryStream();
+            using (var writer = new Utf8JsonWriter(buffer, new JsonWriterOptions { Indented = false }))
+            {
+                WriteReverseObjectKeys(writer, root);
+            }
+
+            buffer.WriteByte((byte)'\n');
+            File.WriteAllBytes(path, buffer.ToArray());
+            RefreshManifest();
+        }
+
         public void Dispose()
         {
             if (Directory.Exists(Root))
@@ -707,6 +941,40 @@ public sealed class CoreDuelContentCatalogLoaderTests
                     foreach (var item in value)
                     {
                         WriteCanonicalNode(writer, item);
+                    }
+
+                    writer.WriteEndArray();
+                    return;
+                default:
+                    node.WriteTo(writer);
+                    return;
+            }
+        }
+
+        private static void WriteReverseObjectKeys(Utf8JsonWriter writer, JsonNode? node)
+        {
+            switch (node)
+            {
+                case null:
+                    writer.WriteNullValue();
+                    return;
+                case JsonObject value:
+                    writer.WriteStartObject();
+                    foreach (var property in value.OrderByDescending(
+                                 pair => pair.Key,
+                                 StringComparer.Ordinal))
+                    {
+                        writer.WritePropertyName(property.Key);
+                        WriteReverseObjectKeys(writer, property.Value);
+                    }
+
+                    writer.WriteEndObject();
+                    return;
+                case JsonArray value:
+                    writer.WriteStartArray();
+                    foreach (var item in value)
+                    {
+                        WriteReverseObjectKeys(writer, item);
                     }
 
                     writer.WriteEndArray();

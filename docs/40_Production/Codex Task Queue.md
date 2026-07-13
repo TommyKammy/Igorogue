@@ -56,7 +56,7 @@ The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DEC
 
 Entry is owner-authorized open because M1 exit evidence including TLE-01〜15 E3 migration is complete and DECISION-0007 explicitly waives the unverified TASK-0012 human-evidence prerequisite.
 
-Current: [[TASK-0037 Implement Bandit Intent Planning and Execution]] (`review`; DECISION-0009／0010 Option 1 implemented, 565 tests green, fixed-HEAD review／CI pending).
+Current: [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] (`review`; DECISION-0006 Option 1 candidate passes 592 tests、fixed-HEAD review、and PR #28 CI, and awaits human merge).
 
 1. [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
 2. [[TASK-0032 Implement Typed Core Duel Content Catalog]] — done
@@ -64,14 +64,14 @@ Current: [[TASK-0037 Implement Bandit Intent Planning and Execution]] (`review`;
 4. [[TASK-0034 Implement Atomic Basic Stone Card Play]] — done
 5. [[TASK-0035 Implement Starter Stone Card Effects]] — done
 6. [[TASK-0036 Implement Starter Reinforce Effect]] — done
-7. [[TASK-0037 Implement Bandit Intent Planning and Execution]] — review／current
-8. [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — blocked by TASK-0037 and [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]]
+7. [[TASK-0037 Implement Bandit Intent Planning and Execution]] — done
+8. [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — review／current
 9. [[TASK-0039 Integrate Headless Core Duel and Replay]] — blocked by TASK-0038
 10. [[TASK-0040 Implement Core Duel Preview Queries]] — blocked by TASK-0039
 11. [[TASK-0041 Build Playable Godot Core Duel Graybox]] — blocked by TASK-0040
 12. [[TASK-0042 Validate M2 Core Duel Graybox]] — blocked by TASK-0041
 
-DECISION-0009 resolved Option 1 for TASK-0037 multi-group capture targeting. DECISION-0010 resolved Option 1 for zero-real-liberty advance ranking; TASK-0037 must implement and verify that fallback before closeout. DECISION-0006 separately must be resolved before TASK-0038 writes the default starting recipe, changes Accepted M2／M3 scope, or connects Development. No meta progression or broad relic content enters Gate 2.
+DECISION-0009／0010 Option 1 are implemented and TASK-0037 is done. DECISION-0006 resolved Option 1: TASK-0038 writes the starter 6-type／12-card default recipe, records Development as the only M2 facility exception, and preserves broad facility expansion for M3. No meta progression or broad relic／facility content enters Gate 2.
 
 ## Gate 3 — Acceleration Lab
 

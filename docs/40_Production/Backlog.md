@@ -46,7 +46,7 @@ See [[Codex Task Queue]] for gate order and concurrency rules.
 
 ## M2 Core Duel ordered queue
 
-- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — open／blocks TASK-0038 resolved recipe／Development scope application
+- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolved／Option 1
 - [[DECISION-0009 Resolve Bandit Multi-Group Capture Target Reference]] — resolved／Option 1
 - [[DECISION-0010 Resolve Bandit Advance With Zero Real King Liberties]] — resolved／Option 1
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
@@ -55,8 +55,8 @@ See [[Codex Task Queue]] for gate order and concurrency rules.
 - [[TASK-0034 Implement Atomic Basic Stone Card Play]] — done
 - [[TASK-0035 Implement Starter Stone Card Effects]] — done
 - [[TASK-0036 Implement Starter Reinforce Effect]] — done
-- [[TASK-0037 Implement Bandit Intent Planning and Execution]] — review／current
-- [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — blocked by TASK-0037 and open DECISION-0006
+- [[TASK-0037 Implement Bandit Intent Planning and Execution]] — done
+- [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — review／current
 - [[TASK-0039 Integrate Headless Core Duel and Replay]] — blocked by TASK-0038
 - [[TASK-0040 Implement Core Duel Preview Queries]] — blocked by TASK-0039
 - [[TASK-0041 Build Playable Godot Core Duel Graybox]] — blocked by TASK-0040

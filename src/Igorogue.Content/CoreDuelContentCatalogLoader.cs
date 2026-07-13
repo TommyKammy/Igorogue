@@ -8,8 +8,10 @@ public sealed class CoreDuelContentCatalogLoader
 {
     private const string CardsPath = "content/cards.json";
     private const string EnemiesPath = "content/enemies.json";
+    private const string StartingDecksPath = "content/starting_decks.json";
     private const string SystemPath = "balance/system.json";
     private const string BanditContentId = "enemy_bandit";
+    private const string CoreDuelStartingDeckId = "core_duel";
 
     private static readonly string[] RequiredStarterCardIds =
     [
@@ -38,16 +40,20 @@ public sealed class CoreDuelContentCatalogLoader
         ArgumentNullException.ThrowIfNull(snapshot);
 
         var system = ParseSystem(snapshot.RequiredContent(SystemPath));
-        var starterCards = ParseStarterCards(
+        var cards = ParseStarterCards(
             snapshot.RequiredContent(CardsPath),
             system.FacilityTypeIds);
+        var startingDeck = ParseCoreDuelStartingDeck(
+            snapshot.RequiredContent(StartingDecksPath),
+            cards.CardRarities);
         var bandit = ParseBandit(snapshot.RequiredContent(EnemiesPath));
 
         return ConvertDomain(
             "core duel catalog",
             () => CoreDuelContentCatalog.Create(
                 snapshot.ContentHash,
-                starterCards,
+                cards.StarterCards,
+                startingDeck,
                 bandit,
                 system.Policy));
     }
@@ -91,13 +97,14 @@ public sealed class CoreDuelContentCatalogLoader
             facilityTypeIds);
     }
 
-    private static IReadOnlyList<CardContentDefinition> ParseStarterCards(
+    private static ParsedCards ParseStarterCards(
         ReadOnlyMemory<byte> content,
         IReadOnlySet<string> facilityTypeIds)
     {
         using var document = OpenDocument(content, CardsPath);
         var root = RequireArray(document.RootElement, CardsPath);
         var seenIds = new HashSet<string>(StringComparer.Ordinal);
+        var cardRarities = new Dictionary<string, CardRarity>(StringComparer.Ordinal);
         var starterCards = new List<CardContentDefinition>();
 
         var index = 0;
@@ -114,6 +121,7 @@ public sealed class CoreDuelContentCatalogLoader
             }
 
             var rarity = ParseCardRarity(RequiredString(card, "rarity", context), context);
+            cardRarities.Add(id, rarity);
             if (rarity == CardRarity.Starter)
             {
                 starterCards.Add(ParseStarterCard(card, id, context, facilityTypeIds));
@@ -134,7 +142,83 @@ public sealed class CoreDuelContentCatalogLoader
                 $"{string.Join(", ", actualStarterCardIds)}.");
         }
 
-        return starterCards;
+        return new ParsedCards(starterCards, cardRarities);
+    }
+
+    private static StartingDeckRecipe ParseCoreDuelStartingDeck(
+        ReadOnlyMemory<byte> content,
+        IReadOnlyDictionary<string, CardRarity> cardRarities)
+    {
+        using var document = OpenDocument(content, StartingDecksPath);
+        var root = RequireArray(document.RootElement, StartingDecksPath);
+        var seenIds = new HashSet<string>(StringComparer.Ordinal);
+        StartingDeckRecipe? coreDuel = null;
+
+        var index = 0;
+        foreach (var element in root.EnumerateArray())
+        {
+            var context = $"{StartingDecksPath}[{index}]";
+            var recipe = RequireObject(element, context);
+            EnsureExactProperties(recipe, context, "id", "total_cards", "entries");
+            var id = RequiredString(recipe, "id", context);
+            ValidateStableId(id, $"{context}.id");
+            if (!seenIds.Add(id))
+            {
+                throw Invalid($"Duplicate starting-deck recipe ID: {id}.");
+            }
+
+            if (string.Equals(id, CoreDuelStartingDeckId, StringComparison.Ordinal))
+            {
+                coreDuel = ParseStartingDeckRecipe(recipe, id, context, cardRarities);
+            }
+
+            index++;
+        }
+
+        return coreDuel ?? throw Invalid(
+            $"Required starting-deck recipe was not found: {CoreDuelStartingDeckId}.");
+    }
+
+    private static StartingDeckRecipe ParseStartingDeckRecipe(
+        JsonElement recipe,
+        string id,
+        string context,
+        IReadOnlyDictionary<string, CardRarity> cardRarities)
+    {
+        var entriesElement = RequiredArray(recipe, "entries", context);
+        var entries = new List<StartingDeckCardCount>();
+        var index = 0;
+        foreach (var element in entriesElement.EnumerateArray())
+        {
+            var entryContext = $"{context}.entries[{index}]";
+            var entry = RequireObject(element, entryContext);
+            EnsureExactProperties(entry, entryContext, "card_id", "count");
+            var cardId = RequiredString(entry, "card_id", entryContext);
+            ValidatePrefixedContentId(cardId, "card_", entryContext);
+            if (!cardRarities.TryGetValue(cardId, out var rarity))
+            {
+                throw Invalid($"{entryContext}.card_id references unknown card '{cardId}'.");
+            }
+
+            if (rarity != CardRarity.Starter)
+            {
+                throw Invalid($"{entryContext}.card_id references non-starter card '{cardId}'.");
+            }
+
+            entries.Add(ConvertDomain(
+                entryContext,
+                () => new StartingDeckCardCount(
+                    cardId,
+                    RequiredInt(entry, "count", entryContext))));
+            index++;
+        }
+
+        return ConvertDomain(
+            context,
+            () => StartingDeckRecipe.Create(
+                id,
+                RequiredInt(recipe, "total_cards", context),
+                entries));
     }
 
     private static CardContentDefinition ParseStarterCard(
@@ -833,6 +917,10 @@ public sealed class CoreDuelContentCatalogLoader
     }
 
     private static InvalidDataException Invalid(string message) => new(message);
+
+    private sealed record ParsedCards(
+        IReadOnlyList<CardContentDefinition> StarterCards,
+        IReadOnlyDictionary<string, CardRarity> CardRarities);
 
     private sealed record ParsedSystem(
         CoreDuelSystemPolicy Policy,

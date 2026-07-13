@@ -12,14 +12,14 @@ updated: 2026-07-13
 
 ## Sprint goal
 
-Complete fixed-HEAD review and CI for TASK-0037's Bandit intent implementation.
+Apply DECISION-0006 Option 1 as a deterministic starter 6-type／12-card recipe and connect Development through the existing facility kernel.
 
 ## Health
 
 | Area | State | Note |
 |---|---|---|
 | Product vision | Green | Pillars documented |
-| Rules | Yellow | DECISION-0010 Option 1 resolved TASK-0037 advance ranking; M2 starter deck／facility scope still needs DECISION-0006 |
+| Rules | Green | DECISION-0006／0009／0010 are resolved; starter catalog display is synchronized with machine-readable content |
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | Mockup stage |
@@ -27,9 +27,8 @@ Complete fixed-HEAD review and CI for TASK-0037's Bandit intent implementation.
 
 ## Blockers
 
-- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — blocks TASK-0038 resolved recipe／Development scope application, but not TASK-0032 typed content.
-- [[DECISION-0009 Resolve Bandit Multi-Group Capture Target Reference]] — resolved Option 1; no longer blocks TASK-0037.
-- [[DECISION-0010 Resolve Bandit Advance With Zero Real King Liberties]] — resolved Option 1; no longer blocks TASK-0037.
+- TASK-0038 has no open design／dependency blocker and is in review. TASK-0039〜0042 remain serially blocked by their immediate predecessor.
+- [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] human evidence remains unverified, with Gate 2 progression separately authorized by DECISION-0007.
 
 ## Current evidence
 
@@ -76,10 +75,12 @@ Complete fixed-HEAD review and CI for TASK-0037's Bandit intent implementation.
 - [[TASK-0034 Implement Atomic Basic Stone Card Play]] — done; PR #24 merge／post-merge CI green
 - [[TASK-0035 Implement Starter Stone Card Effects]] — done; PR #25 merge／post-merge CI green
 - [[TASK-0036 Implement Starter Reinforce Effect]] — done; PR #26 merge／post-merge CI green
-- [[TASK-0037 Implement Bandit Intent Planning and Execution]] — review／current; 565 tests green
+- [[TASK-0037 Implement Bandit Intent Planning and Execution]] — done; PR #27 merge `e98ac90`／post-merge CI run `29237842140` green
+- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolved／Option 1
+- [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — review／592-test candidate
 
 ## Next
 
-1. Complete fixed-HEAD independent review and CI for [[TASK-0037 Implement Bandit Intent Planning and Execution]]
+1. Complete human review／merge of green Draft PR #28 for [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]]
 2. Keep Headless Core Duel／replay composition deferred to TASK-0039
-3. Resolve [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] before TASK-0038 applies the default recipe／Development scope
+3. Advance TASK-0039〜0042 only in dependency order after TASK-0038 human merge

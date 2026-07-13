@@ -453,6 +453,22 @@ public static class CoreDuelCardTurnKernel
             evaluation.SourceDefinition.Cost);
     }
 
+    internal static CoreDuelCardTurnTransition CommitStarterDevelopmentCardPlay(
+        CoreDuelCardTurnState state,
+        StarterDevelopmentCardPlayEvaluation evaluation)
+    {
+        ArgumentNullException.ThrowIfNull(state);
+        ArgumentNullException.ThrowIfNull(evaluation);
+        return CommitStarterCardPlay(
+            state,
+            evaluation.IsAuthorized,
+            evaluation.ReasonId,
+            evaluation.SourceDeck,
+            evaluation.SourceQi,
+            evaluation.Card,
+            evaluation.SourceDefinition.Cost);
+    }
+
     private static CoreDuelCardTurnTransition CommitStarterCardPlay(
         CoreDuelCardTurnState state,
         bool authorized,
