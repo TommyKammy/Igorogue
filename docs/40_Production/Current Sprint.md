@@ -9,15 +9,16 @@ sprint: S0
 
 ## Goal
 
-Implement TASK-0036's typed Reinforce targeting, pre-grant conditional draw, and temporary-liberty lifecycle without selecting the unresolved starter recipe.
+Review and merge TASK-0036's typed Reinforce targeting, pre-grant conditional draw, and temporary-liberty lifecycle without selecting the unresolved starter recipe.
 
-## In progress
+## In review
 
 - [[TASK-0036 Implement Starter Reinforce Effect]]
   - bind friendly target group and canonical stable stone anchor to command-time state
   - resolve draw-if-atari before granting +1 timed temporary liberty
   - prove expiry／merge-following／stale／foreign／deterministic behavior through the shared kernel
   - keep Headless／replay composition deferred to TASK-0039
+  - fixed-HEAD primary／secondary reviews approved; awaiting PR review／human merge
 
 ## Open human evidence
 

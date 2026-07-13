@@ -35,7 +35,7 @@ updated: 2026-07-13
 
 ## Current gate
 
-[[TASK-0035 Implement Starter Stone Card Effects]] was merged through PR #25 at `e025b8c326c52c9e76241e756a0e1e54171ef7fb`; post-merge main CI run `29225344562` is green. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[TASK-0036 Implement Starter Reinforce Effect]] is the current implementation task. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] blocks resolved recipe application at TASK-0038, but not Reinforce integration.
+[[TASK-0035 Implement Starter Stone Card Effects]] was merged through PR #25 at `e025b8c326c52c9e76241e756a0e1e54171ef7fb`; post-merge main CI run `29225344562` is green. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[TASK-0036 Implement Starter Reinforce Effect]] is independently approved at fixed HEAD `58846ea9f9f6707dad386a52605acabe23f927eb` and is the current review task. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] blocks resolved recipe application at TASK-0038, but not this typed Reinforce proof.
 
 ## Next development sequence
 
@@ -63,7 +63,7 @@ updated: 2026-07-13
 22. TASK-0033 deterministic battle deck／hand／qi kernel — done
 23. TASK-0034 atomic basic stone card play — done
 24. TASK-0035 starter stone card effects — done
-25. TASK-0036 starter reinforce effect — in progress／current
+25. TASK-0036 starter reinforce effect — review／current
 26. TASK-0037〜0042 — blocked in dependency order
 
 ## Human-only evidence waiver

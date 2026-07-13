@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0036
-status: in_progress
+status: review
 project: Igorogue
 milestone: M2
 priority: high
@@ -64,6 +64,8 @@ PlayCardからactual enemy turn／expiry sweep／replayまでのfull composition
 
 2026-07-13 — repository wrapperを最終差分で再実行。build、529 tests、governance／content、formal simulator smoke、`git diff --check`がすべて成功し、warning／error 0。fixed-HEAD independent review前のためstatusは`in_progress`を維持する。
 
+2026-07-13 — independent fixed-HEAD reviewがimplementation commit `58846ea9f9f6707dad386a52605acabe23f927eb`をbase `e025b8c326c52c9e76241e756a0e1e54171ef7fb`と比較。clean tree、16-file cumulative diff、全Acceptance、accepted specs、command／state／fact／log determinism、exact no-op、non-goalを再検証し、actionable findingなし、`APPROVE`。secondary fixed-HEAD reviewも`APPROVE`したため本TASKを`review`へ遷移した。
+
 ## Evidence
 
 - PR #25 human merge — merged head `2c8c1a0d20e5b1be856476ca0cd7f6a0bc20b79c`、merge commit `e025b8c326c52c9e76241e756a0e1e54171ef7fb`、post-merge main CI run `29225344562`全3 job success。
@@ -75,3 +77,5 @@ PlayCardからactual enemy turn／expiry sweep／replayまでのfull composition
 - `tools/dev/sim-smoke` — exit 0、`checksum=5f943a3cbc6847a14e841612c57d2d2cf4aef78d8b7441c0ff4d8b279113625c`。bootstrap determinism evidenceとしてのみ使用。
 - `git diff --check` — exit 0。
 - independent precommit reviews — 仕様／決定論／architectureの3系統すべてactionable findingなし、`APPROVE`。
+- implementation commit `58846ea9f9f6707dad386a52605acabe23f927eb` — typed Reinforce projection、exact target binding、atomic draw／grant、TLE lifecycle／determinism evidence。
+- independent fixed-HEAD reviews — base `e025b8c326c52c9e76241e756a0e1e54171ef7fb`、head `58846ea9f9f6707dad386a52605acabe23f927eb`、primary／secondaryともactionable findingなし、`APPROVE`。
