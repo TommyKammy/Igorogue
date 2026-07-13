@@ -9,16 +9,18 @@ sprint: S0
 
 ## Goal
 
-Review and merge TASK-0036's typed Reinforce targeting, pre-grant conditional draw, and temporary-liberty lifecycle without selecting the unresolved starter recipe.
+Complete fixed-HEAD review and CI for TASK-0037's integrated Bandit candidate／planning／execution implementation.
 
 ## In review
 
-- [[TASK-0036 Implement Starter Reinforce Effect]]
-  - bind friendly target group and canonical stable stone anchor to command-time state
-  - resolve draw-if-atari before granting +1 timed temporary liberty
-  - prove expiry／merge-following／stale／foreign／deterministic behavior through the shared kernel
-  - keep Headless／replay composition deferred to TASK-0039
-  - fixed-HEAD primary／secondary reviews approved; awaiting PR review／human merge
+- [[TASK-0037 Implement Bandit Intent Planning and Execution]]
+  - dependency TASK-0036 is done through PR #26／post-merge CI
+  - read-only audit confirmed the existing placement／effective-liberty／repetition／facility／territory kernels are reusable
+  - [[DECISION-0009 Resolve Bandit Multi-Group Capture Target Reference]] resolved Option 1
+  - shared runtime placement evaluation and detached Application lifecycle are integrated with 565 tests
+  - [[DECISION-0010 Resolve Bandit Advance With Zero Real King Liberties]] Option 1 and real=0／effective=1 E3 evidence are complete
+  - fixed-HEAD independent review／CI remain
+  - keep replay／full telemetry composition deferred to TASK-0039
 
 ## Open human evidence
 
@@ -56,18 +58,19 @@ Review and merge TASK-0036's typed Reinforce targeting, pre-grant conditional dr
 - [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — PR #23 merged／post-merge CI green
 - [[TASK-0034 Implement Atomic Basic Stone Card Play]] — PR #24 merged／post-merge CI green
 - [[TASK-0035 Implement Starter Stone Card Effects]] — PR #25 merged／post-merge CI green
+- [[TASK-0036 Implement Starter Reinforce Effect]] — PR #26 merged／post-merge CI green
 
-## Next after TASK-0036
+## Next after TASK-0037
 
-- [[TASK-0037 Implement Bandit Intent Planning and Execution]] — remains blocked until TASK-0036 human merge.
+- Human review／merge of TASK-0037 after fixed-HEAD approval and green CI.
 - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolve before TASK-0038 applies the starting recipe／Development scope.
-- TASK-0037〜0042 remain blocked and advance only in dependency order.
+- TASK-0038〜0042 remain blocked and advance only in dependency order.
 
-## Review questions
+## Implementation review questions
 
-- Is Reinforce projected from the typed FriendlyGroup／DrawIfTargetAtari／TemporaryLiberty operation shape without a content-ID switch?
-- Is the command-time friendly group bound to its canonical stable stone instance and rejected exactly when stale or foreign?
-- Is effective liberty 1 measured before grant, with draw fully resolved before +1 temporary liberty is published?
-- Does the effect follow its anchor through a merge and expire at the immediately following enemy-turn-end boundary?
-- Do rejected commands preserve every resource／zone／runtime／trigger reference and avoid log／RNG mutation?
-- Are Development、default recipe、Headless／replay composition、enemy planner、Godot still deferred to their owning tasks?
+- Does multi-group capture select the largest group, then king distance, then canonical anchor exactly once?
+- Is F09-02 kept as E1 comparator evidence while a reachable board test supplies E3 coverage?
+- Are planning and execution both based on the shared runtime placement/effective-liberty/repetition kernel?
+- Does player-turn preview preserve the stored intent and retarget only at execution?
+- When the black king has zero real liberties but survives through effective liberties, does advance rank by distance to the king group's stones and retain all later tie-breaks?
+- Are existing replay v2／BattleState projections unchanged for TASK-0039?

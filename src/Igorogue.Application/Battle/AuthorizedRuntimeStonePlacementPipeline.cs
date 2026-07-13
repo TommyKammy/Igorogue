@@ -144,12 +144,7 @@ internal static class AuthorizedRuntimeStonePlacementPipeline
                 nameof(runtime));
         }
 
-        var proposedStone = new BoardStone(actor, false, point);
-        if (!HypotheticalPlacementResolver.TryCreate(
-                source.Board,
-                proposedStone,
-                out var hypothetical) ||
-            hypothetical is null)
+        if (!source.Board.IsEmpty(point))
         {
             return AuthorizedRuntimeStonePlacementResolution.Reject(
                 "stone_occupied");
@@ -161,88 +156,32 @@ internal static class AuthorizedRuntimeStonePlacementPipeline
                 "stone_instance_already_used");
         }
 
-        var provisionalPlaced = new StoneRuntimeInstance(
-            placementDescriptor.InstanceId,
-            hypothetical.PlacedStone,
-            placementDescriptor.KindId,
-            runtime.StoneRuntimeState.NextCreatedSequence,
-            placementDescriptor.OrderedEffectMetadata);
-        var provisionalStones = StoneRuntimeState.Create(
-            hypothetical.BoardAfterPlacement,
-            runtime.StoneRuntimeState.Instances.Append(provisionalPlaced),
-            checked(runtime.StoneRuntimeState.NextCreatedSequence + 1L));
-        var provisionalTemporary = TemporaryLibertyState.Create(
-            provisionalStones,
-            runtime.TemporaryLibertyState.Effects,
-            runtime.TemporaryLibertyState.NextCreatedSequence,
-            runtime.TemporaryLibertyState.ExpirySweepStartedForEnemyTurnIndex);
-        var provisionalContinuous = runtime.ContinuousLibertySnapshot.Rebind(
-            provisionalStones);
-        var captureEffective = TemporaryLibertyEffectiveLibertyAnalyzer.Analyze(
-            provisionalStones,
-            provisionalTemporary,
-            provisionalContinuous,
-            hypothetical.GroupsAfterPlacement);
-        var resolved = HypotheticalPlacementResolver.ResolveCaptures(
-            hypothetical,
-            captureEffective.EffectiveLiberties);
-        var postCapture = CreatePostCaptureAnalysis(
-            runtime,
-            provisionalPlaced,
-            resolved);
-        var legality = PlacementLegalityEvaluator.Evaluate(
-            resolved,
-            postCapture.EffectiveLiberties,
-            source.RepetitionHistory,
-            accessMode);
-        if (!legality.IsLegal)
-        {
-            return AuthorizedRuntimeStonePlacementResolution.Reject(
-                legality.ReasonId);
-        }
-
-        var legalPlacement = source.RepetitionHistory.CommitLegalPlacement(legality);
-        var runtimeCommit = StoneRuntimePlacementIntegrator.Apply(
+        var evaluation = RuntimeStonePlacementEvaluator.Evaluate(
             runtime.StoneRuntimeState,
             runtime.TemporaryLibertyState,
-            legalPlacement,
-            placementDescriptor,
-            captureEffective,
-            postCapture);
-        return AuthorizedRuntimeStonePlacementResolution.Accept(
-            legalPlacement,
-            runtimeCommit,
-            captureEffective,
-            postCapture);
-    }
+            runtime.ContinuousLibertySnapshot,
+            source.RepetitionHistory,
+            new BoardStone(actor, false, point),
+            accessMode,
+            placementDescriptor);
+        if (!evaluation.Accepted)
+        {
+            return AuthorizedRuntimeStonePlacementResolution.Reject(
+                evaluation.ReasonId);
+        }
 
-    private static TemporaryLibertyEffectiveLibertyAnalysis
-        CreatePostCaptureAnalysis(
-            BattleAuthoritativeRuntimeState runtime,
-            StoneRuntimeInstance provisionalPlaced,
-            HypotheticalPlacementResolution candidate)
-    {
-        var retained = runtime.StoneRuntimeState.Instances.Where(instance =>
-            ReferenceEquals(
-                candidate.BoardAfterCapture.StoneAt(instance.Point),
-                instance.Stone));
-        var postCaptureStones = StoneRuntimeState.Create(
-            candidate.BoardAfterCapture,
-            retained.Append(provisionalPlaced),
-            checked(runtime.StoneRuntimeState.NextCreatedSequence + 1L));
-        var survivingEffects = runtime.TemporaryLibertyState.Effects.Where(effect =>
-            postCaptureStones.InstanceById(effect.AnchorStoneInstanceId) is not null);
-        var postCaptureTemporary = TemporaryLibertyState.Create(
-            postCaptureStones,
-            survivingEffects,
-            runtime.TemporaryLibertyState.NextCreatedSequence,
-            runtime.TemporaryLibertyState.ExpirySweepStartedForEnemyTurnIndex);
-        var postCaptureContinuous = runtime.ContinuousLibertySnapshot.Rebind(
-            postCaptureStones);
-        return TemporaryLibertyEffectiveLibertyAnalyzer.Analyze(
-            postCaptureStones,
-            postCaptureTemporary,
-            postCaptureContinuous,
-            candidate.GroupsAfterCapture);
+        return AuthorizedRuntimeStonePlacementResolution.Accept(
+            evaluation.LegalPlacementCommit
+                ?? throw new InvalidOperationException(
+                    "Accepted runtime evaluation is missing its legal placement."),
+            evaluation.RuntimePlacementCommit
+                ?? throw new InvalidOperationException(
+                    "Accepted runtime evaluation is missing its runtime placement."),
+            evaluation.CaptureEffectiveLiberties
+                ?? throw new InvalidOperationException(
+                    "Accepted runtime evaluation is missing capture liberties."),
+            evaluation.PostCaptureEffectiveLiberties
+                ?? throw new InvalidOperationException(
+                    "Accepted runtime evaluation is missing post-capture liberties."));
     }
 }

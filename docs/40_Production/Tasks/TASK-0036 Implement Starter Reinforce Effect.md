@@ -1,12 +1,12 @@
 ---
 type: task
 id: TASK-0036
-status: review
+status: done
 project: Igorogue
 milestone: M2
 priority: high
 dependencies: [TASK-0035]
-updated: 2026-07-12
+updated: 2026-07-13
 ---
 # TASK-0036 Implement Starter Reinforce Effect
 
@@ -66,6 +66,8 @@ PlayCardからactual enemy turn／expiry sweep／replayまでのfull composition
 
 2026-07-13 — independent fixed-HEAD reviewがimplementation commit `58846ea9f9f6707dad386a52605acabe23f927eb`をbase `e025b8c326c52c9e76241e756a0e1e54171ef7fb`と比較。clean tree、16-file cumulative diff、全Acceptance、accepted specs、command／state／fact／log determinism、exact no-op、non-goalを再検証し、actionable findingなし、`APPROVE`。secondary fixed-HEAD reviewも`APPROVE`したため本TASKを`review`へ遷移した。
 
+2026-07-13 — PR #26を人間merge。merged head `3b0cec3c4327803f05b7dda5447912cab6e1ed95`、merge commit／post-merge main HEAD `45ca3f8cb3cb4cc4c8ade45273c38c76e08f8f73`を確認した。main push CI run `29228982431`のGovernance、Pure .NET、Godot／Windows exportはすべてsuccess。本TASKを`done`へ遷移した。
+
 ## Evidence
 
 - PR #25 human merge — merged head `2c8c1a0d20e5b1be856476ca0cd7f6a0bc20b79c`、merge commit `e025b8c326c52c9e76241e756a0e1e54171ef7fb`、post-merge main CI run `29225344562`全3 job success。
@@ -79,3 +81,4 @@ PlayCardからactual enemy turn／expiry sweep／replayまでのfull composition
 - independent precommit reviews — 仕様／決定論／architectureの3系統すべてactionable findingなし、`APPROVE`。
 - implementation commit `58846ea9f9f6707dad386a52605acabe23f927eb` — typed Reinforce projection、exact target binding、atomic draw／grant、TLE lifecycle／determinism evidence。
 - independent fixed-HEAD reviews — base `e025b8c326c52c9e76241e756a0e1e54171ef7fb`、head `58846ea9f9f6707dad386a52605acabe23f927eb`、primary／secondaryともactionable findingなし、`APPROVE`。
+- PR #26 human merge — merged head `3b0cec3c4327803f05b7dda5447912cab6e1ed95`、merge commit `45ca3f8cb3cb4cc4c8ade45273c38c76e08f8f73`、post-merge main CI run `29228982431`全3 job success。
