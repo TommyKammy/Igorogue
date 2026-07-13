@@ -11,7 +11,7 @@ sprint: S0
 
 Expose selected-card legality、capture、liberty／atari、territory／facility delta、king risk、and Bandit intent from the authoritative Core Duel aggregate without a second rules implementation.
 
-## In progress
+## In review
 
 - [[TASK-0040 Implement Core Duel Preview Queries]]
   - dependency TASK-0039 is done through PR #29 merge `60d8cc5958e38768f4077ee2f4d686526d5b25fe`／post-merge CI run `29252298693`
@@ -19,7 +19,8 @@ Expose selected-card legality、capture、liberty／atari、territory／facility
   - capture、effective liberty／atari、territory／facility delta、result checksumをread-only DTOへ投影する
   - stored normal／bonus intentとexisting mandatory overrideだけを投影し、full counterattack予測は行わない
   - parity、read-only、stale state／log、canonical enumeration、architecture evidenceを625 testsと全wrapper成功で固定済み
-  - fixed source HEAD independent review待ち
+  - fixed source HEAD `ab600cd53e7fafa5976b1a381a4a19e672097977`の3系統independent reviewはfindingなしで全て`APPROVE`
+  - draft PR CI／human review／merge pending
 
 ## Open human evidence
 
@@ -64,7 +65,7 @@ Expose selected-card legality、capture、liberty／atari、territory／facility
 
 ## Next after TASK-0040
 
-- Complete fixed-HEAD review、CI、and human review／merge of TASK-0040.
+- Complete draft PR CI and human review／merge of TASK-0040.
 - [[TASK-0041 Build Playable Godot Core Duel Graybox]] becomes the next implementation task only after TASK-0040 is done.
 - TASK-0042 remains blocked and advances only after TASK-0041.
 
