@@ -118,4 +118,17 @@ public sealed class CardDrawnFact : IBattleFact
                 sourceCardInstanceId,
                 nameof(sourceCardInstanceId)));
     }
+
+    public static CardDrawnFact FromTargetAtariEffect(
+        BattleCardInstance card,
+        string sourceCardInstanceId)
+    {
+        ArgumentNullException.ThrowIfNull(card);
+        return new CardDrawnFact(
+            card,
+            "card_effect_target_atari",
+            StableDomainId.Validate(
+                sourceCardInstanceId,
+                nameof(sourceCardInstanceId)));
+    }
 }

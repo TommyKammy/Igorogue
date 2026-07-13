@@ -91,6 +91,13 @@ public sealed class CoreDuelContentCatalogLoaderTests
         Assert.Equal(
             [CardOperationKind.DrawIfTargetAtari, CardOperationKind.TemporaryLiberty],
             reinforce.Effects.Select(operation => operation.Kind));
+        var reinforcePlay =
+            StarterReinforceCardPlayDefinition.FromCoreDuelCatalog(catalog);
+        Assert.Equal(reinforce.Id, reinforcePlay.ContentId);
+        Assert.Equal(reinforce.Cost, reinforcePlay.Cost);
+        Assert.Equal(CardTargetKind.FriendlyGroup, reinforcePlay.Target);
+        Assert.Equal(1, reinforcePlay.DrawIfTargetAtari.Cards);
+        Assert.Equal(1, reinforcePlay.TemporaryLiberty.Amount);
 
         Assert.Equal("enemy_bandit", catalog.Bandit.Id);
         Assert.Equal("FEAT-009", catalog.Bandit.BehaviorSpec);
