@@ -69,6 +69,8 @@ visible scopeはgrayboxでありfinal presentationではない。Codex visual QA
 
 2026-07-14 — 並列検証中のGodotネイティブcrashを調査。添付reportはAppKit起動中の`EXC_BAD_ACCESS`／`abort()`を示すが原因は特定できない。全editor-build processを終了し、`$GODOT_BIN`に固定したserial editor build→selected-hover GUI captureをexit 0で再実行し、headless smoke／exportも成功、Godot process残留なしを確認した。因果関係は未確定のため、serial起動で再発する場合は別defectとしてconsole／editor logを取得する。
 
+2026-07-14 — code-bearing fixed HEAD `93866298b6c7d416169c2a02d0233504b7580212`を独立再レビューした。startup validation、Godot command／query境界、restart smoke、crash evidenceに未解決findingなし。status文書2件の旧test件数だけを653へ同期し、Project owner human visual reviewとPR CIを残るacceptance gateとして維持した。
+
 ## Evidence
 
 - PR #30 merge／post-merge main CI evidenceによりTASK-0040 dependency完了。
@@ -79,3 +81,4 @@ visible scopeはgrayboxでありfinal presentationではない。Codex visual QA
 - Graphical capture — Compatibility renderer／Apple M4でinitialとselected-hoverを480×270 PNGへ保存。左下`(1,1)`、右上`(7,7)`方向、black王石左下／white王石右上、intent primary／alternate、selected focus、legal target／hover previewをCodex visual QAで確認。Project owner human reviewはpending。
 - `tools/dev/export-windows` — exit 0、Windows debug executable SHA-256 `311d17928384c219430f96a9959a2eebcd1bb8a649163fe8bd9cc5ae8b33977d`。
 - Godot crash follow-up — 原因未確定。全editor-build process停止後のserial editor build、GUI capture、headless smoke／exportがすべてexit 0で再現なし、残存Godot process 0。
+- Independent fixed-HEAD review — startup seam／Godot runtimeは`APPROVE`、governanceのcrash表現／private path findingsは解消済み。Project owner human visual review／PR CIはpending。

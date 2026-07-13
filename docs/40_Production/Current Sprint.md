@@ -18,8 +18,8 @@ Build the minimal playable Godot 4.7 .NET Core Duel graybox on Application comma
   - 7×7 board、hand、qi、turn／result、Bandit intent、card target、End Turn、restartをApplication command／queryだけへ接続する
   - start auditでproduction標準初期snapshot factoryの欠落を確認し、2026-07-14 Project ownerがpure typed Domain／Content／Application startup seamと対応testを限定承認
   - startup seamは既存Accepted ruleと`game_data/`を使用し、player-visible rule／runtime valueを変更しない
-  - typed startup、query-only rendering、command-only input、terminal／restart smokeを実装済み、639 tests、sim／Godot smoke、Windows exportは成功
-  - initial／selected-hoverの480×270 Codex visual QAは実施済み。Project owner human visual review、independent fixed-HEAD review、CIは未完了
+  - typed startup、query-only rendering、command-only input、terminal／restart smokeを実装済み、653 tests、sim／Godot smoke、Windows exportは成功
+  - independent fixed-HEAD reviewは完了済み。initial／selected-hoverの480×270 Codex visual QAも実施済みで、Project owner human visual reviewとPR CIは未完了
 
 ## Open human evidence
 
