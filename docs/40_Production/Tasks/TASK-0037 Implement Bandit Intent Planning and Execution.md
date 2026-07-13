@@ -81,7 +81,7 @@ Invaderは本TASK対象外。replay compositionとFEAT-009のfull per-action tel
 
 2026-07-13 — full closeout suite成功。TASK-0037を`review`へ遷移し、fixed-HEAD independent reviewとCIを待つ。
 
-2026-07-13 — fixed-HEAD Domain reviewで、F09-01の初回`(6,4)`だけでなく固定黒手後の`advance (6,3)`／`pressure (6,2)`までをE3で保護する不足が指摘された。F09-01紙上3行動の各exact Domain contextをproduction plannerへ通す回帰を追加し、全566 tests成功を確認した。Application／lifecycle reviewは指摘なしで承認済み。修正HEADの再レビューとCIは未完了。
+2026-07-13 — fixed-HEAD Domain reviewで、F09-01の初回`(6,4)`だけでなく固定黒手後の`advance (6,3)`／`pressure (6,2)`までをE3で保護する不足が指摘された。F09-01紙上3行動の各exact Domain contextをproduction plannerへ通す回帰を追加し、全566 tests成功を確認した。Application／lifecycle reviewと修正HEAD Domain再レビューはいずれも指摘なしで承認済み。CIは未完了。
 
 ## Evidence
 
@@ -96,4 +96,4 @@ Invaderは本TASK対象外。replay compositionとFEAT-009のfull per-action tel
 - independent semantic auditはDECISION-0009、merge-anchor、primary消滅、normal／bonus、terminal、facts／checksum、BattleState／replay非変更を承認し、DECISION-0010だけをP1 specification blockとして報告した。
 - Project ownerの2026-07-13の選択によりDECISION-0010 Option 1はresolved。real=0／effective=1のE3 regressionと通常case不変をproduction kernelで確認した。
 - independent contract auditのP2 fail-closed content findingは修正済み。full per-action telemetry compositionはKnown IssuesどおりTASK-0039へdeferする。
-- fixed-HEAD Application reviewは指摘なし。Domain reviewのF09-01紙上3行動E3 coverage findingは修正し、`advance (6,3)`から`pressure (6,2)`への遷移をproduction plannerで確認した。修正HEADの再レビューを待つ。
+- fixed-HEAD Application reviewは指摘なし。Domain reviewのF09-01紙上3行動E3 coverage findingは修正し、`advance (6,3)`から`pressure (6,2)`への遷移をproduction plannerで確認した。修正HEAD `ef93acc2ccede6b16e650a6bf5e3f10522efca94` の再レビューも指摘なしで承認済み。
