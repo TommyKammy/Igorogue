@@ -59,7 +59,7 @@ resolved M2 starter recipe、deck／hand／qi、starter card play、Bandit plann
 
 2026-07-13 — pre-review validationを2巡実行。exact .NET SDK 8.0.422／Godot 4.7 stable .NETを確認し、locked restore、build、607 tests、governance、sim smoke、Godot headless smoke、Windows debug export、`git diff --check`が各2回exit 0。buildはwarning 0／error 0、testsはDomain 355／Application 175／Architecture 77。Godot scene／resource／project／export presetは変更していない。
 
-2026-07-13 — fixed source HEAD `eb23f3d4a955e190e55d958286d7cd19bdeb1c3e`をbase `6f84adcbc0b1deb70944e82648009eb53e1429a4`と比較。独立Battle／Application、replay／security、documentation／golden／architecture reviewはいずれもfindingなしで`APPROVE`。各reviewerが607 tests、governance、relevant smoke、golden SHA、clean worktreeを独立確認し、TASKをCI／human merge待ちの`review`へ遷移した。
+2026-07-13 — fixed source HEAD `eb23f3d4a955e190e55d958286d7cd19bdeb1c3e`をbase `6f84adcbc0b1deb70944e82648009eb53e1429a4`と比較。独立Battle／Application、replay／security、documentation／golden／architecture reviewはいずれもfindingなしで`APPROVE`。reviewer validationでは607 tests、governance、relevant smoke、golden SHA、clean worktreeを分担確認し、TASKをCI／human merge待ちの`review`へ遷移した。
 
 ## Evidence
 
