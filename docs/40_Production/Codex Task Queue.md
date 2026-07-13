@@ -2,7 +2,7 @@
 type: roadmap
 status: active
 project: Igorogue
-updated: 2026-07-13
+updated: 2026-07-14
 ---
 # Codex Task Queue
 
@@ -56,7 +56,7 @@ The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DEC
 
 Entry is owner-authorized open because M1 exit evidence including TLE-01〜15 E3 migration is complete and DECISION-0007 explicitly waives the unverified TASK-0012 human-evidence prerequisite.
 
-Current: [[TASK-0040 Implement Core Duel Preview Queries]] (`review`; fixed source HEAD `ab600cd53e7fafa5976b1a381a4a19e672097977` has 625 tests、all wrappers、three independent approvals、and Draft PR #30 CI run `29256594790` all green; human merge pending).
+Current: [[TASK-0041 Build Playable Godot Core Duel Graybox]] (`in_progress`; TASK-0040 completed through PR #30 source HEAD `eaa62531615eef7a10cfe1d16fe92318d45143c8`、main merge `d8ccc08cf7fa3cc1a43046d128b2804b50b9d073`、post-merge main CI run `29285926156` all 3 jobs success). Its 2026-07-14 start audit found no production standard initial snapshot factory; the Project owner approved a bounded pure typed Domain／Content／Application startup seam plus tests, with no rule／runtime-value changes.
 
 1. [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
 2. [[TASK-0032 Implement Typed Core Duel Content Catalog]] — done
@@ -67,8 +67,8 @@ Current: [[TASK-0040 Implement Core Duel Preview Queries]] (`review`; fixed sour
 7. [[TASK-0037 Implement Bandit Intent Planning and Execution]] — done
 8. [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — done
 9. [[TASK-0039 Integrate Headless Core Duel and Replay]] — done
-10. [[TASK-0040 Implement Core Duel Preview Queries]] — review／current; PR #30 CI green／human merge pending
-11. [[TASK-0041 Build Playable Godot Core Duel Graybox]] — blocked by TASK-0040
+10. [[TASK-0040 Implement Core Duel Preview Queries]] — done; PR #30 merged／post-merge CI green
+11. [[TASK-0041 Build Playable Godot Core Duel Graybox]] — in_progress／current; bounded startup seam approved
 12. [[TASK-0042 Validate M2 Core Duel Graybox]] — blocked by TASK-0041
 
 DECISION-0009／0010 Option 1 are implemented and TASK-0037 is done. DECISION-0006 resolved Option 1: TASK-0038 writes the starter 6-type／12-card default recipe, records Development as the only M2 facility exception, and preserves broad facility expansion for M3. No meta progression or broad relic／facility content enters Gate 2.

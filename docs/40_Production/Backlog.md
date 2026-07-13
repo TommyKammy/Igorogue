@@ -2,7 +2,7 @@
 type: backlog
 status: active
 project: Igorogue
-updated: 2026-07-13
+updated: 2026-07-14
 ---
 # Backlog
 
@@ -58,8 +58,8 @@ See [[Codex Task Queue]] for gate order and concurrency rules.
 - [[TASK-0037 Implement Bandit Intent Planning and Execution]] — done
 - [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — done
 - [[TASK-0039 Integrate Headless Core Duel and Replay]] — done; PR #29 merge／post-merge CI green
-- [[TASK-0040 Implement Core Duel Preview Queries]] — review／current; PR #30 CI green／human merge pending
-- [[TASK-0041 Build Playable Godot Core Duel Graybox]] — blocked by TASK-0040
+- [[TASK-0040 Implement Core Duel Preview Queries]] — done; PR #30 merged／post-merge CI green
+- [[TASK-0041 Build Playable Godot Core Duel Graybox]] — in_progress／current; bounded typed startup seam approved without rule／runtime-value changes
 - [[TASK-0042 Validate M2 Core Duel Graybox]] — blocked by TASK-0041
 
 Do not expand the full card／relic／meta content before Core Duel and Acceleration Lab validation.
