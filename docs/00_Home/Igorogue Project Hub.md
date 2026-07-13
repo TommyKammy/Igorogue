@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0032 Implement Typed Core Duel Content Catalog]]はPR #22でmerge、post-merge main CI green。[[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]]はfixed-HEAD independent reviewでapproved、PR review待ち。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
+> [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]]はPR #23でmerge、post-merge main CI green。[[TASK-0034 Implement Atomic Basic Stone Card Play]]はfixed-HEAD independent reviewでapproved、PR review待ち。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
 
 > [!success] 実装ゲート
 > Gate 1は完了。Gate 2はTASK-0031の計画closeout後、typed contentからGodot graybox／UATまでを依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -90,7 +90,8 @@ cssclasses:
 - [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved／Gate 2 evidence prerequisite waived
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
 - [[TASK-0032 Implement Typed Core Duel Content Catalog]] — done
-- [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — review／current
+- [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — done
+- [[TASK-0034 Implement Atomic Basic Stone Card Play]] — review／current
 
 ## Latest design repairs
 

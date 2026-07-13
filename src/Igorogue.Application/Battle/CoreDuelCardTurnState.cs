@@ -421,6 +421,56 @@ public static class CoreDuelCardTurnKernel
             state.Deck.Exhaust(instanceId, state.RngState));
     }
 
+    internal static CoreDuelCardTurnTransition CommitBasicStoneCardPlay(
+        CoreDuelCardTurnState state,
+        BasicStoneCardPlayEvaluation evaluation)
+    {
+        ArgumentNullException.ThrowIfNull(state);
+        ArgumentNullException.ThrowIfNull(evaluation);
+        if (!evaluation.IsAuthorized)
+        {
+            return CoreDuelCardTurnTransition.NoOp(state, evaluation.ReasonId);
+        }
+
+        if (!ReferenceEquals(evaluation.SourceDeck, state.Deck) ||
+            evaluation.SourceQi != state.Qi ||
+            evaluation.Card is null)
+        {
+            return CoreDuelCardTurnTransition.NoOp(
+                state,
+                "stale_card_play_evaluation");
+        }
+
+        var begun = state.Deck.BeginResolution(
+            evaluation.Card.InstanceId,
+            state.RngState);
+        if (begun.IsExactNoOp)
+        {
+            return CoreDuelCardTurnTransition.NoOp(
+                state,
+                begun.NoOpReason ?? "card_resolution_rejected");
+        }
+
+        var completed = begun.DeckAfter.CompleteResolution(
+            evaluation.Card.InstanceId,
+            begun.RngAfter);
+        if (completed.IsExactNoOp)
+        {
+            throw new InvalidOperationException(
+                "A begun basic-stone card resolution must be completable.");
+        }
+
+        var qiAfter = checked(state.Qi - evaluation.SourceDefinition.Cost);
+        var stateAfter = CoreDuelCardTurnState.Create(
+            completed.DeckAfter,
+            completed.RngAfter,
+            state.SystemPolicy,
+            state.ClosedWindowResources,
+            qiAfter,
+            state.TurnScopedFlags);
+        return CoreDuelCardTurnTransition.Applied(state, stateAfter);
+    }
+
     public static CoreDuelCardTurnTransition EndPlayerTurn(CoreDuelCardTurnState state)
     {
         ArgumentNullException.ThrowIfNull(state);

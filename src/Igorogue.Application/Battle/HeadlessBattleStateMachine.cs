@@ -92,108 +92,18 @@ public static class HeadlessBattleStateMachine
         HeadlessBattleSession session,
         AuthorizedStonePlacementCommand command)
     {
-        var source = session.State;
-        var expectedActor = source.Phase switch
-        {
-            BattlePhase.PlayerAction => StoneColor.Black,
-            BattlePhase.EnemyAction => StoneColor.White,
-            _ => throw new InvalidOperationException("Terminal phase was not rejected before placement."),
-        };
-        if (command.Actor != expectedActor)
-        {
-            return Reject(session, command, "wrong_actor_for_phase");
-        }
-
-        var proposedStone = new BoardStone(command.Actor, false, command.Point);
-        if (!HypotheticalPlacementResolver.TryCreate(
-                source.Board,
-                proposedStone,
-                out var hypothetical) ||
-            hypothetical is null)
-        {
-            return Reject(session, command, "stone_occupied");
-        }
-
-        var resolved = HypotheticalPlacementResolver.ResolveCaptures(
-            hypothetical,
-            RealLiberties(hypothetical.GroupsAfterPlacement));
-        var legality = PlacementLegalityEvaluator.Evaluate(
-            resolved,
-            RealLiberties(resolved.GroupsAfterCapture),
-            source.RepetitionHistory,
+        var resolution = AuthorizedStonePlacementPipeline.Resolve(
+            session.State,
+            command.Actor,
+            command.Point,
             command.AccessMode);
-        if (!legality.IsLegal)
-        {
-            return Reject(session, command, legality.ReasonId);
-        }
-
-        var legalPlacement = source.RepetitionHistory.CommitLegalPlacement(legality);
-        var placementCommit = FacilityPlacementIntegrator.Apply(
-            source.FacilityState,
-            legalPlacement);
-        var orderedFacts = placementCommit.OrderedFacts
-            .Cast<IBattleFact>()
-            .ToList();
-        var territoryAfter = TerritoryAnalyzer.Analyze(placementCommit.BoardAfterCommit);
-
-        if (placementCommit.KingCaptureResult.IsTerminal)
-        {
-            var terminal = placementCommit.KingCaptureResult;
-            var runtimeAfter = FacilityRuntimeAnalyzer.Analyze(
-                placementCommit.FacilityStateAfterCommit,
-                territoryAfter,
-                source.RuntimePolicy.FacilityPolicy);
-            var stateAfter = BattleState.Transition(
-                source,
-                placementCommit.BoardAfterCommit,
-                placementCommit.HistoryAfterCommit,
-                placementCommit.FacilityStateAfterCommit,
-                territoryAfter,
-                runtimeAfter,
-                source.PlayerTurnIndex,
-                BattlePhase.Ended,
-                terminal.Outcome,
-                terminal.EndReason);
-            orderedFacts.Add(new BattleEndedFact(terminal.Outcome, terminal.EndReason));
-            return Accept(session, command, stateAfter, orderedFacts);
-        }
-
-        var territoryEstablished = TerritoryDeltaResolver.Resolve(
-            source.TerritoryAnalysis,
-            territoryAfter,
-            placementCommit,
-            command.Actor);
-        if (territoryEstablished is not null)
-        {
-            orderedFacts.Add(territoryEstablished);
-        }
-
-        var facilityTransition = FacilityOperatingTransitionResolver
-            .ReassociateAfterPlacement(
-                source.FacilityRuntimeAnalysis,
-                placementCommit,
-                territoryAfter);
-        orderedFacts.AddRange(facilityTransition.OrderedFacts.Cast<IBattleFact>());
-
-        var next = command.Actor == StoneColor.White
-            ? CompleteEnemyBoundary(
-                source,
-                placementCommit,
-                territoryAfter,
-                facilityTransition.AnalysisAfter,
-                orderedFacts)
-            : BattleState.Transition(
-                source,
-                placementCommit.BoardAfterCommit,
-                placementCommit.HistoryAfterCommit,
-                placementCommit.FacilityStateAfterCommit,
-                territoryAfter,
-                facilityTransition.AnalysisAfter,
-                source.PlayerTurnIndex,
-                BattlePhase.PlayerAction,
-                BattleOutcome.Ongoing,
-                BattleEndReason.None);
-        return Accept(session, command, next, orderedFacts);
+        return resolution.Accepted
+            ? Accept(
+                session,
+                command,
+                resolution.StateAfter,
+                resolution.OrderedFacts)
+            : Reject(session, command, resolution.ReasonId);
     }
 
     private static BattleCommandResult ExecuteFacilityBuild(
@@ -287,44 +197,6 @@ public static class HeadlessBattleStateMachine
 
     private static BattleState CompleteEnemyBoundary(
         BattleState source,
-        FacilityPlacementCommit placementCommit,
-        TerritoryAnalysis territoryAfter,
-        FacilityRuntimeAnalysis facilityRuntimeAfter,
-        List<IBattleFact> orderedFacts)
-    {
-        if (source.PlayerTurnIndex >= source.RuntimePolicy.PlayerTurnLimit)
-        {
-            orderedFacts.Add(new BattleEndedFact(
-                BattleOutcome.PlayerDefeat,
-                BattleEndReason.TurnLimit));
-            return BattleState.Transition(
-                source,
-                placementCommit.BoardAfterCommit,
-                placementCommit.HistoryAfterCommit,
-                placementCommit.FacilityStateAfterCommit,
-                territoryAfter,
-                facilityRuntimeAfter,
-                source.PlayerTurnIndex,
-                BattlePhase.Ended,
-                BattleOutcome.PlayerDefeat,
-                BattleEndReason.TurnLimit);
-        }
-
-        return BattleState.Transition(
-            source,
-            placementCommit.BoardAfterCommit,
-            placementCommit.HistoryAfterCommit,
-            placementCommit.FacilityStateAfterCommit,
-            territoryAfter,
-            facilityRuntimeAfter,
-            source.PlayerTurnIndex + 1,
-            BattlePhase.PlayerAction,
-            BattleOutcome.Ongoing,
-            BattleEndReason.None);
-    }
-
-    private static BattleState CompleteEnemyBoundary(
-        BattleState source,
         List<IBattleFact> orderedFacts)
     {
         if (source.PlayerTurnIndex >= source.RuntimePolicy.PlayerTurnLimit)
@@ -386,12 +258,5 @@ public static class HeadlessBattleStateMachine
             false,
             reasonId,
             [new CommandRejectedFact(reasonId)]);
-
-    private static EffectiveLibertySnapshot RealLiberties(StoneGroupAnalysis analysis) =>
-        EffectiveLibertySnapshot.Create(
-            analysis,
-            analysis.Groups.Select(group => new GroupEffectiveLiberty(
-                group,
-                group.RealLibertyCount)));
 
 }
