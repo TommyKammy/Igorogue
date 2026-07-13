@@ -51,7 +51,7 @@ Battle Screen、Interaction、graybox scopeは`proposed`のvisual／interaction 
 
 ## Known issues
 
-visible scopeはgrayboxでありfinal presentationではない。Codex visual QAでinitial／selected-hoverの480×270 captureを確認したが、Project ownerによるhuman visual reviewは未完了。並列検証中に複数Godot editor-buildが同一`.godot`出力を競合し、一度のGUI起動で`.NET: Assemblies not found`後のネイティブcrashが発生した。残存processを停止し、正規Godot executableのserial build→GUI captureと全wrapperで再発なしを確認済み。
+visible scopeはgrayboxでありfinal presentationではない。Codex visual QAでinitial／selected-hoverの480×270 captureを確認したが、Project ownerによるhuman visual reviewは未完了。並列検証中、複数のGodot editor-build processが存在する時点で一度のGUI起動がネイティブ`EXC_BAD_ACCESS`で終了した。添付crash reportは原因を特定しておらず、並列build競合との因果関係は未確定。全process停止後のserial build→GUI capture、headless smoke、Windows exportでは再現していない。
 
 ## Execution log
 
@@ -63,17 +63,19 @@ visible scopeはgrayboxでありfinal presentationではない。Codex visual QA
 
 2026-07-14 — 既存`BootstrapSmoke.tscn`／`project.godot`を変更せず、graphical起動だけが`CoreDuelGraybox`を生成する構成にした。7×7盤、全hand、qi、turn／result、Bandit intent、primary／alternate、territory／facility、atari／capture／king riskをApplication queryから描画し、card select→hover→exact commit、End Turn→enemy command、terminal restartをApplication commandへ限定した。
 
-2026-07-14 — headless graybox smokeを同一content／seedの決定性、query、legal card commit、enemy resolution、terminal、restart count 1まで拡張した。repository tests 639件、sim smoke、Godot headless parse／build／bootstrap smoke、Windows debug exportはすべて成功した。
+2026-07-14 — headless graybox smokeを同一content／seedの決定性、query、legal card commit、enemy resolution、terminal、restart count 1まで拡張した。repository tests 653件、sim smoke、Godot headless parse／build／bootstrap smoke、Windows debug exportはすべて成功した。
 
-2026-07-14 — 並列検証の競合で発生したGodotネイティブcrashを調査。orphaned editor-buildを終了し、`/Users/tomoakikawada/Applications/Godot_mono.app/Contents/MacOS/Godot`に固定したserial editor build→selected-hover GUI captureをexit 0で再実行し、Godot process残留なしを確認した。
+2026-07-14 — independent reviewで標準初期配置のtyped境界がking数と対称性だけではfail closedにならない点を修正した。`standard_v0_2` ID、中央空点、各色king 1／guard 2、3石連結king group、実呼吸点7をDomainで検証し、Content mutation負例と、座標を固定せず同じ構造を許容する正例を追加した。
+
+2026-07-14 — 並列検証中のGodotネイティブcrashを調査。添付reportはAppKit起動中の`EXC_BAD_ACCESS`／`abort()`を示すが原因は特定できない。全editor-build processを終了し、`$GODOT_BIN`に固定したserial editor build→selected-hover GUI captureをexit 0で再実行し、headless smoke／exportも成功、Godot process残留なしを確認した。因果関係は未確定のため、serial起動で再発する場合は別defectとしてconsole／editor logを取得する。
 
 ## Evidence
 
 - PR #30 merge／post-merge main CI evidenceによりTASK-0040 dependency完了。
 - 2026-07-14 Project owner instruction — production標準初期snapshot factory欠落に対する限定typed startup seamを承認。player-visible rule／runtime value変更は対象外。
-- `tools/dev/test` — Domain 360／Application 193／Architecture 86＝639 tests success、build 0 warning／0 error。
+- `tools/dev/test` — Domain 368／Application 193／Architecture 92＝653 tests success、build 0 warning／0 error。
 - `tools/dev/sim-smoke` — exit 0、bootstrap checksum `36ca153c20b82b2220c82b787c229d22f255fee7c42fed9c5ce7753ae0ff7bf1`。
 - `tools/dev/godot-smoke` — Godot 4.7 .NET headless parse／build／scene run exit 0、full terminal／restart graybox checksum `7692094b4154966821fe7251d4fde59c73fcd16c09c8527579885dade55b9cf6`。
 - Graphical capture — Compatibility renderer／Apple M4でinitialとselected-hoverを480×270 PNGへ保存。左下`(1,1)`、右上`(7,7)`方向、black王石左下／white王石右上、intent primary／alternate、selected focus、legal target／hover previewをCodex visual QAで確認。Project owner human reviewはpending。
 - `tools/dev/export-windows` — exit 0、Windows debug executable SHA-256 `311d17928384c219430f96a9959a2eebcd1bb8a649163fe8bd9cc5ae8b33977d`。
-- Godot crash follow-up — concurrent editor-build競合を解消後、serial editor build、GUI capture、headless smoke／exportがすべてexit 0、残存Godot process 0。
+- Godot crash follow-up — 原因未確定。全editor-build process停止後のserial editor build、GUI capture、headless smoke／exportがすべてexit 0で再現なし、残存Godot process 0。

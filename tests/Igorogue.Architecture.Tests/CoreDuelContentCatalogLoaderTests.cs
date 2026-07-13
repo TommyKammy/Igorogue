@@ -646,6 +646,96 @@ public sealed class CoreDuelContentCatalogLoaderTests
     }
 
     [Fact]
+    public void UnsupportedInitialPositionIdIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root => root["initial_position"]!["id"] = "future_position");
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void MissingSymmetricGuardPairIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root =>
+            {
+                var stones = InitialStones(root);
+                stones.RemoveAt(5);
+                stones.RemoveAt(1);
+            });
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void SymmetricGuardsReplacedByKingsAreRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root =>
+            {
+                var stones = InitialStones(root);
+                stones[1]!["role"] = "king";
+                stones[5]!["role"] = "king";
+            });
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void DisconnectedSymmetricGuardPairIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root =>
+            {
+                var stones = InitialStones(root);
+                SetPoint(stones, 2, 4, 3);
+                SetPoint(stones, 4, 4, 5);
+            });
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void SymmetricCornerGroupsWithWrongLibertyCountAreRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root =>
+            {
+                var stones = InitialStones(root);
+                SetPoint(stones, 0, 1, 1);
+                SetPoint(stones, 1, 1, 2);
+                SetPoint(stones, 2, 2, 1);
+                SetPoint(stones, 3, 7, 7);
+                SetPoint(stones, 4, 6, 7);
+                SetPoint(stones, 5, 7, 6);
+            });
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void OccupiedInitialCenterIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root => SetPoint(InitialStones(root), 2, 4, 4));
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
     public void NonContiguousFacilityCapacityPolicyIsRejected()
     {
         using var fixture = GeneratedContentFixture.Create();
@@ -785,6 +875,17 @@ public sealed class CoreDuelContentCatalogLoaderTests
                 entry["card_id"]!.GetValue<string>(),
                 cardId,
                 StringComparison.Ordinal));
+
+    private static JsonArray InitialStones(JsonNode root) =>
+        root["initial_position"]!["stones"]!.AsArray();
+
+    private static void SetPoint(JsonArray stones, int stoneIndex, int x, int y)
+    {
+        var point = new JsonArray();
+        point.Add(x);
+        point.Add(y);
+        stones[stoneIndex]!["point"] = point;
+    }
 
     private static void ReverseArray(JsonArray array)
     {

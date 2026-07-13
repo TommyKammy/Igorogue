@@ -189,19 +189,6 @@ public sealed class CoreDuelContentCatalogLoader
                 geometry,
                 positionId,
                 stones));
-        if (!position.HasRoleAwarePointReflectionSymmetry())
-        {
-            throw Invalid($"{context} does not match its declared role-aware point symmetry.");
-        }
-
-        if (position.Stones.Count(stone =>
-                stone.Color == StoneColor.Black && stone.Role == InitialStoneRole.King) != 1 ||
-            position.Stones.Count(stone =>
-                stone.Color == StoneColor.White && stone.Role == InitialStoneRole.King) != 1)
-        {
-            throw Invalid($"{context} must contain exactly one king for each color.");
-        }
-
         return position;
     }
 

@@ -15,6 +15,7 @@ namespace Igorogue.Domain.Content;
 public sealed class CoreDuelBattleSetupDefinition
 {
     public const string EncodingVersion = "core-duel-battle-setup-v1";
+    private const string SupportedInitialPositionId = "standard_v0_2";
 
     private CoreDuelBattleSetupDefinition(
         InitialPositionDefinition initialPosition,
@@ -51,6 +52,7 @@ public sealed class CoreDuelBattleSetupDefinition
         int counterattackStartGaugeUnits)
     {
         ArgumentNullException.ThrowIfNull(initialPosition);
+        ValidateInitialPosition(initialPosition);
         if (playerTurnLimit <= 0)
         {
             throw new ArgumentOutOfRangeException(
@@ -76,6 +78,71 @@ public sealed class CoreDuelBattleSetupDefinition
     }
 
     public string ToCanonicalText() => CanonicalText;
+
+    private static void ValidateInitialPosition(InitialPositionDefinition position)
+    {
+        if (!string.Equals(position.Id, SupportedInitialPositionId, StringComparison.Ordinal))
+        {
+            throw new ArgumentException(
+                $"Core Duel supports only initial position {SupportedInitialPositionId}.",
+                nameof(position));
+        }
+
+        var geometry = position.Geometry;
+        var centerCoordinate = (geometry.Size + 1) / 2;
+        var center = geometry.CreateCanonicalPoint(centerCoordinate, centerCoordinate);
+        if (position.IsOccupied(center))
+        {
+            throw new ArgumentException(
+                "The accepted Core Duel initial position must leave the center point empty.",
+                nameof(position));
+        }
+
+        if (!position.HasRoleAwarePointReflectionSymmetry())
+        {
+            throw new ArgumentException(
+                "The accepted Core Duel initial position must have role-aware point-reflection symmetry.",
+                nameof(position));
+        }
+
+        foreach (var color in new[] { StoneColor.Black, StoneColor.White })
+        {
+            var colorStones = position.Stones
+                .Where(stone => stone.Color == color)
+                .ToArray();
+            if (colorStones.Count(stone => stone.Role == InitialStoneRole.King) != 1 ||
+                colorStones.Count(stone => stone.Role == InitialStoneRole.Guard) != 2)
+            {
+                throw new ArgumentException(
+                    "The accepted Core Duel initial position requires exactly one king and two guards per color.",
+                    nameof(position));
+            }
+        }
+
+        var board = BoardState.FromInitialPosition(position);
+        var groups = StoneGroupAnalyzer.Analyze(board);
+        foreach (var color in new[] { StoneColor.Black, StoneColor.White })
+        {
+            var king = position.Stones.Single(stone =>
+                stone.Color == color && stone.Role == InitialStoneRole.King);
+            var kingGroup = groups.GroupAt(king.Point);
+            if (kingGroup is null ||
+                kingGroup.Stones.Count != 3 ||
+                kingGroup.Stones.Count(stone => stone.IsKing) != 1)
+            {
+                throw new ArgumentException(
+                    "Each accepted Core Duel initial king group must contain its three connected same-color stones.",
+                    nameof(position));
+            }
+
+            if (kingGroup.RealLibertyCount != 7)
+            {
+                throw new ArgumentException(
+                    "Each accepted Core Duel initial king group must have exactly seven real liberties.",
+                    nameof(position));
+            }
+        }
+    }
 
     private string CreateCanonicalText()
     {
