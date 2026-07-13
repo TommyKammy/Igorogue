@@ -81,16 +81,19 @@ Invaderは本TASK対象外。replay compositionとFEAT-009のfull per-action tel
 
 2026-07-13 — full closeout suite成功。TASK-0037を`review`へ遷移し、fixed-HEAD independent reviewとCIを待つ。
 
+2026-07-13 — fixed-HEAD Domain reviewで、F09-01の初回`(6,4)`だけでなく固定黒手後の`advance (6,3)`／`pressure (6,2)`までをE3で保護する不足が指摘された。F09-01紙上3行動の各exact Domain contextをproduction plannerへ通す回帰を追加し、全566 tests成功を確認した。Application／lifecycle reviewは指摘なしで承認済み。修正HEADの再レビューとCIは未完了。
+
 ## Evidence
 
 - PR #26 human merge／post-merge main CI run `29228982431`全3 job success。
 - mandatory source read、existing Domain／Application enemy boundary read-only audit、F09-01〜03／08 fixture gap audit。
 - baseline `tools/dev/test` exit 0。Domain 324、Application 147、Architecture 58、計529 tests pass。
 - integrated `tools/dev/build` exit 0、warning 0、error 0。
-- closeout `tools/dev/test` exit 0。Domain 347、Application 158、Architecture 60、計565 tests pass。
+- closeout `tools/dev/test` exit 0。Domain 348、Application 158、Architecture 60、計566 tests pass。
 - closeout `tools/dev/check` exit 0。content snapshot `sha256:cd53980e2edd69ad14b3815c800a3c5aab119f21d95d724d083afa2920c15ad6`。
 - closeout `tools/dev/sim-smoke` exit 0。checksum `5f943a3cbc6847a14e841612c57d2d2cf4aef78d8b7441c0ff4d8b279113625c`。
 - closeout `tools/dev/build` exit 0、warning 0、error 0。`git diff --check` exit 0。
 - independent semantic auditはDECISION-0009、merge-anchor、primary消滅、normal／bonus、terminal、facts／checksum、BattleState／replay非変更を承認し、DECISION-0010だけをP1 specification blockとして報告した。
 - Project ownerの2026-07-13の選択によりDECISION-0010 Option 1はresolved。real=0／effective=1のE3 regressionと通常case不変をproduction kernelで確認した。
 - independent contract auditのP2 fail-closed content findingは修正済み。full per-action telemetry compositionはKnown IssuesどおりTASK-0039へdeferする。
+- fixed-HEAD Application reviewは指摘なし。Domain reviewのF09-01紙上3行動E3 coverage findingは修正し、`advance (6,3)`から`pressure (6,2)`への遷移をproduction plannerで確認した。修正HEADの再レビューを待つ。

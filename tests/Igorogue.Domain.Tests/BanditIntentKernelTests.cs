@@ -82,6 +82,51 @@ public sealed class BanditIntentKernelTests
     }
 
     [Fact]
+    public void F0901PaperSequenceReplansAdvanceThenPressureAfterFixedActions()
+    {
+        var enemy = BanditDefinition();
+        var afterFirstEnemyAction = Context(Board(
+            Stone(StoneColor.Black, 2, 2, isKing: true),
+            Stone(StoneColor.Black, 2, 3),
+            Stone(StoneColor.Black, 3, 2),
+            Stone(StoneColor.Black, 4, 2),
+            Stone(StoneColor.White, 6, 6, isKing: true),
+            Stone(StoneColor.White, 5, 6),
+            Stone(StoneColor.White, 6, 5),
+            Stone(StoneColor.White, 6, 4)));
+
+        var secondPlan = BanditIntentPlanner.Plan(
+            afterFirstEnemyAction,
+            enemy,
+            StateChecksum,
+            Descriptor());
+
+        Assert.Equal(EnemyIntentKind.AdvanceTowardBlackKing, secondPlan.IntentKind);
+        Assert.Equal(C(6, 3), secondPlan.PrimaryPoint);
+
+        var afterSecondEnemyAction = Context(Board(
+            Stone(StoneColor.Black, 2, 2, isKing: true),
+            Stone(StoneColor.Black, 2, 3),
+            Stone(StoneColor.Black, 3, 2),
+            Stone(StoneColor.Black, 4, 2),
+            Stone(StoneColor.Black, 5, 2),
+            Stone(StoneColor.White, 6, 6, isKing: true),
+            Stone(StoneColor.White, 5, 6),
+            Stone(StoneColor.White, 6, 5),
+            Stone(StoneColor.White, 6, 4),
+            Stone(StoneColor.White, 6, 3)));
+
+        var thirdPlan = BanditIntentPlanner.Plan(
+            afterSecondEnemyAction,
+            enemy,
+            StateChecksum,
+            Descriptor());
+
+        Assert.Equal(EnemyIntentKind.PressureBlackKing, thirdPlan.IntentKind);
+        Assert.Equal(C(6, 2), thirdPlan.PrimaryPoint);
+    }
+
+    [Fact]
     public void Decision0010Option1UsesKingStonesWhenTimedLibertyProtectsZeroRealLibertyKing()
     {
         var context = TimedProtectedZeroRealLibertyKingContext(
