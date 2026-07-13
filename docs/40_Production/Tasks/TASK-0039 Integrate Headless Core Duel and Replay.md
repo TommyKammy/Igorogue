@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0039
-status: in_progress
+status: review
 project: Igorogue
 milestone: M2
 priority: critical
@@ -59,6 +59,8 @@ resolved M2 starter recipe、deck／hand／qi、starter card play、Bandit plann
 
 2026-07-13 — pre-review validationを2巡実行。exact .NET SDK 8.0.422／Godot 4.7 stable .NETを確認し、locked restore、build、607 tests、governance、sim smoke、Godot headless smoke、Windows debug export、`git diff --check`が各2回exit 0。buildはwarning 0／error 0、testsはDomain 355／Application 175／Architecture 77。Godot scene／resource／project／export presetは変更していない。
 
+2026-07-13 — fixed source HEAD `eb23f3d4a955e190e55d958286d7cd19bdeb1c3e`をbase `6f84adcbc0b1deb70944e82648009eb53e1429a4`と比較。独立Battle／Application、replay／security、documentation／golden／architecture reviewはいずれもfindingなしで`APPROVE`。各reviewerが607 tests、governance、relevant smoke、golden SHA、clean worktreeを独立確認し、TASKをCI／human merge待ちの`review`へ遷移した。
+
 ## Evidence
 
 - PR #28 human merge／main merge commit `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge main CI run `29247035946`全3 job success。
@@ -69,3 +71,4 @@ resolved M2 starter recipe、deck／hand／qi、starter card play、Bandit plann
 - exact toolchain: .NET SDK `8.0.422`、Godot `4.7.stable.mono.official.5b4e0cb0f`。build warning 0／error 0。Domain 355／Application 175／Architecture 77、計607 tests pass。
 - content snapshot `sha256:aa26362f6c4b1cdc9c8dc9336654bd20fe5379f622eef3fa992257db62d86832`（8 files）。sim／Godot smoke checksum `36ca153c20b82b2220c82b787c229d22f255fee7c42fed9c5ce7753ae0ff7bf1`。Windows debug export SHA-256 `68e6955b3d399ec1c181e13e975e7226c97645638ab3786c9ee5b5b2d567a656`。
 - Application → Content project reference、Godot型のDomain／Application導入、Godot scene／resource／project／export preset変更はいずれもなし。
+- fixed source HEAD `eb23f3d4a955e190e55d958286d7cd19bdeb1c3e`／base `6f84adcbc0b1deb70944e82648009eb53e1429a4`。独立Battle／Application、replay／security、documentation／golden／architecture reviewsはいずれもfindingなしで`APPROVE`。

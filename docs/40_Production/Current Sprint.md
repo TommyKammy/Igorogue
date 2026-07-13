@@ -11,7 +11,7 @@ sprint: S0
 
 Connect the resolved Core Duel recipe、starter-card turn、Bandit intent、terminal result、and restart through one deterministic headless aggregate and replay schema 3.
 
-## In progress
+## In review
 
 - [[TASK-0039 Integrate Headless Core Duel and Replay]]
   - dependency TASK-0038 is done through PR #28 merge `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge CI run `29247035946`
@@ -20,6 +20,8 @@ Connect the resolved Core Duel recipe、starter-card turn、Bandit intent、term
   - PlayCard → EndPlayerTurn → Bandit action → next player turn／terminal／restartをApplication commandで接続する
   - replay schema 3は`headless-core-duel-state-v1`だけを受理し、schema 1／2を変更しない
   - Godot UI／preview query projection／formal simulator／playable claimは対象外
+  - repository wrappers 2巡、607 tests、win／loss／restart golden、fixed source HEADの3系統独立reviewが成功
+  - Draft PR CI／human review／merge pending
 
 ## Open human evidence
 

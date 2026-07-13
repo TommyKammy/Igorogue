@@ -57,7 +57,7 @@ See [[Codex Task Queue]] for gate order and concurrency rules.
 - [[TASK-0036 Implement Starter Reinforce Effect]] — done
 - [[TASK-0037 Implement Bandit Intent Planning and Execution]] — done
 - [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — done
-- [[TASK-0039 Integrate Headless Core Duel and Replay]] — in progress／current
+- [[TASK-0039 Integrate Headless Core Duel and Replay]] — review／current; CI／human merge pending
 - [[TASK-0040 Implement Core Duel Preview Queries]] — blocked by TASK-0039
 - [[TASK-0041 Build Playable Godot Core Duel Graybox]] — blocked by TASK-0040
 - [[TASK-0042 Validate M2 Core Duel Graybox]] — blocked by TASK-0041
