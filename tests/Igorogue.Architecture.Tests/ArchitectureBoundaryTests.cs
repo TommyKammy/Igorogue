@@ -6,8 +6,10 @@ using Igorogue.Application.Replay;
 using Igorogue.Content;
 using Igorogue.Domain.Board;
 using Igorogue.Domain.Bootstrap;
+using Igorogue.Domain.Cards;
 using Igorogue.Domain.Combat;
 using Igorogue.Domain.Content;
+using Igorogue.Domain.Determinism;
 using Igorogue.Domain.Facilities;
 
 namespace Igorogue.Architecture.Tests;
@@ -470,6 +472,84 @@ public sealed class ArchitectureBoundaryTests
                 forbidden,
                 sourceText,
                 StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Task0033UsesAnExplicitRecipeAndRemainsOutsideBattleReplayV2()
+    {
+        var createDeck = RequirePublicStaticMethod(
+            typeof(BattleDeckState),
+            nameof(BattleDeckState.CreateShuffled),
+            typeof(IEnumerable<BattleCardInstance>),
+            typeof(AuthoritativeRngState));
+        var startBattle = RequirePublicStaticMethod(
+            typeof(CoreDuelCardTurnKernel),
+            nameof(CoreDuelCardTurnKernel.StartBattle),
+            typeof(IEnumerable<BattleCardInstance>),
+            typeof(AuthoritativeRngState),
+            typeof(CoreDuelSystemPolicy),
+            typeof(ClosedWindowResourceState),
+            typeof(IEnumerable<KeyValuePair<string, bool>>));
+
+        Assert.Equal(typeof(BattleDeckInitialization), createDeck.ReturnType);
+        Assert.Equal(typeof(CoreDuelCardTurnState), startBattle.ReturnType);
+        Assert.Empty(typeof(BattleDeckState).GetConstructors());
+        Assert.Empty(typeof(CoreDuelCardTurnState).GetConstructors());
+        Assert.Empty(typeof(CoreDuelCardTurnTransition).GetConstructors());
+
+        var replaySurface = typeof(BattleReplayDocumentV2).Assembly
+            .GetExportedTypes()
+            .Where(type => type.Namespace == typeof(BattleReplayDocumentV2).Namespace)
+            .SelectMany(PublicSurfaceTypes)
+            .SelectMany(ExpandSignatureType)
+            .ToArray();
+        Assert.DoesNotContain(typeof(CoreDuelCardTurnState), replaySurface);
+        Assert.DoesNotContain(
+            typeof(BattleState).GetProperties(
+                BindingFlags.Public | BindingFlags.Instance),
+            property => property.PropertyType == typeof(CoreDuelCardTurnState));
+    }
+
+    [Fact]
+    public void Task0033ProductionKernelDoesNotSelectAContentRecipe()
+    {
+        var root = FindRepositoryRoot();
+        var sourcePaths = Directory
+            .EnumerateFiles(
+                Path.Combine(root.FullName, "src", "Igorogue.Domain", "Cards"),
+                "*.cs",
+                SearchOption.AllDirectories)
+            .Append(Path.Combine(
+                root.FullName,
+                "src",
+                "Igorogue.Application",
+                "Battle",
+                "CoreDuelCardTurnState.cs"));
+        var sourceText = string.Join(
+            '\n',
+            sourcePaths.OrderBy(path => path, StringComparer.Ordinal).Select(File.ReadAllText));
+
+        Assert.All(
+            new[]
+            {
+                "card_basic_stone",
+                "card_extend",
+                "card_contact",
+                "card_reinforce",
+                "card_development",
+                "card_lure_stone",
+                "card_one_space_jump",
+                "card_edge_crawl",
+                "card_infiltrate",
+                "card_blood_stone",
+                "card_seed_stone",
+                "card_furnace",
+                "card_market",
+                "card_capture_chain",
+                "card_large_framework",
+            },
+            contentId => Assert.DoesNotContain(contentId, sourceText, StringComparison.Ordinal));
+        Assert.DoesNotContain("game_data/", sourceText, StringComparison.Ordinal);
     }
 
     [Fact]

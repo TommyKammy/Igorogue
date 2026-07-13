@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0032
-status: review
+status: done
 project: Igorogue
 milestone: M2
 priority: critical
@@ -93,6 +93,8 @@ DECISION-0006のstarting recipe／facility scopeは未解決だが、本TASKのc
 
 2026-07-13 — independent Codex taskがPR #22 remediation commit `0ac66d1c9caa6299b5be347fec1328d3e9bd7e20`をparent `ef4264173a940f86b0c479c6739010f3a5cb57cb`からfixed-HEAD review。actionable findingなし、decision `APPROVE`。本TASKを`review`へ戻し、TASK-0033はhuman mergeまで`blocked`を維持する。
 
+2026-07-13 — PR #22を人間merge。merged head `6291f1463f7d5f2267fe84c547f344d165b30b02`、merge commit／post-merge main HEAD `0b4b8f5c1558e98051c758002269fca1994d5ca9`を確認した。main push CI run `29214123093`のGovernance `86706780633`、Pure .NET `86706800087`、Godot／Windows export `86706857486`はすべてsuccess。本TASKを`done`へ遷移した。
+
 ## Evidence
 
 - PR #21 merge commit `708852d900f84d0b4905706b99dd77415b6a0ae8`／post-merge main CI run `29210667448`全3 job success。
@@ -109,3 +111,4 @@ DECISION-0006のstarting recipe／facility scopeは未解決だが、本TASKのc
 - PR #22 remediation `tools/dev/sim-smoke` exit 0。checksum `5f943a3cbc6847a14e841612c57d2d2cf4aef78d8b7441c0ff4d8b279113625c`、content hash `sha256:cd53980e2edd69ad14b3815c800a3c5aab119f21d95d724d083afa2920c15ad6`、7 files。
 - TLE golden opt-in regeneration：15 cases、state checksum／ordered facts／result不変。cards source SHA-256、content hash、content hash由来log checksumだけを更新。
 - PR #22 remediation independent fixed-HEAD review：`0ac66d1c9caa6299b5be347fec1328d3e9bd7e20`、actionable finding 0、`APPROVE`。
+- PR #22 human merge — merged head `6291f1463f7d5f2267fe84c547f344d165b30b02`、merge commit `0b4b8f5c1558e98051c758002269fca1994d5ca9`、post-merge main CI run `29214123093`全3 job success。
