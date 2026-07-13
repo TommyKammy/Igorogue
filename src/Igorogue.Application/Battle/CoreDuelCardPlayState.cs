@@ -313,7 +313,8 @@ public static class CoreDuelCardPlayStateMachine
             initial.RepetitionHistory,
             initial.FacilityState,
             cardTurnState.RngState,
-            initial.RuntimePolicy);
+            initial.RuntimePolicy,
+            initial.PlayerTurnIndex);
         var state = CoreDuelCardPlayState.Create(
             metadata.ContentHash,
             battleState,
@@ -456,6 +457,9 @@ public static class CoreDuelCardPlayStateMachine
                 command.CardInstanceId),
         };
         facts.AddRange(placement.OrderedFacts);
+        AuthorizedRuntimeStonePlacementPipeline.InsertCarrierRemovalFacts(
+            facts,
+            runtimeCommit);
 
         var cardStateAfter = cardTransition.StateAfter;
         if (!placement.StateAfter.IsTerminal)

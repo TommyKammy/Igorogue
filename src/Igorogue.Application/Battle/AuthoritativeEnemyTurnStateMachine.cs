@@ -481,21 +481,9 @@ internal static class AuthoritativeEnemyTurnStateMachine
     {
         var facts = new List<IBattleFact> { ActionStageFact(source) };
         facts.AddRange(facilityCommit.OrderedFacts.Cast<IBattleFact>());
-        if (runtimeCommit.OrderedRemovalFacts.Count == 0)
-        {
-            return facts;
-        }
-
-        var insertionIndex = facts.FindLastIndex(fact => fact is GroupCapturedFact);
-        if (insertionIndex < 0)
-        {
-            throw new InvalidOperationException(
-                "Carrier removal facts require a captured placement group.");
-        }
-
-        facts.InsertRange(
-            insertionIndex + 1,
-            runtimeCommit.OrderedRemovalFacts.Cast<IBattleFact>());
+        AuthorizedRuntimeStonePlacementPipeline.InsertCarrierRemovalFacts(
+            facts,
+            runtimeCommit);
         return facts;
     }
 

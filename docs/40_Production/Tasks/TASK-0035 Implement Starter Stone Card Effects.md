@@ -73,6 +73,8 @@ PlayCardからactual enemy turn／replayまでのfull compositionはTASK-0039が
 
 2026-07-13 — independent fixed-HEAD reviewがimplementation commit `2fe41322709b7e8f9cfe72932abc9e1dc53949b6`をbase `69d686a5268c127d5ea2c3d3a6b0508b7d56b83c`と比較。全Acceptance、accepted specs、runtime identity、exact no-op、terminal、determinism、scopeを再検証し、actionable findingなし、`APPROVE`。全wrapper greenのため本TASKを`review`へ遷移した。
 
+2026-07-13 — PR #25 automated reviewのP2指摘2件を独立監査し、いずれも妥当と判定した。PlayCard捕獲時のcarrier removal factを既存enemy placementと同じ共有挿入順（最終`GroupCapturedFact`直後）で公開し、detached runtime sidecarを維持する6引数`BattleState.Start`から`initial.PlayerTurnIndex`を保持した。turn 7開始／accepted play保持とtimed＋continuous liberty相殺capture／removal fact順の回帰を追加した。
+
 ## Evidence
 
 - PR #24 merge commit `69d686a5268c127d5ea2c3d3a6b0508b7d56b83c`／post-merge main CI run `29219574281`全3 job success。
@@ -80,9 +82,10 @@ PlayCardからactual enemy turn／replayまでのfull compositionはTASK-0039が
 - runtime placement extraction — detached sidecar、used-ID no-op、timed effective-liberty、post-capture exact snapshots、列挙反転を直接検証。既存enemy state machine回帰を同じwrapper suiteで維持。
 - card effect evidence — Extend threshold／draw／2枚discard reshuffle、Contact adjacency／affected surviving atari／terminal、Lure immediate +1／captured-source +2／king suppression、rejected exact no-op、accepted-only log／facts。
 - `tools/dev/check` — exit 0。47 content IDs、content snapshot `sha256:cd53980e2edd69ad14b3815c800a3c5aab119f21d95d724d083afa2920c15ad6`。
-- `tools/dev/test` — exit 0。.NET SDK 8.0.422、Domain 318、Application 137、Architecture 58、計513 tests、warning 0／error 0。
+- `tools/dev/test` — exit 0。.NET SDK 8.0.422、Domain 318、Application 139、Architecture 58、計515 tests、warning 0／error 0。
 - `tools/dev/sim-smoke` — exit 0、`checksum=5f943a3cbc6847a14e841612c57d2d2cf4aef78d8b7441c0ff4d8b279113625c`。bootstrap determinism evidenceとしてのみ使用。
 - `tools/dev/build` — exit 0、warning 0／error 0。`git diff --check` — exit 0。
 - independent precommit review — test-only defects修正後actionable findingなし、`APPROVE`。
 - implementation commit `2fe41322709b7e8f9cfe72932abc9e1dc53949b6` — typed starter-stone projection、shared runtime placement、Extend／Contact／Lure atomic effects、determinism／lifetime evidence。
 - independent fixed-HEAD review — `2fe41322709b7e8f9cfe72932abc9e1dc53949b6`、base `69d686a5268c127d5ea2c3d3a6b0508b7d56b83c`、actionable findingなし、`APPROVE`。
+- PR #25 review repair — carrier removal fact／snapshot turn indexのP2 2件を妥当と判定し、共有fact orderingとdetached startを維持した回帰2件で修正。

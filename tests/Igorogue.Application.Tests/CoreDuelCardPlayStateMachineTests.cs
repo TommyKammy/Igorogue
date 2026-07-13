@@ -502,6 +502,109 @@ public sealed class CoreDuelCardPlayStateMachineTests
     }
 
     [Fact]
+    public void StartPreservesTheAuthoritativeSnapshotPlayerTurnIndex()
+    {
+        var board = NeutralFrontlineBoard();
+        var definition = Definition(cost: 1);
+        var firstTurn = StartSession(
+            board,
+            definition,
+            baseQi: 3,
+            playerTurnIndex: 1);
+        var laterTurn = StartSession(
+            board,
+            definition,
+            baseQi: 3,
+            playerTurnIndex: 7);
+
+        Assert.Equal(1, firstTurn.State.BattleState.PlayerTurnIndex);
+        Assert.Equal(7, laterTurn.State.BattleState.PlayerTurnIndex);
+        Assert.Null(laterTurn.State.BattleState.AuthoritativeRuntime);
+        Assert.NotEqual(firstTurn.State.Checksum, laterTurn.State.Checksum);
+
+        var played = Execute(
+            laterTurn,
+            "play-card",
+            C(2, 3),
+            StoneCardPlacementMode.Frontline);
+
+        Assert.True(played.Accepted);
+        Assert.Equal(7, played.SessionAfter.State.BattleState.PlayerTurnIndex);
+    }
+
+    [Fact]
+    public void CapturedTemporaryLibertyCarrierPublishesRemovalFactAfterCapture()
+    {
+        var board = Board(
+            Stone(StoneColor.White, 2, 2),
+            Stone(StoneColor.Black, 1, 2),
+            Stone(StoneColor.Black, 2, 1),
+            Stone(StoneColor.Black, 3, 2),
+            Stone(StoneColor.Black, 1, 3));
+        var definition = ContactDefinition(cost: 1);
+        TemporaryLibertyEffect? carrierEffect = null;
+        var session = StartSession(
+            board,
+            definition,
+            baseQi: 3,
+            temporaryFactory: runtime =>
+            {
+                var carrier = runtime.InstanceAt(C(2, 2))!;
+                carrierEffect = new TemporaryLibertyEffect(
+                    "effect.captured.carrier",
+                    1,
+                    StoneColor.White,
+                    carrier.InstanceId,
+                    "test.reinforce",
+                    1,
+                    9);
+                return TemporaryLibertyState.Create(
+                    runtime,
+                    [carrierEffect],
+                    2);
+            },
+            continuousFactory: runtime =>
+            {
+                var carrier = runtime.InstanceAt(C(2, 2))!;
+                return ContinuousLibertySnapshot.Create(
+                    runtime,
+                    [new ContinuousLibertyModifier(
+                        "modifier.cancel.carrier",
+                        -1,
+                        StoneColor.White,
+                        carrier.InstanceId,
+                        "test.cancel")]);
+            });
+
+        var result = Execute(
+            session,
+            "play-card",
+            C(2, 3),
+            StoneCardPlacementMode.Contact);
+
+        Assert.True(result.Accepted);
+        Assert.NotNull(carrierEffect);
+        var captures = result.OrderedFacts.OfType<GroupCapturedFact>().ToArray();
+        var captured = Assert.Single(captures);
+        Assert.Equal(C(2, 2), captured.CapturedGroup.Anchor);
+        var removal = Assert.Single(
+            result.OrderedFacts.OfType<TemporaryLibertyRemovedFact>());
+        Assert.Same(carrierEffect, removal.Effect);
+        Assert.Equal("carrier_removed", removal.ReasonId);
+        var lastCaptureIndex = result.OrderedFacts
+            .Select((fact, index) => (fact, index))
+            .Last(pair => pair.fact is GroupCapturedFact)
+            .index;
+        Assert.Equal(
+            lastCaptureIndex + 1,
+            IndexOf<TemporaryLibertyRemovedFact>(result.OrderedFacts));
+        Assert.Empty(
+            result.SessionAfter.State.RuntimeState.TemporaryLibertyState.Effects);
+        Assert.Empty(
+            result.SessionAfter.State.RuntimeState.ContinuousLibertySnapshot.Modifiers);
+    }
+
+    [Fact]
     public void ExtendDrawsExactlyOneOnlyWhenCommittedGroupMeetsRealLibertyThreshold()
     {
         var definition = ExtendDefinition(cost: 1);
@@ -864,7 +967,10 @@ public sealed class CoreDuelCardPlayStateMachineTests
         string contentHash = ContentHash,
         int? baseDraw = null,
         bool reverseCatalogInput = false,
-        bool reverseRuntimeInput = false)
+        bool reverseRuntimeInput = false,
+        int playerTurnIndex = 1,
+        Func<StoneRuntimeState, TemporaryLibertyState>? temporaryFactory = null,
+        Func<StoneRuntimeState, ContinuousLibertySnapshot>? continuousFactory = null)
     {
         var recipe = cards ??
             [new BattleCardInstance("play-card", definition.ContentId)];
@@ -892,8 +998,10 @@ public sealed class CoreDuelCardPlayStateMachineTests
         var counterattackPolicy = new CounterattackBoundaryPolicy(200, 12, 3, 30);
         var initial = BattleAuthoritativeInitialSnapshot.Create(
             runtime,
-            TemporaryLibertyState.Create(runtime, [], 1),
-            ContinuousLibertySnapshot.Empty(runtime),
+            temporaryFactory?.Invoke(runtime) ??
+                TemporaryLibertyState.Create(runtime, [], 1),
+            continuousFactory?.Invoke(runtime) ??
+                ContinuousLibertySnapshot.Empty(runtime),
             history ?? BattleRepetitionHistory.Start(board),
             facilityState,
             cardTurn.ClosedWindowResources,
@@ -901,7 +1009,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
             CounterattackBoundaryState.Create(0, false, 0, counterattackPolicy),
             counterattackPolicy,
             new BattleRuntimePolicy(20, facilityPolicy),
-            playerTurnIndex: 1);
+            playerTurnIndex);
 
         return CoreDuelCardPlayStateMachine.Start(
             initial,

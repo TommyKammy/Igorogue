@@ -101,6 +101,30 @@ internal sealed class AuthorizedRuntimeStonePlacementResolution
 
 internal static class AuthorizedRuntimeStonePlacementPipeline
 {
+    internal static void InsertCarrierRemovalFacts(
+        List<IBattleFact> orderedFacts,
+        StoneRuntimePlacementCommit runtimeCommit)
+    {
+        ArgumentNullException.ThrowIfNull(orderedFacts);
+        ArgumentNullException.ThrowIfNull(runtimeCommit);
+        if (runtimeCommit.OrderedRemovalFacts.Count == 0)
+        {
+            return;
+        }
+
+        var insertionIndex = orderedFacts.FindLastIndex(fact =>
+            fact is GroupCapturedFact);
+        if (insertionIndex < 0)
+        {
+            throw new InvalidOperationException(
+                "Carrier removal facts require a captured placement group.");
+        }
+
+        orderedFacts.InsertRange(
+            insertionIndex + 1,
+            runtimeCommit.OrderedRemovalFacts.Cast<IBattleFact>());
+    }
+
     internal static AuthorizedRuntimeStonePlacementResolution Resolve(
         BattleState source,
         BattleAuthoritativeRuntimeState runtime,

@@ -142,7 +142,22 @@ public sealed class BattleState
         BattleRepetitionHistory repetitionHistory,
         FacilityState facilityState,
         AuthoritativeRngState rngState,
-        BattleRuntimePolicy runtimePolicy)
+        BattleRuntimePolicy runtimePolicy) =>
+        Start(
+            board,
+            repetitionHistory,
+            facilityState,
+            rngState,
+            runtimePolicy,
+            playerTurnIndex: 1);
+
+    internal static BattleState Start(
+        BoardState board,
+        BattleRepetitionHistory repetitionHistory,
+        FacilityState facilityState,
+        AuthoritativeRngState rngState,
+        BattleRuntimePolicy runtimePolicy,
+        int playerTurnIndex)
     {
         ArgumentNullException.ThrowIfNull(board);
         ArgumentNullException.ThrowIfNull(repetitionHistory);
@@ -169,7 +184,7 @@ public sealed class BattleState
             facilityRuntime,
             rngState,
             runtimePolicy,
-            1,
+            playerTurnIndex,
             BattlePhase.PlayerAction,
             BattleOutcome.Ongoing,
             BattleEndReason.None,
