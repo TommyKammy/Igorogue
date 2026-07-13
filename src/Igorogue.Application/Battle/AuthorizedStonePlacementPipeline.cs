@@ -96,6 +96,37 @@ internal static class AuthorizedStonePlacementPipeline
         }
 
         var legalPlacement = source.RepetitionHistory.CommitLegalPlacement(legality);
+        return Commit(source, actor, legalPlacement);
+    }
+
+    internal static AuthorizedStonePlacementResolution Commit(
+        BattleState source,
+        StoneColor actor,
+        LegalPlacementCommit legalPlacement)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(legalPlacement);
+        var expectedActor = source.Phase switch
+        {
+            BattlePhase.PlayerAction => StoneColor.Black,
+            BattlePhase.EnemyAction => StoneColor.White,
+            _ => throw new InvalidOperationException(
+                "Terminal phase must be rejected before placement commit."),
+        };
+        if (actor != expectedActor)
+        {
+            return AuthorizedStonePlacementResolution.Reject(
+                source,
+                "wrong_actor_for_phase");
+        }
+
+        if (!ReferenceEquals(legalPlacement.Candidate.SourceBoard, source.Board))
+        {
+            throw new ArgumentException(
+                "Legal placement must belong to the exact battle board snapshot.",
+                nameof(legalPlacement));
+        }
+
         var placementCommit = FacilityPlacementIntegrator.Apply(
             source.FacilityState,
             legalPlacement);

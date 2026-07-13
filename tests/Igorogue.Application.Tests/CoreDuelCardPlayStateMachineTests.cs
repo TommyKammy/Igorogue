@@ -34,7 +34,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
             session,
             "play-card",
             target,
-            BasicStoneCardPlacementMode.Frontline);
+            StoneCardPlacementMode.Frontline);
 
         Assert.True(result.Accepted);
         Assert.Equal("accepted", result.ReasonId);
@@ -45,7 +45,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
             DeterministicChecksum.Sha256Hex(result.SessionAfter.State.CanonicalText),
             result.StateChecksum);
         Assert.Contains(
-            "basic_stone_definition=",
+            "starter_stone_definitions=",
             result.SessionAfter.State.CanonicalText,
             StringComparison.Ordinal);
 
@@ -82,7 +82,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
     [Fact]
     public void RejectionsPreserveEveryAuthoritativeReferenceAndDoNotAppendLog()
     {
-        var definition = Definition(cost: 1, terminal: true);
+        var definition = Definition(cost: 1);
         var board = NeutralFrontlineBoard();
         var valid = StartSession(board, definition, baseQi: 3);
 
@@ -92,7 +92,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 valid,
                 "play-card",
                 C(2, 3),
-                BasicStoneCardPlacementMode.Frontline,
+                StoneCardPlacementMode.Frontline,
                 expectedStateChecksum: OtherChecksum(valid.State.Checksum)));
         AssertRejectedNoOp(valid, staleState, "stale_state");
 
@@ -102,7 +102,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 valid,
                 "play-card",
                 C(2, 3),
-                BasicStoneCardPlacementMode.Frontline,
+                StoneCardPlacementMode.Frontline,
                 expectedLogChecksum: OtherChecksum(valid.CommandLog.CurrentChecksum)));
         AssertRejectedNoOp(valid, staleLog, "stale_session");
 
@@ -112,7 +112,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 valid,
                 "missing-card",
                 C(2, 3),
-                BasicStoneCardPlacementMode.Frontline),
+                StoneCardPlacementMode.Frontline),
             "card_not_in_hand");
 
         var mismatched = StartSession(
@@ -126,10 +126,10 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 mismatched,
                 "play-card",
                 C(2, 3),
-                BasicStoneCardPlacementMode.Frontline),
+                StoneCardPlacementMode.Frontline),
             "card_content_mismatch");
 
-        var expensive = Definition(cost: 9, terminal: true);
+        var expensive = Definition(cost: 9);
         var insufficient = StartSession(board, expensive, baseQi: 1);
         AssertRejectedNoOp(
             insufficient,
@@ -137,7 +137,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 insufficient,
                 "play-card",
                 C(2, 3),
-                BasicStoneCardPlacementMode.Frontline),
+                StoneCardPlacementMode.Frontline),
             "insufficient_qi");
 
         var active = StartSession(
@@ -157,10 +157,10 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 active,
                 "play-card",
                 C(2, 3),
-                BasicStoneCardPlacementMode.Frontline),
+                StoneCardPlacementMode.Frontline),
             "active_resolution_exists");
 
-        var frontlineOnly = Definition(cost: 1, terminal: false);
+        var frontlineOnly = ExtendDefinition(cost: 1);
         var unsupportedMode = StartSession(board, frontlineOnly, baseQi: 3);
         AssertRejectedNoOp(
             unsupportedMode,
@@ -168,7 +168,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 unsupportedMode,
                 "play-card",
                 C(2, 3),
-                BasicStoneCardPlacementMode.TerminalCapture),
+                StoneCardPlacementMode.TerminalCapture),
             "unsupported_placement_mode");
 
         AssertRejectedNoOp(
@@ -177,7 +177,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 valid,
                 "play-card",
                 C(5, 5),
-                BasicStoneCardPlacementMode.Frontline),
+                StoneCardPlacementMode.Frontline),
             "frontline_adjacency_required");
         AssertRejectedNoOp(
             valid,
@@ -185,7 +185,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 valid,
                 "play-card",
                 C(2, 2),
-                BasicStoneCardPlacementMode.Frontline),
+                StoneCardPlacementMode.Frontline),
             "target_occupied");
 
         var suicideBoard = Board(
@@ -202,7 +202,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 suicide,
                 "play-card",
                 C(2, 2),
-                BasicStoneCardPlacementMode.Frontline),
+                StoneCardPlacementMode.Frontline),
             "suicide");
 
         var terminalWithoutCapture = StartSession(board, definition, baseQi: 3);
@@ -212,7 +212,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 terminalWithoutCapture,
                 "play-card",
                 C(6, 6),
-                BasicStoneCardPlacementMode.TerminalCapture),
+                StoneCardPlacementMode.TerminalCapture),
             "terminal_capture_required");
 
         var repetitionTarget = C(2, 3);
@@ -228,7 +228,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 repetition,
                 "play-card",
                 repetitionTarget,
-                BasicStoneCardPlacementMode.Frontline),
+                StoneCardPlacementMode.Frontline),
             "stone_topology_repetition");
     }
 
@@ -255,7 +255,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
             session,
             "play-card",
             target,
-            BasicStoneCardPlacementMode.Frontline);
+            StoneCardPlacementMode.Frontline);
 
         Assert.True(result.Accepted);
         Assert.IsType<QiChangedFact>(result.OrderedFacts[0]);
@@ -295,7 +295,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
             session,
             "play-card",
             C(3, 3),
-            BasicStoneCardPlacementMode.Frontline);
+            StoneCardPlacementMode.Frontline);
 
         Assert.True(result.Accepted);
         Assert.IsType<QiChangedFact>(result.OrderedFacts[0]);
@@ -328,7 +328,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
         var facilities = FacilityState.Create(board, [facility], 2);
         var session = StartSession(
             board,
-            Definition(cost: 1, terminal: true),
+            Definition(cost: 1),
             baseQi: 3,
             facilities: facilities);
         Assert.False(
@@ -340,7 +340,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
             session,
             "play-card",
             C(3, 2),
-            BasicStoneCardPlacementMode.TerminalCapture);
+            StoneCardPlacementMode.TerminalCapture);
 
         Assert.True(result.Accepted);
         Assert.Equal(
@@ -371,7 +371,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
     [Fact]
     public void TerminalKingCaptureEndsBattleAndStillLeavesPlayedCardResolved()
     {
-        var definition = Definition(cost: 1, terminal: true);
+        var definition = Definition(cost: 1);
         var board = Board(
             Stone(StoneColor.White, 3, 2, isKing: true),
             Stone(StoneColor.Black, 3, 1),
@@ -383,7 +383,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
             session,
             "play-card",
             C(3, 3),
-            BasicStoneCardPlacementMode.TerminalCapture);
+            StoneCardPlacementMode.TerminalCapture);
 
         Assert.True(result.Accepted);
         Assert.True(result.SessionAfter.State.IsTerminal);
@@ -407,7 +407,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
             result.SessionAfter,
             "play-card",
             C(2, 3),
-            BasicStoneCardPlacementMode.Frontline);
+            StoneCardPlacementMode.Frontline);
 
         AssertRejectedNoOp(result.SessionAfter, afterTerminal, "battle_terminal");
     }
@@ -423,12 +423,12 @@ public sealed class CoreDuelCardPlayStateMachineTests
             first,
             "play-card",
             C(2, 3),
-            BasicStoneCardPlacementMode.Frontline);
+            StoneCardPlacementMode.Frontline);
         var secondResult = Execute(
             second,
             "play-card",
             C(2, 3),
-            BasicStoneCardPlacementMode.Frontline);
+            StoneCardPlacementMode.Frontline);
 
         Assert.True(firstResult.Accepted);
         Assert.True(secondResult.Accepted);
@@ -454,7 +454,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
             session,
             "play-card",
             C(2, 3),
-            BasicStoneCardPlacementMode.Frontline);
+            StoneCardPlacementMode.Frontline);
 
         var ended = CoreDuelCardTurnKernel.EndPlayerTurn(
             played.SessionAfter.State.CardTurnState);
@@ -494,22 +494,377 @@ public sealed class CoreDuelCardPlayStateMachineTests
             costOne,
             "play-card",
             C(2, 3),
-            BasicStoneCardPlacementMode.Frontline);
+            StoneCardPlacementMode.Frontline);
         Assert.DoesNotContain(
             "definition",
             command.ToCanonicalPayload(),
             StringComparison.Ordinal);
     }
 
+    [Fact]
+    public void ExtendDrawsExactlyOneOnlyWhenCommittedGroupMeetsRealLibertyThreshold()
+    {
+        var definition = ExtendDefinition(cost: 1);
+        var recipe = new[]
+        {
+            new BattleCardInstance("extend-a", definition.ContentId),
+            new BattleCardInstance("extend-b", definition.ContentId),
+            new BattleCardInstance("extend-c", definition.ContentId),
+        };
+        var open = StartSession(
+            NeutralFrontlineBoard(),
+            definition,
+            baseQi: 3,
+            cards: recipe,
+            baseDraw: 2);
+        var openCard = open.State.CardTurnState.Deck.Hand[0];
+        var rngBefore = open.State.CardTurnState.RngState;
+
+        var drawn = Execute(
+            open,
+            openCard.InstanceId,
+            C(2, 3),
+            StoneCardPlacementMode.Frontline);
+
+        Assert.True(drawn.Accepted);
+        Assert.Equal(2, drawn.SessionAfter.State.CardTurnState.Deck.Hand.Count);
+        var drawFact = Assert.Single(drawn.OrderedFacts.OfType<CardDrawnFact>());
+        Assert.Equal(openCard.InstanceId, drawFact.SourceId);
+        Assert.Equal("card_effect_real_liberties", drawFact.ReasonId);
+        Assert.Same(rngBefore, drawn.SessionAfter.State.CardTurnState.RngState);
+        Assert.Same(
+            drawn.SessionAfter.State.BattleState.RngState,
+            drawn.SessionAfter.State.CardTurnState.RngState);
+
+        var constrainedBoard = Board(
+            Stone(StoneColor.Black, 2, 2),
+            Stone(StoneColor.White, 2, 1),
+            Stone(StoneColor.White, 1, 2),
+            Stone(StoneColor.White, 3, 2),
+            Stone(StoneColor.White, 1, 3),
+            Stone(StoneColor.White, 3, 3));
+        var constrained = StartSession(
+            constrainedBoard,
+            definition,
+            baseQi: 3,
+            cards: recipe,
+            baseDraw: 2);
+        var constrainedCard = constrained.State.CardTurnState.Deck.Hand[0];
+
+        var notDrawn = Execute(
+            constrained,
+            constrainedCard.InstanceId,
+            C(2, 3),
+            StoneCardPlacementMode.Frontline);
+
+        Assert.True(notDrawn.Accepted);
+        Assert.Single(notDrawn.SessionAfter.State.CardTurnState.Deck.Hand);
+        Assert.Empty(notDrawn.OrderedFacts.OfType<CardDrawnFact>());
+
+        var reshuffleBoard = NeutralFrontlineBoard();
+        var reshuffleFacilities = FacilityState.Create(reshuffleBoard, [], 1);
+        var reshuffle = StartSession(
+            reshuffleBoard,
+            definition,
+            baseQi: 3,
+            facilities: reshuffleFacilities,
+            cards: recipe,
+            baseDraw: 1,
+            transformCardTurn: state =>
+            {
+                for (var cycle = 0; cycle < 2; cycle++)
+                {
+                    var ended = CoreDuelCardTurnKernel.EndPlayerTurn(state);
+                    Assert.True(ended.Accepted);
+                    var restarted = CoreDuelCardTurnKernel.StartPlayerTurn(
+                        ended.StateAfter,
+                        reshuffleBoard,
+                        reshuffleFacilities,
+                        FacilityPolicy(),
+                        []);
+                    Assert.True(restarted.Accepted);
+                    state = restarted.StateAfter;
+                }
+
+                return state;
+            });
+        Assert.Empty(reshuffle.State.CardTurnState.Deck.DrawPile);
+        Assert.Equal(2, reshuffle.State.CardTurnState.Deck.DiscardPile.Count);
+        var reshuffleRngBefore = reshuffle.State.CardTurnState.RngState;
+        var reshuffled = Execute(
+            reshuffle,
+            Assert.Single(reshuffle.State.CardTurnState.Deck.Hand).InstanceId,
+            C(2, 3),
+            StoneCardPlacementMode.Frontline);
+
+        Assert.True(reshuffled.Accepted);
+        Assert.NotSame(
+            reshuffleRngBefore,
+            reshuffled.SessionAfter.State.CardTurnState.RngState);
+        Assert.NotEqual(
+            reshuffleRngBefore.ToCanonicalText(),
+            reshuffled.SessionAfter.State.CardTurnState.RngState.ToCanonicalText());
+        Assert.Same(
+            reshuffled.SessionAfter.State.BattleState.RngState,
+            reshuffled.SessionAfter.State.CardTurnState.RngState);
+        Assert.Single(reshuffled.OrderedFacts.OfType<CardDrawnFact>());
+    }
+
+    [Fact]
+    public void ContactGainsQiOnceOnlyForAnAffectedSurvivingEnemyGroupInAtari()
+    {
+        var definition = ContactDefinition(cost: 1);
+        var establishedAtari = Board(
+            Stone(StoneColor.Black, 2, 2),
+            Stone(StoneColor.Black, 3, 2),
+            Stone(StoneColor.Black, 4, 3),
+            Stone(StoneColor.White, 3, 3));
+        var contact = StartSession(establishedAtari, definition, baseQi: 3);
+
+        var gained = Execute(
+            contact,
+            "play-card",
+            C(2, 3),
+            StoneCardPlacementMode.Contact);
+
+        Assert.True(gained.Accepted);
+        Assert.Equal(3, gained.SessionAfter.State.CardTurnState.Qi);
+        var qiFacts = gained.OrderedFacts.OfType<QiChangedFact>().ToArray();
+        Assert.Equal(2, qiFacts.Length);
+        Assert.Equal(-1, qiFacts[0].Delta);
+        Assert.Equal(1, qiFacts[1].Delta);
+        Assert.Equal("card_effect_enemy_atari", qiFacts[1].ReasonId);
+
+        var stillTwoLiberties = Board(
+            Stone(StoneColor.Black, 2, 2),
+            Stone(StoneColor.Black, 3, 2),
+            Stone(StoneColor.White, 3, 3));
+        var noAtari = StartSession(stillTwoLiberties, definition, baseQi: 3);
+
+        var notGained = Execute(
+            noAtari,
+            "play-card",
+            C(2, 3),
+            StoneCardPlacementMode.Contact);
+
+        Assert.True(notGained.Accepted);
+        Assert.Equal(2, notGained.SessionAfter.State.CardTurnState.Qi);
+        Assert.Single(notGained.OrderedFacts.OfType<QiChangedFact>());
+    }
+
+    [Fact]
+    public void ContactModeRequiresAdjacentBlackAndWhiteStones()
+    {
+        var definition = ContactDefinition(cost: 1);
+        var cases = new[]
+        {
+            (Board(Stone(StoneColor.Black, 2, 2)), C(2, 3)),
+            (Board(Stone(StoneColor.White, 2, 2)), C(2, 3)),
+            (Board(
+                Stone(StoneColor.Black, 2, 2),
+                Stone(StoneColor.White, 7, 7)), C(5, 5)),
+        };
+
+        foreach (var (board, target) in cases)
+        {
+            var session = StartSession(board, definition, baseQi: 3);
+            AssertRejectedNoOp(
+                session,
+                Execute(
+                    session,
+                    "play-card",
+                    target,
+                    StoneCardPlacementMode.Contact),
+                "contact_adjacency_required");
+        }
+    }
+
+    [Fact]
+    public void ContactTerminalCaptureSuppressesItsQiFollowUp()
+    {
+        var definition = ContactDefinition(cost: 1);
+        var board = Board(
+            Stone(StoneColor.White, 3, 2, isKing: true),
+            Stone(StoneColor.Black, 3, 1),
+            Stone(StoneColor.Black, 2, 2),
+            Stone(StoneColor.Black, 4, 2));
+        var session = StartSession(board, definition, baseQi: 3);
+
+        var result = Execute(
+            session,
+            "play-card",
+            C(3, 3),
+            StoneCardPlacementMode.TerminalCapture);
+
+        Assert.True(result.Accepted);
+        Assert.True(result.SessionAfter.State.IsTerminal);
+        Assert.Equal(2, result.SessionAfter.State.CardTurnState.Qi);
+        var qi = Assert.Single(result.OrderedFacts.OfType<QiChangedFact>());
+        Assert.Equal("card_cost", qi.ReasonId);
+    }
+
+    [Fact]
+    public void LureReservesOneNowAndItsExactRuntimeStoneReservesTwoWhenCapturedLater()
+    {
+        var definition = LureDefinition(cost: 1);
+        var board = Board(
+            Stone(StoneColor.Black, 2, 2),
+            Stone(StoneColor.White, 3, 3));
+        var session = StartSession(board, definition, baseQi: 3);
+        var target = C(2, 3);
+
+        var played = Execute(
+            session,
+            "play-card",
+            target,
+            StoneCardPlacementMode.Contact);
+
+        Assert.True(played.Accepted);
+        var state = played.SessionAfter.State;
+        Assert.Equal(1, state.CardTurnState.ClosedWindowResources.TurnReservedDraw);
+        Assert.Same(
+            state.CardTurnState.ClosedWindowResources,
+            state.RuntimeState.ClosedWindowResources);
+        var immediate = Assert.Single(
+            played.OrderedFacts.OfType<TurnReservedDrawChangedFact>());
+        Assert.Equal(1, immediate.Delta);
+        var lure = Assert.IsType<StoneRuntimeInstance>(
+            state.RuntimeState.StoneRuntimeState.InstanceAt(target));
+        Assert.Equal("lure", lure.KindId);
+        Assert.Equal(["captured_stone_self"], lure.OrderedEffectMetadata);
+        Assert.Contains(lure.InstanceId, state.RuntimeState.UsedStoneInstanceIds);
+        var entry = Assert.Single(state.RuntimeState.CaptureBenefitTriggerPlan.Entries);
+        Assert.Equal(CaptureBenefitTriggerCondition.CapturedSourceStone, entry.Condition);
+        Assert.Equal(lure.InstanceId, entry.Trigger.Source.SourceId);
+
+        var group = StoneGroupAnalyzer
+            .Analyze(state.RuntimeState.StoneRuntimeState.SourceBoard)
+            .GroupAt(target);
+        Assert.NotNull(group);
+        var batch = CaptureBatch.Create(
+            "later_lure_capture",
+            "placement_capture",
+            CaptureBoundary.PlacementResolution,
+            boundaryEnemyTurnIndex: null,
+            CapturingWindow.ClosedPlayerWindow,
+            state.RuntimeState.StoneRuntimeState,
+            [group]);
+        var selected = state.RuntimeState.CaptureBenefitTriggerPlan.SelectFor(batch);
+        var selectedLure = Assert.Single(selected);
+        Assert.Equal(lure.InstanceId, selectedLure.Source.SourceId);
+
+        var resolution = ClosedWindowCaptureBenefitResolver.ResolvePlacement(
+            batch,
+            state.RuntimeState.ClosedWindowResources,
+            state.RuntimeState.CounterattackState,
+            state.RuntimeState.CounterattackPolicy,
+            selected);
+
+        Assert.False(resolution.BenefitsSuppressed);
+        Assert.Equal(3, resolution.ResourcesAfterResolution.TurnReservedDraw);
+        var later = Assert.Single(
+            resolution.OrderedFacts.OfType<TurnReservedDrawChangedFact>());
+        Assert.Equal(1, later.AmountBefore);
+        Assert.Equal(3, later.AmountAfter);
+        Assert.Equal(2, later.Delta);
+    }
+
+    [Fact]
+    public void LureCaptureBenefitIsSuppressedWhenItsCapturedGroupContainsTheBlackKing()
+    {
+        var definition = LureDefinition(cost: 1);
+        var board = Board(
+            Stone(StoneColor.Black, 2, 2, isKing: true),
+            Stone(StoneColor.White, 3, 3));
+        var played = Execute(
+            StartSession(board, definition, baseQi: 3),
+            "play-card",
+            C(2, 3),
+            StoneCardPlacementMode.Contact);
+        Assert.True(played.Accepted);
+        var runtime = played.SessionAfter.State.RuntimeState;
+        var group = StoneGroupAnalyzer
+            .Analyze(runtime.StoneRuntimeState.SourceBoard)
+            .GroupAt(C(2, 3));
+        Assert.NotNull(group);
+        var batch = CaptureBatch.Create(
+            "terminal_lure_capture",
+            "placement_capture",
+            CaptureBoundary.PlacementResolution,
+            boundaryEnemyTurnIndex: null,
+            CapturingWindow.PlayerActionWindow,
+            runtime.StoneRuntimeState,
+            [group]);
+        Assert.True(batch.ContainsKing);
+
+        var resolution = ClosedWindowCaptureBenefitResolver.ResolvePlacement(
+            batch,
+            runtime.ClosedWindowResources,
+            runtime.CounterattackState,
+            runtime.CounterattackPolicy,
+            runtime.CaptureBenefitTriggerPlan.SelectFor(batch));
+
+        Assert.True(resolution.BenefitsSuppressed);
+        Assert.Same(runtime.ClosedWindowResources, resolution.ResourcesAfterResolution);
+        Assert.Equal(1, resolution.ResourcesAfterResolution.TurnReservedDraw);
+        Assert.Empty(resolution.OrderedFacts.OfType<TurnReservedDrawChangedFact>());
+        Assert.Single(resolution.OrderedFacts.OfType<CaptureBenefitSuppressedFact>());
+    }
+
+    [Fact]
+    public void ReversedCatalogRuntimeAndBoardInputsProduceTheSameAcceptedOutcome()
+    {
+        var definition = LureDefinition(cost: 1);
+        var stones = new[]
+        {
+            Stone(StoneColor.White, 3, 3),
+            Stone(StoneColor.Black, 2, 2),
+            Stone(StoneColor.Black, 1, 2),
+        };
+        var first = StartSession(Board(stones), definition, baseQi: 3);
+        var reversed = StartSession(
+            Board(stones.Reverse().ToArray()),
+            definition,
+            baseQi: 3,
+            reverseCatalogInput: true,
+            reverseRuntimeInput: true);
+
+        var firstResult = Execute(
+            first,
+            "play-card",
+            C(2, 3),
+            StoneCardPlacementMode.Contact);
+        var reversedResult = Execute(
+            reversed,
+            "play-card",
+            C(2, 3),
+            StoneCardPlacementMode.Contact);
+
+        Assert.True(firstResult.Accepted);
+        Assert.True(reversedResult.Accepted);
+        Assert.Equal(first.State.CanonicalText, reversed.State.CanonicalText);
+        Assert.Equal(
+            firstResult.SessionAfter.State.CanonicalText,
+            reversedResult.SessionAfter.State.CanonicalText);
+        Assert.Equal(firstResult.StateChecksum, reversedResult.StateChecksum);
+        Assert.Equal(firstResult.LogChecksum, reversedResult.LogChecksum);
+        Assert.Equal(
+            firstResult.OrderedFacts.Select(ProjectFact),
+            reversedResult.OrderedFacts.Select(ProjectFact));
+    }
+
     private static CoreDuelCardPlaySession StartSession(
         BoardState board,
-        BasicStoneCardPlayDefinition definition,
+        StarterStoneCardPlayDefinition definition,
         int baseQi,
         BattleRepetitionHistory? history = null,
         FacilityState? facilities = null,
         IReadOnlyList<BattleCardInstance>? cards = null,
         Func<CoreDuelCardTurnState, CoreDuelCardTurnState>? transformCardTurn = null,
-        string contentHash = ContentHash)
+        string contentHash = ContentHash,
+        int? baseDraw = null,
+        bool reverseCatalogInput = false,
+        bool reverseRuntimeInput = false)
     {
         var recipe = cards ??
             [new BattleCardInstance("play-card", definition.ContentId)];
@@ -518,7 +873,9 @@ public sealed class CoreDuelCardPlayStateMachineTests
         var initialCardTurn = CoreDuelCardTurnKernel.StartBattle(
             recipe,
             AuthoritativeRngState.Create(Seed),
-            CoreDuelSystemPolicy.Create(baseQi, Math.Max(1, recipe.Count)),
+            CoreDuelSystemPolicy.Create(
+                baseQi,
+                baseDraw ?? Math.Max(1, recipe.Count)),
             ClosedWindowResourceState.Empty([]),
             []);
         var turnStart = CoreDuelCardTurnKernel.StartPlayerTurn(
@@ -531,14 +888,25 @@ public sealed class CoreDuelCardPlayStateMachineTests
         var cardTurn = transformCardTurn?.Invoke(turnStart.StateAfter) ??
             turnStart.StateAfter;
         var metadata = ReplayMetadata.Create("test-v1", contentHash, Seed);
-
-        return CoreDuelCardPlayStateMachine.Start(
-            board,
+        var runtime = Runtime(board, reverseRuntimeInput);
+        var counterattackPolicy = new CounterattackBoundaryPolicy(200, 12, 3, 30);
+        var initial = BattleAuthoritativeInitialSnapshot.Create(
+            runtime,
+            TemporaryLibertyState.Create(runtime, [], 1),
+            ContinuousLibertySnapshot.Empty(runtime),
             history ?? BattleRepetitionHistory.Start(board),
             facilityState,
+            cardTurn.ClosedWindowResources,
+            CaptureBenefitTriggerPlan.Create([]),
+            CounterattackBoundaryState.Create(0, false, 0, counterattackPolicy),
+            counterattackPolicy,
             new BattleRuntimePolicy(20, facilityPolicy),
+            playerTurnIndex: 1);
+
+        return CoreDuelCardPlayStateMachine.Start(
+            initial,
             cardTurn,
-            definition,
+            Catalog(definition, reverseCatalogInput),
             metadata);
     }
 
@@ -546,7 +914,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
         CoreDuelCardPlaySession session,
         string cardInstanceId,
         CanonicalPoint target,
-        BasicStoneCardPlacementMode mode) =>
+        StoneCardPlacementMode mode) =>
         CoreDuelCardPlayStateMachine.Execute(
             session,
             Command(session, cardInstanceId, target, mode));
@@ -555,7 +923,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
         CoreDuelCardPlaySession session,
         string cardInstanceId,
         CanonicalPoint target,
-        BasicStoneCardPlacementMode mode,
+        StoneCardPlacementMode mode,
         string? expectedStateChecksum = null,
         string? expectedLogChecksum = null) =>
         new(
@@ -594,6 +962,21 @@ public sealed class CoreDuelCardPlayStateMachineTests
         Assert.Same(
             source.State.BattleState.FacilityState,
             result.SessionAfter.State.BattleState.FacilityState);
+        Assert.Same(
+            source.State.RuntimeState.StoneRuntimeState,
+            result.SessionAfter.State.RuntimeState.StoneRuntimeState);
+        Assert.Same(
+            source.State.RuntimeState.TemporaryLibertyState,
+            result.SessionAfter.State.RuntimeState.TemporaryLibertyState);
+        Assert.Same(
+            source.State.RuntimeState.ContinuousLibertySnapshot,
+            result.SessionAfter.State.RuntimeState.ContinuousLibertySnapshot);
+        Assert.Same(
+            source.State.RuntimeState.ClosedWindowResources,
+            result.SessionAfter.State.RuntimeState.ClosedWindowResources);
+        Assert.Same(
+            source.State.RuntimeState.CaptureBenefitTriggerPlan,
+            result.SessionAfter.State.RuntimeState.CaptureBenefitTriggerPlan);
         var rejected = Assert.Single(result.OrderedFacts);
         Assert.Equal(reasonId, Assert.IsType<CommandRejectedFact>(rejected).ReasonId);
         Assert.Equal(source.State.Checksum, result.StateChecksum);
@@ -607,6 +990,14 @@ public sealed class CoreDuelCardPlayStateMachineTests
             $"new={qi.NewAmount.ToString(CultureInfo.InvariantCulture)}|" +
             $"delta={qi.Delta.ToString(CultureInfo.InvariantCulture)}|" +
             $"reason={qi.ReasonId}|source={qi.SourceId}",
+        CardDrawnFact drawn =>
+            $"card_drawn|instance={drawn.Card.InstanceId}|content={drawn.Card.ContentId}|" +
+            $"reason={drawn.ReasonId}|source={drawn.SourceId}",
+        TurnReservedDrawChangedFact reserved =>
+            $"reserved_draw|trigger={reserved.TriggerId}|event={reserved.EventId}|" +
+            $"before={reserved.AmountBefore.ToString(CultureInfo.InvariantCulture)}|" +
+            $"after={reserved.AmountAfter.ToString(CultureInfo.InvariantCulture)}|" +
+            $"delta={reserved.Delta.ToString(CultureInfo.InvariantCulture)}",
         _ => GoldenBoardFixtureAdapter.ProjectFact(fact),
     };
 
@@ -634,21 +1025,156 @@ public sealed class CoreDuelCardPlayStateMachineTests
                 group,
                 group.RealLibertyCount)));
 
-    private static BasicStoneCardPlayDefinition Definition(
+    private static StarterStoneCardPlayDefinition Definition(
         int cost,
-        bool terminal = false,
         string contentId = "card_shape_driven") =>
-        BasicStoneCardPlayDefinition.Create(
+        StarterStoneCardPlayDefinition.Create(
             CardContentDefinition.Create(
                 contentId,
                 CardRarity.Starter,
                 cost,
                 CardContentType.Stone,
                 CardTargetKind.None,
-                terminal
-                    ? [CardPlacementTag.Frontline, CardPlacementTag.Terminal]
-                    : [CardPlacementTag.Frontline],
+                [CardPlacementTag.Frontline, CardPlacementTag.Terminal],
                 [new PlaceStoneOperationDefinition(StoneContentKind.Basic)]));
+
+    private static StarterStoneCardPlayDefinition ExtendDefinition(int cost) =>
+        StarterStoneCardPlayDefinition.Create(
+            CardContentDefinition.Create(
+                "card_shape_extend",
+                CardRarity.Starter,
+                cost,
+                CardContentType.Stone,
+                CardTargetKind.None,
+                [CardPlacementTag.Frontline],
+                [
+                    new PlaceStoneOperationDefinition(StoneContentKind.Basic),
+                    new DrawIfRealLibertiesAtLeastOperationDefinition(3, 1),
+                ]));
+
+    private static StarterStoneCardPlayDefinition ContactDefinition(int cost) =>
+        StarterStoneCardPlayDefinition.Create(
+            CardContentDefinition.Create(
+                "card_shape_contact_selected",
+                CardRarity.Starter,
+                cost,
+                CardContentType.Stone,
+                CardTargetKind.None,
+                [CardPlacementTag.Contact, CardPlacementTag.Terminal],
+                [
+                    new PlaceStoneOperationDefinition(StoneContentKind.Basic),
+                    new GainQiIfEnemyAtariOperationDefinition(1),
+                ]));
+
+    private static StarterStoneCardPlayDefinition LureDefinition(int cost) =>
+        StarterStoneCardPlayDefinition.Create(
+            CardContentDefinition.Create(
+                "card_shape_lure_selected",
+                CardRarity.Starter,
+                cost,
+                CardContentType.Stone,
+                CardTargetKind.None,
+                [CardPlacementTag.Contact],
+                [
+                    new PlaceStoneOperationDefinition(StoneContentKind.Lure),
+                    new ReserveDrawOperationDefinition(1),
+                ],
+                [new ReserveDrawOperationDefinition(2)]));
+
+    private static StarterStoneCardPlayCatalog Catalog(
+        StarterStoneCardPlayDefinition selected,
+        bool reverseInput = false)
+    {
+        var definitions = StarterContents()
+            .Where(content =>
+                StarterStoneCardPlayDefinition.Create(content).Profile != selected.Profile)
+            .Append(Content(selected))
+            .ToArray();
+        if (reverseInput)
+        {
+            Array.Reverse(definitions);
+        }
+
+        return StarterStoneCardPlayCatalog.Create(definitions);
+    }
+
+    private static IReadOnlyList<CardContentDefinition> StarterContents() =>
+    [
+        CardContentDefinition.Create(
+            "card_shape_basic",
+            CardRarity.Starter,
+            1,
+            CardContentType.Stone,
+            CardTargetKind.None,
+            [CardPlacementTag.Frontline, CardPlacementTag.Terminal],
+            [new PlaceStoneOperationDefinition(StoneContentKind.Basic)]),
+        CardContentDefinition.Create(
+            "card_shape_extend_default",
+            CardRarity.Starter,
+            1,
+            CardContentType.Stone,
+            CardTargetKind.None,
+            [CardPlacementTag.Frontline],
+            [
+                new PlaceStoneOperationDefinition(StoneContentKind.Basic),
+                new DrawIfRealLibertiesAtLeastOperationDefinition(3, 1),
+            ]),
+        CardContentDefinition.Create(
+            "card_shape_contact",
+            CardRarity.Starter,
+            1,
+            CardContentType.Stone,
+            CardTargetKind.None,
+            [CardPlacementTag.Contact, CardPlacementTag.Terminal],
+            [
+                new PlaceStoneOperationDefinition(StoneContentKind.Basic),
+                new GainQiIfEnemyAtariOperationDefinition(1),
+            ]),
+        CardContentDefinition.Create(
+            "card_shape_lure",
+            CardRarity.Starter,
+            1,
+            CardContentType.Stone,
+            CardTargetKind.None,
+            [CardPlacementTag.Contact],
+            [
+                new PlaceStoneOperationDefinition(StoneContentKind.Lure),
+                new ReserveDrawOperationDefinition(1),
+            ],
+            [new ReserveDrawOperationDefinition(2)]),
+    ];
+
+    private static CardContentDefinition Content(
+        StarterStoneCardPlayDefinition definition) =>
+        CardContentDefinition.Create(
+            definition.ContentId,
+            CardRarity.Starter,
+            definition.Cost,
+            CardContentType.Stone,
+            CardTargetKind.None,
+            definition.PlacementTags,
+            definition.Effects,
+            definition.OnCaptured);
+
+    private static StoneRuntimeState Runtime(
+        BoardState board,
+        bool reverseInput = false)
+    {
+        var instances = board.OccupiedStones
+            .Select((stone, index) => new StoneRuntimeInstance(
+                $"initial-stone-{index + 1}",
+                stone,
+                stone.IsKing ? "king" : "basic",
+                index + 1L,
+                []))
+            .ToArray();
+        if (reverseInput)
+        {
+            Array.Reverse(instances);
+        }
+
+        return StoneRuntimeState.Create(board, instances, instances.Length + 1L);
+    }
 
     private static FacilityRuntimePolicy FacilityPolicy() =>
         FacilityRuntimePolicy.Create(

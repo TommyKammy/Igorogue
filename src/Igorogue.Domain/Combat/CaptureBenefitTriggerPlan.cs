@@ -321,6 +321,13 @@ public sealed class CaptureBenefitTriggerPlan
             .ToArray());
     }
 
+    public CaptureBenefitTriggerPlan AppendConditional(
+        CaptureBenefitTriggerPlanEntry entry)
+    {
+        ArgumentNullException.ThrowIfNull(entry);
+        return CreateConditional(entryView.Append(entry));
+    }
+
     public string ToCanonicalText() => CanonicalText;
 
     private string CreateCanonicalText()

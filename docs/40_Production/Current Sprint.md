@@ -9,14 +9,14 @@ sprint: S0
 
 ## Goal
 
-Review and merge TASK-0034's atomic `card_basic_stone` PlayCard vertical proof without selecting the unresolved starter recipe.
+Implement and review TASK-0035's typed starter stone effects without selecting the unresolved starter recipe.
 
-## In review
+## In progress
 
-- [[TASK-0034 Implement Atomic Basic Stone Card Play]]
-  - bind card instance、Canonical target、explicit mode、qi cost、existing placement pipeline
-  - accepted-only log／facts and exact no-op rejection; replay schema remains deferred
-  - fixed-HEAD independent review approved; awaiting PR review／human merge
+- [[TASK-0035 Implement Starter Stone Card Effects]]
+  - connect Extend／Contact／Lure typed operations to atomic PlayCard
+  - exact-bound runtime sidecar and two-resolution lure capture lifetime proof
+  - Headless／replay composition remains deferred to TASK-0039
 
 ## Open human evidence
 
@@ -52,17 +52,19 @@ Review and merge TASK-0034's atomic `card_basic_stone` PlayCard vertical proof w
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — PR #21 merged／post-merge CI green
 - [[TASK-0032 Implement Typed Core Duel Content Catalog]] — PR #22 merged／post-merge CI green
 - [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — PR #23 merged／post-merge CI green
+- [[TASK-0034 Implement Atomic Basic Stone Card Play]] — PR #24 merged／post-merge CI green
 
-## Next after TASK-0034
+## Next after TASK-0035
 
-- [[TASK-0035 Implement Starter Stone Card Effects]] — remains blocked until TASK-0034 human merge.
+- [[TASK-0036 Implement Starter Reinforce Effect]] — remains blocked until TASK-0035 human merge.
 - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolve before TASK-0038 applies the starting recipe／Development scope.
-- TASK-0035〜0042 remain blocked and advance only in dependency order.
+- TASK-0036〜0042 remain blocked and advance only in dependency order.
 
 ## Review questions
 
-- Does PlayCard reject stale、hand外、insufficient qi、invalid target without changing state／RNG／log?
-- Does an accepted basic stone card use the existing placement／capture／facility／territory／terminal pipeline exactly once?
-- Is qi consumed only after legality and the card retained as resolved until turn end?
-- Is the typed operation injected without a content-ID switch or default recipe decision?
-- Are other starter effects、Momentum、replay schema、Godot still deferred to their owning tasks?
+- Are Basic／Extend／Contact／Lure projected from typed operation shape without a content-ID switch?
+- Does Extend use the committed placed group's real liberties and preserve authoritative RNG identity after reshuffle?
+- Does Contact require adjacent black／white stones and reward only an affected surviving enemy group at effective liberty 1?
+- Does Lure reserve draw once on play and once for its exact captured stone instance, with terminal suppression?
+- Do rejected commands preserve every resource／zone／runtime／trigger reference and avoid log／RNG mutation?
+- Are Reinforce、default recipe、Headless／replay composition、enemy planner、Godot still deferred to their owning tasks?

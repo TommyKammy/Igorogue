@@ -406,6 +406,7 @@ public sealed class BattleAuthoritativeRuntimeState
         TemporaryLibertyState? temporaryLibertyState = null,
         ContinuousLibertySnapshot? continuousLibertySnapshot = null,
         ClosedWindowResourceState? closedWindowResources = null,
+        CaptureBenefitTriggerPlan? captureBenefitTriggerPlan = null,
         CounterattackBoundaryState? counterattackState = null,
         string? registeredStoneInstanceId = null,
         EnemyActionStage? enemyActionStage = null,
@@ -416,7 +417,7 @@ public sealed class BattleAuthoritativeRuntimeState
             temporaryLibertyState ?? TemporaryLibertyState,
             continuousLibertySnapshot ?? ContinuousLibertySnapshot,
             closedWindowResources ?? ClosedWindowResources,
-            CaptureBenefitTriggerPlan,
+            captureBenefitTriggerPlan ?? CaptureBenefitTriggerPlan,
             counterattackState ?? CounterattackState,
             CounterattackPolicy,
             registeredStoneInstanceId is null

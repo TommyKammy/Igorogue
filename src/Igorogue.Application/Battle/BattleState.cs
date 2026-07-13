@@ -237,6 +237,39 @@ public sealed class BattleState
             null);
     }
 
+    internal static BattleState RebindRng(
+        BattleState source,
+        AuthoritativeRngState rngState)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(rngState);
+        if (source.AuthoritativeRuntime is not null)
+        {
+            throw new ArgumentException(
+                "Legacy RNG rebind cannot replace authoritative runtime ownership.",
+                nameof(source));
+        }
+
+        if (ReferenceEquals(source.RngState, rngState))
+        {
+            return source;
+        }
+
+        return new BattleState(
+            source.Board,
+            source.RepetitionHistory,
+            source.FacilityState,
+            source.TerritoryAnalysis,
+            source.FacilityRuntimeAnalysis,
+            rngState,
+            source.RuntimePolicy,
+            source.PlayerTurnIndex,
+            source.Phase,
+            source.Outcome,
+            source.EndReason,
+            null);
+    }
+
     internal static BattleState TransitionAuthoritative(
         BattleState source,
         BoardState board,

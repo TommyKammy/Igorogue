@@ -35,7 +35,7 @@ updated: 2026-07-13
 
 ## Current gate
 
-[[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] was merged through PR #23 at `9fe6c6323a24bed59d5ff731ad770afd68958868`; post-merge main CI run `29215583244` is green. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[TASK-0034 Implement Atomic Basic Stone Card Play]] is independently approved at fixed HEAD `750c46a37c9711ef62b33562a8a819ffd0c859af` and is the current review task. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] blocks resolved recipe application, but not this single-card vertical proof.
+[[TASK-0034 Implement Atomic Basic Stone Card Play]] was merged through PR #24 at `69d686a5268c127d5ea2c3d3a6b0508b7d56b83c`; post-merge main CI run `29219574281` is green. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[TASK-0035 Implement Starter Stone Card Effects]] is the current production task. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] blocks resolved recipe application, but not these injected starter-card definitions.
 
 ## Next development sequence
 
@@ -61,8 +61,9 @@ updated: 2026-07-13
 20. TASK-0031 Gate 2 Core Duel decomposition — done
 21. TASK-0032 typed Core Duel content catalog — done
 22. TASK-0033 deterministic battle deck／hand／qi kernel — done
-23. TASK-0034 atomic basic stone card play — review／current
-24. TASK-0035〜0042 — blocked in dependency order
+23. TASK-0034 atomic basic stone card play — done
+24. TASK-0035 starter stone card effects — in progress／current
+25. TASK-0036〜0042 — blocked in dependency order
 
 ## Human-only evidence waiver
 
