@@ -48,8 +48,8 @@ See [[Codex Task Queue]] for gate order and concurrency rules.
 
 - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — open／blocks TASK-0038 resolved recipe／Development scope application
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
-- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — review／PR #22 fixes approved
-- [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — blocked by TASK-0032
+- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — done
+- [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — review／current
 - [[TASK-0034 Implement Atomic Basic Stone Card Play]] — blocked by TASK-0033
 - [[TASK-0035 Implement Starter Stone Card Effects]] — blocked by TASK-0034
 - [[TASK-0036 Implement Starter Reinforce Effect]] — blocked by TASK-0035

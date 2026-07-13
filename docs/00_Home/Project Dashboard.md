@@ -12,7 +12,7 @@ updated: 2026-07-13
 
 ## Sprint goal
 
-Human review／merge TASK-0032 after the approved PR #22 feedback remediation.
+Review and merge TASK-0033's injected-recipe deterministic deck／hand／qi kernel without resolving DECISION-0006.
 
 ## Health
 
@@ -69,10 +69,11 @@ Human review／merge TASK-0032 after the approved PR #22 feedback remediation.
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — review; human sign-off evidence not retained
 - [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]] — resolved owner waiver; not human evidence
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done; PR #21 merge／post-merge CI green
-- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — review／PR #22 fixes approved
+- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — done; PR #22 merge／post-merge CI green
+- [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — review／current; fixed-HEAD independent review approved
 
 ## Next
 
-1. Human review／merge [[TASK-0032 Implement Typed Core Duel Content Catalog]]
-2. Keep [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] blocked until TASK-0032 human merge
+1. Review／merge [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]]
+2. Keep [[TASK-0034 Implement Atomic Basic Stone Card Play]] blocked until TASK-0033 human merge
 3. Resolve [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] before TASK-0038 applies the default recipe／Development scope

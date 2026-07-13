@@ -9,13 +9,14 @@ sprint: S0
 
 ## Goal
 
-Implement and review TASK-0032's typed Core Duel content catalog without selecting the unresolved starter recipe.
+Implement and review TASK-0033's deterministic injected-recipe deck／hand／qi kernel without selecting the unresolved starter recipe.
 
 ## In review
 
-- [[TASK-0032 Implement Typed Core Duel Content Catalog]]
-  - typed starter／Bandit／system policy projection, Content → Domain boundary, fail-closed validation
-  - PR #22 review fixes independently approved; human merge pending; TASK-0033 remains blocked
+- [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]]
+  - immutable ordered zones, gameplay RNG shuffle／reshuffle, turn resource pipeline
+  - injected recipe／policy only; existing replay integration remains deferred
+  - fixed-HEAD independent review approved; awaiting PR review／human merge
 
 ## Open human evidence
 
@@ -49,17 +50,18 @@ Implement and review TASK-0032's typed Core Duel content catalog without selecti
 - [[TASK-0029 Integrate Temporary Liberty Enemy Boundary and Golden Replay]]
 - [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — M1 technical `PASS`; PR #20 merged／CI green
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — PR #21 merged／post-merge CI green
+- [[TASK-0032 Implement Typed Core Duel Content Catalog]] — PR #22 merged／post-merge CI green
 
-## Next after TASK-0032
+## Next after TASK-0033
 
-- [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — remains blocked until TASK-0032 human merge.
+- [[TASK-0034 Implement Atomic Basic Stone Card Play]] — remains blocked until TASK-0033 human merge.
 - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolve before TASK-0038 applies the starting recipe／Development scope.
-- TASK-0033〜0042 remain blocked and advance only in dependency order.
+- TASK-0034〜0042 remain blocked and advance only in dependency order.
 
 ## Review questions
 
-- Does the plan preserve Accepted rules and isolate the starter deck／facility ambiguity in DECISION-0006?
-- Is typed Content projection scheduled before deck／hand／qi and all gameplay consumers?
-- Are Domain／Application kept free of Godot types, with UI limited to commands and read-only queries?
-- Does the Godot graybox task explicitly authorize asset edits and require headless／export／human visual evidence?
-- Is the owner instruction recorded as a gate waiver rather than fabricated sign-off evidence?
+- Are all five card zones immutable, ordered, exclusive, and checksum-covered?
+- Does named gameplay RNG have stable shuffle／reshuffle consumption and exact no-op behavior?
+- Does turn start preserve reset → deferred outcome → territory → qi → draw order and exact reservation resets?
+- Is the recipe／system policy fully injected without resolving DECISION-0006 or hard-coding runtime values?
+- Are BattleState／replay／Godot integrations still deferred to their owning tasks?
