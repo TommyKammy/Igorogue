@@ -35,7 +35,7 @@ updated: 2026-07-13
 
 ## Current gate
 
-[[TASK-0032 Implement Typed Core Duel Content Catalog]] was merged through PR #22 at `0b4b8f5c1558e98051c758002269fca1994d5ca9`; post-merge main CI run `29214123093` is green. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] is the current production task. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] blocks resolved recipe application, but not this injected-recipe kernel.
+[[TASK-0032 Implement Typed Core Duel Content Catalog]] was merged through PR #22 at `0b4b8f5c1558e98051c758002269fca1994d5ca9`; post-merge main CI run `29214123093` is green. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] is independently approved at fixed HEAD `7d1a49d51fda4560d3d5c425be2ec4c972f69099` and is the current review task. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] blocks resolved recipe application, but not this injected-recipe kernel.
 
 ## Next development sequence
 
@@ -60,7 +60,7 @@ updated: 2026-07-13
 19. TASK-0012 FEAT-009 two-human paper evidence — review／not retained; Gate 2 prerequisite waived by DECISION-0007
 20. TASK-0031 Gate 2 Core Duel decomposition — done
 21. TASK-0032 typed Core Duel content catalog — done
-22. TASK-0033 deterministic battle deck／hand／qi kernel — in progress／current
+22. TASK-0033 deterministic battle deck／hand／qi kernel — review／current
 23. TASK-0034〜0042 — blocked in dependency order
 
 ## Human-only evidence waiver

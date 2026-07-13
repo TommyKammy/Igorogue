@@ -11,11 +11,12 @@ sprint: S0
 
 Implement and review TASK-0033's deterministic injected-recipe deck／hand／qi kernel without selecting the unresolved starter recipe.
 
-## In progress
+## In review
 
 - [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]]
   - immutable ordered zones, gameplay RNG shuffle／reshuffle, turn resource pipeline
   - injected recipe／policy only; existing replay integration remains deferred
+  - fixed-HEAD independent review approved; awaiting PR review／human merge
 
 ## Open human evidence
 
@@ -59,8 +60,8 @@ Implement and review TASK-0033's deterministic injected-recipe deck／hand／qi 
 
 ## Review questions
 
-- Does the plan preserve Accepted rules and isolate the starter deck／facility ambiguity in DECISION-0006?
-- Is typed Content projection scheduled before deck／hand／qi and all gameplay consumers?
-- Are Domain／Application kept free of Godot types, with UI limited to commands and read-only queries?
-- Does the Godot graybox task explicitly authorize asset edits and require headless／export／human visual evidence?
-- Is the owner instruction recorded as a gate waiver rather than fabricated sign-off evidence?
+- Are all five card zones immutable, ordered, exclusive, and checksum-covered?
+- Does named gameplay RNG have stable shuffle／reshuffle consumption and exact no-op behavior?
+- Does turn start preserve reset → deferred outcome → territory → qi → draw order and exact reservation resets?
+- Is the recipe／system policy fully injected without resolving DECISION-0006 or hard-coding runtime values?
+- Are BattleState／replay／Godot integrations still deferred to their owning tasks?
