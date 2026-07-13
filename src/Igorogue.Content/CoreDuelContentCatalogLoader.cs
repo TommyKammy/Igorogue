@@ -1,6 +1,9 @@
 using System.Text.Json;
 
+using Igorogue.Domain.Board;
+using Igorogue.Domain.Combat;
 using Igorogue.Domain.Content;
+using Igorogue.Domain.Facilities;
 
 namespace Igorogue.Content;
 
@@ -55,7 +58,8 @@ public sealed class CoreDuelContentCatalogLoader
                 cards.StarterCards,
                 startingDeck,
                 bandit,
-                system.Policy));
+                system.Policy,
+                system.BattleSetup));
     }
 
     private static ParsedSystem ParseSystem(ReadOnlyMemory<byte> content)
@@ -66,6 +70,14 @@ public sealed class CoreDuelContentCatalogLoader
 
         var baseQi = RequiredInt(root, "base_qi", SystemPath);
         var baseDraw = RequiredInt(root, "base_draw", SystemPath);
+        var initialPosition = ParseInitialPosition(root);
+        var playerTurnLimit = RequiredInt(root, "turn_limit", SystemPath);
+        var capacityBands = ParseFacilityCapacity(root);
+        var territoryIncomeDivisor = RequiredInt(
+            root,
+            "territory_income_divisor",
+            SystemPath);
+        var facilitySlotCap = RequiredInt(root, "facility_slot_cap", SystemPath);
         var facilityLimits = RequiredObject(
             root,
             "facility_type_limits_per_region",
@@ -73,6 +85,7 @@ public sealed class CoreDuelContentCatalogLoader
         EnsureUniqueProperties(facilityLimits, $"{SystemPath}.facility_type_limits_per_region");
 
         var facilityTypeIds = new HashSet<string>(StringComparer.Ordinal);
+        var facilityTypeLimits = new List<KeyValuePair<string, int>>();
         foreach (var property in facilityLimits.EnumerateObject())
         {
             ValidateStableId(property.Name, $"{SystemPath}.facility_type_limits_per_region");
@@ -84,17 +97,148 @@ public sealed class CoreDuelContentCatalogLoader
                     $"{SystemPath}.facility_type_limits_per_region.{property.Name} must be a positive integer.");
             }
 
+            facilityTypeLimits.Add(new KeyValuePair<string, int>(property.Name, limit));
             if (!string.Equals(property.Name, "default", StringComparison.Ordinal))
             {
                 facilityTypeIds.Add(property.Name);
             }
         }
 
+        var facilityPolicy = ConvertDomain(
+            $"{SystemPath}.facility runtime policy",
+            () => FacilityRuntimePolicy.Create(
+                territoryIncomeDivisor,
+                capacityBands,
+                facilitySlotCap,
+                facilityTypeLimits));
+        var counterattack = ParseCounterattack(root);
+        var battleSetup = ConvertDomain(
+            $"{SystemPath}.core duel battle setup",
+            () => CoreDuelBattleSetupDefinition.Create(
+                initialPosition,
+                playerTurnLimit,
+                facilityPolicy,
+                counterattack.Policy,
+                counterattack.StartGaugeUnits));
+
         return new ParsedSystem(
             ConvertDomain(
                 SystemPath,
                 () => CoreDuelSystemPolicy.Create(baseQi, baseDraw)),
+            battleSetup,
             facilityTypeIds);
+    }
+
+    private static InitialPositionDefinition ParseInitialPosition(JsonElement root)
+    {
+        var context = $"{SystemPath}.initial_position";
+        var initial = RequiredObject(root, "initial_position", SystemPath);
+        EnsureExactProperties(initial, context, "id", "symmetry", "stones");
+        var symmetry = RequiredString(initial, "symmetry", context);
+        if (!string.Equals(
+                symmetry,
+                "point_reflection_with_color_and_role_swap",
+                StringComparison.Ordinal))
+        {
+            throw Invalid($"{context}.symmetry uses unsupported value '{symmetry}'.");
+        }
+
+        var geometry = ConvertDomain(
+            SystemPath,
+            () => BoardGeometry.Create(RequiredInt(root, "board_size", SystemPath)));
+        var stones = new List<InitialStonePlacement>();
+        var index = 0;
+        foreach (var element in RequiredArray(initial, "stones", context).EnumerateArray())
+        {
+            var stoneContext = $"{context}.stones[{index}]";
+            var stone = RequireObject(element, stoneContext);
+            EnsureExactProperties(stone, stoneContext, "color", "role", "point");
+            var color = RequiredString(stone, "color", stoneContext) switch
+            {
+                "black" => StoneColor.Black,
+                "white" => StoneColor.White,
+                var value => throw Invalid($"{stoneContext}.color uses unsupported value '{value}'."),
+            };
+            var role = RequiredString(stone, "role", stoneContext) switch
+            {
+                "king" => InitialStoneRole.King,
+                "guard" => InitialStoneRole.Guard,
+                var value => throw Invalid($"{stoneContext}.role uses unsupported value '{value}'."),
+            };
+            var point = RequiredArray(stone, "point", stoneContext).EnumerateArray().ToArray();
+            if (point.Length != 2 ||
+                point.Any(value => value.ValueKind != JsonValueKind.Number || !value.TryGetInt32(out _)))
+            {
+                throw Invalid($"{stoneContext}.point must contain exactly two 32-bit integers.");
+            }
+
+            stones.Add(ConvertDomain(
+                stoneContext,
+                () => new InitialStonePlacement(
+                    color,
+                    role,
+                    geometry.CreateCanonicalPoint(point[0].GetInt32(), point[1].GetInt32()))));
+            index++;
+        }
+
+        var positionId = RequiredString(initial, "id", context);
+        ValidateStableId(positionId, $"{context}.id");
+        var position = ConvertDomain(
+            context,
+            () => InitialPositionDefinition.Create(
+                geometry,
+                positionId,
+                stones));
+        return position;
+    }
+
+    private static FacilityCapacityBand[] ParseFacilityCapacity(JsonElement root)
+    {
+        var context = $"{SystemPath}.facility_capacity";
+        var bands = new List<FacilityCapacityBand>();
+        var index = 0;
+        foreach (var element in RequiredArray(root, "facility_capacity", SystemPath).EnumerateArray())
+        {
+            var bandContext = $"{context}[{index}]";
+            var band = RequireObject(element, bandContext);
+            EnsureExactProperties(band, bandContext, "min", "max", "slots");
+            bands.Add(ConvertDomain(
+                bandContext,
+                () => new FacilityCapacityBand(
+                    RequiredInt(band, "min", bandContext),
+                    RequiredInt(band, "max", bandContext),
+                    RequiredInt(band, "slots", bandContext))));
+            index++;
+        }
+
+        return bands.ToArray();
+    }
+
+    private static ParsedCounterattack ParseCounterattack(JsonElement root)
+    {
+        var context = $"{SystemPath}.counterattack";
+        var counterattack = RequiredObject(root, "counterattack", SystemPath);
+        EnsureUniqueProperties(counterattack, context);
+        var battleStart = RequiredObject(counterattack, "battle_start", context);
+        var enemyTurnEnd = RequiredObject(counterattack, "enemy_turn_end_gain", context);
+        var sacrifice = RequiredObject(counterattack, "sacrifice", context);
+        EnsureUniqueProperties(battleStart, $"{context}.battle_start");
+        EnsureUniqueProperties(enemyTurnEnd, $"{context}.enemy_turn_end_gain");
+        EnsureUniqueProperties(sacrifice, $"{context}.sacrifice");
+
+        var policy = ConvertDomain(
+            $"{context}.boundary policy",
+            () => new CounterattackBoundaryPolicy(
+                RequiredInt(counterattack, "threshold_units", context),
+                RequiredInt(enemyTurnEnd, "base_units", $"{context}.enemy_turn_end_gain"),
+                RequiredInt(
+                    sacrifice,
+                    "non_king_black_stones_per_batch",
+                    $"{context}.sacrifice"),
+                RequiredInt(sacrifice, "gain_units_per_batch", $"{context}.sacrifice")));
+        return new ParsedCounterattack(
+            policy,
+            RequiredInt(battleStart, "base_units", $"{context}.battle_start"));
     }
 
     private static ParsedCards ParseStarterCards(
@@ -924,5 +1068,10 @@ public sealed class CoreDuelContentCatalogLoader
 
     private sealed record ParsedSystem(
         CoreDuelSystemPolicy Policy,
+        CoreDuelBattleSetupDefinition BattleSetup,
         IReadOnlySet<string> FacilityTypeIds);
+
+    private sealed record ParsedCounterattack(
+        CounterattackBoundaryPolicy Policy,
+        int StartGaugeUnits);
 }

@@ -2,25 +2,24 @@
 type: sprint
 status: active
 project: Igorogue
-updated: 2026-07-13
+updated: 2026-07-14
 sprint: S0
 ---
 # Current Sprint
 
 ## Goal
 
-Expose selected-card legality、capture、liberty／atari、territory／facility delta、king risk、and Bandit intent from the authoritative Core Duel aggregate without a second rules implementation.
+Build the minimal playable Godot 4.7 .NET Core Duel graybox on Application commands／queries without duplicating rules or runtime values in presentation code.
 
-## In review
+## In progress
 
-- [[TASK-0040 Implement Core Duel Preview Queries]]
-  - dependency TASK-0039 is done through PR #29 merge `60d8cc5958e38768f4077ee2f4d686526d5b25fe`／post-merge CI run `29252298693`
-  - selected cardのCanonicalPoint／mode候補を同一immutable sessionからauthoritative command pathへ投機実行する
-  - capture、effective liberty／atari、territory／facility delta、result checksumをread-only DTOへ投影する
-  - stored normal／bonus intentとexisting mandatory overrideだけを投影し、full counterattack予測は行わない
-  - parity、read-only、stale state／log、canonical enumeration、architecture evidenceを625 testsと全wrapper成功で固定済み
-  - fixed source HEAD `ab600cd53e7fafa5976b1a381a4a19e672097977`の3系統independent reviewはfindingなしで全て`APPROVE`
-  - Draft PR #30 CI run `29256594790`は全3 job success、human review／merge pending
+- [[TASK-0041 Build Playable Godot Core Duel Graybox]]
+  - dependency TASK-0040 is done through PR #30 source HEAD `eaa62531615eef7a10cfe1d16fe92318d45143c8`／main merge `d8ccc08cf7fa3cc1a43046d128b2804b50b9d073`／post-merge CI run `29285926156` all 3 jobs success
+  - 7×7 board、hand、qi、turn／result、Bandit intent、card target、End Turn、restartをApplication command／queryだけへ接続する
+  - start auditでproduction標準初期snapshot factoryの欠落を確認し、2026-07-14 Project ownerがpure typed Domain／Content／Application startup seamと対応testを限定承認
+  - startup seamは既存Accepted ruleと`game_data/`を使用し、player-visible rule／runtime valueを変更しない
+  - typed startup、query-only rendering、command-only input、terminal／restart smokeを実装済み、653 tests、sim／Godot smoke、Windows exportは成功
+  - independent fixed-HEAD reviewは完了済み。PR #31 CI run `29289620374`は全3 job success。initial／selected-hoverの480×270 Codex visual QAも実施済みで、Project owner human visual reviewだけが未完了
 
 ## Open human evidence
 
@@ -62,17 +61,17 @@ Expose selected-card legality、capture、liberty／atari、territory／facility
 - [[TASK-0037 Implement Bandit Intent Planning and Execution]] — PR #27 merged at `e98ac90`／post-merge CI green
 - [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — PR #28 merged at `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge CI green
 - [[TASK-0039 Integrate Headless Core Duel and Replay]] — PR #29 merged at `60d8cc5958e38768f4077ee2f4d686526d5b25fe`／post-merge CI green
+- [[TASK-0040 Implement Core Duel Preview Queries]] — PR #30 source `eaa62531615eef7a10cfe1d16fe92318d45143c8` merged at `d8ccc08cf7fa3cc1a43046d128b2804b50b9d073`／post-merge CI run `29285926156` green
 
-## Next after TASK-0040
+## Next
 
-- Complete human review／merge of TASK-0040 Draft PR #30.
-- [[TASK-0041 Build Playable Godot Core Duel Graybox]] becomes the next implementation task only after TASK-0040 is done.
-- TASK-0042 remains blocked and advances only after TASK-0041.
+- Complete [[TASK-0041 Build Playable Godot Core Duel Graybox]] implementation、runtime／visual validation、independent review、and human merge.
+- [[TASK-0042 Validate M2 Core Duel Graybox]] remains blocked and advances only after TASK-0041 human merge.
 
 ## Implementation review questions
 
-- Does every card candidate call the existing exact-bound command path without mutating the source session、RNG、log、or first-use state?
-- Are canonical point／mode order、stable rejection reasons、accepted checksums、capture／territory／facility deltas、and effective-liberty projections exact?
-- Does the battle projection expose only presentation-neutral snapshots while preserving stored normal／bonus intent and avoiding future-retarget prediction?
-- Do stale state／log requests fail closed without returning renderable board、hand、or risk data?
-- Are Godot rendering、Momentum／Brilliant、full counterattack preview、and player-visible rule changes still excluded?
+- Does startup obtain the standard authoritative initial snapshot through the bounded production factory without copying board／policy／runtime values into Godot?
+- Does Godot render only query projections and mutate battle state only through accepted Application commands?
+- Is canonical orientation left-bottom `(1,1)`／right-top `(7,7)` preserved for drawing、hover、and confirm input?
+- Are hand、qi、turn／result、Bandit primary／alternate intent、legality、capture、liberty／atari、and danger states visible at 480×270 integer-scaled layout?
+- Do headless parse／build、bootstrap smoke、Windows export、human visual review、and fixed-HEAD independent review all pass without expanding final-art or full-counterattack scope?

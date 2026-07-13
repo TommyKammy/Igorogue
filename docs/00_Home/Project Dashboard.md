@@ -2,7 +2,7 @@
 type: dashboard
 status: active
 project: Igorogue
-updated: 2026-07-13
+updated: 2026-07-14
 ---
 # Project Dashboard
 
@@ -12,7 +12,7 @@ updated: 2026-07-13
 
 ## Sprint goal
 
-Expose selected-card legality and result deltas from the merged deterministic Core Duel aggregate through read-only, presentation-neutral queries.
+Build a minimal playable Godot Core Duel graybox on the merged Application command／query surface without duplicating rules or runtime values in presentation code.
 
 ## Health
 
@@ -22,12 +22,12 @@ Expose selected-card legality and result deltas from the merged deterministic Co
 | Rules | Green | DECISION-0006／0009／0010 are resolved; starter catalog display is synchronized with machine-readable content |
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
-| UX | Yellow | Mockup stage |
+| UX | Yellow | TASK-0041 playable graybox implementation in progress; visual evidence pending |
 | Validation | Yellow | M1 technical exit `PASS`; TASK-0012 human evidence not retained; owner waiver permits Gate 2 |
 
 ## Blockers
 
-- TASK-0040 has no open design／dependency blocker and is in review after 625 tests、three fixed source HEAD approvals、and Draft PR #30 CI run `29256594790` all green. Human merge remains pending; TASK-0041〜0042 remain serially blocked by their immediate predecessor.
+- TASK-0041 has no dependency blocker after PR #30 merged at main commit `d8ccc08cf7fa3cc1a43046d128b2804b50b9d073` and post-merge CI run `29285926156` passed all 3 jobs. Its start audit found no production standard initial snapshot factory; the 2026-07-14 Project owner approval permits only the bounded pure typed Domain／Content／Application startup seam and corresponding tests, without rule／runtime-value changes. TASK-0042 remains blocked by TASK-0041.
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] human evidence remains unverified, with Gate 2 progression separately authorized by DECISION-0007.
 
 ## Current evidence
@@ -79,10 +79,10 @@ Expose selected-card legality and result deltas from the merged deterministic Co
 - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolved／Option 1
 - [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — done; PR #28 merge `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge CI run `29247035946` green
 - [[TASK-0039 Integrate Headless Core Duel and Replay]] — done; PR #29 merge `60d8cc5958e38768f4077ee2f4d686526d5b25fe`／post-merge CI run `29252298693` green
-- [[TASK-0040 Implement Core Duel Preview Queries]] — review; immutable speculative command reuse、625 tests、all wrappers、fixed source HEAD `ab600cd53e7fafa5976b1a381a4a19e672097977` review approved、PR #30 CI green
+- [[TASK-0040 Implement Core Duel Preview Queries]] — done; immutable speculative command reuse、625 tests、all wrappers、fixed source HEAD review approved、PR #30 source `eaa62531615eef7a10cfe1d16fe92318d45143c8` merged at `d8ccc08cf7fa3cc1a43046d128b2804b50b9d073`、post-merge CI run `29285926156` green
 
 ## Next
 
-1. Obtain human review／merge for Draft PR #30 implementing [[TASK-0040 Implement Core Duel Preview Queries]]
-2. Keep Godot rendering and full counterattack prediction out of TASK-0040
-3. Advance TASK-0041〜0042 only in dependency order after TASK-0040 human merge
+1. Implement [[TASK-0041 Build Playable Godot Core Duel Graybox]] through Application commands／queries and the approved bounded startup seam
+2. Complete Godot smoke／Windows export、human visual review、and fixed-HEAD independent review without claiming final presentation or fun validation
+3. Advance [[TASK-0042 Validate M2 Core Duel Graybox]] only after TASK-0041 human merge

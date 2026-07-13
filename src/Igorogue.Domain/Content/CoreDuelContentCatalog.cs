@@ -16,7 +16,8 @@ public sealed class CoreDuelContentCatalog
         CardContentDefinition[] starterCards,
         StartingDeckRecipe startingDeck,
         EnemyContentDefinition bandit,
-        CoreDuelSystemPolicy systemPolicy)
+        CoreDuelSystemPolicy systemPolicy,
+        CoreDuelBattleSetupDefinition battleSetup)
     {
         ContentHash = contentHash;
         starterCardView = Array.AsReadOnly(starterCards);
@@ -25,6 +26,7 @@ public sealed class CoreDuelContentCatalog
         StartingDeck = startingDeck;
         Bandit = bandit;
         SystemPolicy = systemPolicy;
+        BattleSetup = battleSetup;
     }
 
     public string ContentHash { get; }
@@ -36,6 +38,8 @@ public sealed class CoreDuelContentCatalog
     public EnemyContentDefinition Bandit { get; }
 
     public CoreDuelSystemPolicy SystemPolicy { get; }
+
+    public CoreDuelBattleSetupDefinition BattleSetup { get; }
 
     public CardContentDefinition StarterCard(string contentId)
     {
@@ -50,13 +54,15 @@ public sealed class CoreDuelContentCatalog
         IEnumerable<CardContentDefinition> starterCards,
         StartingDeckRecipe startingDeck,
         EnemyContentDefinition bandit,
-        CoreDuelSystemPolicy systemPolicy)
+        CoreDuelSystemPolicy systemPolicy,
+        CoreDuelBattleSetupDefinition battleSetup)
     {
         ValidateContentHash(contentHash);
         ArgumentNullException.ThrowIfNull(starterCards);
         ArgumentNullException.ThrowIfNull(startingDeck);
         ArgumentNullException.ThrowIfNull(bandit);
         ArgumentNullException.ThrowIfNull(systemPolicy);
+        ArgumentNullException.ThrowIfNull(battleSetup);
 
         var canonicalCards = starterCards.ToArray();
         foreach (var card in canonicalCards)
@@ -114,7 +120,8 @@ public sealed class CoreDuelContentCatalog
             canonicalCards,
             startingDeck,
             bandit,
-            systemPolicy);
+            systemPolicy,
+            battleSetup);
     }
 
     private static void ValidateContentHash(string contentHash)

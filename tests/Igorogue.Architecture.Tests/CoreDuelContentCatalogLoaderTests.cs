@@ -5,8 +5,11 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 
 using Igorogue.Content;
+using Igorogue.Domain.Board;
 using Igorogue.Domain.Cards;
+using Igorogue.Domain.Combat;
 using Igorogue.Domain.Content;
+using Igorogue.Domain.Facilities;
 
 namespace Igorogue.Architecture.Tests;
 
@@ -30,6 +33,38 @@ public sealed class CoreDuelContentCatalogLoaderTests
         Assert.Equal(ExpectedContentHash, catalog.ContentHash);
         Assert.Equal(3, catalog.SystemPolicy.BaseQi);
         Assert.Equal(5, catalog.SystemPolicy.BaseDraw);
+        var setup = catalog.BattleSetup;
+        Assert.Equal("standard_v0_2", setup.InitialPosition.Id);
+        Assert.Equal(
+            [
+                (StoneColor.Black, InitialStoneRole.King, 2, 2),
+                (StoneColor.Black, InitialStoneRole.Guard, 3, 2),
+                (StoneColor.Black, InitialStoneRole.Guard, 2, 3),
+                (StoneColor.White, InitialStoneRole.Guard, 6, 5),
+                (StoneColor.White, InitialStoneRole.Guard, 5, 6),
+                (StoneColor.White, InitialStoneRole.King, 6, 6),
+            ],
+            setup.InitialPosition.Stones.Select(stone =>
+                (stone.Color, stone.Role, stone.Point.X, stone.Point.Y)));
+        Assert.Equal(20, setup.PlayerTurnLimit);
+        Assert.Equal(3, setup.FacilityPolicy.TerritoryIncomeDivisor);
+        Assert.Equal(5, setup.FacilityPolicy.SlotCap);
+        Assert.Equal(
+            [(1, 3, 1), (4, 7, 2), (8, 12, 3), (13, 49, 4)],
+            setup.FacilityPolicy.CapacityBands.Select(band =>
+                (band.MinSize, band.MaxSize, band.Slots)));
+        Assert.Equal(
+            [("default", 1), ("development", 2), ("furnace", 2)],
+            setup.FacilityPolicy.TypeLimits.Select(pair => (pair.Key, pair.Value)));
+        Assert.Equal(200, setup.CounterattackPolicy.ThresholdUnits);
+        Assert.Equal(12, setup.CounterattackPolicy.EnemyTurnEndNaturalGainUnits);
+        Assert.Equal(3, setup.CounterattackPolicy.SacrificeStonesPerBatch);
+        Assert.Equal(30, setup.CounterattackPolicy.SacrificeUnitsPerBatch);
+        Assert.Equal(20, setup.CounterattackStartGaugeUnits);
+        Assert.StartsWith(
+            CoreDuelBattleSetupDefinition.EncodingVersion,
+            setup.ToCanonicalText(),
+            StringComparison.Ordinal);
         Assert.Equal(
             [
                 "card_basic_stone",
@@ -159,6 +194,13 @@ public sealed class CoreDuelContentCatalogLoaderTests
             () => ((IList<EnemyIntentDefinition>)catalog.Bandit.Intents).Clear());
         Assert.Throws<NotSupportedException>(
             () => ((IList<StartingDeckCardCount>)catalog.StartingDeck.Entries).Clear());
+        Assert.Throws<NotSupportedException>(
+            () => ((IList<InitialStonePlacement>)catalog.BattleSetup.InitialPosition.Stones).Clear());
+        Assert.Throws<NotSupportedException>(
+            () => ((IList<FacilityCapacityBand>)catalog.BattleSetup
+                .FacilityPolicy.CapacityBands).Clear());
+        Assert.Throws<NotSupportedException>(
+            () => ((IDictionary<string, int>)catalog.BattleSetup.FacilityPolicy.TypeLimits).Clear());
     }
 
     [Fact]
@@ -175,6 +217,12 @@ public sealed class CoreDuelContentCatalogLoaderTests
         reversedFixture.MutateJson(
             "content/starting_decks.json",
             root => ReverseArray(CoreDuelStartingDeck(root)["entries"]!.AsArray()));
+        reversedFixture.MutateJson(
+            "balance/system.json",
+            root => ReverseArray(root["initial_position"]!["stones"]!.AsArray()));
+        reversedFixture.MutateJson(
+            "balance/system.json",
+            root => ReverseArray(root["facility_capacity"]!.AsArray()));
 
         var loader = new CoreDuelContentCatalogLoader();
         var first = loader.Load(firstFixture.ManifestPath);
@@ -573,6 +621,143 @@ public sealed class CoreDuelContentCatalogLoaderTests
     }
 
     [Fact]
+    public void ValidTurnLimitMutationChangesTheTypedBattleSetup()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root => root["turn_limit"] = 21);
+
+        var catalog = Load(fixture);
+
+        Assert.Equal(21, catalog.BattleSetup.PlayerTurnLimit);
+        Assert.Contains("player_turn_limit=21", catalog.BattleSetup.ToCanonicalText());
+    }
+
+    [Fact]
+    public void UnsupportedInitialPositionSymmetryIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root => root["initial_position"]!["symmetry"] = "unsupported");
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void UnsupportedInitialPositionIdIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root => root["initial_position"]!["id"] = "future_position");
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void MissingSymmetricGuardPairIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root =>
+            {
+                var stones = InitialStones(root);
+                stones.RemoveAt(5);
+                stones.RemoveAt(1);
+            });
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void SymmetricGuardsReplacedByKingsAreRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root =>
+            {
+                var stones = InitialStones(root);
+                stones[1]!["role"] = "king";
+                stones[5]!["role"] = "king";
+            });
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void DisconnectedSymmetricGuardPairIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root =>
+            {
+                var stones = InitialStones(root);
+                SetPoint(stones, 2, 4, 3);
+                SetPoint(stones, 4, 4, 5);
+            });
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void SymmetricCornerGroupsWithWrongLibertyCountAreRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root =>
+            {
+                var stones = InitialStones(root);
+                SetPoint(stones, 0, 1, 1);
+                SetPoint(stones, 1, 1, 2);
+                SetPoint(stones, 2, 2, 1);
+                SetPoint(stones, 3, 7, 7);
+                SetPoint(stones, 4, 6, 7);
+                SetPoint(stones, 5, 7, 6);
+            });
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void OccupiedInitialCenterIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root => SetPoint(InitialStones(root), 2, 4, 4));
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void NonContiguousFacilityCapacityPolicyIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root => root["facility_capacity"]![0]!["min"] = 2);
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
+    public void NonPendingCounterattackStartAtThresholdIsRejected()
+    {
+        using var fixture = GeneratedContentFixture.Create();
+        fixture.MutateJson(
+            "balance/system.json",
+            root => root["counterattack"]!["battle_start"]!["base_units"] = 200);
+
+        Assert.Throws<InvalidDataException>(() => Load(fixture));
+    }
+
+    [Fact]
     public void UnknownBanditPlacementModeIsRejected()
     {
         using var fixture = GeneratedContentFixture.Create();
@@ -691,6 +876,17 @@ public sealed class CoreDuelContentCatalogLoaderTests
                 cardId,
                 StringComparison.Ordinal));
 
+    private static JsonArray InitialStones(JsonNode root) =>
+        root["initial_position"]!["stones"]!.AsArray();
+
+    private static void SetPoint(JsonArray stones, int stoneIndex, int x, int y)
+    {
+        var point = new JsonArray();
+        point.Add(x);
+        point.Add(y);
+        stones[stoneIndex]!["point"] = point;
+    }
+
     private static void ReverseArray(JsonArray array)
     {
         var reversed = array.Select(node => node!.DeepClone()).Reverse().ToArray();
@@ -706,6 +902,7 @@ public sealed class CoreDuelContentCatalogLoaderTests
         var builder = new StringBuilder();
         builder.Append(catalog.SystemPolicy.BaseQi).Append('/')
             .Append(catalog.SystemPolicy.BaseDraw).AppendLine();
+        builder.Append(catalog.BattleSetup.ToCanonicalText()).AppendLine();
         foreach (var card in catalog.StarterCards)
         {
             builder.Append(card.Id).Append('|')
