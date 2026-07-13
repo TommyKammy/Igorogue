@@ -56,7 +56,7 @@ The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DEC
 
 Entry is owner-authorized open because M1 exit evidence including TLE-01〜15 E3 migration is complete and DECISION-0007 explicitly waives the unverified TASK-0012 human-evidence prerequisite.
 
-Current: [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] (`review`; DECISION-0006 Option 1 candidate passes 592 tests and awaits fixed-HEAD review／CI／human merge).
+Current: [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] (`review`; DECISION-0006 Option 1 candidate passes 592 tests and fixed-HEAD review, and awaits CI／human merge).
 
 1. [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
 2. [[TASK-0032 Implement Typed Core Duel Content Catalog]] — done

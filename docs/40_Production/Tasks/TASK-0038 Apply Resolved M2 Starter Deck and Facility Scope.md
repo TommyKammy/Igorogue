@@ -72,6 +72,8 @@ starting recipeから物理`BattleCardInstance`列を作るinstance ID規約とS
 
 2026-07-13 — full pre-closeout suite成功。`tools/dev/build` warning 0／error 0、`tools/dev/test` Domain 355／Application 161／Architecture 76の計592、`tools/dev/check`、`tools/dev/sim-smoke`、`git diff --check`が全てexit 0。Content、Application／Domain、文書整合性の独立reviewは、文書2点の修正後に全て`APPROVE`。TASKを`review`へ遷移し、fixed-HEAD reviewとCIを待つ。
 
+2026-07-13 — fixed source HEAD `cd476d1788a665a98797f7ea40b2c303be009f3a`をbase `e98ac90fa546d6be0b4e5ac78c93b0e9a846d261`と比較。独立Content、Application／Domain、documentation reviewはいずれもfindingなしで`APPROVE`。各reviewerがclean worktreeと同一HEADを確認し、repository wrappersを独立再実行した。production treeは固定し、CI／human merge待ちの`review`を維持する。
+
 ## Evidence
 
 - PR #27 human merge／main merge commit `e98ac90`／post-merge main CI run `29237842140`全3 job success。
@@ -83,3 +85,4 @@ starting recipeから物理`BattleCardInstance`列を作るinstance ID規約とS
 - pre-closeout independent Content reviewはstarting recipe／schema／manifest binding／canonicalization／fail-closed projectionにfindingなしで`APPROVE`。非選択recipe bodyをtyped projectionしない挙動は既存Core Duel selective-loader boundaryと整合する。
 - pre-closeout independent Application／Domain reviewはshared facility legality、exact binding、atomic commit、fact順、deterministic facility ID、rejection no-op、replay／Godot boundaryにfindingなしで`APPROVE`。
 - pre-closeout independent documentation reviewのruntime値重複／catalog表示findingを修正し、再reviewはOption 1 scope、Development限定例外、source-of-truth、status同期にfindingなしで`APPROVE`。
+- fixed source HEAD `cd476d1788a665a98797f7ea40b2c303be009f3a`／base `e98ac90fa546d6be0b4e5ac78c93b0e9a846d261`。independent Content、Application／Domain、documentation reviewsはいずれもfindingなしで`APPROVE`。

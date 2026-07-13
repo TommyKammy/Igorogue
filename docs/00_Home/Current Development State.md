@@ -35,7 +35,7 @@ updated: 2026-07-13
 
 ## Current gate
 
-[[TASK-0037 Implement Bandit Intent Planning and Execution]] was merged through PR #27 at main merge commit `e98ac90`; post-merge main CI run `29237842140` is green across all 3 jobs. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] is resolved by owner-selected Option 1: M2 uses a starter 6-type／12-card recipe and allows only `card_development` as a facility exception. [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] has applied that scope to machine-readable content and the existing facility kernel; its 592-test candidate is in `review` pending fixed-HEAD review, CI, and human merge.
+[[TASK-0037 Implement Bandit Intent Planning and Execution]] was merged through PR #27 at main merge commit `e98ac90`; post-merge main CI run `29237842140` is green across all 3 jobs. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] is resolved by owner-selected Option 1: M2 uses a starter 6-type／12-card recipe and allows only `card_development` as a facility exception. [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] has applied that scope to machine-readable content and the existing facility kernel; its 592-test source candidate `cd476d1` passed all three fixed-HEAD reviews and is in `review` pending CI and human merge.
 
 ## Next development sequence
 

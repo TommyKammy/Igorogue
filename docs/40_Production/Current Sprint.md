@@ -20,6 +20,7 @@ Apply DECISION-0006 Option 1 as a canonical starter 6-type／12-card recipe and 
   - `card_development`だけをM2 facility例外として既存authorized facility build commandへ接続する
   - keep Headless Core Duel／replay composition deferred to TASK-0039
   - 592-test candidate、content／Application／documentation pre-closeout reviews approved
+  - fixed source HEAD `cd476d1` approved by independent Content、Application／Domain、documentation reviews
 
 ## Open human evidence
 
