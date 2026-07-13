@@ -83,6 +83,8 @@ Invaderは本TASK対象外。replay compositionとFEAT-009のfull per-action tel
 
 2026-07-13 — fixed-HEAD Domain reviewで、F09-01の初回`(6,4)`だけでなく固定黒手後の`advance (6,3)`／`pressure (6,2)`までをE3で保護する不足が指摘された。F09-01紙上3行動の各exact Domain contextをproduction plannerへ通す回帰を追加し、全566 tests成功を確認した。Application／lifecycle reviewと修正HEAD Domain再レビューはいずれも指摘なしで承認済み。CIは未完了。
 
+2026-07-13 — Draft PR #27を作成。review済みHEAD `9f074500cebf8abe401b13eaf20e2aca15d7260e` に対するCI run `29236172329`で、governance／generated content、Pure .NET build／566 tests／sim smoke、Godot 4.7 .NET headless smoke／Windows debug exportの全3 jobが成功した。TASKはhuman review／merge待ちの`review`を維持する。
+
 ## Evidence
 
 - PR #26 human merge／post-merge main CI run `29228982431`全3 job success。
@@ -97,3 +99,4 @@ Invaderは本TASK対象外。replay compositionとFEAT-009のfull per-action tel
 - Project ownerの2026-07-13の選択によりDECISION-0010 Option 1はresolved。real=0／effective=1のE3 regressionと通常case不変をproduction kernelで確認した。
 - independent contract auditのP2 fail-closed content findingは修正済み。full per-action telemetry compositionはKnown IssuesどおりTASK-0039へdeferする。
 - fixed-HEAD Application reviewは指摘なし。Domain reviewのF09-01紙上3行動E3 coverage findingは修正し、`advance (6,3)`から`pressure (6,2)`への遷移をproduction plannerで確認した。修正HEAD `ef93acc2ccede6b16e650a6bf5e3f10522efca94` の再レビューも指摘なしで承認済み。
+- Draft PR #27、CI run `29236172329`、HEAD `9f074500cebf8abe401b13eaf20e2aca15d7260e`。全3 job success（governance／generated content、Pure .NET build／tests／sim smoke、Godot .NET headless／Windows debug export）。
