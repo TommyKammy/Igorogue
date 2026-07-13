@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://igorogue.local/schemas/starting_deck.schema.json",
+  "title": "Igorogue Starting Deck Content",
+  "type": "array",
+  "minItems": 1,
+  "uniqueItems": true,
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "total_cards",
+      "entries"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z0-9_]+$"
+      },
+      "total_cards": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "entries": {
+        "type": "array",
+        "minItems": 1,
+        "uniqueItems": true,
+        "items": {
+          "type": "object",
+          "required": [
+            "card_id",
+            "count"
+          ],
+          "properties": {
+            "card_id": {
+              "type": "string",
+              "pattern": "^card_[a-z0-9_]+$"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "additionalProperties": false
+  }
+}

@@ -8,6 +8,7 @@ using Igorogue.Domain.Cards;
 using Igorogue.Domain.Combat;
 using Igorogue.Domain.Content;
 using Igorogue.Domain.Determinism;
+using Igorogue.Domain.Facilities;
 
 namespace Igorogue.Application.Battle;
 
@@ -118,7 +119,7 @@ public sealed class PlayCardCommand : IBattleCommand
 
 public sealed class CoreDuelCardPlayState
 {
-    public const string EncodingVersion = "core-duel-card-play-state-v3";
+    public const string EncodingVersion = "core-duel-card-play-state-v4";
 
     private CoreDuelCardPlayState(
         string contentHash,
@@ -126,7 +127,8 @@ public sealed class CoreDuelCardPlayState
         BattleAuthoritativeRuntimeState runtimeState,
         CoreDuelCardTurnState cardTurnState,
         StarterStoneCardPlayCatalog definitions,
-        StarterReinforceCardPlayDefinition reinforceDefinition)
+        StarterReinforceCardPlayDefinition reinforceDefinition,
+        StarterDevelopmentCardPlayDefinition developmentDefinition)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(contentHash);
         ArgumentNullException.ThrowIfNull(battleState);
@@ -134,11 +136,22 @@ public sealed class CoreDuelCardPlayState
         ArgumentNullException.ThrowIfNull(cardTurnState);
         ArgumentNullException.ThrowIfNull(definitions);
         ArgumentNullException.ThrowIfNull(reinforceDefinition);
+        ArgumentNullException.ThrowIfNull(developmentDefinition);
         if (definitions.TryDefinition(reinforceDefinition.ContentId, out _))
         {
             throw new ArgumentException(
                 "Reinforce content ID must not collide with a starter stone definition.",
                 nameof(reinforceDefinition));
+        }
+
+        if (definitions.TryDefinition(developmentDefinition.ContentId, out _) ||
+            StringComparer.Ordinal.Equals(
+                reinforceDefinition.ContentId,
+                developmentDefinition.ContentId))
+        {
+            throw new ArgumentException(
+                "Development content ID must not collide with another supported starter definition.",
+                nameof(developmentDefinition));
         }
 
         if (battleState.AuthoritativeRuntime is not null)
@@ -185,6 +198,7 @@ public sealed class CoreDuelCardPlayState
         CardTurnState = cardTurnState;
         Definitions = definitions;
         ReinforceDefinition = reinforceDefinition;
+        DevelopmentDefinition = developmentDefinition;
         CanonicalText = CreateCanonicalText();
         Checksum = DeterministicChecksum.Sha256Hex(CanonicalText);
     }
@@ -201,6 +215,8 @@ public sealed class CoreDuelCardPlayState
 
     public StarterReinforceCardPlayDefinition ReinforceDefinition { get; }
 
+    public StarterDevelopmentCardPlayDefinition DevelopmentDefinition { get; }
+
     public string CanonicalText { get; }
 
     public string Checksum { get; }
@@ -215,14 +231,16 @@ public sealed class CoreDuelCardPlayState
         BattleAuthoritativeRuntimeState runtimeState,
         CoreDuelCardTurnState cardTurnState,
         StarterStoneCardPlayCatalog definitions,
-        StarterReinforceCardPlayDefinition reinforceDefinition) =>
+        StarterReinforceCardPlayDefinition reinforceDefinition,
+        StarterDevelopmentCardPlayDefinition developmentDefinition) =>
         new(
             contentHash,
             battleState,
             runtimeState,
             cardTurnState,
             definitions,
-            reinforceDefinition);
+            reinforceDefinition,
+            developmentDefinition);
 
     private string CreateCanonicalText() => string.Join(
         '\n',
@@ -230,6 +248,7 @@ public sealed class CoreDuelCardPlayState
         $"content_hash={ContentHash}",
         $"starter_stone_definitions={EncodeStableText(Definitions.ToCanonicalText())}",
         $"starter_reinforce_definition={EncodeStableText(ReinforceDefinition.ToCanonicalText())}",
+        $"starter_development_definition={EncodeStableText(DevelopmentDefinition.ToCanonicalText())}",
         $"battle_state={EncodeStableText(BattleState.ToCanonicalText())}",
         $"runtime_sidecar={EncodeStableText(RuntimeState.ToCanonicalText())}",
         $"card_turn_state={EncodeStableText(CardTurnState.ToCanonicalText())}");
@@ -337,12 +356,14 @@ public static class CoreDuelCardPlayStateMachine
         CoreDuelCardTurnState cardTurnState,
         StarterStoneCardPlayCatalog definitions,
         StarterReinforceCardPlayDefinition reinforceDefinition,
+        StarterDevelopmentCardPlayDefinition developmentDefinition,
         ReplayMetadata metadata)
     {
         ArgumentNullException.ThrowIfNull(initial);
         ArgumentNullException.ThrowIfNull(cardTurnState);
         ArgumentNullException.ThrowIfNull(definitions);
         ArgumentNullException.ThrowIfNull(reinforceDefinition);
+        ArgumentNullException.ThrowIfNull(developmentDefinition);
         ArgumentNullException.ThrowIfNull(metadata);
         if (metadata.InitialSeed != cardTurnState.RngState.InitialSeed)
         {
@@ -373,7 +394,8 @@ public static class CoreDuelCardPlayStateMachine
             BattleAuthoritativeRuntimeState.FromInitial(initial),
             cardTurnState,
             definitions,
-            reinforceDefinition);
+            reinforceDefinition,
+            developmentDefinition);
         return new CoreDuelCardPlaySession(
             state,
             OrderedCommandLog.Create(metadata));
@@ -425,6 +447,13 @@ public static class CoreDuelCardPlayStateMachine
                     source.ReinforceDefinition.ContentId))
             {
                 return ExecuteReinforce(session, command, card);
+            }
+
+            if (StringComparer.Ordinal.Equals(
+                    card.ContentId,
+                    source.DevelopmentDefinition.ContentId))
+            {
+                return ExecuteDevelopment(session, command, card);
             }
 
             return Reject(session, command, "card_content_mismatch");
@@ -565,7 +594,8 @@ public static class CoreDuelCardPlayStateMachine
             runtimeAfter,
             cardStateAfter,
             source.Definitions,
-            source.ReinforceDefinition);
+            source.ReinforceDefinition,
+            source.DevelopmentDefinition);
         var nextLog = session.CommandLog.Append(command, stateAfter.Checksum);
         var nextSession = new CoreDuelCardPlaySession(stateAfter, nextLog);
         return new CoreDuelCardPlayResult(
@@ -683,7 +713,110 @@ public static class CoreDuelCardPlayStateMachine
             runtimeAfter,
             cardStateAfter,
             source.Definitions,
-            source.ReinforceDefinition);
+            source.ReinforceDefinition,
+            source.DevelopmentDefinition);
+        var nextLog = session.CommandLog.Append(command, stateAfter.Checksum);
+        var nextSession = new CoreDuelCardPlaySession(stateAfter, nextLog);
+        return new CoreDuelCardPlayResult(
+            session,
+            nextSession,
+            command,
+            true,
+            "accepted",
+            facts);
+    }
+
+    private static CoreDuelCardPlayResult ExecuteDevelopment(
+        CoreDuelCardPlaySession session,
+        PlayCardCommand command,
+        BattleCardInstance card)
+    {
+        var source = session.State;
+        if (command.PlacementMode is not null)
+        {
+            return Reject(session, command, "unsupported_placement_mode");
+        }
+
+        var definition = source.DevelopmentDefinition;
+        var facilityInstanceId = DevelopmentFacilityInstanceId(
+            card.InstanceId,
+            source.BattleState.FacilityState.NextBuildSequence);
+        if (source.BattleState.FacilityState.FacilityById(facilityInstanceId) is not null)
+        {
+            return Reject(session, command, "facility_instance_exists");
+        }
+
+        var evaluation = StarterDevelopmentCardPlayEvaluator.Evaluate(
+            definition,
+            source.CardTurnState.Deck,
+            source.CardTurnState.Qi,
+            card.InstanceId,
+            source.BattleState.FacilityRuntimeAnalysis,
+            command.Target,
+            facilityInstanceId);
+        if (!evaluation.IsAuthorized)
+        {
+            return Reject(session, command, evaluation.ReasonId);
+        }
+
+        if (!evaluation.IsBoundTo(
+                definition,
+                source.CardTurnState.Deck,
+                source.CardTurnState.Qi,
+                card.InstanceId,
+                source.BattleState.FacilityRuntimeAnalysis,
+                command.Target,
+                facilityInstanceId))
+        {
+            throw new InvalidOperationException(
+                "Development evaluation lost its exact source binding.");
+        }
+
+        var facilityCommit = FacilityBuildEvaluator.Commit(
+            evaluation.LegalFacilityBuildEvaluation);
+        var cardTransition = CoreDuelCardTurnKernel.CommitStarterDevelopmentCardPlay(
+            source.CardTurnState,
+            evaluation);
+        if (cardTransition.IsExactNoOp)
+        {
+            throw new InvalidOperationException(
+                $"Authorized Development could not commit its card: {cardTransition.ReasonId}.");
+        }
+
+        var cardStateAfter = cardTransition.StateAfter;
+        var facts = new List<IBattleFact>
+        {
+            QiChangedFact.SpendCardCost(
+                source.CardTurnState.Qi,
+                cardStateAfter.Qi,
+                command.CardInstanceId),
+        };
+        facts.AddRange(facilityCommit.OrderedFacts.Cast<IBattleFact>());
+
+        var battleAfterFacility = BattleState.Transition(
+            source.BattleState,
+            source.BattleState.Board,
+            source.BattleState.RepetitionHistory,
+            facilityCommit.StateAfterCommit,
+            source.BattleState.TerritoryAnalysis,
+            facilityCommit.AnalysisAfterCommit,
+            source.BattleState.PlayerTurnIndex,
+            source.BattleState.Phase,
+            source.BattleState.Outcome,
+            source.BattleState.EndReason);
+        var battleAfter = BattleState.RebindRng(
+            battleAfterFacility,
+            cardStateAfter.RngState);
+        var runtimeAfter = source.RuntimeState.Transition(
+            closedWindowResources: cardStateAfter.ClosedWindowResources);
+        var stateAfter = CoreDuelCardPlayState.Create(
+            source.ContentHash,
+            battleAfter,
+            runtimeAfter,
+            cardStateAfter,
+            source.Definitions,
+            source.ReinforceDefinition,
+            source.DevelopmentDefinition);
         var nextLog = session.CommandLog.Append(command, stateAfter.Checksum);
         var nextSession = new CoreDuelCardPlaySession(stateAfter, nextLog);
         return new CoreDuelCardPlayResult(
@@ -821,6 +954,11 @@ public static class CoreDuelCardPlayStateMachine
 
     private static string StoneInstanceId(string cardInstanceId, long sequence) =>
         $"stone.card.{cardInstanceId}.{sequence.ToString(CultureInfo.InvariantCulture)}";
+
+    private static string DevelopmentFacilityInstanceId(
+        string cardInstanceId,
+        long sequence) =>
+        $"card.{cardInstanceId}.facility.{sequence.ToString(CultureInfo.InvariantCulture)}";
 
     private static string TemporaryLibertyEffectInstanceId(
         string cardInstanceId,

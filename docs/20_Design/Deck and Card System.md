@@ -2,7 +2,7 @@
 type: system-design
 status: accepted
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-13
 ---
 # Deck and Card System
 
@@ -29,6 +29,8 @@ updated: 2026-07-10
 ## デッキ健全性
 
 - 初期12枚。
+- M2 starterは6種類。exact card ID → count multisetは`game_data/content/starting_decks.json`を正本とし、`docs/30_Technical/Schemas/starting_deck.schema.json`で検証する。
+- カードのcost、type、placement／target、effect definitionは`game_data/content/cards.json`を正本とし、starting recipeへ複製しない。
 - 報酬取得は任意。
 - 1ラン1〜2回の削除機会。
 - 触媒だけを増やすと起動対象が不足する。

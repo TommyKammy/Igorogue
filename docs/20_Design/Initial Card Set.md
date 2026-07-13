@@ -2,22 +2,24 @@
 type: content-catalog
 status: proposed
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-13
 ---
 # Initial Card Set
 
-数値は候補。現在値の正本は将来`game_data/content/cards.json`へ移す。
+カードdefinitionの現在値は`game_data/content/cards.json`を正本とする。M2のstarting deck multisetは`game_data/content/starting_decks.json`を正本とし、`docs/30_Technical/Schemas/starting_deck.schema.json`に従う。このノートの表は両machine-readable sourceを読むための人間向けcatalogであり、runtime値の重複正本ではない。
 
-## 基本12枚
+## M2 starter 6種類／12枚
 
 | カード | 枚数 | 気 | 配置／対象 | 効果 |
 |---|---:|---:|---|---|
-| 打石 | 5 | 1 | frontline | 基本石を置く |
+| 打石 | 5 | 1 | frontline/terminal | 基本石を置く |
 | ノビ | 2 | 1 | frontline | 結果実呼吸点3以上で1ドロー |
 | ツケ | 2 | 1 | contact/terminal | 敵をアタリにすれば気+1 |
 | 補強 | 1 | 1 | 黒グループ | 仮呼吸点+1。対象がアタリなら1ドロー |
 | 開拓 | 1 | 2 | 黒領地 | 開拓施設を置く |
 | 囮石 | 1 | 0 | contact | 次ターン1ドロー予約。取られればさらに2 |
+
+DECISION-0006 Option 1により、上記6種類と`5 / 2 / 2 / 1 / 1 / 1`のmultisetをM2へ採用する。`card_development`（開拓）だけがM2のfacility例外であり、開拓以外のfacility contentはM3以降に留める。
 
 
 ## 余勢eligible

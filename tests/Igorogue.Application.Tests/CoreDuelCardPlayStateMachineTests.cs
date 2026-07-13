@@ -1277,6 +1277,202 @@ public sealed class CoreDuelCardPlayStateMachineTests
     }
 
     [Fact]
+    public void DevelopmentBuildsThroughSharedFacilityKernelAndResolvesTheCardAtomically()
+    {
+        var development = DevelopmentDefinition(cost: 2);
+        var board = BlackControlledBoard();
+        var session = StartDevelopmentSession(board, development, baseQi: 3);
+        var card = Assert.Single(session.State.CardTurnState.Deck.Hand);
+        var qiBefore = session.State.CardTurnState.Qi;
+        var boardBefore = session.State.BattleState.Board;
+        var repetitionBefore = session.State.BattleState.RepetitionHistory;
+        var territoryBefore = session.State.BattleState.TerritoryAnalysis;
+        var runtimeBefore = session.State.RuntimeState;
+
+        var result = ExecuteDevelopment(session, card.InstanceId, C(1, 1));
+
+        Assert.True(result.Accepted);
+        Assert.Collection(
+            result.OrderedFacts,
+            fact =>
+            {
+                var qi = Assert.IsType<QiChangedFact>(fact);
+                Assert.Equal(-development.Cost, qi.Delta);
+                Assert.Equal(card.InstanceId, qi.SourceId);
+            },
+            fact => Assert.IsType<FacilityBuiltFact>(fact),
+            fact => Assert.IsType<FacilityActivatedFact>(fact));
+        var built = Assert.IsType<FacilityBuiltFact>(result.OrderedFacts[1]);
+        var activated = Assert.IsType<FacilityActivatedFact>(result.OrderedFacts[2]);
+        Assert.Same(built.Facility, activated.Facility);
+        Assert.Equal("card.development-card.facility.1", built.Facility.InstanceId);
+        Assert.Equal(development.FacilityContentId, built.Facility.ContentId);
+        Assert.Equal(C(1, 1), built.Facility.Point);
+        Assert.Equal(1, built.Facility.BuildSequence);
+        Assert.Equal("built_in_controlled_territory", activated.ReasonId);
+
+        var after = result.SessionAfter.State;
+        Assert.Equal(qiBefore - development.Cost, after.CardTurnState.Qi);
+        Assert.Empty(after.CardTurnState.Deck.Hand);
+        var resolved = Assert.Single(after.CardTurnState.Deck.Resolving);
+        Assert.Same(card, resolved.Card);
+        Assert.True(resolved.IsResolved);
+        Assert.Empty(after.CardTurnState.Deck.DiscardPile);
+        Assert.Same(boardBefore, after.BattleState.Board);
+        Assert.Same(repetitionBefore, after.BattleState.RepetitionHistory);
+        Assert.Same(territoryBefore, after.BattleState.TerritoryAnalysis);
+        Assert.NotSame(session.State.BattleState.FacilityState, after.BattleState.FacilityState);
+        Assert.Same(
+            after.BattleState.FacilityState,
+            after.BattleState.FacilityRuntimeAnalysis.FacilityState);
+        Assert.Same(
+            built.Facility,
+            after.BattleState.FacilityState.FacilityById(built.Facility.InstanceId));
+        Assert.Same(runtimeBefore.StoneRuntimeState, after.RuntimeState.StoneRuntimeState);
+        Assert.Same(
+            runtimeBefore.TemporaryLibertyState,
+            after.RuntimeState.TemporaryLibertyState);
+        Assert.Same(
+            runtimeBefore.ContinuousLibertySnapshot,
+            after.RuntimeState.ContinuousLibertySnapshot);
+        Assert.Single(result.SessionAfter.CommandLog.Entries);
+        Assert.Contains("placement_mode=none", result.Command.ToCanonicalPayload());
+    }
+
+    [Fact]
+    public void DevelopmentFacilityLegalityAndModeRejectionsAreExactNoOps()
+    {
+        var development = DevelopmentDefinition(cost: 2);
+
+        var insufficient = StartDevelopmentSession(
+            NeutralFrontlineBoard(),
+            development,
+            baseQi: 1);
+        AssertRejectedNoOp(
+            insufficient,
+            ExecuteDevelopment(insufficient, "development-card", C(3, 2)),
+            "insufficient_qi");
+
+        var stoneTarget = StartDevelopmentSession(
+            BlackControlledBoard(),
+            development,
+            baseQi: 3);
+        AssertRejectedNoOp(
+            stoneTarget,
+            ExecuteDevelopment(stoneTarget, "development-card", C(7, 7)),
+            "facility_target_has_stone");
+
+        var occupiedBoard = BlackControlledBoard();
+        var occupiedFacility = Facility("occupied", "market", 1, 1, 1);
+        var occupied = StartDevelopmentSession(
+            occupiedBoard,
+            development,
+            baseQi: 3,
+            FacilityState.Create(occupiedBoard, [occupiedFacility], 2));
+        AssertRejectedNoOp(
+            occupied,
+            ExecuteDevelopment(occupied, "development-card", C(1, 1)),
+            "facility_target_occupied");
+
+        var notOwned = StartDevelopmentSession(
+            Board(Stone(StoneColor.White, 7, 7)),
+            development,
+            baseQi: 3);
+        AssertRejectedNoOp(
+            notOwned,
+            ExecuteDevelopment(notOwned, "development-card", C(1, 1)),
+            "facility_target_not_owned_territory");
+
+        var capacityBoard = BlackControlledBoard();
+        var capacityFacility = Facility("capacity-one", "market", 2, 2, 1);
+        var capacity = StartDevelopmentSession(
+            capacityBoard,
+            development,
+            baseQi: 3,
+            FacilityState.Create(capacityBoard, [capacityFacility], 2));
+        AssertRejectedNoOp(
+            capacity,
+            ExecuteDevelopment(capacity, "development-card", C(1, 1)),
+            "facility_capacity_full");
+
+        var typeBoard = BlackControlledBoard();
+        var typeFacility = Facility("type-one", "development", 2, 2, 1);
+        var typeLimit = StartDevelopmentSession(
+            typeBoard,
+            development,
+            baseQi: 3,
+            FacilityState.Create(typeBoard, [typeFacility], 2),
+            DevelopmentFacilityPolicy(capacity: 3, typeLimit: 1));
+        AssertRejectedNoOp(
+            typeLimit,
+            ExecuteDevelopment(typeLimit, "development-card", C(1, 1)),
+            "facility_type_limit_reached");
+
+        var duplicateBoard = BlackControlledBoard();
+        var duplicateFacility = Facility(
+            "card.development-card.facility.2",
+            "market",
+            2,
+            2,
+            1);
+        var duplicate = StartDevelopmentSession(
+            duplicateBoard,
+            development,
+            baseQi: 3,
+            FacilityState.Create(duplicateBoard, [duplicateFacility], 2),
+            DevelopmentFacilityPolicy(capacity: 3, typeLimit: 3));
+        AssertRejectedNoOp(
+            duplicate,
+            ExecuteDevelopment(duplicate, "development-card", C(1, 1)),
+            "facility_instance_exists");
+
+        AssertRejectedNoOp(
+            stoneTarget,
+            Execute(
+                stoneTarget,
+                "development-card",
+                C(1, 1),
+                StoneCardPlacementMode.Frontline),
+            "unsupported_placement_mode");
+    }
+
+    [Fact]
+    public void ReversedDevelopmentInputsProduceTheSameCanonicalOutcome()
+    {
+        var development = DevelopmentDefinition(cost: 2);
+        var stones = new[]
+        {
+            Stone(StoneColor.Black, 7, 7),
+            Stone(StoneColor.Black, 7, 6),
+        };
+        var first = StartDevelopmentSession(
+            Board(stones),
+            development,
+            baseQi: 3,
+            reverseRuntimeInput: false);
+        var reversed = StartDevelopmentSession(
+            Board(stones.Reverse().ToArray()),
+            DevelopmentDefinition(cost: 2),
+            baseQi: 3,
+            reverseRuntimeInput: true);
+
+        var firstResult = ExecuteDevelopment(first, "development-card", C(1, 1));
+        var reversedResult = ExecuteDevelopment(reversed, "development-card", C(1, 1));
+
+        Assert.True(firstResult.Accepted);
+        Assert.True(reversedResult.Accepted);
+        Assert.Equal(first.State.CanonicalText, reversed.State.CanonicalText);
+        Assert.Equal(
+            firstResult.SessionAfter.State.CanonicalText,
+            reversedResult.SessionAfter.State.CanonicalText);
+        Assert.Equal(firstResult.StateChecksum, reversedResult.StateChecksum);
+        Assert.Equal(firstResult.LogChecksum, reversedResult.LogChecksum);
+        Assert.Equal(
+            firstResult.OrderedFacts.Select(ProjectFact),
+            reversedResult.OrderedFacts.Select(ProjectFact));
+    }
+
+    [Fact]
     public void ReversedCatalogRuntimeAndBoardInputsProduceTheSameAcceptedOutcome()
     {
         var definition = LureDefinition(cost: 1);
@@ -1333,12 +1529,14 @@ public sealed class CoreDuelCardPlayStateMachineTests
         int playerTurnIndex = 1,
         Func<StoneRuntimeState, TemporaryLibertyState>? temporaryFactory = null,
         Func<StoneRuntimeState, ContinuousLibertySnapshot>? continuousFactory = null,
-        StarterReinforceCardPlayDefinition? reinforceDefinition = null)
+        StarterReinforceCardPlayDefinition? reinforceDefinition = null,
+        StarterDevelopmentCardPlayDefinition? developmentDefinition = null,
+        FacilityRuntimePolicy? facilityPolicy = null)
     {
         var recipe = cards ??
             [new BattleCardInstance("play-card", definition.ContentId)];
         var facilityState = facilities ?? FacilityState.Create(board, [], 1);
-        var facilityPolicy = FacilityPolicy();
+        facilityPolicy ??= FacilityPolicy();
         var initialCardTurn = CoreDuelCardTurnKernel.StartBattle(
             recipe,
             AuthoritativeRngState.Create(Seed),
@@ -1379,8 +1577,32 @@ public sealed class CoreDuelCardPlayStateMachineTests
             cardTurn,
             Catalog(definition, reverseCatalogInput),
             reinforceDefinition ?? ReinforceDefinition(cost: 1),
+            developmentDefinition ?? DevelopmentDefinition(cost: 2),
             metadata);
     }
+
+    private static CoreDuelCardPlaySession StartDevelopmentSession(
+        BoardState board,
+        StarterDevelopmentCardPlayDefinition development,
+        int baseQi,
+        FacilityState? facilities = null,
+        FacilityRuntimePolicy? facilityPolicy = null,
+        bool reverseRuntimeInput = false) =>
+        StartSession(
+            board,
+            Definition(cost: 1),
+            baseQi,
+            facilities: facilities,
+            cards:
+            [
+                new BattleCardInstance(
+                    "development-card",
+                    development.ContentId),
+            ],
+            baseDraw: 1,
+            reverseRuntimeInput: reverseRuntimeInput,
+            developmentDefinition: development,
+            facilityPolicy: facilityPolicy);
 
     private static CoreDuelCardPlayResult Execute(
         CoreDuelCardPlaySession session,
@@ -1392,6 +1614,18 @@ public sealed class CoreDuelCardPlayStateMachineTests
             Command(session, cardInstanceId, target, mode));
 
     private static CoreDuelCardPlayResult ExecuteReinforce(
+        CoreDuelCardPlaySession session,
+        string cardInstanceId,
+        CanonicalPoint target) =>
+        CoreDuelCardPlayStateMachine.Execute(
+            session,
+            new PlayCardCommand(
+                session.State.Checksum,
+                session.CommandLog.CurrentChecksum,
+                cardInstanceId,
+                target));
+
+    private static CoreDuelCardPlayResult ExecuteDevelopment(
         CoreDuelCardPlaySession session,
         string cardInstanceId,
         CanonicalPoint target) =>
@@ -1594,6 +1828,17 @@ public sealed class CoreDuelCardPlayStateMachineTests
                         TemporaryLibertyStacking.AdditivePerEffectInstance),
                 ]));
 
+    private static StarterDevelopmentCardPlayDefinition DevelopmentDefinition(int cost) =>
+        StarterDevelopmentCardPlayDefinition.Create(
+            CardContentDefinition.Create(
+                "card_shape_development_selected",
+                CardRarity.Starter,
+                cost,
+                CardContentType.Territory,
+                CardTargetKind.BlackTerritoryEmpty,
+                [],
+                [new BuildFacilityOperationDefinition("development")]));
+
     private static IReadOnlyList<BattleCardInstance> ReinforceRecipe(
         StarterReinforceCardPlayDefinition definition,
         int reinforceCount,
@@ -1713,6 +1958,36 @@ public sealed class CoreDuelCardPlayStateMachineTests
             capacityBands: [new FacilityCapacityBand(1, 49, 1)],
             slotCap: 3,
             typeLimits: [new KeyValuePair<string, int>("default", 1)]);
+
+    private static FacilityRuntimePolicy DevelopmentFacilityPolicy(
+        int capacity,
+        int typeLimit) =>
+        FacilityRuntimePolicy.Create(
+            territoryIncomeDivisor: 3,
+            capacityBands: [new FacilityCapacityBand(1, 49, capacity)],
+            slotCap: 5,
+            typeLimits:
+            [
+                new KeyValuePair<string, int>("default", typeLimit),
+                new KeyValuePair<string, int>("development", typeLimit),
+                new KeyValuePair<string, int>("market", typeLimit),
+            ]);
+
+    private static FacilityInstance Facility(
+        string instanceId,
+        string contentId,
+        int x,
+        int y,
+        long buildSequence) =>
+        new(
+            instanceId,
+            contentId,
+            StoneColor.Black,
+            C(x, y),
+            buildSequence);
+
+    private static BoardState BlackControlledBoard() => Board(
+        Stone(StoneColor.Black, 7, 7));
 
     private static BoardState NeutralFrontlineBoard() => Board(
         Stone(StoneColor.Black, 2, 2),

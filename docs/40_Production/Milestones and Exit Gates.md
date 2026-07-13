@@ -2,7 +2,7 @@
 type: milestone-plan
 status: accepted
 project: Igorogue
-updated: 2026-07-12
+updated: 2026-07-13
 ---
 # Milestones and Exit Gates
 
@@ -29,7 +29,8 @@ updated: 2026-07-12
 ## M2 v0.1.1 Graybox
 
 - 7×7UI
-- 初期6カード
+- starter 6種類／12枚。exact recipeは`game_data/content/starting_decks.json`を正本とし、選択理由は[[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]]に記録する
+- `card_development`（開拓）1種類だけを既存facility kernelへ接続するM2限定例外
 - 山賊棋士
 - 意図、アタリ、捕獲、領地表示
 
@@ -38,7 +39,7 @@ updated: 2026-07-12
 - 2流儀
 - 12〜16カード
 - 遺物4
-- 施設、余勢、触媒、反攻、妙手
+- 開拓以外を含む広範な施設、余勢、触媒、反攻、妙手
 - MOM-01〜19／CTR-01〜25のproduction Rules Kernel unit／golden migration
 - 仕込み→発火→反攻が人間プレイで成立
 

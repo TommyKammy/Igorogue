@@ -9,18 +9,17 @@ sprint: S0
 
 ## Goal
 
-Complete fixed-HEAD review and CI for TASK-0037's integrated Bandit candidate／planning／execution implementation.
+Apply DECISION-0006 Option 1 as a canonical starter 6-type／12-card recipe and connect `card_development` through the existing authorized facility path.
 
 ## In review
 
-- [[TASK-0037 Implement Bandit Intent Planning and Execution]]
-  - dependency TASK-0036 is done through PR #26／post-merge CI
-  - read-only audit confirmed the existing placement／effective-liberty／repetition／facility／territory kernels are reusable
-  - [[DECISION-0009 Resolve Bandit Multi-Group Capture Target Reference]] resolved Option 1
-  - shared runtime placement evaluation and detached Application lifecycle are integrated with 565 tests
-  - [[DECISION-0010 Resolve Bandit Advance With Zero Real King Liberties]] Option 1 and real=0／effective=1 E3 evidence are complete
-  - fixed-HEAD independent review／CI remain
-  - keep replay／full telemetry composition deferred to TASK-0039
+- [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]]
+  - dependency TASK-0037 is done through PR #27／post-merge CI run `29237842140`
+  - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] resolved Option 1
+  - exact recipeは`game_data/content/starting_decks.json`を参照する
+  - `card_development`だけをM2 facility例外として既存authorized facility build commandへ接続する
+  - keep Headless Core Duel／replay composition deferred to TASK-0039
+  - 592-test candidate、content／Application／documentation pre-closeout reviews approved
 
 ## Open human evidence
 
@@ -59,18 +58,18 @@ Complete fixed-HEAD review and CI for TASK-0037's integrated Bandit candidate／
 - [[TASK-0034 Implement Atomic Basic Stone Card Play]] — PR #24 merged／post-merge CI green
 - [[TASK-0035 Implement Starter Stone Card Effects]] — PR #25 merged／post-merge CI green
 - [[TASK-0036 Implement Starter Reinforce Effect]] — PR #26 merged／post-merge CI green
+- [[TASK-0037 Implement Bandit Intent Planning and Execution]] — PR #27 merged at `e98ac90`／post-merge CI green
 
-## Next after TASK-0037
+## Next after TASK-0038
 
-- Human review／merge of TASK-0037 after fixed-HEAD approval and green CI.
-- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolve before TASK-0038 applies the starting recipe／Development scope.
-- TASK-0038〜0042 remain blocked and advance only in dependency order.
+- Human review／merge of TASK-0038 after fixed-HEAD approval and green CI.
+- [[TASK-0039 Integrate Headless Core Duel and Replay]] becomes the next implementation task only after TASK-0038 is done.
+- TASK-0040〜0042 remain blocked and advance only in dependency order.
 
 ## Implementation review questions
 
-- Does multi-group capture select the largest group, then king distance, then canonical anchor exactly once?
-- Is F09-02 kept as E1 comparator evidence while a reachable board test supplies E3 coverage?
-- Are planning and execution both based on the shared runtime placement/effective-liberty/repetition kernel?
-- Does player-turn preview preserve the stored intent and retarget only at execution?
-- When the black king has zero real liberties but survives through effective liberties, does advance rank by distance to the king group's stones and retain all later tie-breaks?
-- Are existing replay v2／BattleState projections unchanged for TASK-0039?
+- Does `game_data/content/starting_decks.json` encode the exact six-ID／12-card multiset and reject malformed recipes fail-closed?
+- Is the recipe canonical projection stable across JSON key／input enumeration order and bound into the content hash?
+- Does Development reuse the authorized facility build command and existing territory／capacity／duplicate checks without a second facility rule?
+- Are rejected Development plays exact no-ops for resources、zones、and facility state?
+- Are non-Development facility cards unreachable in the M2 starter scope?

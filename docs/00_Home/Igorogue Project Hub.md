@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0036 Implement Starter Reinforce Effect]]はPR #26でmerge、post-merge main CI green。[[DECISION-0010 Resolve Bandit Advance With Zero Real King Liberties]] Option 1を含む[[TASK-0037 Implement Bandit Intent Planning and Execution]]は565 tests greenでreview中。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
+> [[TASK-0037 Implement Bandit Intent Planning and Execution]]はPR #27でmerge、post-merge main CI green。[[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] Option 1に従う[[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]]のstarter 6種類／12枚recipeと開拓1種限定facility integrationは実装済みで、fixed-HEAD review／CI／human merge待ち。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
 
 > [!success] 実装ゲート
 > Gate 1は完了。Gate 2はTASK-0031の計画closeout後、typed contentからGodot graybox／UATまでを依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -55,7 +55,7 @@ cssclasses:
 
 ## Remaining decisions
 
-- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — open。default starting recipe／Core Duel integrationまでにowner decisionが必要
+- [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolved／Option 1
 - [[DECISION-0009 Resolve Bandit Multi-Group Capture Target Reference]] — resolved／Option 1
 - [[DECISION-0010 Resolve Bandit Advance With Zero Real King Liberties]] — resolved／Option 1
 - ローカライズ対応範囲
@@ -96,7 +96,8 @@ cssclasses:
 - [[TASK-0034 Implement Atomic Basic Stone Card Play]] — done
 - [[TASK-0035 Implement Starter Stone Card Effects]] — done
 - [[TASK-0036 Implement Starter Reinforce Effect]] — done
-- [[TASK-0037 Implement Bandit Intent Planning and Execution]] — review／current
+- [[TASK-0037 Implement Bandit Intent Planning and Execution]] — done
+- [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — review／current
 
 ## Latest design repairs
 

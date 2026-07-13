@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0037
-status: review
+status: done
 project: Igorogue
 milestone: M2
 priority: critical
@@ -85,6 +85,8 @@ Invaderは本TASK対象外。replay compositionとFEAT-009のfull per-action tel
 
 2026-07-13 — Draft PR #27を作成。review済みHEAD `9f074500cebf8abe401b13eaf20e2aca15d7260e` に対するCI run `29236172329`で、governance／generated content、Pure .NET build／566 tests／sim smoke、Godot 4.7 .NET headless smoke／Windows debug exportの全3 jobが成功した。TASKはhuman review／merge待ちの`review`を維持する。
 
+2026-07-13 — Project ownerがPR #27をhuman merge。最終source HEAD `1046cd47ede578c08f4d4ba2982c0d36e449411b`、main merge commit `e98ac90`を確認し、post-merge main CI run `29237842140`も全3 job success。dependency successor TASK-0038を開始可能として本TASKを`done`へ遷移した。
+
 ## Evidence
 
 - PR #26 human merge／post-merge main CI run `29228982431`全3 job success。
@@ -100,3 +102,4 @@ Invaderは本TASK対象外。replay compositionとFEAT-009のfull per-action tel
 - independent contract auditのP2 fail-closed content findingは修正済み。full per-action telemetry compositionはKnown IssuesどおりTASK-0039へdeferする。
 - fixed-HEAD Application reviewは指摘なし。Domain reviewのF09-01紙上3行動E3 coverage findingは修正し、`advance (6,3)`から`pressure (6,2)`への遷移をproduction plannerで確認した。修正HEAD `ef93acc2ccede6b16e650a6bf5e3f10522efca94` の再レビューも指摘なしで承認済み。
 - Draft PR #27、CI run `29236172329`、HEAD `9f074500cebf8abe401b13eaf20e2aca15d7260e`。全3 job success（governance／generated content、Pure .NET build／tests／sim smoke、Godot .NET headless／Windows debug export）。
+- PR #27 human merge。最終source HEAD `1046cd47ede578c08f4d4ba2982c0d36e449411b`、main merge commit `e98ac90`、post-merge main CI run `29237842140`全3 job success。
