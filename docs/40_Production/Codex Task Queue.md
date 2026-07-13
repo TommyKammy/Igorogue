@@ -56,14 +56,14 @@ The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DEC
 
 Entry is owner-authorized open because M1 exit evidence including TLE-01〜15 E3 migration is complete and DECISION-0007 explicitly waives the unverified TASK-0012 human-evidence prerequisite.
 
-Current: [[TASK-0035 Implement Starter Stone Card Effects]] (`review`; fixed-HEAD independent review approved after PR #24 merge satisfied dependency TASK-0034).
+Current: [[TASK-0036 Implement Starter Reinforce Effect]] (`in_progress`; PR #25 human merge and green post-merge CI satisfied dependency TASK-0035).
 
 1. [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
 2. [[TASK-0032 Implement Typed Core Duel Content Catalog]] — done
 3. [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — done
 4. [[TASK-0034 Implement Atomic Basic Stone Card Play]] — done
-5. [[TASK-0035 Implement Starter Stone Card Effects]] — review／current
-6. [[TASK-0036 Implement Starter Reinforce Effect]] — blocked by TASK-0035
+5. [[TASK-0035 Implement Starter Stone Card Effects]] — done
+6. [[TASK-0036 Implement Starter Reinforce Effect]] — in progress／current
 7. [[TASK-0037 Implement Bandit Intent Planning and Execution]] — blocked by TASK-0036
 8. [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — blocked by TASK-0037 and [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]]
 9. [[TASK-0039 Integrate Headless Core Duel and Replay]] — blocked by TASK-0038

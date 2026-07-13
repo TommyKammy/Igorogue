@@ -427,14 +427,49 @@ public static class CoreDuelCardTurnKernel
     {
         ArgumentNullException.ThrowIfNull(state);
         ArgumentNullException.ThrowIfNull(evaluation);
-        if (!evaluation.IsAuthorized)
+        return CommitStarterCardPlay(
+            state,
+            evaluation.IsAuthorized,
+            evaluation.ReasonId,
+            evaluation.SourceDeck,
+            evaluation.SourceQi,
+            evaluation.Card,
+            evaluation.SourceDefinition.Cost);
+    }
+
+    internal static CoreDuelCardTurnTransition CommitStarterReinforceCardPlay(
+        CoreDuelCardTurnState state,
+        StarterReinforceCardPlayEvaluation evaluation)
+    {
+        ArgumentNullException.ThrowIfNull(state);
+        ArgumentNullException.ThrowIfNull(evaluation);
+        return CommitStarterCardPlay(
+            state,
+            evaluation.IsAuthorized,
+            evaluation.ReasonId,
+            evaluation.SourceDeck,
+            evaluation.SourceQi,
+            evaluation.Card,
+            evaluation.SourceDefinition.Cost);
+    }
+
+    private static CoreDuelCardTurnTransition CommitStarterCardPlay(
+        CoreDuelCardTurnState state,
+        bool authorized,
+        string reasonId,
+        BattleDeckState sourceDeck,
+        int sourceQi,
+        BattleCardInstance? card,
+        int cost)
+    {
+        if (!authorized)
         {
-            return CoreDuelCardTurnTransition.NoOp(state, evaluation.ReasonId);
+            return CoreDuelCardTurnTransition.NoOp(state, reasonId);
         }
 
-        if (!ReferenceEquals(evaluation.SourceDeck, state.Deck) ||
-            evaluation.SourceQi != state.Qi ||
-            evaluation.Card is null)
+        if (!ReferenceEquals(sourceDeck, state.Deck) ||
+            sourceQi != state.Qi ||
+            card is null)
         {
             return CoreDuelCardTurnTransition.NoOp(
                 state,
@@ -442,7 +477,7 @@ public static class CoreDuelCardTurnKernel
         }
 
         var begun = state.Deck.BeginResolution(
-            evaluation.Card.InstanceId,
+            card.InstanceId,
             state.RngState);
         if (begun.IsExactNoOp)
         {
@@ -452,7 +487,7 @@ public static class CoreDuelCardTurnKernel
         }
 
         var completed = begun.DeckAfter.CompleteResolution(
-            evaluation.Card.InstanceId,
+            card.InstanceId,
             begun.RngAfter);
         if (completed.IsExactNoOp)
         {
@@ -460,7 +495,7 @@ public static class CoreDuelCardTurnKernel
                 "A begun starter-stone card resolution must be completable.");
         }
 
-        var qiAfter = checked(state.Qi - evaluation.SourceDefinition.Cost);
+        var qiAfter = checked(state.Qi - cost);
         var stateAfter = CoreDuelCardTurnState.Create(
             completed.DeckAfter,
             completed.RngAfter,

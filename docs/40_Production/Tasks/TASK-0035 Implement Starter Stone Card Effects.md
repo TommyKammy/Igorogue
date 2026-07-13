@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0035
-status: review
+status: done
 project: Igorogue
 milestone: M2
 priority: high
@@ -75,6 +75,10 @@ PlayCardからactual enemy turn／replayまでのfull compositionはTASK-0039が
 
 2026-07-13 — PR #25 automated reviewのP2指摘2件を独立監査し、いずれも妥当と判定した。PlayCard捕獲時のcarrier removal factを既存enemy placementと同じ共有挿入順（最終`GroupCapturedFact`直後）で公開し、detached runtime sidecarを維持する6引数`BattleState.Start`から`initial.PlayerTurnIndex`を保持した。turn 7開始／accepted play保持とtimed＋continuous liberty相殺capture／removal fact順の回帰を追加した。
 
+2026-07-13 — review repair commit `2c8c1a0d20e5b1be856476ca0cd7f6a0bc20b79c`をfixed HEADとして独立再レビュー。base／parent `a395cd68b23a4a1e7dedd4df324f1f7c1af4a866`との差分、clean tree、fact順、detached runtime、turn index保持を再確認し、actionable findingなし、`APPROVE`。
+
+2026-07-13 — PR #25を人間merge。merged head `2c8c1a0d20e5b1be856476ca0cd7f6a0bc20b79c`、merge commit／post-merge main HEAD `e025b8c326c52c9e76241e756a0e1e54171ef7fb`を確認した。main push CI run `29225344562`のGovernance `86738172966`、Pure .NET `86738197206`、Godot／Windows export `86738273543`はすべてsuccess。本TASKを`done`へ遷移した。
+
 ## Evidence
 
 - PR #24 merge commit `69d686a5268c127d5ea2c3d3a6b0508b7d56b83c`／post-merge main CI run `29219574281`全3 job success。
@@ -89,3 +93,5 @@ PlayCardからactual enemy turn／replayまでのfull compositionはTASK-0039が
 - implementation commit `2fe41322709b7e8f9cfe72932abc9e1dc53949b6` — typed starter-stone projection、shared runtime placement、Extend／Contact／Lure atomic effects、determinism／lifetime evidence。
 - independent fixed-HEAD review — `2fe41322709b7e8f9cfe72932abc9e1dc53949b6`、base `69d686a5268c127d5ea2c3d3a6b0508b7d56b83c`、actionable findingなし、`APPROVE`。
 - PR #25 review repair — carrier removal fact／snapshot turn indexのP2 2件を妥当と判定し、共有fact orderingとdetached startを維持した回帰2件で修正。
+- review repair fixed-HEAD review — `2c8c1a0d20e5b1be856476ca0cd7f6a0bc20b79c`、base `a395cd68b23a4a1e7dedd4df324f1f7c1af4a866`、actionable findingなし、`APPROVE`。
+- PR #25 human merge — merged head `2c8c1a0d20e5b1be856476ca0cd7f6a0bc20b79c`、merge commit `e025b8c326c52c9e76241e756a0e1e54171ef7fb`、post-merge main CI run `29225344562`全3 job success。

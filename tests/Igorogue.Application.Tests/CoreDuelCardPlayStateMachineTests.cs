@@ -915,6 +915,368 @@ public sealed class CoreDuelCardPlayStateMachineTests
     }
 
     [Fact]
+    public void ReinforceAtariDrawsBeforeGrantAndBindsTheCanonicalRuntimeAnchor()
+    {
+        var reinforce = ReinforceDefinition(cost: 1);
+        var board = ReinforceAtariBoard();
+        var recipe = ReinforceRecipe(reinforce, reinforceCount: 4, includeFiller: true);
+        var session = StartSession(
+            board,
+            Definition(cost: 1),
+            baseQi: 3,
+            cards: recipe,
+            baseDraw: 4,
+            playerTurnIndex: 7,
+            reinforceDefinition: reinforce);
+        var card = session.State.CardTurnState.Deck.Hand.First(candidate =>
+            StringComparer.Ordinal.Equals(candidate.ContentId, reinforce.ContentId));
+        var target = C(2, 3);
+        var groupAnchor = C(2, 2);
+        var anchorInstance = session.State.RuntimeState.StoneRuntimeState
+            .InstanceAt(groupAnchor)
+            ?? throw new InvalidOperationException("Expected Reinforce anchor stone.");
+        var rngBefore = session.State.CardTurnState.RngState;
+        var boardBefore = session.State.BattleState.Board;
+        var runtimeBefore = session.State.RuntimeState.StoneRuntimeState;
+
+        var result = ExecuteReinforce(session, card.InstanceId, target);
+
+        Assert.True(result.Accepted);
+        Assert.Collection(
+            result.OrderedFacts,
+            fact => Assert.IsType<QiChangedFact>(fact),
+            fact =>
+            {
+                var drawn = Assert.IsType<CardDrawnFact>(fact);
+                Assert.Equal("card_effect_target_atari", drawn.ReasonId);
+                Assert.Equal(card.InstanceId, drawn.SourceId);
+            },
+            fact => Assert.IsType<TemporaryLibertyGrantedFact>(fact));
+        var granted = Assert.IsType<TemporaryLibertyGrantedFact>(result.OrderedFacts[2]);
+        Assert.Equal(groupAnchor, granted.TargetGroupAnchor);
+        Assert.Equal(anchorInstance.InstanceId, granted.Effect.AnchorStoneInstanceId);
+        Assert.Equal(reinforce.ContentId, granted.Effect.SourceId);
+        Assert.Equal(1, granted.Effect.Amount);
+        Assert.Equal(1, granted.Effect.CreatedSequence);
+        Assert.Equal(7, granted.Effect.ExpiresAfterEnemyTurnIndex);
+        Assert.Equal(2, result.SessionAfter.State.CardTurnState.Qi);
+        Assert.Single(result.SessionAfter.State.RuntimeState.TemporaryLibertyState.Effects);
+        Assert.Same(rngBefore, result.SessionAfter.State.CardTurnState.RngState);
+        Assert.Same(
+            result.SessionAfter.State.BattleState.RngState,
+            result.SessionAfter.State.CardTurnState.RngState);
+        Assert.Same(boardBefore, result.SessionAfter.State.BattleState.Board);
+        Assert.Same(runtimeBefore, result.SessionAfter.State.RuntimeState.StoneRuntimeState);
+        Assert.Single(result.SessionAfter.CommandLog.Entries);
+        Assert.Contains("placement_mode=none", result.Command.ToCanonicalPayload());
+    }
+
+    [Fact]
+    public void ReinforceUsesTimedAndContinuousEffectiveLibertiesBeforeGrant()
+    {
+        var reinforce = ReinforceDefinition(cost: 1);
+        var recipe = ReinforceRecipe(reinforce, reinforceCount: 4, includeFiller: true);
+        var timed = StartSession(
+            ReinforceAtariBoard(),
+            Definition(cost: 1),
+            baseQi: 3,
+            cards: recipe,
+            baseDraw: 4,
+            reinforceDefinition: reinforce,
+            temporaryFactory: runtime => TemporaryLibertyState.Create(
+                runtime,
+                [new TemporaryLibertyEffect(
+                    "existing-timed",
+                    1,
+                    StoneColor.Black,
+                    runtime.InstanceAt(C(2, 2))!.InstanceId,
+                    "existing-source",
+                    1,
+                    1)],
+                2));
+        var timedCard = timed.State.CardTurnState.Deck.Hand.First(candidate =>
+            StringComparer.Ordinal.Equals(candidate.ContentId, reinforce.ContentId));
+
+        var timedResult = ExecuteReinforce(timed, timedCard.InstanceId, C(2, 3));
+
+        Assert.True(timedResult.Accepted);
+        Assert.Empty(timedResult.OrderedFacts.OfType<CardDrawnFact>());
+        Assert.Equal(
+            2,
+            timedResult.SessionAfter.State.RuntimeState.TemporaryLibertyState.Effects.Count);
+
+        var realTwoBoard = Board(
+            Stone(StoneColor.Black, 2, 2),
+            Stone(StoneColor.White, 1, 2),
+            Stone(StoneColor.White, 2, 1));
+        var continuous = StartSession(
+            realTwoBoard,
+            Definition(cost: 1),
+            baseQi: 3,
+            cards: recipe,
+            baseDraw: 4,
+            reinforceDefinition: reinforce,
+            continuousFactory: runtime => ContinuousLibertySnapshot.Create(
+                runtime,
+                [new ContinuousLibertyModifier(
+                    "continuous-minus-one",
+                    -1,
+                    StoneColor.Black,
+                    runtime.InstanceAt(C(2, 2))!.InstanceId,
+                    "continuous-source")]));
+        var continuousCard = continuous.State.CardTurnState.Deck.Hand.First(candidate =>
+            StringComparer.Ordinal.Equals(candidate.ContentId, reinforce.ContentId));
+
+        var continuousResult = ExecuteReinforce(
+            continuous,
+            continuousCard.InstanceId,
+            C(2, 2));
+
+        Assert.True(continuousResult.Accepted);
+        Assert.Single(continuousResult.OrderedFacts.OfType<CardDrawnFact>());
+        var continuousAnalysis = TemporaryLibertyEffectiveLibertyAnalyzer.Analyze(
+            continuousResult.SessionAfter.State.RuntimeState.StoneRuntimeState,
+            continuousResult.SessionAfter.State.RuntimeState.TemporaryLibertyState,
+            continuousResult.SessionAfter.State.RuntimeState.ContinuousLibertySnapshot);
+        var targetGroup = continuousAnalysis.GroupAnalysis.GroupAt(C(2, 2))!;
+        Assert.Equal(2, continuousAnalysis.BreakdownFor(targetGroup).EffectiveLibertyCount);
+    }
+
+    [Fact]
+    public void ReinforceRejectsEmptyForeignAndStoneModeTargetsAsExactNoOps()
+    {
+        var reinforce = ReinforceDefinition(cost: 1);
+        var board = Board(
+            Stone(StoneColor.Black, 2, 2),
+            Stone(StoneColor.White, 5, 5));
+        var recipe = ReinforceRecipe(reinforce, reinforceCount: 1, includeFiller: false);
+        var session = StartSession(
+            board,
+            Definition(cost: 1),
+            baseQi: 3,
+            cards: recipe,
+            baseDraw: 1,
+            reinforceDefinition: reinforce);
+        var card = Assert.Single(session.State.CardTurnState.Deck.Hand);
+
+        AssertRejectedNoOp(
+            session,
+            ExecuteReinforce(session, card.InstanceId, C(3, 3)),
+            "reinforce_target_empty");
+        AssertRejectedNoOp(
+            session,
+            ExecuteReinforce(session, card.InstanceId, C(5, 5)),
+            "reinforce_target_foreign");
+        AssertRejectedNoOp(
+            session,
+            Execute(
+                session,
+                card.InstanceId,
+                C(2, 2),
+                StoneCardPlacementMode.Frontline),
+            "unsupported_placement_mode");
+        AssertRejectedNoOp(
+            session,
+            CoreDuelCardPlayStateMachine.Execute(
+                session,
+                new PlayCardCommand(
+                    OtherChecksum(session.State.Checksum),
+                    session.CommandLog.CurrentChecksum,
+                    card.InstanceId,
+                    C(2, 2))),
+            "stale_state");
+    }
+
+    [Fact]
+    public void PlayCardModeIsRequiredForStoneAndForbiddenForReinforce()
+    {
+        var basic = Definition(cost: 1);
+        var stoneSession = StartSession(
+            NeutralFrontlineBoard(),
+            basic,
+            baseQi: 3);
+        var noModeStone = new PlayCardCommand(
+            stoneSession.State.Checksum,
+            stoneSession.CommandLog.CurrentChecksum,
+            "play-card",
+            C(2, 3));
+
+        Assert.Equal(1, noModeStone.CommandSchemaVersion);
+        Assert.Contains("placement_mode=none", noModeStone.ToCanonicalPayload());
+        AssertRejectedNoOp(
+            stoneSession,
+            CoreDuelCardPlayStateMachine.Execute(stoneSession, noModeStone),
+            "unsupported_placement_mode");
+
+        var stoneMode = new PlayCardCommand(
+            stoneSession.State.Checksum,
+            stoneSession.CommandLog.CurrentChecksum,
+            "play-card",
+            C(2, 3),
+            StoneCardPlacementMode.Frontline);
+        Assert.Equal(1, stoneMode.CommandSchemaVersion);
+        Assert.Contains("placement_mode=frontline", stoneMode.ToCanonicalPayload());
+    }
+
+    [Fact]
+    public void TwoReinforcesStackButTheSecondUsesTheUpdatedPreGrantSnapshot()
+    {
+        var reinforce = ReinforceDefinition(cost: 1);
+        var session = StartSession(
+            ReinforceAtariBoard(),
+            Definition(cost: 1),
+            baseQi: 3,
+            cards: ReinforceRecipe(reinforce, reinforceCount: 4, includeFiller: true),
+            baseDraw: 4,
+            reinforceDefinition: reinforce);
+        var firstCard = session.State.CardTurnState.Deck.Hand.First(candidate =>
+            StringComparer.Ordinal.Equals(candidate.ContentId, reinforce.ContentId));
+
+        var first = ExecuteReinforce(session, firstCard.InstanceId, C(2, 3));
+        var secondCard = first.SessionAfter.State.CardTurnState.Deck.Hand.First(candidate =>
+            StringComparer.Ordinal.Equals(candidate.ContentId, reinforce.ContentId));
+        var second = ExecuteReinforce(
+            first.SessionAfter,
+            secondCard.InstanceId,
+            C(2, 2));
+
+        Assert.True(first.Accepted);
+        Assert.True(second.Accepted);
+        Assert.Single(first.OrderedFacts.OfType<CardDrawnFact>());
+        Assert.Empty(second.OrderedFacts.OfType<CardDrawnFact>());
+        var effects = second.SessionAfter.State.RuntimeState.TemporaryLibertyState.Effects;
+        Assert.Equal(2, effects.Count);
+        Assert.Equal([1L, 2L], effects.Select(effect => effect.CreatedSequence));
+        Assert.Equal(2, effects.Sum(effect => effect.Amount));
+        Assert.Single(effects.Select(effect => effect.AnchorStoneInstanceId).Distinct());
+        Assert.All(effects, effect => Assert.Equal(1, effect.ExpiresAfterEnemyTurnIndex));
+    }
+
+    [Fact]
+    public void ReinforceUsesTheSnapshotTurnForExpiryAndBridgesToTheExistingSweep()
+    {
+        var reinforce = ReinforceDefinition(cost: 1);
+        var session = StartSession(
+            ReinforceAtariBoard(),
+            Definition(cost: 1),
+            baseQi: 3,
+            cards: ReinforceRecipe(reinforce, reinforceCount: 1, includeFiller: false),
+            baseDraw: 1,
+            playerTurnIndex: 7,
+            reinforceDefinition: reinforce);
+        var card = Assert.Single(session.State.CardTurnState.Deck.Hand);
+        var result = ExecuteReinforce(session, card.InstanceId, C(2, 3));
+        var runtime = result.SessionAfter.State.RuntimeState;
+        var effect = Assert.Single(runtime.TemporaryLibertyState.Effects);
+
+        var expiry = TemporaryLibertyExpiryResolver.Resolve(
+            runtime.StoneRuntimeState,
+            runtime.TemporaryLibertyState,
+            runtime.ContinuousLibertySnapshot,
+            result.SessionAfter.State.BattleState.RepetitionHistory,
+            7);
+
+        Assert.Equal(7, effect.ExpiresAfterEnemyTurnIndex);
+        Assert.False(expiry.IsExactNoOp);
+        Assert.Empty(expiry.TemporaryLibertiesAfterResolution.Effects);
+        Assert.Contains(
+            expiry.OrderedFacts,
+            fact => fact is TemporaryLibertyExpiredFact expired &&
+                StringComparer.Ordinal.Equals(
+                    expired.Effect.EffectInstanceId,
+                    effect.EffectInstanceId));
+    }
+
+    [Fact]
+    public void ReinforceEffectFollowsItsStableAnchorThroughAStoneGroupMerge()
+    {
+        var basic = Definition(cost: 1);
+        var reinforce = ReinforceDefinition(cost: 1);
+        var board = Board(
+            Stone(StoneColor.Black, 2, 2),
+            Stone(StoneColor.Black, 2, 4),
+            Stone(StoneColor.White, 7, 7));
+        var recipe = new[]
+        {
+            new BattleCardInstance("basic-card", basic.ContentId),
+            new BattleCardInstance("reinforce-card", reinforce.ContentId),
+        };
+        var session = StartSession(
+            board,
+            basic,
+            baseQi: 3,
+            cards: recipe,
+            baseDraw: 2,
+            reinforceDefinition: reinforce);
+        var anchorId = session.State.RuntimeState.StoneRuntimeState
+            .InstanceAt(C(2, 2))!.InstanceId;
+
+        var reinforced = ExecuteReinforce(
+            session,
+            "reinforce-card",
+            C(2, 2));
+        var merged = Execute(
+            reinforced.SessionAfter,
+            "basic-card",
+            C(2, 3),
+            StoneCardPlacementMode.Frontline);
+
+        Assert.True(reinforced.Accepted);
+        Assert.True(merged.Accepted);
+        var effect = Assert.Single(
+            merged.SessionAfter.State.RuntimeState.TemporaryLibertyState.Effects);
+        Assert.Equal(anchorId, effect.AnchorStoneInstanceId);
+        var analysis = TemporaryLibertyEffectiveLibertyAnalyzer.Analyze(
+            merged.SessionAfter.State.RuntimeState.StoneRuntimeState,
+            merged.SessionAfter.State.RuntimeState.TemporaryLibertyState,
+            merged.SessionAfter.State.RuntimeState.ContinuousLibertySnapshot);
+        var group = analysis.GroupAnalysis.GroupAt(C(2, 2))!;
+        Assert.Contains(group.Stones, stone => stone.Point.Equals(C(2, 4)));
+        Assert.Equal(1, analysis.BreakdownFor(group).TimedAmount);
+    }
+
+    [Fact]
+    public void ReversedReinforceInputsProduceTheSameCanonicalOutcome()
+    {
+        var reinforce = ReinforceDefinition(cost: 1);
+        var stones = ReinforceAtariBoard().OccupiedStones.ToArray();
+        var recipe = ReinforceRecipe(reinforce, reinforceCount: 4, includeFiller: true);
+        var first = StartSession(
+            Board(stones),
+            Definition(cost: 1),
+            baseQi: 3,
+            cards: recipe,
+            baseDraw: 4,
+            reinforceDefinition: reinforce);
+        var reversed = StartSession(
+            Board(stones.Reverse().ToArray()),
+            Definition(cost: 1),
+            baseQi: 3,
+            cards: recipe.Reverse().ToArray(),
+            baseDraw: 4,
+            reverseCatalogInput: true,
+            reverseRuntimeInput: true,
+            reinforceDefinition: ReinforceDefinition(cost: 1));
+        var cardId = first.State.CardTurnState.Deck.Hand.First(candidate =>
+            StringComparer.Ordinal.Equals(candidate.ContentId, reinforce.ContentId)).InstanceId;
+
+        var firstResult = ExecuteReinforce(first, cardId, C(2, 3));
+        var reversedResult = ExecuteReinforce(reversed, cardId, C(2, 3));
+
+        Assert.True(firstResult.Accepted);
+        Assert.True(reversedResult.Accepted);
+        Assert.Equal(first.State.CanonicalText, reversed.State.CanonicalText);
+        Assert.Equal(
+            firstResult.SessionAfter.State.CanonicalText,
+            reversedResult.SessionAfter.State.CanonicalText);
+        Assert.Equal(firstResult.StateChecksum, reversedResult.StateChecksum);
+        Assert.Equal(firstResult.LogChecksum, reversedResult.LogChecksum);
+        Assert.Equal(
+            firstResult.OrderedFacts.Select(ProjectFact),
+            reversedResult.OrderedFacts.Select(ProjectFact));
+    }
+
+    [Fact]
     public void ReversedCatalogRuntimeAndBoardInputsProduceTheSameAcceptedOutcome()
     {
         var definition = LureDefinition(cost: 1);
@@ -970,7 +1332,8 @@ public sealed class CoreDuelCardPlayStateMachineTests
         bool reverseRuntimeInput = false,
         int playerTurnIndex = 1,
         Func<StoneRuntimeState, TemporaryLibertyState>? temporaryFactory = null,
-        Func<StoneRuntimeState, ContinuousLibertySnapshot>? continuousFactory = null)
+        Func<StoneRuntimeState, ContinuousLibertySnapshot>? continuousFactory = null,
+        StarterReinforceCardPlayDefinition? reinforceDefinition = null)
     {
         var recipe = cards ??
             [new BattleCardInstance("play-card", definition.ContentId)];
@@ -1015,6 +1378,7 @@ public sealed class CoreDuelCardPlayStateMachineTests
             initial,
             cardTurn,
             Catalog(definition, reverseCatalogInput),
+            reinforceDefinition ?? ReinforceDefinition(cost: 1),
             metadata);
     }
 
@@ -1026,6 +1390,18 @@ public sealed class CoreDuelCardPlayStateMachineTests
         CoreDuelCardPlayStateMachine.Execute(
             session,
             Command(session, cardInstanceId, target, mode));
+
+    private static CoreDuelCardPlayResult ExecuteReinforce(
+        CoreDuelCardPlaySession session,
+        string cardInstanceId,
+        CanonicalPoint target) =>
+        CoreDuelCardPlayStateMachine.Execute(
+            session,
+            new PlayCardCommand(
+                session.State.Checksum,
+                session.CommandLog.CurrentChecksum,
+                cardInstanceId,
+                target));
 
     private static PlayCardCommand Command(
         CoreDuelCardPlaySession session,
@@ -1106,6 +1482,17 @@ public sealed class CoreDuelCardPlayStateMachineTests
             $"before={reserved.AmountBefore.ToString(CultureInfo.InvariantCulture)}|" +
             $"after={reserved.AmountAfter.ToString(CultureInfo.InvariantCulture)}|" +
             $"delta={reserved.Delta.ToString(CultureInfo.InvariantCulture)}",
+        TemporaryLibertyGrantedFact granted =>
+            "temporary_liberty_granted|effect=" + granted.Effect.EffectInstanceId +
+            "|amount=" + granted.Effect.Amount.ToString(CultureInfo.InvariantCulture) +
+            "|owner=" + granted.Effect.OwnerColor +
+            "|anchor=" + granted.Effect.AnchorStoneInstanceId +
+            "|source=" + granted.Effect.SourceId +
+            "|sequence=" +
+            granted.Effect.CreatedSequence.ToString(CultureInfo.InvariantCulture) +
+            "|expiry=" +
+            granted.Effect.ExpiresAfterEnemyTurnIndex.ToString(CultureInfo.InvariantCulture) +
+            "|group=" + granted.TargetGroupAnchor,
         _ => GoldenBoardFixtureAdapter.ProjectFact(fact),
     };
 
@@ -1188,6 +1575,42 @@ public sealed class CoreDuelCardPlayStateMachineTests
                     new ReserveDrawOperationDefinition(1),
                 ],
                 [new ReserveDrawOperationDefinition(2)]));
+
+    private static StarterReinforceCardPlayDefinition ReinforceDefinition(int cost) =>
+        StarterReinforceCardPlayDefinition.Create(
+            CardContentDefinition.Create(
+                "card_shape_reinforce_selected",
+                CardRarity.Starter,
+                cost,
+                CardContentType.Technique,
+                CardTargetKind.FriendlyGroup,
+                [],
+                [
+                    new DrawIfTargetAtariOperationDefinition(1),
+                    new TemporaryLibertyOperationDefinition(
+                        1,
+                        TemporaryLibertyDurationKind.EnemyTurnEnd,
+                        TemporaryLibertyTiming.FirstEnemyTurnEndAtOrAfterGrant,
+                        TemporaryLibertyStacking.AdditivePerEffectInstance),
+                ]));
+
+    private static IReadOnlyList<BattleCardInstance> ReinforceRecipe(
+        StarterReinforceCardPlayDefinition definition,
+        int reinforceCount,
+        bool includeFiller)
+    {
+        var cards = Enumerable.Range(1, reinforceCount)
+            .Select(index => new BattleCardInstance(
+                $"reinforce-{index.ToString(CultureInfo.InvariantCulture)}",
+                definition.ContentId))
+            .ToList();
+        if (includeFiller)
+        {
+            cards.Add(new BattleCardInstance("draw-filler", "card_draw_filler"));
+        }
+
+        return cards;
+    }
 
     private static StarterStoneCardPlayCatalog Catalog(
         StarterStoneCardPlayDefinition selected,
@@ -1294,6 +1717,15 @@ public sealed class CoreDuelCardPlayStateMachineTests
     private static BoardState NeutralFrontlineBoard() => Board(
         Stone(StoneColor.Black, 2, 2),
         Stone(StoneColor.White, 7, 7));
+
+    private static BoardState ReinforceAtariBoard() => Board(
+        Stone(StoneColor.Black, 2, 2),
+        Stone(StoneColor.Black, 2, 3),
+        Stone(StoneColor.White, 2, 1),
+        Stone(StoneColor.White, 1, 2),
+        Stone(StoneColor.White, 3, 2),
+        Stone(StoneColor.White, 1, 3),
+        Stone(StoneColor.White, 2, 4));
 
     private static BoardState Board(params BoardStone[] stones) =>
         BoardState.Create(Geometry, stones);

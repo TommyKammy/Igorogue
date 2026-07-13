@@ -559,7 +559,7 @@ public sealed class ArchitectureBoundaryTests
     }
 
     [Fact]
-    public void Task0034And0035PlayCardUsesAStandaloneCommandSessionAndSharedBattleFacts()
+    public void Task0034Through0036PlayCardUsesAStandaloneCommandSessionAndSharedBattleFacts()
     {
         var start = RequirePublicStaticMethod(
             typeof(CoreDuelCardPlayStateMachine),
@@ -567,6 +567,7 @@ public sealed class ArchitectureBoundaryTests
             typeof(BattleAuthoritativeInitialSnapshot),
             typeof(CoreDuelCardTurnState),
             typeof(StarterStoneCardPlayCatalog),
+            typeof(StarterReinforceCardPlayDefinition),
             typeof(ReplayMetadata));
         var execute = RequirePublicStaticMethod(
             typeof(CoreDuelCardPlayStateMachine),
@@ -579,9 +580,13 @@ public sealed class ArchitectureBoundaryTests
         Assert.True(typeof(IBattleCommand).IsAssignableFrom(typeof(PlayCardCommand)));
         Assert.True(typeof(IBattleFact).IsAssignableFrom(typeof(QiChangedFact)));
         Assert.True(typeof(IBattleFact).IsAssignableFrom(typeof(CardDrawnFact)));
+        Assert.True(typeof(IBattleFact).IsAssignableFrom(typeof(TemporaryLibertyGrantedFact)));
         Assert.Contains(
             typeof(CoreDuelCardPlayState).GetProperties(),
             property => property.PropertyType == typeof(StarterStoneCardPlayCatalog));
+        Assert.Contains(
+            typeof(CoreDuelCardPlayState).GetProperties(),
+            property => property.PropertyType == typeof(StarterReinforceCardPlayDefinition));
         Assert.Contains(
             typeof(CoreDuelCardPlayState).GetProperties(),
             property => property.PropertyType == typeof(BattleAuthoritativeRuntimeState));
@@ -597,6 +602,8 @@ public sealed class ArchitectureBoundaryTests
         Assert.Empty(typeof(StarterStoneCardPlayDefinition).GetConstructors());
         Assert.Empty(typeof(StarterStoneCardPlayCatalog).GetConstructors());
         Assert.Empty(typeof(StarterStoneCardPlayEvaluation).GetConstructors());
+        Assert.Empty(typeof(StarterReinforceCardPlayDefinition).GetConstructors());
+        Assert.Empty(typeof(StarterReinforceCardPlayEvaluation).GetConstructors());
         Assert.Empty(typeof(ReservedDrawCardEffectResolution).GetConstructors());
 
         var applicationAssembly = typeof(CoreDuelCardPlayStateMachine).Assembly;
@@ -615,13 +622,14 @@ public sealed class ArchitectureBoundaryTests
     }
 
     [Fact]
-    public void Task0034And0035DoNotConnectCardPlayToExistingBattleHeadlessOrReplayProjections()
+    public void Task0034Through0036DoNotConnectCardPlayToExistingBattleHeadlessOrReplayProjections()
     {
         var forbiddenTypes = new[]
         {
             typeof(CoreDuelCardPlayState),
             typeof(StarterStoneCardPlayCatalog),
             typeof(StarterStoneCardPlayDefinition),
+            typeof(StarterReinforceCardPlayDefinition),
         };
         var replaySurface = typeof(BattleReplayDocumentV2).Assembly
             .GetExportedTypes()

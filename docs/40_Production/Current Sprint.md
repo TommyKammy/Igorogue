@@ -9,15 +9,15 @@ sprint: S0
 
 ## Goal
 
-Review and merge TASK-0035's typed starter stone effects without selecting the unresolved starter recipe.
+Implement TASK-0036's typed Reinforce targeting, pre-grant conditional draw, and temporary-liberty lifecycle without selecting the unresolved starter recipe.
 
-## In review
+## In progress
 
-- [[TASK-0035 Implement Starter Stone Card Effects]]
-  - connect Extend／Contact／Lure typed operations to atomic PlayCard
-  - exact-bound runtime sidecar and two-resolution lure capture lifetime proof
-  - Headless／replay composition remains deferred to TASK-0039
-  - fixed-HEAD independent review approved; awaiting PR review／human merge
+- [[TASK-0036 Implement Starter Reinforce Effect]]
+  - bind friendly target group and canonical stable stone anchor to command-time state
+  - resolve draw-if-atari before granting +1 timed temporary liberty
+  - prove expiry／merge-following／stale／foreign／deterministic behavior through the shared kernel
+  - keep Headless／replay composition deferred to TASK-0039
 
 ## Open human evidence
 
@@ -54,18 +54,19 @@ Review and merge TASK-0035's typed starter stone effects without selecting the u
 - [[TASK-0032 Implement Typed Core Duel Content Catalog]] — PR #22 merged／post-merge CI green
 - [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — PR #23 merged／post-merge CI green
 - [[TASK-0034 Implement Atomic Basic Stone Card Play]] — PR #24 merged／post-merge CI green
+- [[TASK-0035 Implement Starter Stone Card Effects]] — PR #25 merged／post-merge CI green
 
-## Next after TASK-0035
+## Next after TASK-0036
 
-- [[TASK-0036 Implement Starter Reinforce Effect]] — remains blocked until TASK-0035 human merge.
+- [[TASK-0037 Implement Bandit Intent Planning and Execution]] — remains blocked until TASK-0036 human merge.
 - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolve before TASK-0038 applies the starting recipe／Development scope.
-- TASK-0036〜0042 remain blocked and advance only in dependency order.
+- TASK-0037〜0042 remain blocked and advance only in dependency order.
 
 ## Review questions
 
-- Are Basic／Extend／Contact／Lure projected from typed operation shape without a content-ID switch?
-- Does Extend use the committed placed group's real liberties and preserve authoritative RNG identity after reshuffle?
-- Does Contact require adjacent black／white stones and reward only an affected surviving enemy group at effective liberty 1?
-- Does Lure reserve draw once on play and once for its exact captured stone instance, with terminal suppression?
+- Is Reinforce projected from the typed FriendlyGroup／DrawIfTargetAtari／TemporaryLiberty operation shape without a content-ID switch?
+- Is the command-time friendly group bound to its canonical stable stone instance and rejected exactly when stale or foreign?
+- Is effective liberty 1 measured before grant, with draw fully resolved before +1 temporary liberty is published?
+- Does the effect follow its anchor through a merge and expire at the immediately following enemy-turn-end boundary?
 - Do rejected commands preserve every resource／zone／runtime／trigger reference and avoid log／RNG mutation?
-- Are Reinforce、default recipe、Headless／replay composition、enemy planner、Godot still deferred to their owning tasks?
+- Are Development、default recipe、Headless／replay composition、enemy planner、Godot still deferred to their owning tasks?
