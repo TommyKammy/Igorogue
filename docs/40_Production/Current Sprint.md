@@ -9,14 +9,13 @@ sprint: S0
 
 ## Goal
 
-Implement and review TASK-0033's deterministic injected-recipe deck／hand／qi kernel without selecting the unresolved starter recipe.
+Implement and review TASK-0034's atomic `card_basic_stone` PlayCard vertical proof without selecting the unresolved starter recipe.
 
-## In review
+## In progress
 
-- [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]]
-  - immutable ordered zones, gameplay RNG shuffle／reshuffle, turn resource pipeline
-  - injected recipe／policy only; existing replay integration remains deferred
-  - fixed-HEAD independent review approved; awaiting PR review／human merge
+- [[TASK-0034 Implement Atomic Basic Stone Card Play]]
+  - bind card instance、Canonical target、explicit mode、qi cost、existing placement pipeline
+  - accepted-only log／facts and exact no-op rejection; replay schema remains deferred
 
 ## Open human evidence
 
@@ -51,17 +50,18 @@ Implement and review TASK-0033's deterministic injected-recipe deck／hand／qi 
 - [[TASK-0030 Re-audit M1 Headless Rules Kernel Exit]] — M1 technical `PASS`; PR #20 merged／CI green
 - [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — PR #21 merged／post-merge CI green
 - [[TASK-0032 Implement Typed Core Duel Content Catalog]] — PR #22 merged／post-merge CI green
+- [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — PR #23 merged／post-merge CI green
 
-## Next after TASK-0033
+## Next after TASK-0034
 
-- [[TASK-0034 Implement Atomic Basic Stone Card Play]] — remains blocked until TASK-0033 human merge.
+- [[TASK-0035 Implement Starter Stone Card Effects]] — remains blocked until TASK-0034 human merge.
 - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolve before TASK-0038 applies the starting recipe／Development scope.
-- TASK-0034〜0042 remain blocked and advance only in dependency order.
+- TASK-0035〜0042 remain blocked and advance only in dependency order.
 
 ## Review questions
 
-- Are all five card zones immutable, ordered, exclusive, and checksum-covered?
-- Does named gameplay RNG have stable shuffle／reshuffle consumption and exact no-op behavior?
-- Does turn start preserve reset → deferred outcome → territory → qi → draw order and exact reservation resets?
-- Is the recipe／system policy fully injected without resolving DECISION-0006 or hard-coding runtime values?
-- Are BattleState／replay／Godot integrations still deferred to their owning tasks?
+- Does PlayCard reject stale、hand外、insufficient qi、invalid target without changing state／RNG／log?
+- Does an accepted basic stone card use the existing placement／capture／facility／territory／terminal pipeline exactly once?
+- Is qi consumed only after legality and the card retained as resolved until turn end?
+- Is the typed operation injected without a content-ID switch or default recipe decision?
+- Are other starter effects、Momentum、replay schema、Godot still deferred to their owning tasks?
