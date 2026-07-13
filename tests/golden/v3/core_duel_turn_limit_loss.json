@@ -1,0 +1,66 @@
+{
+  "schema_id": "igorogue.battle-replay",
+  "schema_version": 3,
+  "state_projection": "headless-core-duel-state-v1",
+  "integrity_scheme": "sha256-length-prefixed-v1",
+  "metadata": {
+    "game_version": "v0.2.10",
+    "content_hash": "sha256:aa26362f6c4b1cdc9c8dc9336654bd20fe5379f622eef3fa992257db62d86832",
+    "initial_seed": 39039,
+    "rng_algorithm": "splitmix64-v1",
+    "command_log_schema": 1,
+    "checksum_scheme": "sha256-length-prefixed-v1"
+  },
+  "initial_state_checksum": "6600d9a8dc11c30fa31278bf9dbc4861cb536652f2fe199181bae8a33c700105",
+  "initial_log_checksum": "9cbd4fb1c03a5ffa33f24c9f7aea52d62e9c46e3c222667b4d0c0aabb52f1efa",
+  "attempts": [
+    {
+      "attempt_sequence": 0,
+      "command_type": "battle.play_card",
+      "command_schema_version": 1,
+      "canonical_payload": "play-card-v1\nexpected_state_checksum=6600d9a8dc11c30fa31278bf9dbc4861cb536652f2fe199181bae8a33c700105\nexpected_log_checksum=9cbd4fb1c03a5ffa33f24c9f7aea52d62e9c46e3c222667b4d0c0aabb52f1efa\ncard_instance_id=deck.core_duel.card_basic_stone.0001\ntarget=1,2\nplacement_mode=frontline\n",
+      "before_state_checksum": "6600d9a8dc11c30fa31278bf9dbc4861cb536652f2fe199181bae8a33c700105",
+      "before_log_checksum": "9cbd4fb1c03a5ffa33f24c9f7aea52d62e9c46e3c222667b4d0c0aabb52f1efa",
+      "accepted": true,
+      "reason_id": "accepted",
+      "state_checksum": "db17a802751ad8ff7d831329b72915dcfa8521b730a4b83833f77dc8b7ea36f2",
+      "log_checksum": "13dc8fb97855746d8a9419e70fe2791bfdf6e59e41290618c79b1f8b9d85d8ab",
+      "attempt_checksum": "a6c2a55ad7091df6896e5fd46768a59de1d04a0f0f39447bb9248630f993ddc2"
+    },
+    {
+      "attempt_sequence": 1,
+      "command_type": "battle.end_player_turn",
+      "command_schema_version": 1,
+      "canonical_payload": "end-player-turn-v1\nexpected_state_checksum=db17a802751ad8ff7d831329b72915dcfa8521b730a4b83833f77dc8b7ea36f2\nexpected_log_checksum=13dc8fb97855746d8a9419e70fe2791bfdf6e59e41290618c79b1f8b9d85d8ab\n",
+      "before_state_checksum": "db17a802751ad8ff7d831329b72915dcfa8521b730a4b83833f77dc8b7ea36f2",
+      "before_log_checksum": "13dc8fb97855746d8a9419e70fe2791bfdf6e59e41290618c79b1f8b9d85d8ab",
+      "accepted": true,
+      "reason_id": "accepted",
+      "state_checksum": "016f3f8ea71b5c22a8fb712af78fd6df51169bdf7bc8ff58b082f85a81cae655",
+      "log_checksum": "7cfa3727759648380386eda3336c181088277c26ff15cae6eb92b587d97ede49",
+      "attempt_checksum": "478a518142e0a31d8d340cf2f75845fae8e429f288ee7cedce87580a56b58119"
+    },
+    {
+      "attempt_sequence": 2,
+      "command_type": "battle.resolve_bandit_enemy_action",
+      "command_schema_version": 1,
+      "canonical_payload": "resolve-bandit-enemy-action-v1\nexpected_state_checksum=016f3f8ea71b5c22a8fb712af78fd6df51169bdf7bc8ff58b082f85a81cae655\nexpected_log_checksum=7cfa3727759648380386eda3336c181088277c26ff15cae6eb92b587d97ede49\n",
+      "before_state_checksum": "016f3f8ea71b5c22a8fb712af78fd6df51169bdf7bc8ff58b082f85a81cae655",
+      "before_log_checksum": "7cfa3727759648380386eda3336c181088277c26ff15cae6eb92b587d97ede49",
+      "accepted": true,
+      "reason_id": "accepted",
+      "state_checksum": "c04389720ff849e168ac3a543b4d00b66e8c8f0d3a03ba3cc385507056b73786",
+      "log_checksum": "678b036b4545b21a2b0d81e86f4a33e7ce918a132c1edce21c518eaa93976557",
+      "attempt_checksum": "956b2e567fa347e486af7cfc282a103235efc321ee62a07fcc030deb2b3f4413"
+    }
+  ],
+  "attempts_checksum": "956b2e567fa347e486af7cfc282a103235efc321ee62a07fcc030deb2b3f4413",
+  "final_state_checksum": "c04389720ff849e168ac3a543b4d00b66e8c8f0d3a03ba3cc385507056b73786",
+  "final_log_checksum": "678b036b4545b21a2b0d81e86f4a33e7ce918a132c1edce21c518eaa93976557",
+  "terminal": {
+    "is_terminal": true,
+    "outcome": "loss",
+    "end_reason": "turn_limit"
+  },
+  "document_checksum": "7e462e9556a3b7d23ef4c3cdf99bb44cbe52943bf2883d3b51c72c40bab3710f"
+}

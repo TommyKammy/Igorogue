@@ -56,7 +56,7 @@ The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DEC
 
 Entry is owner-authorized open because M1 exit evidence including TLE-01〜15 E3 migration is complete and DECISION-0007 explicitly waives the unverified TASK-0012 human-evidence prerequisite.
 
-Current: [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] (`review`; DECISION-0006 Option 1 candidate passes 592 tests、fixed-HEAD review、and PR #28 CI, and awaits human merge).
+Current: [[TASK-0039 Integrate Headless Core Duel and Replay]] (`in_progress`; TASK-0038 is merged through PR #28／post-merge CI, and Core Duel aggregate／replay schema 3 evidence is under closeout validation).
 
 1. [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
 2. [[TASK-0032 Implement Typed Core Duel Content Catalog]] — done
@@ -65,8 +65,8 @@ Current: [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] (`revie
 5. [[TASK-0035 Implement Starter Stone Card Effects]] — done
 6. [[TASK-0036 Implement Starter Reinforce Effect]] — done
 7. [[TASK-0037 Implement Bandit Intent Planning and Execution]] — done
-8. [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — review／current
-9. [[TASK-0039 Integrate Headless Core Duel and Replay]] — blocked by TASK-0038
+8. [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — done
+9. [[TASK-0039 Integrate Headless Core Duel and Replay]] — in progress／current
 10. [[TASK-0040 Implement Core Duel Preview Queries]] — blocked by TASK-0039
 11. [[TASK-0041 Build Playable Godot Core Duel Graybox]] — blocked by TASK-0040
 12. [[TASK-0042 Validate M2 Core Duel Graybox]] — blocked by TASK-0041

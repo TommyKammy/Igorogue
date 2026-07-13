@@ -9,19 +9,17 @@ sprint: S0
 
 ## Goal
 
-Apply DECISION-0006 Option 1 as a canonical starter 6-type／12-card recipe and connect `card_development` through the existing authorized facility path.
+Connect the resolved Core Duel recipe、starter-card turn、Bandit intent、terminal result、and restart through one deterministic headless aggregate and replay schema 3.
 
-## In review
+## In progress
 
-- [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]]
-  - dependency TASK-0037 is done through PR #27／post-merge CI run `29237842140`
-  - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] resolved Option 1
-  - exact recipeは`game_data/content/starting_decks.json`を参照する
-  - `card_development`だけをM2 facility例外として既存authorized facility build commandへ接続する
-  - keep Headless Core Duel／replay composition deferred to TASK-0039
-  - 592-test candidate、content／Application／documentation pre-closeout reviews approved
-  - fixed source HEAD `cd476d1` approved by independent Content、Application／Domain、documentation reviews
-  - Draft PR #28 CI run `29243465009` succeeded across all 3 jobs; human merge pending
+- [[TASK-0039 Integrate Headless Core Duel and Replay]]
+  - dependency TASK-0038 is done through PR #28 merge `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge CI run `29247035946`
+  - resolved 12-card recipeをcanonical physical instanceへ展開し、seed／content／initial snapshot／Banditをexact-bindする
+  - outer `CoreDuelBattleSession`だけがauthoritative command logを所有する
+  - PlayCard → EndPlayerTurn → Bandit action → next player turn／terminal／restartをApplication commandで接続する
+  - replay schema 3は`headless-core-duel-state-v1`だけを受理し、schema 1／2を変更しない
+  - Godot UI／preview query projection／formal simulator／playable claimは対象外
 
 ## Open human evidence
 
@@ -61,17 +59,18 @@ Apply DECISION-0006 Option 1 as a canonical starter 6-type／12-card recipe and 
 - [[TASK-0035 Implement Starter Stone Card Effects]] — PR #25 merged／post-merge CI green
 - [[TASK-0036 Implement Starter Reinforce Effect]] — PR #26 merged／post-merge CI green
 - [[TASK-0037 Implement Bandit Intent Planning and Execution]] — PR #27 merged at `e98ac90`／post-merge CI green
+- [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — PR #28 merged at `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge CI green
 
-## Next after TASK-0038
+## Next after TASK-0039
 
-- Human review／merge of TASK-0038 after fixed-HEAD approval and green CI.
-- [[TASK-0039 Integrate Headless Core Duel and Replay]] becomes the next implementation task only after TASK-0038 is done.
-- TASK-0040〜0042 remain blocked and advance only in dependency order.
+- Human review／merge of TASK-0039 after fixed-HEAD approval and green CI.
+- [[TASK-0040 Implement Core Duel Preview Queries]] becomes the next implementation task only after TASK-0039 is done.
+- TASK-0041〜0042 remain blocked and advance only in dependency order.
 
 ## Implementation review questions
 
-- Does `game_data/content/starting_decks.json` encode the exact six-ID／12-card multiset and reject malformed recipes fail-closed?
-- Is the recipe canonical projection stable across JSON key／input enumeration order and bound into the content hash?
-- Does Development reuse the authorized facility build command and existing territory／capacity／duplicate checks without a second facility rule?
-- Are rejected Development plays exact no-ops for resources、zones、and facility state?
-- Are non-Development facility cards unreachable in the M2 starter scope?
+- Does the aggregate keep board、runtime、deck／hand／qi、RNG、resources、Bandit plans、and one outer log exact-bound at every phase?
+- Is the initial intent planned before the first player-turn start and kept fixed through the player window, while mandatory override preview remains a query-only no-op?
+- Do fixed win、loss、and restart paths reproduce state、facts、accepted-only log、terminal、and replay bytes?
+- Does schema 3 reject cross-version input、tamper、unknown low-level commands、oversized input、and excessive attempts without changing schema 1／2?
+- Are Godot UI、formal simulator、and gameplay-fun claims still excluded?

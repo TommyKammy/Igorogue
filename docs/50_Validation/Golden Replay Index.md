@@ -39,10 +39,12 @@ M1では仕様checkerだけで完了とせず、共有Rules Kernelのunit eviden
 
 - `tests/golden/v1/board_fixture_cases.json`は`headless-battle-state-v1`／replay schema 1の既存正本であり、TASK-0029では内容を変更しない。SHA-256は`b3e62c12574746233e1d829e4f30fcc179559cae017fcdd707a656e63b01655d`。
 - `tests/golden/v2/temporary_liberty_cases.json`は`headless-battle-state-v2`／replay schema 2のTLE-01〜15 Application evidence。PR #22 review前artifactのcatalog SHA-256は`9f6486d9776ec05a0c6972f6fdb1ab6dfc49cdd5c653b05831a83216dea8d180`。
+- `tests/golden/v3/core_duel_turn_limit_loss.json`は`headless-core-duel-state-v1`／replay schema 3のCore Duel Application evidence。resolved 12-card recipe、seed `39039`、content hash `sha256:aa26362f6c4b1cdc9c8dc9336654bd20fe5379f622eef3fa992257db62d86832`をbindし、starter card play → player turn end → Bandit action → turn-limit lossを固定する。artifact SHA-256は`148d445842ba1dac19a4eca504c8fbf5ca835448726303160abe95f9a4c0ac08`。
 - [[DECISION-0008 Align Reinforce Content Order with FEAT-011]]後のactive catalog SHA-256は`95902daeb788692ae704dc01f902d2e7ed1012fc31e4f1286421b716f1a84442`、content hashは`sha256:cd53980e2edd69ad14b3815c800a3c5aab119f21d95d724d083afa2920c15ad6`、cards source SHA-256は`676f0ba1364d344dab2cf08ec2e0262ad74e43176339cceaaa051eb7da85e813`。TLE source fixture SHA-256は`9f9a74ee9e1407c2b0882b6ccd1aa86ae950dd750fb0bfb4bc3bf12faae20e60`のまま。
-- schema 1はlegacy state v1だけ、schema 2はauthoritative state v2だけを受理する。両方向のprojection混入をfail-closedで拒否し、各schemaのvalid serialized bytesを共有しない。
+- schema 1はlegacy state v1だけ、schema 2はauthoritative state v2だけ、schema 3はCore Duel state v1だけを受理する。schema 3は`PlayCard`、`EndPlayerTurn`、`ResolveBanditEnemyAction`、`RestartBattle`の高位commandだけを記録し、内部placement／pass／facility commandを露出しない。全schema間のprojection混入をfail-closedで拒否し、各schemaのvalid serialized bytesを共有しない。
 - TLE v2はcanonical initial snapshot、通常Application command、各attempt boundary、ordered facts、terminal resultを固定する。TLE-12のmandatory expiry領地は`temporary_liberty_expiry` sourceかつimplicit Momentum非対象として記録する。
 - TLE v2のclaimはMomentum event 0、Brilliant event 0、CTR-01〜25 coverage 0。`tools/dev/sim-smoke`のchecksumをformal board evidenceへ流用しない。
+- Core Duel v3はheadless Rules KernelのE3 mechanical evidenceであり、formal simulator、操作可能なGodot graybox、fun validationを主張しない。
 
 ## M3への移植元
 
