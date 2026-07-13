@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0034
-status: in_progress
+status: review
 project: Igorogue
 milestone: M2
 priority: critical
@@ -67,6 +67,8 @@ starter candidateの残りはTASK-0035／0036。player-action window capture ben
 
 2026-07-13 — accepted、12 rejection境界、stale state／log、simultaneous capture、facility-point、territory／facility reassociation、repetition、terminal king capture／terminal後拒否、turn-end discard、content authority、same-input fact payload／state／log checksumをDomain／Application／Architecture testsで固定した。`tools/dev/check`、`tools/dev/build`、`tools/dev/test`、`tools/dev/sim-smoke`はすべてexit 0。
 
+2026-07-13 — independent Codex taskがbase `9fe6c6323a24bed59d5ff731ad770afd68958868`からfixed HEAD `750c46a37c9711ef62b33562a8a819ffd0c859af`を`CODE_REVIEW.md`に従って再監査。actionable findingなし、decision `APPROVE`。本TASKを`review`へ遷移し、TASK-0035は本TASKのhuman mergeまで`blocked`を維持する。
+
 ## Evidence
 
 - PR #23 merge commit `9fe6c6323a24bed59d5ff731ad770afd68958868`／post-merge main CI run `29215583244`全3 job success。
@@ -74,3 +76,4 @@ starter candidateの残りはTASK-0035／0036。player-action window capture ben
 - `tools/dev/build` — exit 0、warning 0、error 0、exact .NET SDK `8.0.422`。
 - `tools/dev/test` — exit 0。Domain 314、Application 124、Architecture 58、合計496 tests、failure 0、skip 0。
 - `tools/dev/sim-smoke` — exit 0。checksum `5f943a3cbc6847a14e841612c57d2d2cf4aef78d8b7441c0ff4d8b279113625c`、content hash `sha256:cd53980e2edd69ad14b3815c800a3c5aab119f21d95d724d083afa2920c15ad6`、7 files。
+- Independent fixed-HEAD review：`750c46a37c9711ef62b33562a8a819ffd0c859af`、actionable finding 0、`APPROVE`。

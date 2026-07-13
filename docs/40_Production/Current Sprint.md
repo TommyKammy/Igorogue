@@ -9,13 +9,14 @@ sprint: S0
 
 ## Goal
 
-Implement and review TASK-0034's atomic `card_basic_stone` PlayCard vertical proof without selecting the unresolved starter recipe.
+Review and merge TASK-0034's atomic `card_basic_stone` PlayCard vertical proof without selecting the unresolved starter recipe.
 
-## In progress
+## In review
 
 - [[TASK-0034 Implement Atomic Basic Stone Card Play]]
   - bind card instance、Canonical target、explicit mode、qi cost、existing placement pipeline
   - accepted-only log／facts and exact no-op rejection; replay schema remains deferred
+  - fixed-HEAD independent review approved; awaiting PR review／human merge
 
 ## Open human evidence
 
