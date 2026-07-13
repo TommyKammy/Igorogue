@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]]はPR #28でmerge、post-merge main CI green。[[TASK-0039 Integrate Headless Core Duel and Replay]]はresolved 12-card recipe、starter card play、Bandit intent、win／loss／restartを単一headless aggregateとreplay schema 3へ接続し、607 testsとfixed source HEAD reviewを通過してCI／human merge待ち。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
+> [[TASK-0039 Integrate Headless Core Duel and Replay]]はPR #29でmergeされ、post-merge main CI全3 job green。[[TASK-0040 Implement Core Duel Preview Queries]]は選択cardの合法点／mode、capture、呼吸点、領地／施設差分、王石risk、Bandit intentを同じauthoritative command kernelからread-only projectionとして公開し、625 tests、fixed source HEADの3系統独立review、Draft PR #30 CI全3 jobを通過してhuman merge待ち。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
 
 > [!success] 実装ゲート
 > Gate 1は完了。Gate 2はTASK-0031の計画closeout後、typed contentからGodot graybox／UATまでを依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -98,7 +98,8 @@ cssclasses:
 - [[TASK-0036 Implement Starter Reinforce Effect]] — done
 - [[TASK-0037 Implement Bandit Intent Planning and Execution]] — done
 - [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — done
-- [[TASK-0039 Integrate Headless Core Duel and Replay]] — review／current; CI／human merge pending
+- [[TASK-0039 Integrate Headless Core Duel and Replay]] — done
+- [[TASK-0040 Implement Core Duel Preview Queries]] — review／current; PR #30 CI green／human merge pending
 
 ## Latest design repairs
 
