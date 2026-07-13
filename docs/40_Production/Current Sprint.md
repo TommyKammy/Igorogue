@@ -21,6 +21,7 @@ Apply DECISION-0006 Option 1 as a canonical starter 6-type／12-card recipe and 
   - keep Headless Core Duel／replay composition deferred to TASK-0039
   - 592-test candidate、content／Application／documentation pre-closeout reviews approved
   - fixed source HEAD `cd476d1` approved by independent Content、Application／Domain、documentation reviews
+  - Draft PR #28 CI run `29243465009` succeeded across all 3 jobs; human merge pending
 
 ## Open human evidence
 

@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0037 Implement Bandit Intent Planning and Execution]]はPR #27でmerge、post-merge main CI green。[[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] Option 1に従う[[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]]のstarter 6種類／12枚recipeと開拓1種限定facility integrationは実装／fixed-HEAD review済みで、CI／human merge待ち。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
+> [[TASK-0037 Implement Bandit Intent Planning and Execution]]はPR #27でmerge、post-merge main CI green。[[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] Option 1に従う[[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]]のstarter 6種類／12枚recipeと開拓1種限定facility integrationは実装／fixed-HEAD review／PR #28 CI済みで、human merge待ち。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
 
 > [!success] 実装ゲート
 > Gate 1は完了。Gate 2はTASK-0031の計画closeout後、typed contentからGodot graybox／UATまでを依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。

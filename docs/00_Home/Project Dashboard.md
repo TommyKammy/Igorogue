@@ -81,6 +81,6 @@ Apply DECISION-0006 Option 1 as a deterministic starter 6-type／12-card recipe 
 
 ## Next
 
-1. Complete Draft PR CI and human merge for fixed-HEAD-approved [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]]
+1. Complete human review／merge of green Draft PR #28 for [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]]
 2. Keep Headless Core Duel／replay composition deferred to TASK-0039
 3. Advance TASK-0039〜0042 only in dependency order after TASK-0038 human merge
