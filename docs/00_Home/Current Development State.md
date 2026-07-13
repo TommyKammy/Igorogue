@@ -17,7 +17,7 @@ updated: 2026-07-14
 | Repository bootstrap | complete | TASK-0022 runtime evidence + CI |
 | .NET build/test | proven on macOS and CI | locked restore + xUnit |
 | Godot headless/export | proven on macOS and CI | smoke + managed Windows export |
-| Playable Godot graybox | in progress | TASK-0041 implemented; 653 tests／smoke／export green, human visual review pending |
+| Playable Godot graybox | in progress | TASK-0041 implemented; 653 tests／smoke／export and PR #31 CI green, human visual review pending |
 | Product Rules Kernel | M1 technical exit `PASS` | TASK-0027〜0030 done; PR #20 merged／CI green |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
