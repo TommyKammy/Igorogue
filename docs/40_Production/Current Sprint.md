@@ -20,7 +20,7 @@ Expose selected-card legality、capture、liberty／atari、territory／facility
   - stored normal／bonus intentとexisting mandatory overrideだけを投影し、full counterattack予測は行わない
   - parity、read-only、stale state／log、canonical enumeration、architecture evidenceを625 testsと全wrapper成功で固定済み
   - fixed source HEAD `ab600cd53e7fafa5976b1a381a4a19e672097977`の3系統independent reviewはfindingなしで全て`APPROVE`
-  - draft PR CI／human review／merge pending
+  - Draft PR #30 CI run `29256594790`は全3 job success、human review／merge pending
 
 ## Open human evidence
 
@@ -65,7 +65,7 @@ Expose selected-card legality、capture、liberty／atari、territory／facility
 
 ## Next after TASK-0040
 
-- Complete draft PR CI and human review／merge of TASK-0040.
+- Complete human review／merge of TASK-0040 Draft PR #30.
 - [[TASK-0041 Build Playable Godot Core Duel Graybox]] becomes the next implementation task only after TASK-0040 is done.
 - TASK-0042 remains blocked and advances only after TASK-0041.
 
