@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0035
-status: in_progress
+status: review
 project: Igorogue
 milestone: M2
 priority: high
@@ -71,6 +71,8 @@ PlayCardからactual enemy turn／replayまでのfull compositionはTASK-0039が
 
 2026-07-13 — accepted／rejected／terminal／simultaneous capture／facility／territory回帰に加え、Extend閾値とdiscard reshuffle RNG、Contact両色隣接／影響group限定、Lure二段階capture lifetime／king suppression、catalog／runtime／board列挙反転をE3 testで固定した。precommit independent reviewの途中でtest-only RNG property誤記と1枚reshuffle非消費caseを修正し、再reviewはfindingなし、`APPROVE`。fixed-HEAD reviewはimplementation commit後に行う。
 
+2026-07-13 — independent fixed-HEAD reviewがimplementation commit `2fe41322709b7e8f9cfe72932abc9e1dc53949b6`をbase `69d686a5268c127d5ea2c3d3a6b0508b7d56b83c`と比較。全Acceptance、accepted specs、runtime identity、exact no-op、terminal、determinism、scopeを再検証し、actionable findingなし、`APPROVE`。全wrapper greenのため本TASKを`review`へ遷移した。
+
 ## Evidence
 
 - PR #24 merge commit `69d686a5268c127d5ea2c3d3a6b0508b7d56b83c`／post-merge main CI run `29219574281`全3 job success。
@@ -81,4 +83,6 @@ PlayCardからactual enemy turn／replayまでのfull compositionはTASK-0039が
 - `tools/dev/test` — exit 0。.NET SDK 8.0.422、Domain 318、Application 137、Architecture 58、計513 tests、warning 0／error 0。
 - `tools/dev/sim-smoke` — exit 0、`checksum=5f943a3cbc6847a14e841612c57d2d2cf4aef78d8b7441c0ff4d8b279113625c`。bootstrap determinism evidenceとしてのみ使用。
 - `tools/dev/build` — exit 0、warning 0／error 0。`git diff --check` — exit 0。
-- independent precommit review — test-only defects修正後actionable findingなし、`APPROVE`。required fixed-HEAD reviewはcommit後に実施する。
+- independent precommit review — test-only defects修正後actionable findingなし、`APPROVE`。
+- implementation commit `2fe41322709b7e8f9cfe72932abc9e1dc53949b6` — typed starter-stone projection、shared runtime placement、Extend／Contact／Lure atomic effects、determinism／lifetime evidence。
+- independent fixed-HEAD review — `2fe41322709b7e8f9cfe72932abc9e1dc53949b6`、base `69d686a5268c127d5ea2c3d3a6b0508b7d56b83c`、actionable findingなし、`APPROVE`。

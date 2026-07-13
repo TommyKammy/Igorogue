@@ -12,7 +12,7 @@ updated: 2026-07-13
 
 ## Sprint goal
 
-Implement TASK-0035's typed starter stone effects without resolving DECISION-0006 or TASK-0039 headless composition.
+Review and merge TASK-0035's typed starter stone effects without resolving DECISION-0006 or TASK-0039 headless composition.
 
 ## Health
 
@@ -72,10 +72,10 @@ Implement TASK-0035's typed starter stone effects without resolving DECISION-000
 - [[TASK-0032 Implement Typed Core Duel Content Catalog]] — done; PR #22 merge／post-merge CI green
 - [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — done; PR #23 merge／post-merge CI green
 - [[TASK-0034 Implement Atomic Basic Stone Card Play]] — done; PR #24 merge／post-merge CI green
-- [[TASK-0035 Implement Starter Stone Card Effects]] — in progress／current
+- [[TASK-0035 Implement Starter Stone Card Effects]] — review／current; fixed-HEAD independent review approved
 
 ## Next
 
-1. Implement／review／merge [[TASK-0035 Implement Starter Stone Card Effects]]
+1. Review／merge [[TASK-0035 Implement Starter Stone Card Effects]]
 2. Keep [[TASK-0036 Implement Starter Reinforce Effect]] blocked until TASK-0035 human merge
 3. Resolve [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] before TASK-0038 applies the default recipe／Development scope

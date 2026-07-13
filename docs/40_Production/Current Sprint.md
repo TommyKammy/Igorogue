@@ -9,14 +9,15 @@ sprint: S0
 
 ## Goal
 
-Implement and review TASK-0035's typed starter stone effects without selecting the unresolved starter recipe.
+Review and merge TASK-0035's typed starter stone effects without selecting the unresolved starter recipe.
 
-## In progress
+## In review
 
 - [[TASK-0035 Implement Starter Stone Card Effects]]
   - connect Extend／Contact／Lure typed operations to atomic PlayCard
   - exact-bound runtime sidecar and two-resolution lure capture lifetime proof
   - Headless／replay composition remains deferred to TASK-0039
+  - fixed-HEAD independent review approved; awaiting PR review／human merge
 
 ## Open human evidence
 
