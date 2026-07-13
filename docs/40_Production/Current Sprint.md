@@ -9,19 +9,17 @@ sprint: S0
 
 ## Goal
 
-Connect the resolved Core Duel recipe、starter-card turn、Bandit intent、terminal result、and restart through one deterministic headless aggregate and replay schema 3.
+Expose selected-card legality、capture、liberty／atari、territory／facility delta、king risk、and Bandit intent from the authoritative Core Duel aggregate without a second rules implementation.
 
-## In review
+## In progress
 
-- [[TASK-0039 Integrate Headless Core Duel and Replay]]
-  - dependency TASK-0038 is done through PR #28 merge `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge CI run `29247035946`
-  - resolved 12-card recipeをcanonical physical instanceへ展開し、seed／content／initial snapshot／Banditをexact-bindする
-  - outer `CoreDuelBattleSession`だけがauthoritative command logを所有する
-  - PlayCard → EndPlayerTurn → Bandit action → next player turn／terminal／restartをApplication commandで接続する
-  - replay schema 3は`headless-core-duel-state-v1`だけを受理し、schema 1／2を変更しない
-  - Godot UI／preview query projection／formal simulator／playable claimは対象外
-  - repository wrappers 2巡、607 tests、win／loss／restart golden、fixed source HEADの3系統独立reviewが成功
-  - Draft PR CI／human review／merge pending
+- [[TASK-0040 Implement Core Duel Preview Queries]]
+  - dependency TASK-0039 is done through PR #29 merge `60d8cc5958e38768f4077ee2f4d686526d5b25fe`／post-merge CI run `29252298693`
+  - selected cardのCanonicalPoint／mode候補を同一immutable sessionからauthoritative command pathへ投機実行する
+  - capture、effective liberty／atari、territory／facility delta、result checksumをread-only DTOへ投影する
+  - stored normal／bonus intentとexisting mandatory overrideだけを投影し、full counterattack予測は行わない
+  - parity、read-only、stale state／log、canonical enumeration、architecture evidenceを625 testsと全wrapper成功で固定済み
+  - fixed source HEAD independent review待ち
 
 ## Open human evidence
 
@@ -62,17 +60,18 @@ Connect the resolved Core Duel recipe、starter-card turn、Bandit intent、term
 - [[TASK-0036 Implement Starter Reinforce Effect]] — PR #26 merged／post-merge CI green
 - [[TASK-0037 Implement Bandit Intent Planning and Execution]] — PR #27 merged at `e98ac90`／post-merge CI green
 - [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — PR #28 merged at `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge CI green
+- [[TASK-0039 Integrate Headless Core Duel and Replay]] — PR #29 merged at `60d8cc5958e38768f4077ee2f4d686526d5b25fe`／post-merge CI green
 
-## Next after TASK-0039
+## Next after TASK-0040
 
-- Human review／merge of TASK-0039 after fixed-HEAD approval and green CI.
-- [[TASK-0040 Implement Core Duel Preview Queries]] becomes the next implementation task only after TASK-0039 is done.
-- TASK-0041〜0042 remain blocked and advance only in dependency order.
+- Complete fixed-HEAD review、CI、and human review／merge of TASK-0040.
+- [[TASK-0041 Build Playable Godot Core Duel Graybox]] becomes the next implementation task only after TASK-0040 is done.
+- TASK-0042 remains blocked and advances only after TASK-0041.
 
 ## Implementation review questions
 
-- Does the aggregate keep board、runtime、deck／hand／qi、RNG、resources、Bandit plans、and one outer log exact-bound at every phase?
-- Is the initial intent planned before the first player-turn start and kept fixed through the player window, while mandatory override preview remains a query-only no-op?
-- Do fixed win、loss、and restart paths reproduce state、facts、accepted-only log、terminal、and replay bytes?
-- Does schema 3 reject cross-version input、tamper、unknown low-level commands、oversized input、and excessive attempts without changing schema 1／2?
-- Are Godot UI、formal simulator、and gameplay-fun claims still excluded?
+- Does every card candidate call the existing exact-bound command path without mutating the source session、RNG、log、or first-use state?
+- Are canonical point／mode order、stable rejection reasons、accepted checksums、capture／territory／facility deltas、and effective-liberty projections exact?
+- Does the battle projection expose only presentation-neutral snapshots while preserving stored normal／bonus intent and avoiding future-retarget prediction?
+- Do stale state／log requests fail closed without returning renderable board、hand、or risk data?
+- Are Godot rendering、Momentum／Brilliant、full counterattack preview、and player-visible rule changes still excluded?

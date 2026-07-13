@@ -35,7 +35,7 @@ updated: 2026-07-13
 
 ## Current gate
 
-[[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] was merged through PR #28 at main merge commit `6f84adcbc0b1deb70944e82648009eb53e1429a4`; post-merge main CI run `29247035946` is green across all 3 jobs. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] is resolved by owner-selected Option 1: M2 uses a starter 6-type／12-card recipe and allows only `card_development` as a facility exception. [[TASK-0039 Integrate Headless Core Duel and Replay]] is now in review after connecting that resolved recipe, starter-card play, Bandit intent, battle lifecycle, restart, and replay schema 3 without changing replay v1／v2; fixed source HEAD review is approved and CI／human merge remain pending.
+[[TASK-0039 Integrate Headless Core Duel and Replay]] was merged through PR #29 at main merge commit `60d8cc5958e38768f4077ee2f4d686526d5b25fe`; post-merge main CI run `29252298693` is green across all 3 jobs. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] remains owner-selected Option 1. [[TASK-0040 Implement Core Duel Preview Queries]] is now in progress, projecting selected-card legality and result deltas from the merged aggregate without adding a second rules implementation.
 
 ## Next development sequence
 
@@ -66,8 +66,9 @@ updated: 2026-07-13
 25. TASK-0036 starter reinforce effect — done
 26. TASK-0037 Bandit intent — done
 27. TASK-0038 resolved starter recipe／Development scope — done
-28. TASK-0039 headless Core Duel／replay integration — review／current; CI／human merge pending
-29. TASK-0040〜0042 — blocked in dependency order
+28. TASK-0039 headless Core Duel／replay integration — done
+29. TASK-0040 Core Duel preview queries — in_progress／current
+30. TASK-0041〜0042 — blocked in dependency order
 
 ## Human-only evidence waiver
 

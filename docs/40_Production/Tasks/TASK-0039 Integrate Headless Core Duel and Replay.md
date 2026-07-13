@@ -1,7 +1,7 @@
 ---
 type: task
 id: TASK-0039
-status: review
+status: done
 project: Igorogue
 milestone: M2
 priority: critical
@@ -61,6 +61,8 @@ resolved M2 starter recipe、deck／hand／qi、starter card play、Bandit plann
 
 2026-07-13 — fixed source HEAD `eb23f3d4a955e190e55d958286d7cd19bdeb1c3e`をbase `6f84adcbc0b1deb70944e82648009eb53e1429a4`と比較。独立Battle／Application、replay／security、documentation／golden／architecture reviewはいずれもfindingなしで`APPROVE`。reviewer validationでは607 tests、governance、relevant smoke、golden SHA、clean worktreeを分担確認し、TASKをCI／human merge待ちの`review`へ遷移した。
 
+2026-07-13 — PR #29のhuman mergeを確認。source HEAD `afe3bc1ce64f4d4ebd240147053552ac1f848cae`はmain merge commit `60d8cc5958e38768f4077ee2f4d686526d5b25fe`へ取り込まれ、post-merge main CI run `29252298693`は全3 job success。dependency consumerであるTASK-0040を開始可能としてTASKを`done`へ遷移した。
+
 ## Evidence
 
 - PR #28 human merge／main merge commit `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge main CI run `29247035946`全3 job success。
@@ -72,3 +74,4 @@ resolved M2 starter recipe、deck／hand／qi、starter card play、Bandit plann
 - content snapshot `sha256:aa26362f6c4b1cdc9c8dc9336654bd20fe5379f622eef3fa992257db62d86832`（8 files）。sim／Godot smoke checksum `36ca153c20b82b2220c82b787c229d22f255fee7c42fed9c5ce7753ae0ff7bf1`。Windows debug export SHA-256 `68e6955b3d399ec1c181e13e975e7226c97645638ab3786c9ee5b5b2d567a656`。
 - Application → Content project reference、Godot型のDomain／Application導入、Godot scene／resource／project／export preset変更はいずれもなし。
 - fixed source HEAD `eb23f3d4a955e190e55d958286d7cd19bdeb1c3e`／base `6f84adcbc0b1deb70944e82648009eb53e1429a4`。独立Battle／Application、replay／security、documentation／golden／architecture reviewsはいずれもfindingなしで`APPROVE`。
+- PR #29 source HEAD `afe3bc1ce64f4d4ebd240147053552ac1f848cae`／main merge commit `60d8cc5958e38768f4077ee2f4d686526d5b25fe`／post-merge main CI run `29252298693`全3 job success。

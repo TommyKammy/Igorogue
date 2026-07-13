@@ -792,6 +792,104 @@ public sealed class ArchitectureBoundaryTests
     }
 
     [Fact]
+    public void Task0040PreviewQueryExposesOnlyTheBoundedEvaluateEntryPoints()
+    {
+        var cardEvaluate = RequirePublicStaticMethod(
+            typeof(CoreDuelBattlePreviewQuery),
+            nameof(CoreDuelBattlePreviewQuery.Evaluate),
+            typeof(CoreDuelBattleSession),
+            typeof(CoreDuelCardPreviewRequest));
+        var battleEvaluate = RequirePublicStaticMethod(
+            typeof(CoreDuelBattlePreviewQuery),
+            nameof(CoreDuelBattlePreviewQuery.Evaluate),
+            typeof(CoreDuelBattleSession),
+            typeof(CoreDuelBattlePreviewRequest));
+
+        Assert.Equal(typeof(CoreDuelCardPreviewResult), cardEvaluate.ReturnType);
+        Assert.Equal(typeof(CoreDuelBattlePreviewResult), battleEvaluate.ReturnType);
+        var publicMethods = typeof(CoreDuelBattlePreviewQuery).GetMethods(
+            BindingFlags.Public |
+            BindingFlags.Static |
+            BindingFlags.DeclaredOnly);
+        Assert.Equal(2, publicMethods.Length);
+        Assert.Contains(cardEvaluate, publicMethods);
+        Assert.Contains(battleEvaluate, publicMethods);
+    }
+
+    [Fact]
+    public void Task0040OutputPreviewDtosCannotBeForged()
+    {
+        var outputDtoTypes = new[]
+        {
+            typeof(CoreDuelEnemyTargetPreview),
+            typeof(CoreDuelIntentPreview),
+            typeof(CoreDuelMandatoryOverridePreview),
+            typeof(CoreDuelGroupPreview),
+            typeof(CoreDuelCapturedGroupPreview),
+            typeof(CoreDuelTerritoryPointDeltaPreview),
+            typeof(CoreDuelFacilityPreview),
+            typeof(CoreDuelFacilityDeltaPreview),
+            typeof(CoreDuelBlackKingRiskPreview),
+            typeof(CoreDuelAcceptedCardPlayPreview),
+            typeof(CoreDuelCardCandidatePreview),
+            typeof(CoreDuelCardPreviewResult),
+            typeof(CoreDuelBattlePreviewResult),
+            typeof(CoreDuelStonePreview),
+            typeof(CoreDuelBoardPointPreview),
+            typeof(CoreDuelCardInstancePreview),
+        };
+
+        Assert.All(
+            outputDtoTypes,
+            type => Assert.Empty(type.GetConstructors(
+                BindingFlags.Public | BindingFlags.Instance)));
+    }
+
+    [Fact]
+    public void Task0040ExportedPreviewDtoGraphLeaksNoHostContentOrRuntimeKernelTypes()
+    {
+        var publicGraph = QueryPreviewPublicSignatureGraph(
+                typeof(CoreDuelCardPreviewResult))
+            .Concat(QueryPreviewPublicSignatureGraph(
+                typeof(CoreDuelBattlePreviewResult)))
+            .Distinct()
+            .ToArray();
+        var forbiddenRuntimeTypes = new HashSet<Type>
+        {
+            typeof(BattleState),
+            typeof(CoreDuelBattleState),
+            typeof(BattleAuthoritativeRuntimeState),
+            typeof(StoneRuntimeState),
+            typeof(TemporaryLibertyState),
+            typeof(ContinuousLibertySnapshot),
+            typeof(StoneGroupAnalysis),
+            typeof(TemporaryLibertyEffectiveLibertyAnalysis),
+            typeof(PlacementLegalityEvaluation),
+            typeof(RuntimeStonePlacementEvaluation),
+            typeof(StarterStoneCardPlayEvaluation),
+            typeof(StarterReinforceCardPlayEvaluation),
+            typeof(StarterDevelopmentCardPlayEvaluation),
+            typeof(FacilityBuildEvaluation),
+            typeof(BanditExecutionDecision),
+            typeof(BanditPlacementCandidate),
+            typeof(TerritoryAnalysis),
+            typeof(FacilityRuntimeAnalysis),
+        };
+
+        var offenders = publicGraph
+            .Where(type =>
+                IsHostOrAmbientRuntimeType(type) ||
+                type.Assembly == typeof(ContentManifestLoader).Assembly ||
+                (type.Namespace?.StartsWith(
+                    "Igorogue.Domain.Content",
+                    StringComparison.Ordinal) ?? false) ||
+                forbiddenRuntimeTypes.Contains(type))
+            .ToArray();
+
+        Assert.Empty(offenders);
+    }
+
+    [Fact]
     public void Task0037EnemyKernelFactsStayInPureDomain()
     {
         Assert.All(
@@ -1088,6 +1186,40 @@ public sealed class ArchitectureBoundaryTests
                 yield return nestedType;
             }
         }
+    }
+
+    private static Type[] QueryPreviewPublicSignatureGraph(Type root)
+    {
+        var pending = new Queue<Type>();
+        var expandedOwners = new HashSet<Type>();
+        var signatureGraph = new HashSet<Type>();
+        pending.Enqueue(root);
+
+        while (pending.Count > 0)
+        {
+            var current = pending.Dequeue();
+            if (!expandedOwners.Add(current))
+            {
+                continue;
+            }
+
+            foreach (var signatureType in PublicSurfaceTypes(current)
+                         .SelectMany(ExpandSignatureType))
+            {
+                signatureGraph.Add(signatureType);
+                if (signatureType.Namespace?.StartsWith(
+                        "Igorogue.",
+                        StringComparison.Ordinal) == true &&
+                    !expandedOwners.Contains(signatureType))
+                {
+                    pending.Enqueue(signatureType);
+                }
+            }
+        }
+
+        return signatureGraph
+            .OrderBy(type => type.FullName, StringComparer.Ordinal)
+            .ToArray();
     }
 
     private static bool IsHostOrAmbientRuntimeType(Type type)

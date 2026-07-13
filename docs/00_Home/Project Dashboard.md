@@ -12,7 +12,7 @@ updated: 2026-07-13
 
 ## Sprint goal
 
-Connect the resolved Core Duel recipe, starter-card turn, Bandit intent, terminal result, and restart through one deterministic headless aggregate and replay schema 3.
+Expose selected-card legality and result deltas from the merged deterministic Core Duel aggregate through read-only, presentation-neutral queries.
 
 ## Health
 
@@ -27,7 +27,7 @@ Connect the resolved Core Duel recipe, starter-card turn, Bandit intent, termina
 
 ## Blockers
 
-- TASK-0039 has no open design／dependency blocker and is in review after fixed source HEAD approval. CI／human merge remain pending; TASK-0040〜0042 remain serially blocked by their immediate predecessor.
+- TASK-0040 has no open design／dependency blocker and is in progress after TASK-0039 merged through PR #29. TASK-0041〜0042 remain serially blocked by their immediate predecessor.
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] human evidence remains unverified, with Gate 2 progression separately authorized by DECISION-0007.
 
 ## Current evidence
@@ -78,10 +78,11 @@ Connect the resolved Core Duel recipe, starter-card turn, Bandit intent, termina
 - [[TASK-0037 Implement Bandit Intent Planning and Execution]] — done; PR #27 merge `e98ac90`／post-merge CI run `29237842140` green
 - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolved／Option 1
 - [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — done; PR #28 merge `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge CI run `29247035946` green
-- [[TASK-0039 Integrate Headless Core Duel and Replay]] — review; single authoritative aggregate、replay schema 3、win／loss／restart E3 evidence validated at fixed source HEAD
+- [[TASK-0039 Integrate Headless Core Duel and Replay]] — done; PR #29 merge `60d8cc5958e38768f4077ee2f4d686526d5b25fe`／post-merge CI run `29252298693` green
+- [[TASK-0040 Implement Core Duel Preview Queries]] — in_progress; immutable speculative command reuse and presentation DTO implementation underway
 
 ## Next
 
-1. Publish [[TASK-0039 Integrate Headless Core Duel and Replay]] as a draft PR、complete CI、and obtain human review／merge
-2. Keep Godot presentation／preview work out of TASK-0039
-3. Advance TASK-0040〜0042 only in dependency order after TASK-0039 human merge
+1. Complete [[TASK-0040 Implement Core Duel Preview Queries]] parity、read-only、stale、canonical-order evidence
+2. Keep Godot rendering and full counterattack prediction out of TASK-0040
+3. Advance TASK-0041〜0042 only in dependency order after TASK-0040 human merge

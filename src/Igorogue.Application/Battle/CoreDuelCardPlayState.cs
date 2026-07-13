@@ -65,7 +65,9 @@ public sealed class PlayCardCommand : IBattleCommand
                 "Unknown starter-stone placement mode.");
         }
 
-        CardInstanceId = ValidateStableId(cardInstanceId, nameof(cardInstanceId));
+        CardInstanceId = BattleCommandValidation.StableId(
+            cardInstanceId,
+            nameof(cardInstanceId));
         Target = target;
         PlacementMode = placementMode;
     }
@@ -91,21 +93,6 @@ public sealed class PlayCardCommand : IBattleCommand
         $"card_instance_id={CardInstanceId}\n" +
         $"target={Target.X.ToString(CultureInfo.InvariantCulture)},{Target.Y.ToString(CultureInfo.InvariantCulture)}\n" +
         $"placement_mode={PlacementModeId(PlacementMode)}\n";
-
-    private static string ValidateStableId(string value, string parameterName)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(value, parameterName);
-        if (value.Any(character =>
-                !char.IsAsciiLetterOrDigit(character) &&
-                character is not '.' and not '_' and not '-'))
-        {
-            throw new ArgumentException(
-                "Stable IDs may contain only ASCII letters, digits, '.', '_', or '-'.",
-                parameterName);
-        }
-
-        return value;
-    }
 
     private static string PlacementModeId(StoneCardPlacementMode? mode) => mode switch
     {
