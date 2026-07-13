@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 
 using Igorogue.Content;
+using Igorogue.Domain.Cards;
 using Igorogue.Domain.Content;
 
 namespace Igorogue.Architecture.Tests;
@@ -46,6 +47,23 @@ public sealed class CoreDuelContentCatalogLoaderTests
                 .Select(operation => operation.Kind)
                 .Distinct()
                 .Order());
+
+        var starterStones = StarterStoneCardPlayCatalog.FromCoreDuelCatalog(catalog);
+        Assert.Equal(
+            [
+                StarterStoneCardProfile.BasicPlacement,
+                StarterStoneCardProfile.Extend,
+                StarterStoneCardProfile.Contact,
+                StarterStoneCardProfile.Lure,
+            ],
+            starterStones.Definitions
+                .Select(definition => definition.Profile)
+                .Order());
+        Assert.Equal(
+            catalog.StarterCards
+                .Where(card => card.Type == CardContentType.Stone)
+                .Select(card => card.Id),
+            starterStones.Definitions.Select(definition => definition.ContentId));
 
         var extend = catalog.StarterCard("card_extend");
         Assert.Equal(

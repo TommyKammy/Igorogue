@@ -56,4 +56,66 @@ public sealed class QiChangedFact : IBattleFact
             "card_cost",
             StableDomainId.Validate(cardInstanceId, nameof(cardInstanceId)));
     }
+
+    public static QiChangedFact GainFromCardEffect(
+        int oldAmount,
+        int amount,
+        string cardInstanceId)
+    {
+        if (oldAmount < 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(oldAmount),
+                oldAmount,
+                "Old qi cannot be negative.");
+        }
+
+        if (amount <= 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(amount),
+                amount,
+                "Card-effect qi gain must be positive.");
+        }
+
+        var newAmount = checked(oldAmount + amount);
+        return new QiChangedFact(
+            oldAmount,
+            newAmount,
+            amount,
+            "card_effect_enemy_atari",
+            StableDomainId.Validate(cardInstanceId, nameof(cardInstanceId)));
+    }
+}
+
+public sealed class CardDrawnFact : IBattleFact
+{
+    private CardDrawnFact(
+        BattleCardInstance card,
+        string reasonId,
+        string sourceId)
+    {
+        Card = card;
+        ReasonId = reasonId;
+        SourceId = sourceId;
+    }
+
+    public BattleCardInstance Card { get; }
+
+    public string ReasonId { get; }
+
+    public string SourceId { get; }
+
+    public static CardDrawnFact FromCardEffect(
+        BattleCardInstance card,
+        string sourceCardInstanceId)
+    {
+        ArgumentNullException.ThrowIfNull(card);
+        return new CardDrawnFact(
+            card,
+            "card_effect_real_liberties",
+            StableDomainId.Validate(
+                sourceCardInstanceId,
+                nameof(sourceCardInstanceId)));
+    }
 }

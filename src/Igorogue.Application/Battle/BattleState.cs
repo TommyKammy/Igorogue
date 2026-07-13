@@ -142,7 +142,22 @@ public sealed class BattleState
         BattleRepetitionHistory repetitionHistory,
         FacilityState facilityState,
         AuthoritativeRngState rngState,
-        BattleRuntimePolicy runtimePolicy)
+        BattleRuntimePolicy runtimePolicy) =>
+        Start(
+            board,
+            repetitionHistory,
+            facilityState,
+            rngState,
+            runtimePolicy,
+            playerTurnIndex: 1);
+
+    internal static BattleState Start(
+        BoardState board,
+        BattleRepetitionHistory repetitionHistory,
+        FacilityState facilityState,
+        AuthoritativeRngState rngState,
+        BattleRuntimePolicy runtimePolicy,
+        int playerTurnIndex)
     {
         ArgumentNullException.ThrowIfNull(board);
         ArgumentNullException.ThrowIfNull(repetitionHistory);
@@ -169,7 +184,7 @@ public sealed class BattleState
             facilityRuntime,
             rngState,
             runtimePolicy,
-            1,
+            playerTurnIndex,
             BattlePhase.PlayerAction,
             BattleOutcome.Ongoing,
             BattleEndReason.None,
@@ -234,6 +249,39 @@ public sealed class BattleState
             phase,
             outcome,
             endReason,
+            null);
+    }
+
+    internal static BattleState RebindRng(
+        BattleState source,
+        AuthoritativeRngState rngState)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(rngState);
+        if (source.AuthoritativeRuntime is not null)
+        {
+            throw new ArgumentException(
+                "Legacy RNG rebind cannot replace authoritative runtime ownership.",
+                nameof(source));
+        }
+
+        if (ReferenceEquals(source.RngState, rngState))
+        {
+            return source;
+        }
+
+        return new BattleState(
+            source.Board,
+            source.RepetitionHistory,
+            source.FacilityState,
+            source.TerritoryAnalysis,
+            source.FacilityRuntimeAnalysis,
+            rngState,
+            source.RuntimePolicy,
+            source.PlayerTurnIndex,
+            source.Phase,
+            source.Outcome,
+            source.EndReason,
             null);
     }
 

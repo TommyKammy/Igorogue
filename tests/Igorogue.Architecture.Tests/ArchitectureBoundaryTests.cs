@@ -200,6 +200,7 @@ public sealed class ArchitectureBoundaryTests
             typeof(TemporaryLibertyExpirySweepResolvedFact),
             typeof(CaptureBatchStartedFact),
             typeof(QiChangedFact),
+            typeof(CardDrawnFact),
             typeof(TurnReservedDrawChangedFact),
             typeof(TurnReservedQiChangedFact),
             typeof(SoulChangedFact),
@@ -441,13 +442,17 @@ public sealed class ArchitectureBoundaryTests
     }
 
     [Fact]
-    public void Task0028DomainDoesNotInterpretContentIdsOrClaimDeferredSystems()
+    public void Task0028CombatKernelDoesNotInterpretContentIdsOrClaimDeferredSystems()
     {
         var root = FindRepositoryRoot();
-        var domainRoot = Path.Combine(root.FullName, "src", "Igorogue.Domain");
+        var task0028Root = Path.Combine(
+            root.FullName,
+            "src",
+            "Igorogue.Domain",
+            "Combat");
         var sourceText = string.Join(
             '\n',
-            Directory.EnumerateFiles(domainRoot, "*.cs", SearchOption.AllDirectories)
+            Directory.EnumerateFiles(task0028Root, "*.cs", SearchOption.AllDirectories)
                 .OrderBy(path => path, StringComparer.Ordinal)
                 .Select(File.ReadAllText));
 
@@ -554,17 +559,14 @@ public sealed class ArchitectureBoundaryTests
     }
 
     [Fact]
-    public void Task0034PlayCardUsesAStandaloneCommandSessionAndSharedBattleFacts()
+    public void Task0034And0035PlayCardUsesAStandaloneCommandSessionAndSharedBattleFacts()
     {
         var start = RequirePublicStaticMethod(
             typeof(CoreDuelCardPlayStateMachine),
             nameof(CoreDuelCardPlayStateMachine.Start),
-            typeof(BoardState),
-            typeof(BattleRepetitionHistory),
-            typeof(FacilityState),
-            typeof(BattleRuntimePolicy),
+            typeof(BattleAuthoritativeInitialSnapshot),
             typeof(CoreDuelCardTurnState),
-            typeof(BasicStoneCardPlayDefinition),
+            typeof(StarterStoneCardPlayCatalog),
             typeof(ReplayMetadata));
         var execute = RequirePublicStaticMethod(
             typeof(CoreDuelCardPlayStateMachine),
@@ -576,28 +578,51 @@ public sealed class ArchitectureBoundaryTests
         Assert.Equal(typeof(CoreDuelCardPlayResult), execute.ReturnType);
         Assert.True(typeof(IBattleCommand).IsAssignableFrom(typeof(PlayCardCommand)));
         Assert.True(typeof(IBattleFact).IsAssignableFrom(typeof(QiChangedFact)));
+        Assert.True(typeof(IBattleFact).IsAssignableFrom(typeof(CardDrawnFact)));
         Assert.Contains(
             typeof(CoreDuelCardPlayState).GetProperties(),
-            property => property.PropertyType == typeof(BasicStoneCardPlayDefinition));
+            property => property.PropertyType == typeof(StarterStoneCardPlayCatalog));
+        Assert.Contains(
+            typeof(CoreDuelCardPlayState).GetProperties(),
+            property => property.PropertyType == typeof(BattleAuthoritativeRuntimeState));
         Assert.DoesNotContain(
             typeof(PlayCardCommand).GetProperties(),
-            property => property.PropertyType == typeof(BasicStoneCardPlayDefinition));
+            property => property.PropertyType == typeof(StarterStoneCardPlayDefinition) ||
+                property.PropertyType == typeof(StarterStoneCardPlayCatalog));
         Assert.Empty(typeof(CoreDuelCardPlayState).GetConstructors());
         Assert.Empty(typeof(CoreDuelCardPlaySession).GetConstructors());
         Assert.Empty(typeof(CoreDuelCardPlayResult).GetConstructors());
         Assert.Empty(typeof(QiChangedFact).GetConstructors());
+        Assert.Empty(typeof(CardDrawnFact).GetConstructors());
+        Assert.Empty(typeof(StarterStoneCardPlayDefinition).GetConstructors());
+        Assert.Empty(typeof(StarterStoneCardPlayCatalog).GetConstructors());
+        Assert.Empty(typeof(StarterStoneCardPlayEvaluation).GetConstructors());
+        Assert.Empty(typeof(ReservedDrawCardEffectResolution).GetConstructors());
 
         var applicationAssembly = typeof(CoreDuelCardPlayStateMachine).Assembly;
         Assert.NotNull(applicationAssembly.GetType(
             "Igorogue.Application.Battle.AuthorizedStonePlacementPipeline"));
         Assert.False(applicationAssembly.GetType(
             "Igorogue.Application.Battle.AuthorizedStonePlacementPipeline")!.IsPublic);
+        Assert.NotNull(applicationAssembly.GetType(
+            "Igorogue.Application.Battle.AuthorizedRuntimeStonePlacementPipeline"));
+        Assert.False(applicationAssembly.GetType(
+            "Igorogue.Application.Battle.AuthorizedRuntimeStonePlacementPipeline")!.IsPublic);
+        Assert.NotNull(applicationAssembly.GetType(
+            "Igorogue.Application.Battle.StarterStonePlacementEffectAnalysis"));
+        Assert.False(applicationAssembly.GetType(
+            "Igorogue.Application.Battle.StarterStonePlacementEffectAnalysis")!.IsPublic);
     }
 
     [Fact]
-    public void Task0034DoesNotConnectCardPlayToExistingBattleOrReplayProjections()
+    public void Task0034And0035DoNotConnectCardPlayToExistingBattleHeadlessOrReplayProjections()
     {
-        var forbiddenType = typeof(CoreDuelCardPlayState);
+        var forbiddenTypes = new[]
+        {
+            typeof(CoreDuelCardPlayState),
+            typeof(StarterStoneCardPlayCatalog),
+            typeof(StarterStoneCardPlayDefinition),
+        };
         var replaySurface = typeof(BattleReplayDocumentV2).Assembly
             .GetExportedTypes()
             .Where(type => type.Namespace == typeof(BattleReplayDocumentV2).Namespace)
@@ -605,18 +630,21 @@ public sealed class ArchitectureBoundaryTests
             .SelectMany(ExpandSignatureType)
             .ToArray();
 
-        Assert.DoesNotContain(forbiddenType, replaySurface);
-        Assert.DoesNotContain(
-            typeof(BattleState).GetProperties(
-                BindingFlags.Public | BindingFlags.Instance),
-            property => property.PropertyType == forbiddenType);
-        Assert.DoesNotContain(
-            typeof(HeadlessBattleSession).GetProperties(
-                BindingFlags.Public | BindingFlags.Instance),
-            property => property.PropertyType == forbiddenType);
+        Assert.All(forbiddenTypes, forbiddenType =>
+        {
+            Assert.DoesNotContain(forbiddenType, replaySurface);
+            Assert.DoesNotContain(
+                typeof(BattleState).GetProperties(
+                    BindingFlags.Public | BindingFlags.Instance),
+                property => property.PropertyType == forbiddenType);
+            Assert.DoesNotContain(
+                typeof(HeadlessBattleSession).GetProperties(
+                    BindingFlags.Public | BindingFlags.Instance),
+                property => property.PropertyType == forbiddenType);
+        });
 
         var root = FindRepositoryRoot();
-        var sourceText = string.Join(
+        var productionSourceText = string.Join(
             '\n',
             new[]
             {
@@ -625,7 +653,7 @@ public sealed class ArchitectureBoundaryTests
                     "src",
                     "Igorogue.Domain",
                     "Cards",
-                    "BasicStoneCardPlayDefinition.cs"),
+                    "StarterStoneCardPlayDefinition.cs"),
                 Path.Combine(
                     root.FullName,
                     "src",
@@ -633,8 +661,46 @@ public sealed class ArchitectureBoundaryTests
                     "Battle",
                     "CoreDuelCardPlayState.cs"),
             }.Select(File.ReadAllText));
-        Assert.DoesNotContain("card_basic_stone", sourceText, StringComparison.Ordinal);
-        Assert.DoesNotContain("game_data/", sourceText, StringComparison.Ordinal);
+        Assert.All(
+            new[]
+            {
+                "card_basic_stone",
+                "card_extend",
+                "card_contact",
+                "card_lure_stone",
+            },
+            contentId => Assert.DoesNotContain(
+                contentId,
+                productionSourceText,
+                StringComparison.Ordinal));
+        Assert.DoesNotContain(
+            "game_data/",
+            productionSourceText,
+            StringComparison.Ordinal);
+
+        var existingBattleAndReplaySourceText = string.Join(
+            '\n',
+            Directory.EnumerateFiles(
+                    Path.Combine(root.FullName, "src", "Igorogue.Application", "Replay"),
+                    "*.cs",
+                    SearchOption.AllDirectories)
+                .Concat(Directory.EnumerateFiles(
+                    Path.Combine(root.FullName, "src", "Igorogue.Application", "Battle"),
+                    "HeadlessBattle*.cs",
+                    SearchOption.TopDirectoryOnly))
+                .OrderBy(path => path, StringComparer.Ordinal)
+                .Select(File.ReadAllText));
+        Assert.All(
+            new[]
+            {
+                nameof(CoreDuelCardPlayState),
+                nameof(StarterStoneCardPlayCatalog),
+                nameof(StarterStoneCardPlayDefinition),
+            },
+            typeName => Assert.DoesNotContain(
+                typeName,
+                existingBattleAndReplaySourceText,
+                StringComparison.Ordinal));
     }
 
     [Fact]

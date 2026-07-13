@@ -6,8 +6,8 @@ using Igorogue.Application.Replay;
 using Igorogue.Domain.Board;
 using Igorogue.Domain.Cards;
 using Igorogue.Domain.Combat;
+using Igorogue.Domain.Content;
 using Igorogue.Domain.Determinism;
-using Igorogue.Domain.Facilities;
 
 namespace Igorogue.Application.Battle;
 
@@ -18,7 +18,7 @@ public sealed class PlayCardCommand : IBattleCommand
         string expectedLogChecksum,
         string cardInstanceId,
         CanonicalPoint target,
-        BasicStoneCardPlacementMode placementMode)
+        StoneCardPlacementMode placementMode)
     {
         ExpectedStateChecksum = BattleCommandValidation.CanonicalChecksum(
             expectedStateChecksum,
@@ -32,7 +32,7 @@ public sealed class PlayCardCommand : IBattleCommand
             throw new ArgumentOutOfRangeException(
                 nameof(placementMode),
                 placementMode,
-                "Unknown basic-stone placement mode.");
+                "Unknown starter-stone placement mode.");
         }
 
         CardInstanceId = ValidateStableId(cardInstanceId, nameof(cardInstanceId));
@@ -52,7 +52,7 @@ public sealed class PlayCardCommand : IBattleCommand
 
     public CanonicalPoint Target { get; }
 
-    public BasicStoneCardPlacementMode PlacementMode { get; }
+    public StoneCardPlacementMode PlacementMode { get; }
 
     public string ToCanonicalPayload() =>
         "play-card-v1\n" +
@@ -77,33 +77,52 @@ public sealed class PlayCardCommand : IBattleCommand
         return value;
     }
 
-    private static string PlacementModeId(BasicStoneCardPlacementMode mode) => mode switch
+    private static string PlacementModeId(StoneCardPlacementMode mode) => mode switch
     {
-        BasicStoneCardPlacementMode.Frontline => "frontline",
-        BasicStoneCardPlacementMode.TerminalCapture => "terminal_capture",
+        StoneCardPlacementMode.Frontline => "frontline",
+        StoneCardPlacementMode.Contact => "contact",
+        StoneCardPlacementMode.TerminalCapture => "terminal_capture",
         _ => throw new InvalidOperationException("Command contains an unknown placement mode."),
     };
 }
 
 public sealed class CoreDuelCardPlayState
 {
-    public const string EncodingVersion = "core-duel-card-play-state-v1";
+    public const string EncodingVersion = "core-duel-card-play-state-v2";
 
     private CoreDuelCardPlayState(
         string contentHash,
         BattleState battleState,
+        BattleAuthoritativeRuntimeState runtimeState,
         CoreDuelCardTurnState cardTurnState,
-        BasicStoneCardPlayDefinition definition)
+        StarterStoneCardPlayCatalog definitions)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(contentHash);
         ArgumentNullException.ThrowIfNull(battleState);
+        ArgumentNullException.ThrowIfNull(runtimeState);
         ArgumentNullException.ThrowIfNull(cardTurnState);
-        ArgumentNullException.ThrowIfNull(definition);
+        ArgumentNullException.ThrowIfNull(definitions);
         if (battleState.AuthoritativeRuntime is not null)
         {
             throw new ArgumentException(
-                "TASK-0034 card play is a standalone legacy-placement proof; authoritative composition belongs to TASK-0039.",
+                "Starter-card play keeps its authoritative runtime as a detached sidecar until TASK-0039.",
                 nameof(battleState));
+        }
+
+        if (!ReferenceEquals(runtimeState.StoneRuntimeState.SourceBoard, battleState.Board))
+        {
+            throw new ArgumentException(
+                "Card-play runtime must belong to the exact legacy battle board snapshot.",
+                nameof(runtimeState));
+        }
+
+        if (!ReferenceEquals(
+                runtimeState.ClosedWindowResources,
+                cardTurnState.ClosedWindowResources))
+        {
+            throw new ArgumentException(
+                "Card-turn and runtime sidecar must share the exact resource snapshot.",
+                nameof(cardTurnState));
         }
 
         if (!battleState.RngState.Equals(cardTurnState.RngState))
@@ -113,10 +132,19 @@ public sealed class CoreDuelCardPlayState
                 nameof(cardTurnState));
         }
 
+        if (runtimeState.EnemyActionStage is not null ||
+            runtimeState.PendingAtEnemyTurnStart is not null)
+        {
+            throw new ArgumentException(
+                "Standalone player card play cannot retain an active enemy boundary.",
+                nameof(runtimeState));
+        }
+
         ContentHash = contentHash;
         BattleState = battleState;
+        RuntimeState = runtimeState;
         CardTurnState = cardTurnState;
-        Definition = definition;
+        Definitions = definitions;
         CanonicalText = CreateCanonicalText();
         Checksum = DeterministicChecksum.Sha256Hex(CanonicalText);
     }
@@ -125,9 +153,11 @@ public sealed class CoreDuelCardPlayState
 
     public BattleState BattleState { get; }
 
+    public BattleAuthoritativeRuntimeState RuntimeState { get; }
+
     public CoreDuelCardTurnState CardTurnState { get; }
 
-    public BasicStoneCardPlayDefinition Definition { get; }
+    public StarterStoneCardPlayCatalog Definitions { get; }
 
     public string CanonicalText { get; }
 
@@ -140,16 +170,18 @@ public sealed class CoreDuelCardPlayState
     internal static CoreDuelCardPlayState Create(
         string contentHash,
         BattleState battleState,
+        BattleAuthoritativeRuntimeState runtimeState,
         CoreDuelCardTurnState cardTurnState,
-        BasicStoneCardPlayDefinition definition) =>
-        new(contentHash, battleState, cardTurnState, definition);
+        StarterStoneCardPlayCatalog definitions) =>
+        new(contentHash, battleState, runtimeState, cardTurnState, definitions);
 
     private string CreateCanonicalText() => string.Join(
         '\n',
         EncodingVersion,
         $"content_hash={ContentHash}",
-        $"basic_stone_definition={EncodeStableText(Definition.ToCanonicalText())}",
+        $"starter_stone_definitions={EncodeStableText(Definitions.ToCanonicalText())}",
         $"battle_state={EncodeStableText(BattleState.ToCanonicalText())}",
+        $"runtime_sidecar={EncodeStableText(RuntimeState.ToCanonicalText())}",
         $"card_turn_state={EncodeStableText(CardTurnState.ToCanonicalText())}");
 
     private static string EncodeStableText(string value) =>
@@ -251,20 +283,14 @@ public sealed class CoreDuelCardPlayResult
 public static class CoreDuelCardPlayStateMachine
 {
     public static CoreDuelCardPlaySession Start(
-        BoardState initialBoard,
-        BattleRepetitionHistory repetitionHistory,
-        FacilityState initialFacilities,
-        BattleRuntimePolicy battlePolicy,
+        BattleAuthoritativeInitialSnapshot initial,
         CoreDuelCardTurnState cardTurnState,
-        BasicStoneCardPlayDefinition definition,
+        StarterStoneCardPlayCatalog definitions,
         ReplayMetadata metadata)
     {
-        ArgumentNullException.ThrowIfNull(initialBoard);
-        ArgumentNullException.ThrowIfNull(repetitionHistory);
-        ArgumentNullException.ThrowIfNull(initialFacilities);
-        ArgumentNullException.ThrowIfNull(battlePolicy);
+        ArgumentNullException.ThrowIfNull(initial);
         ArgumentNullException.ThrowIfNull(cardTurnState);
-        ArgumentNullException.ThrowIfNull(definition);
+        ArgumentNullException.ThrowIfNull(definitions);
         ArgumentNullException.ThrowIfNull(metadata);
         if (metadata.InitialSeed != cardTurnState.RngState.InitialSeed)
         {
@@ -273,17 +299,28 @@ public static class CoreDuelCardPlayStateMachine
                 nameof(metadata));
         }
 
+        if (!ReferenceEquals(
+                initial.ClosedWindowResources,
+                cardTurnState.ClosedWindowResources))
+        {
+            throw new ArgumentException(
+                "Initial runtime and card turn must share the exact resource snapshot.",
+                nameof(cardTurnState));
+        }
+
         var battleState = BattleState.Start(
-            initialBoard,
-            repetitionHistory,
-            initialFacilities,
+            initial.Board,
+            initial.RepetitionHistory,
+            initial.FacilityState,
             cardTurnState.RngState,
-            battlePolicy);
+            initial.RuntimePolicy,
+            initial.PlayerTurnIndex);
         var state = CoreDuelCardPlayState.Create(
             metadata.ContentHash,
             battleState,
+            BattleAuthoritativeRuntimeState.FromInitial(initial),
             cardTurnState,
-            definition);
+            definitions);
         return new CoreDuelCardPlaySession(
             state,
             OrderedCommandLog.Create(metadata));
@@ -320,8 +357,22 @@ public static class CoreDuelCardPlayStateMachine
         }
 
         var source = session.State;
-        var evaluation = BasicStoneCardPlayEvaluator.Evaluate(
-            source.Definition,
+        var card = source.CardTurnState.Deck.Hand.FirstOrDefault(candidate =>
+            StringComparer.Ordinal.Equals(candidate.InstanceId, command.CardInstanceId));
+        if (card is null)
+        {
+            return Reject(session, command, "card_not_in_hand");
+        }
+
+        if (!source.Definitions.TryDefinition(card.ContentId, out var definition) ||
+            definition is null)
+        {
+            return Reject(session, command, "card_content_mismatch");
+        }
+
+        var evaluation = StarterStoneCardPlayEvaluator.Evaluate(
+            source.Definitions,
+            definition,
             source.CardTurnState.Deck,
             source.CardTurnState.Qi,
             command.CardInstanceId,
@@ -335,9 +386,10 @@ public static class CoreDuelCardPlayStateMachine
 
         var accessMode = evaluation.AccessMode
             ?? throw new InvalidOperationException(
-                "Authorized basic-stone play must bind a placement access mode.");
+                "Authorized starter-stone play must bind a placement access mode.");
         if (!evaluation.IsBoundTo(
-                source.Definition,
+                source.Definitions,
+                definition,
                 source.CardTurnState.Deck,
                 source.CardTurnState.Qi,
                 command.CardInstanceId,
@@ -347,20 +399,48 @@ public static class CoreDuelCardPlayStateMachine
                 accessMode))
         {
             throw new InvalidOperationException(
-                "Basic-stone evaluation lost its exact source binding.");
+                "Starter-stone evaluation lost its exact source binding.");
         }
 
-        var placement = AuthorizedStonePlacementPipeline.Resolve(
+        var stoneInstanceId = StoneInstanceId(
+            command.CardInstanceId,
+            source.RuntimeState.StoneRuntimeState.NextCreatedSequence);
+        var placementDescriptor = new StoneRuntimePlacementDescriptor(
+            stoneInstanceId,
+            StoneKindId(definition.StoneKind),
+            definition.OnCaptured.Count == 0 ? [] : ["captured_stone_self"]);
+        var runtimePlacement = AuthorizedRuntimeStonePlacementPipeline.Resolve(
             source.BattleState,
+            source.RuntimeState,
             StoneColor.Black,
             command.Target,
-            accessMode);
-        if (!placement.Accepted)
+            accessMode,
+            placementDescriptor);
+        if (!runtimePlacement.Accepted)
         {
-            return Reject(session, command, placement.ReasonId);
+            return Reject(session, command, runtimePlacement.ReasonId);
         }
 
-        var cardTransition = CoreDuelCardTurnKernel.CommitBasicStoneCardPlay(
+        var legalPlacement = runtimePlacement.LegalPlacementCommit
+            ?? throw new InvalidOperationException(
+                "Accepted runtime placement is missing its legal commit.");
+        var runtimeCommit = runtimePlacement.RuntimePlacementCommit
+            ?? throw new InvalidOperationException(
+                "Accepted runtime placement is missing its runtime commit.");
+        var postCapture = runtimePlacement.PostCaptureEffectiveLiberties
+            ?? throw new InvalidOperationException(
+                "Accepted runtime placement is missing post-capture liberties.");
+        var placement = AuthorizedStonePlacementPipeline.Commit(
+            source.BattleState,
+            StoneColor.Black,
+            legalPlacement);
+        if (!placement.Accepted)
+        {
+            throw new InvalidOperationException(
+                $"A runtime-authorized placement failed commit: {placement.ReasonId}.");
+        }
+
+        var cardTransition = CoreDuelCardTurnKernel.CommitStarterStoneCardPlay(
             source.CardTurnState,
             evaluation);
         if (cardTransition.IsExactNoOp)
@@ -369,13 +449,6 @@ public static class CoreDuelCardPlayStateMachine
                 $"Accepted placement could not commit its card: {cardTransition.ReasonId}.");
         }
 
-        var stateAfter = CoreDuelCardPlayState.Create(
-            source.ContentHash,
-            placement.StateAfter,
-            cardTransition.StateAfter,
-            source.Definition);
-        var nextLog = session.CommandLog.Append(command, stateAfter.Checksum);
-        var nextSession = new CoreDuelCardPlaySession(stateAfter, nextLog);
         var facts = new List<IBattleFact>
         {
             QiChangedFact.SpendCardCost(
@@ -384,6 +457,51 @@ public static class CoreDuelCardPlayStateMachine
                 command.CardInstanceId),
         };
         facts.AddRange(placement.OrderedFacts);
+        AuthorizedRuntimeStonePlacementPipeline.InsertCarrierRemovalFacts(
+            facts,
+            runtimeCommit);
+
+        var cardStateAfter = cardTransition.StateAfter;
+        if (!placement.StateAfter.IsTerminal)
+        {
+            var effectAnalysis = StarterStonePlacementEffectAnalysis.Create(
+                legalPlacement,
+                postCapture);
+            cardStateAfter = ApplyFollowUpEffects(
+                cardStateAfter,
+                definition,
+                effectAnalysis,
+                command.CardInstanceId,
+                facts);
+        }
+
+        var triggerPlan = source.RuntimeState.CaptureBenefitTriggerPlan;
+        if (!placement.StateAfter.IsTerminal && definition.OnCaptured.Count > 0)
+        {
+            triggerPlan = triggerPlan.AppendConditional(
+                LureCaptureTrigger(definition, stoneInstanceId));
+        }
+
+        var continuousAfter = source.RuntimeState.ContinuousLibertySnapshot.Rebind(
+            runtimeCommit.StonesAfterCommit);
+        var runtimeAfter = source.RuntimeState.Transition(
+            stoneRuntimeState: runtimeCommit.StonesAfterCommit,
+            temporaryLibertyState: runtimeCommit.TemporaryLibertiesAfterCommit,
+            continuousLibertySnapshot: continuousAfter,
+            closedWindowResources: cardStateAfter.ClosedWindowResources,
+            captureBenefitTriggerPlan: triggerPlan,
+            registeredStoneInstanceId: stoneInstanceId);
+        var battleAfter = BattleState.RebindRng(
+            placement.StateAfter,
+            cardStateAfter.RngState);
+        var stateAfter = CoreDuelCardPlayState.Create(
+            source.ContentHash,
+            battleAfter,
+            runtimeAfter,
+            cardStateAfter,
+            source.Definitions);
+        var nextLog = session.CommandLog.Append(command, stateAfter.Checksum);
+        var nextSession = new CoreDuelCardPlaySession(stateAfter, nextLog);
         return new CoreDuelCardPlayResult(
             session,
             nextSession,
@@ -392,6 +510,123 @@ public static class CoreDuelCardPlayStateMachine
             "accepted",
             facts);
     }
+
+    private static CoreDuelCardTurnState ApplyFollowUpEffects(
+        CoreDuelCardTurnState source,
+        StarterStoneCardPlayDefinition definition,
+        StarterStonePlacementEffectAnalysis placement,
+        string cardInstanceId,
+        ICollection<IBattleFact> facts)
+    {
+        var state = source;
+        foreach (var operation in definition.Effects.Skip(1))
+        {
+            switch (operation)
+            {
+                case DrawIfRealLibertiesAtLeastOperationDefinition draw
+                    when placement.PlacedGroupRealLibertyCount >=
+                         draw.MinimumRealLiberties:
+                {
+                    var handCountBefore = state.Deck.Hand.Count;
+                    var deckTransition = state.Deck.Draw(draw.Cards, state.RngState);
+                    if (!deckTransition.IsExactNoOp)
+                    {
+                        var drawnCards = deckTransition.DeckAfter.Hand
+                            .Skip(handCountBefore)
+                            .ToArray();
+                        state = CoreDuelCardTurnState.Create(
+                            deckTransition.DeckAfter,
+                            deckTransition.RngAfter,
+                            state.SystemPolicy,
+                            state.ClosedWindowResources,
+                            state.Qi,
+                            state.TurnScopedFlags);
+                        foreach (var drawn in drawnCards)
+                        {
+                            facts.Add(CardDrawnFact.FromCardEffect(
+                                drawn,
+                                cardInstanceId));
+                        }
+                    }
+
+                    break;
+                }
+                case DrawIfRealLibertiesAtLeastOperationDefinition:
+                    break;
+                case GainQiIfEnemyAtariOperationDefinition gain
+                    when placement.EstablishedEnemyAtari:
+                {
+                    var fact = QiChangedFact.GainFromCardEffect(
+                        state.Qi,
+                        gain.Amount,
+                        cardInstanceId);
+                    state = CoreDuelCardTurnState.Create(
+                        state.Deck,
+                        state.RngState,
+                        state.SystemPolicy,
+                        state.ClosedWindowResources,
+                        fact.NewAmount,
+                        state.TurnScopedFlags);
+                    facts.Add(fact);
+                    break;
+                }
+                case GainQiIfEnemyAtariOperationDefinition:
+                    break;
+                case ReserveDrawOperationDefinition reserve:
+                {
+                    var resolution = ReservedDrawCardEffectResolver.Apply(
+                        state.ClosedWindowResources,
+                        cardInstanceId,
+                        reserve.Cards);
+                    state = CoreDuelCardTurnState.Create(
+                        state.Deck,
+                        state.RngState,
+                        state.SystemPolicy,
+                        resolution.StateAfter,
+                        state.Qi,
+                        state.TurnScopedFlags);
+                    facts.Add(resolution.Fact);
+                    break;
+                }
+                default:
+                    throw new InvalidOperationException(
+                        $"Unsupported starter-stone follow-up operation {operation.GetType().FullName}.");
+            }
+        }
+
+        return state;
+    }
+
+    private static CaptureBenefitTriggerPlanEntry LureCaptureTrigger(
+        StarterStoneCardPlayDefinition definition,
+        string stoneInstanceId)
+    {
+        if (definition.OnCaptured.Count != 1 ||
+            definition.OnCaptured[0] is not ReserveDrawOperationDefinition reserve)
+        {
+            throw new InvalidOperationException(
+                "A registered starter-stone capture trigger must be one reserved-draw operation.");
+        }
+
+        return new CaptureBenefitTriggerPlanEntry(
+            new CaptureBenefitTrigger(
+                CaptureBenefitSource.CapturedStoneSelf(stoneInstanceId),
+                $"lure.{stoneInstanceId}",
+                ["lure", stoneInstanceId],
+                [new ReserveDrawCaptureBenefitOperation(reserve.Cards)],
+                firstUseFlagId: null),
+            CaptureBenefitTriggerCondition.CapturedSourceStone);
+    }
+
+    private static string StoneInstanceId(string cardInstanceId, long sequence) =>
+        $"stone.card.{cardInstanceId}.{sequence.ToString(CultureInfo.InvariantCulture)}";
+
+    private static string StoneKindId(StoneContentKind kind) => kind switch
+    {
+        StoneContentKind.Basic => "basic",
+        StoneContentKind.Lure => "lure",
+        _ => throw new InvalidOperationException("Unsupported starter-stone runtime kind."),
+    };
 
     private static CoreDuelCardPlayResult Reject(
         CoreDuelCardPlaySession session,

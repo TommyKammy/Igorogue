@@ -110,77 +110,27 @@ internal static class AuthoritativeEnemyTurnStateMachine
         }
 
         var runtime = RequiredRuntime(source);
-        var proposedStone = new BoardStone(command.Actor, false, command.Point);
-        if (!HypotheticalPlacementResolver.TryCreate(
-                source.Board,
-                proposedStone,
-                out var hypothetical) ||
-            hypothetical is null)
-        {
-            return HeadlessBattleStateMachine.Reject(
-                session,
-                command,
-                "stone_occupied");
-        }
-
-        if (runtime.HasUsedStoneInstanceId(command.StoneInstanceId))
-        {
-            return HeadlessBattleStateMachine.Reject(
-                session,
-                command,
-                "stone_instance_already_used");
-        }
-
-        var provisionalPlaced = new StoneRuntimeInstance(
-            command.StoneInstanceId,
-            hypothetical.PlacedStone,
-            command.StoneKindId,
-            runtime.StoneRuntimeState.NextCreatedSequence,
-            command.OrderedEffectMetadata);
-        var provisionalStones = StoneRuntimeState.Create(
-            hypothetical.BoardAfterPlacement,
-            runtime.StoneRuntimeState.Instances.Append(provisionalPlaced),
-            checked(runtime.StoneRuntimeState.NextCreatedSequence + 1L));
-        var provisionalTemporary = TemporaryLibertyState.Create(
-            provisionalStones,
-            runtime.TemporaryLibertyState.Effects,
-            runtime.TemporaryLibertyState.NextCreatedSequence,
-            runtime.TemporaryLibertyState.ExpirySweepStartedForEnemyTurnIndex);
-        var provisionalContinuous = runtime.ContinuousLibertySnapshot.Rebind(
-            provisionalStones);
-        var captureEffective = TemporaryLibertyEffectiveLibertyAnalyzer.Analyze(
-            provisionalStones,
-            provisionalTemporary,
-            provisionalContinuous,
-            hypothetical.GroupsAfterPlacement);
-        var resolved = HypotheticalPlacementResolver.ResolveCaptures(
-            hypothetical,
-            captureEffective.EffectiveLiberties);
-        var postCapture = CreatePostCaptureAnalysis(
+        var preparation = AuthorizedRuntimeStonePlacementPipeline.Resolve(
+            source,
             runtime,
-            provisionalPlaced,
-            resolved);
-        var legality = PlacementLegalityEvaluator.Evaluate(
-            resolved,
-            postCapture.EffectiveLiberties,
-            source.RepetitionHistory,
-            command.AccessMode);
-        if (!legality.IsLegal)
+            command.Actor,
+            command.Point,
+            command.AccessMode,
+            command.PlacementDescriptor);
+        if (!preparation.Accepted)
         {
             return HeadlessBattleStateMachine.Reject(
                 session,
                 command,
-                legality.ReasonId);
+                preparation.ReasonId);
         }
 
-        var legalPlacement = source.RepetitionHistory.CommitLegalPlacement(legality);
-        var runtimeCommit = StoneRuntimePlacementIntegrator.Apply(
-            runtime.StoneRuntimeState,
-            runtime.TemporaryLibertyState,
-            legalPlacement,
-            command.PlacementDescriptor,
-            captureEffective,
-            postCapture);
+        var legalPlacement = preparation.LegalPlacementCommit
+            ?? throw new InvalidOperationException(
+                "Accepted runtime placement preparation is missing its legal commit.");
+        var runtimeCommit = preparation.RuntimePlacementCommit
+            ?? throw new InvalidOperationException(
+                "Accepted runtime placement preparation is missing its runtime commit.");
         var facilityCommit = FacilityPlacementIntegrator.Apply(
             source.FacilityState,
             legalPlacement);
@@ -198,7 +148,9 @@ internal static class AuthoritativeEnemyTurnStateMachine
                 CaptureBoundary.PlacementResolution,
                 boundaryEnemyTurnIndex: null,
                 CapturingWindow.ClosedPlayerWindow,
-                captureEffective.SourceStones,
+                preparation.CaptureEffectiveLiberties?.SourceStones
+                    ?? throw new InvalidOperationException(
+                        "Accepted runtime placement preparation is missing its capture snapshot."),
                 legalPlacement.Candidate.CapturedGroups);
             var selectedTriggers = captureBatch.ContainsKing
                 ? Array.Empty<CaptureBenefitTrigger>()
@@ -487,35 +439,6 @@ internal static class AuthoritativeEnemyTurnStateMachine
             BattleEndReason.None);
     }
 
-    private static TemporaryLibertyEffectiveLibertyAnalysis CreatePostCaptureAnalysis(
-        BattleAuthoritativeRuntimeState runtime,
-        StoneRuntimeInstance provisionalPlaced,
-        HypotheticalPlacementResolution candidate)
-    {
-        var retained = runtime.StoneRuntimeState.Instances.Where(instance =>
-            ReferenceEquals(
-                candidate.BoardAfterCapture.StoneAt(instance.Point),
-                instance.Stone));
-        var postCaptureStones = StoneRuntimeState.Create(
-            candidate.BoardAfterCapture,
-            retained.Append(provisionalPlaced),
-            checked(runtime.StoneRuntimeState.NextCreatedSequence + 1L));
-        var survivingEffects = runtime.TemporaryLibertyState.Effects.Where(effect =>
-            postCaptureStones.InstanceById(effect.AnchorStoneInstanceId) is not null);
-        var postCaptureTemporary = TemporaryLibertyState.Create(
-            postCaptureStones,
-            survivingEffects,
-            runtime.TemporaryLibertyState.NextCreatedSequence,
-            runtime.TemporaryLibertyState.ExpirySweepStartedForEnemyTurnIndex);
-        var postCaptureContinuous = runtime.ContinuousLibertySnapshot.Rebind(
-            postCaptureStones);
-        return TemporaryLibertyEffectiveLibertyAnalyzer.Analyze(
-            postCaptureStones,
-            postCaptureTemporary,
-            postCaptureContinuous,
-            candidate.GroupsAfterCapture);
-    }
-
     private static IReadOnlyList<CaptureBenefitTrigger> SelectCaptureBenefitTriggers(
         BattleState source,
         FacilityState eligibleFacilityState,
@@ -558,21 +481,9 @@ internal static class AuthoritativeEnemyTurnStateMachine
     {
         var facts = new List<IBattleFact> { ActionStageFact(source) };
         facts.AddRange(facilityCommit.OrderedFacts.Cast<IBattleFact>());
-        if (runtimeCommit.OrderedRemovalFacts.Count == 0)
-        {
-            return facts;
-        }
-
-        var insertionIndex = facts.FindLastIndex(fact => fact is GroupCapturedFact);
-        if (insertionIndex < 0)
-        {
-            throw new InvalidOperationException(
-                "Carrier removal facts require a captured placement group.");
-        }
-
-        facts.InsertRange(
-            insertionIndex + 1,
-            runtimeCommit.OrderedRemovalFacts.Cast<IBattleFact>());
+        AuthorizedRuntimeStonePlacementPipeline.InsertCarrierRemovalFacts(
+            facts,
+            runtimeCommit);
         return facts;
     }
 

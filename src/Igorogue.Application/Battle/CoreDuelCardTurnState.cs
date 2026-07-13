@@ -421,9 +421,9 @@ public static class CoreDuelCardTurnKernel
             state.Deck.Exhaust(instanceId, state.RngState));
     }
 
-    internal static CoreDuelCardTurnTransition CommitBasicStoneCardPlay(
+    internal static CoreDuelCardTurnTransition CommitStarterStoneCardPlay(
         CoreDuelCardTurnState state,
-        BasicStoneCardPlayEvaluation evaluation)
+        StarterStoneCardPlayEvaluation evaluation)
     {
         ArgumentNullException.ThrowIfNull(state);
         ArgumentNullException.ThrowIfNull(evaluation);
@@ -457,7 +457,7 @@ public static class CoreDuelCardTurnKernel
         if (completed.IsExactNoOp)
         {
             throw new InvalidOperationException(
-                "A begun basic-stone card resolution must be completable.");
+                "A begun starter-stone card resolution must be completable.");
         }
 
         var qiAfter = checked(state.Qi - evaluation.SourceDefinition.Cost);
