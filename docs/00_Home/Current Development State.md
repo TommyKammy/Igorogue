@@ -35,7 +35,7 @@ updated: 2026-07-13
 
 ## Current gate
 
-[[TASK-0037 Implement Bandit Intent Planning and Execution]] was merged through PR #27 at main merge commit `e98ac90`; post-merge main CI run `29237842140` is green across all 3 jobs. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] is resolved by owner-selected Option 1: M2 uses a starter 6-type／12-card recipe and allows only `card_development` as a facility exception. [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] has applied that scope to machine-readable content and the existing facility kernel; its 592-test source candidate `cd476d1` passed all three fixed-HEAD reviews, and Draft PR #28 CI run `29243465009` is green across all 3 jobs. The TASK remains in `review` pending human merge.
+[[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] was merged through PR #28 at main merge commit `6f84adcbc0b1deb70944e82648009eb53e1429a4`; post-merge main CI run `29247035946` is green across all 3 jobs. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified. [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] is resolved by owner-selected Option 1: M2 uses a starter 6-type／12-card recipe and allows only `card_development` as a facility exception. [[TASK-0039 Integrate Headless Core Duel and Replay]] is now in review after connecting that resolved recipe, starter-card play, Bandit intent, battle lifecycle, restart, and replay schema 3 without changing replay v1／v2; fixed source HEAD review is approved and CI／human merge remain pending.
 
 ## Next development sequence
 
@@ -65,8 +65,9 @@ updated: 2026-07-13
 24. TASK-0035 starter stone card effects — done
 25. TASK-0036 starter reinforce effect — done
 26. TASK-0037 Bandit intent — done
-27. TASK-0038 resolved starter recipe／Development scope — review／current
-28. TASK-0039〜0042 — blocked in dependency order
+27. TASK-0038 resolved starter recipe／Development scope — done
+28. TASK-0039 headless Core Duel／replay integration — review／current; CI／human merge pending
+29. TASK-0040〜0042 — blocked in dependency order
 
 ## Human-only evidence waiver
 

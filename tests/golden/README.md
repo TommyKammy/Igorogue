@@ -54,3 +54,17 @@ mandatory expiryで新しい黒領地が生じた場合、fact projectionはsour
 `implicit_momentum_eligible=0`を明示し、facility reassociationより前へ固定する。
 
 本catalogはMomentum event 0、Brilliant event 0を明示し、CTR-01〜25 coverageを主張しない。
+
+## Core Duel replay v3
+
+`v3/core_duel_turn_limit_loss.json`はgenerated `CoreDuelContentCatalog`、seed `39039`、
+turn limit `1`をexact-bindし、starter card play → player turn end → Bandit action →
+turn-limit lossを`headless-core-duel-state-v1`／replay schema 3で固定する。
+`CoreDuelBattleGoldenTests`はproduction serializerの出力とfixture bytesを完全比較し、同じ
+scriptを2回実行したreplay bytes、state、ordered facts、accepted-only log checksum、terminalを
+比較する。同testはwhite kingをatariにしたauthoritative initial snapshotからstarter terminal
+cardでvictoryへ到達し、そのreplayも同じApplication command経路で再生する。
+
+意図したschema 3更新時はproduction `BattleReplaySerializerV3`でfixtureを再生成し、content
+hash、全attempt boundary、attempt chain、document checksumを含むJSON全体のdiffをreviewする。
+schema 1／2 fixtureはschema 3更新の生成対象に含めない。

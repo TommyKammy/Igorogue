@@ -12,7 +12,7 @@ updated: 2026-07-13
 
 ## Sprint goal
 
-Apply DECISION-0006 Option 1 as a deterministic starter 6-type／12-card recipe and connect Development through the existing facility kernel.
+Connect the resolved Core Duel recipe, starter-card turn, Bandit intent, terminal result, and restart through one deterministic headless aggregate and replay schema 3.
 
 ## Health
 
@@ -27,7 +27,7 @@ Apply DECISION-0006 Option 1 as a deterministic starter 6-type／12-card recipe 
 
 ## Blockers
 
-- TASK-0038 has no open design／dependency blocker and is in review. TASK-0039〜0042 remain serially blocked by their immediate predecessor.
+- TASK-0039 has no open design／dependency blocker and is in review after fixed source HEAD approval. CI／human merge remain pending; TASK-0040〜0042 remain serially blocked by their immediate predecessor.
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] human evidence remains unverified, with Gate 2 progression separately authorized by DECISION-0007.
 
 ## Current evidence
@@ -77,10 +77,11 @@ Apply DECISION-0006 Option 1 as a deterministic starter 6-type／12-card recipe 
 - [[TASK-0036 Implement Starter Reinforce Effect]] — done; PR #26 merge／post-merge CI green
 - [[TASK-0037 Implement Bandit Intent Planning and Execution]] — done; PR #27 merge `e98ac90`／post-merge CI run `29237842140` green
 - [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]] — resolved／Option 1
-- [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — review／592-test candidate
+- [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — done; PR #28 merge `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge CI run `29247035946` green
+- [[TASK-0039 Integrate Headless Core Duel and Replay]] — review; single authoritative aggregate、replay schema 3、win／loss／restart E3 evidence validated at fixed source HEAD
 
 ## Next
 
-1. Complete human review／merge of green Draft PR #28 for [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]]
-2. Keep Headless Core Duel／replay composition deferred to TASK-0039
-3. Advance TASK-0039〜0042 only in dependency order after TASK-0038 human merge
+1. Publish [[TASK-0039 Integrate Headless Core Duel and Replay]] as a draft PR、complete CI、and obtain human review／merge
+2. Keep Godot presentation／preview work out of TASK-0039
+3. Advance TASK-0040〜0042 only in dependency order after TASK-0039 human merge

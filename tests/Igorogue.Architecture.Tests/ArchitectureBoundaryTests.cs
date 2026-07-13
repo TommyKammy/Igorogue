@@ -508,12 +508,7 @@ public sealed class ArchitectureBoundaryTests
         Assert.Empty(typeof(CoreDuelCardTurnState).GetConstructors());
         Assert.Empty(typeof(CoreDuelCardTurnTransition).GetConstructors());
 
-        var replaySurface = typeof(BattleReplayDocumentV2).Assembly
-            .GetExportedTypes()
-            .Where(type => type.Namespace == typeof(BattleReplayDocumentV2).Namespace)
-            .SelectMany(PublicSurfaceTypes)
-            .SelectMany(ExpandSignatureType)
-            .ToArray();
+        var replaySurface = LegacyReplaySurface();
         Assert.DoesNotContain(typeof(CoreDuelCardTurnState), replaySurface);
         Assert.DoesNotContain(
             typeof(BattleState).GetProperties(
@@ -643,12 +638,7 @@ public sealed class ArchitectureBoundaryTests
             typeof(StarterReinforceCardPlayDefinition),
             typeof(StarterDevelopmentCardPlayDefinition),
         };
-        var replaySurface = typeof(BattleReplayDocumentV2).Assembly
-            .GetExportedTypes()
-            .Where(type => type.Namespace == typeof(BattleReplayDocumentV2).Namespace)
-            .SelectMany(PublicSurfaceTypes)
-            .SelectMany(ExpandSignatureType)
-            .ToArray();
+        var replaySurface = LegacyReplaySurface();
 
         Assert.All(forbiddenTypes, forbiddenType =>
         {
@@ -700,10 +690,7 @@ public sealed class ArchitectureBoundaryTests
 
         var existingBattleAndReplaySourceText = string.Join(
             '\n',
-            Directory.EnumerateFiles(
-                    Path.Combine(root.FullName, "src", "Igorogue.Application", "Replay"),
-                    "*.cs",
-                    SearchOption.AllDirectories)
+            LegacyReplaySourcePaths(root)
                 .Concat(Directory.EnumerateFiles(
                     Path.Combine(root.FullName, "src", "Igorogue.Application", "Battle"),
                     "HeadlessBattle*.cs",
@@ -752,12 +739,7 @@ public sealed class ArchitectureBoundaryTests
         Assert.Empty(typeof(BanditEnemyTurnSession).GetConstructors());
         Assert.Empty(typeof(BanditEnemyTurnResult).GetConstructors());
 
-        var replaySurface = typeof(BattleReplayDocumentV2).Assembly
-            .GetExportedTypes()
-            .Where(type => type.Namespace == typeof(BattleReplayDocumentV2).Namespace)
-            .SelectMany(PublicSurfaceTypes)
-            .SelectMany(ExpandSignatureType)
-            .ToArray();
+        var replaySurface = LegacyReplaySurface();
         Assert.DoesNotContain(typeof(BanditEnemyTurnState), replaySurface);
         Assert.DoesNotContain(typeof(PlannedEnemyIntent), replaySurface);
         Assert.DoesNotContain(
@@ -767,6 +749,46 @@ public sealed class ArchitectureBoundaryTests
                 property.PropertyType == typeof(PlannedEnemyIntent));
         Assert.Equal("headless-battle-state-v2", BattleState.AuthoritativeEncodingVersion);
         Assert.Equal(2, BattleReplaySerializerV2.SchemaVersion);
+    }
+
+    [Fact]
+    public void Task0039OwnsOneCoreDuelSessionAndAddsOnlyReplayV3()
+    {
+        var start = RequirePublicStaticMethod(
+            typeof(CoreDuelBattleStateMachine),
+            nameof(CoreDuelBattleStateMachine.Start),
+            typeof(BattleAuthoritativeInitialSnapshot),
+            typeof(CoreDuelContentCatalog),
+            typeof(ReplayMetadata));
+        var execute = RequirePublicStaticMethod(
+            typeof(CoreDuelBattleStateMachine),
+            nameof(CoreDuelBattleStateMachine.Execute),
+            typeof(CoreDuelBattleSession),
+            typeof(IBattleCommand));
+        var capture = RequirePublicStaticMethod(
+            typeof(BattleReplayDocumentV3),
+            nameof(BattleReplayDocumentV3.Capture),
+            typeof(CoreDuelBattleSession),
+            typeof(IEnumerable<CoreDuelBattleCommandResult>));
+
+        Assert.Equal(typeof(CoreDuelBattleStartResult), start.ReturnType);
+        Assert.Equal(typeof(CoreDuelBattleCommandResult), execute.ReturnType);
+        Assert.Equal(typeof(BattleReplayDocumentV3), capture.ReturnType);
+        Assert.True(typeof(IBattleCommand).IsAssignableFrom(typeof(RestartBattleCommand)));
+        Assert.Equal("headless-core-duel-state-v1", CoreDuelBattleState.EncodingVersion);
+        Assert.Equal(CoreDuelBattleState.EncodingVersion, BattleReplaySerializerV3.StateProjection);
+        Assert.Equal(3, BattleReplaySerializerV3.SchemaVersion);
+        Assert.Empty(typeof(CoreDuelBattleBootstrap).GetConstructors());
+        Assert.Empty(typeof(CoreDuelBattleState).GetConstructors());
+        Assert.Empty(typeof(CoreDuelBattleSession).GetConstructors());
+        Assert.Empty(typeof(CoreDuelBattleStartResult).GetConstructors());
+        Assert.Empty(typeof(CoreDuelBattleCommandResult).GetConstructors());
+
+        var legacyReplaySurface = LegacyReplaySurface();
+        Assert.DoesNotContain(typeof(CoreDuelBattleState), legacyReplaySurface);
+        Assert.DoesNotContain(typeof(CoreDuelBattleSession), legacyReplaySurface);
+        Assert.DoesNotContain(typeof(CoreDuelBattleCommandResult), legacyReplaySurface);
+        Assert.DoesNotContain(typeof(PlannedEnemyIntent), legacyReplaySurface);
     }
 
     [Fact]
@@ -971,6 +993,44 @@ public sealed class ArchitectureBoundaryTests
                 "src/Igorogue.Application/Igorogue.Application.csproj",
                 "src/Igorogue.Content/Igorogue.Content.csproj",
             });
+    }
+
+    private static Type[] LegacyReplaySurface() =>
+    [
+        .. new[]
+        {
+            typeof(BattleReplayDocument),
+            typeof(BattleReplaySerializer),
+            typeof(BattleReplayRunner),
+            typeof(BattleReplayDocumentV2),
+            typeof(BattleReplaySerializerV2),
+            typeof(BattleReplayRunnerV2),
+        }
+        .SelectMany(PublicSurfaceTypes)
+        .SelectMany(ExpandSignatureType),
+    ];
+
+    private static IEnumerable<string> LegacyReplaySourcePaths(DirectoryInfo root)
+    {
+        var replayRoot = Path.Combine(
+            root.FullName,
+            "src",
+            "Igorogue.Application",
+            "Replay");
+        foreach (var fileName in new[]
+        {
+            "BattleReplayCommandCodec.cs",
+            "BattleReplayCommandCodecV2.cs",
+            "BattleReplayDocument.cs",
+            "BattleReplayDocumentV2.cs",
+            "BattleReplayRunner.cs",
+            "BattleReplayRunnerV2.cs",
+            "BattleReplaySerializer.cs",
+            "BattleReplaySerializerV2.cs",
+        })
+        {
+            yield return Path.Combine(replayRoot, fileName);
+        }
     }
 
     private static IEnumerable<Type> PublicSignatureTypes(Type type)

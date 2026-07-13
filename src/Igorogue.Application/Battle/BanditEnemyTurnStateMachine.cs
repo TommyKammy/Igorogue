@@ -380,22 +380,43 @@ public static class BanditEnemyTurnStateMachine
         ArgumentNullException.ThrowIfNull(metadata);
 
         var battleSession = HeadlessBattleStateMachine.Start(initial, metadata);
+        return StartFromExistingBattle(battleSession, enemyDefinition);
+    }
+
+    internal static BanditEnemyTurnStartResult StartFromExistingBattle(
+        HeadlessBattleSession battleSession,
+        EnemyContentDefinition enemyDefinition)
+    {
+        ArgumentNullException.ThrowIfNull(battleSession);
+        ArgumentNullException.ThrowIfNull(enemyDefinition);
+        if (battleSession.State.IsTerminal ||
+            battleSession.State.Phase != BattlePhase.PlayerAction)
+        {
+            throw new ArgumentException(
+                "Initial Bandit planning requires an ongoing player-action battle state.",
+                nameof(battleSession));
+        }
+
+        var runtime = battleSession.State.AuthoritativeRuntime
+            ?? throw new ArgumentException(
+                "Initial Bandit planning requires authoritative runtime state.",
+                nameof(battleSession));
         var plans = PlanNextWindow(
             battleSession,
             enemyDefinition,
-            planBonus: initial.CounterattackState.Pending);
+            planBonus: runtime.CounterattackState.Pending);
         var normalPlan = plans.Normal
             ?? throw new InvalidOperationException(
                 "Battle start must create the first normal Bandit plan.");
         var state = BanditEnemyTurnState.Create(
-            metadata.ContentHash,
+            battleSession.CommandLog.Metadata.ContentHash,
             enemyDefinition,
             battleSession,
             normalPlan,
             plans.Bonus);
         var session = new BanditEnemyTurnSession(
             state,
-            OrderedCommandLog.Create(metadata));
+            OrderedCommandLog.Create(battleSession.CommandLog.Metadata));
         return new BanditEnemyTurnStartResult(
             session,
             PlannedFacts(normalPlan, plans.Bonus));

@@ -258,13 +258,6 @@ public sealed class BattleState
     {
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(rngState);
-        if (source.AuthoritativeRuntime is not null)
-        {
-            throw new ArgumentException(
-                "Legacy RNG rebind cannot replace authoritative runtime ownership.",
-                nameof(source));
-        }
-
         if (ReferenceEquals(source.RngState, rngState))
         {
             return source;
@@ -282,7 +275,103 @@ public sealed class BattleState
             source.Phase,
             source.Outcome,
             source.EndReason,
+            source.AuthoritativeRuntime);
+    }
+
+    internal static BattleState AttachAuthoritativeRuntime(
+        BattleState source,
+        BattleAuthoritativeRuntimeState authoritativeRuntime)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(authoritativeRuntime);
+        if (source.AuthoritativeRuntime is not null)
+        {
+            throw new ArgumentException(
+                "Only a detached battle state can attach authoritative runtime state.",
+                nameof(source));
+        }
+
+        return new BattleState(
+            source.Board,
+            source.RepetitionHistory,
+            source.FacilityState,
+            source.TerritoryAnalysis,
+            source.FacilityRuntimeAnalysis,
+            source.RngState,
+            source.RuntimePolicy,
+            source.PlayerTurnIndex,
+            source.Phase,
+            source.Outcome,
+            source.EndReason,
+            authoritativeRuntime);
+    }
+
+    internal static BattleState DetachAuthoritativeRuntime(BattleState source)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        var authoritativeRuntime = source.AuthoritativeRuntime;
+        if (authoritativeRuntime is null)
+        {
+            throw new ArgumentException(
+                "Only an authoritative battle state can create a detached projection.",
+                nameof(source));
+        }
+
+        if (source.Phase == BattlePhase.EnemyAction ||
+            authoritativeRuntime.EnemyActionStage is not null ||
+            authoritativeRuntime.PendingAtEnemyTurnStart is not null)
+        {
+            throw new ArgumentException(
+                "An active authoritative enemy boundary cannot be detached.",
+                nameof(source));
+        }
+
+        return new BattleState(
+            source.Board,
+            source.RepetitionHistory,
+            source.FacilityState,
+            source.TerritoryAnalysis,
+            source.FacilityRuntimeAnalysis,
+            source.RngState,
+            source.RuntimePolicy,
+            source.PlayerTurnIndex,
+            source.Phase,
+            source.Outcome,
+            source.EndReason,
             null);
+    }
+
+    internal static BattleState RebindAuthoritativeRuntime(
+        BattleState source,
+        BattleAuthoritativeRuntimeState authoritativeRuntime)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(authoritativeRuntime);
+        if (source.AuthoritativeRuntime is null)
+        {
+            throw new ArgumentException(
+                "Only an authoritative battle state can replace its runtime snapshot.",
+                nameof(source));
+        }
+
+        if (ReferenceEquals(source.AuthoritativeRuntime, authoritativeRuntime))
+        {
+            return source;
+        }
+
+        return new BattleState(
+            source.Board,
+            source.RepetitionHistory,
+            source.FacilityState,
+            source.TerritoryAnalysis,
+            source.FacilityRuntimeAnalysis,
+            source.RngState,
+            source.RuntimePolicy,
+            source.PlayerTurnIndex,
+            source.Phase,
+            source.Outcome,
+            source.EndReason,
+            authoritativeRuntime);
     }
 
     internal static BattleState TransitionAuthoritative(
