@@ -2,7 +2,7 @@
 type: enemy-design
 status: accepted
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-13
 ---
 # Enemy Design and Intent
 
@@ -22,6 +22,8 @@ updated: 2026-07-10
 5. それ以外は計画意図を実行し、不成立なら同意図再選択、固有fallbackの順に進む。
 6. すべての同率はCanonical point orderで解決する。
 
+`advance_toward_black_king`は配置点から黒王石groupの実呼吸点までの距離を最初に比較する。黒王石groupの実呼吸点が0で有効呼吸点により生存する場合だけ、黒王石groupに属する石までの最小Manhattan距離へfallbackする。
+
 ## 行動予算
 
 - 通常行動1回。
@@ -34,6 +36,7 @@ updated: 2026-07-10
 - 行動カテゴリ
 - 対象グループ／領地／施設
 - 第1候補点と最大2代替点
+- 複数の非王石グループを同時捕獲する場合は、最大捕獲groupをprimary targetとしてその輪郭だけを表示
 - 対象再選択の可能性
 - 強制処刑または王石防衛
 - 反攻時の追加行動
@@ -45,6 +48,8 @@ updated: 2026-07-10
 ### 山賊棋士
 
 - 単石を含む捕獲を優先する。
+- 一手で複数の非王石groupを捕獲する場合、捕獲石数が最大のgroupをprimary targetとする。同数は黒王石groupまでのstone-to-stone最小Manhattan距離、さらにgroup anchorのCanonical point orderで決める。
+- `capture_non_king`候補の距離scoreはprimary target groupから測り、primary anchorが消失したら別の同時捕獲groupが残っていてもsame-intent retargetとする。
 - 捕獲がなければ黒王石の呼吸点を減らす。
 - 接触できなければ白前線から黒王石へ最短進行する。
 - 囮石を食べるため、捨て石の基本を学習できる。

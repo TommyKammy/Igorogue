@@ -56,22 +56,22 @@ The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DEC
 
 Entry is owner-authorized open because M1 exit evidence including TLE-01〜15 E3 migration is complete and DECISION-0007 explicitly waives the unverified TASK-0012 human-evidence prerequisite.
 
-Current: [[TASK-0036 Implement Starter Reinforce Effect]] (`review`; fixed-HEAD independent reviews approved after PR #25 merge satisfied dependency TASK-0035).
+Current: [[TASK-0037 Implement Bandit Intent Planning and Execution]] (`review`; DECISION-0009／0010 Option 1 implemented, 565 tests green, fixed-HEAD review／CI pending).
 
 1. [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
 2. [[TASK-0032 Implement Typed Core Duel Content Catalog]] — done
 3. [[TASK-0033 Implement Deterministic Battle Deck Hand and Qi Kernel]] — done
 4. [[TASK-0034 Implement Atomic Basic Stone Card Play]] — done
 5. [[TASK-0035 Implement Starter Stone Card Effects]] — done
-6. [[TASK-0036 Implement Starter Reinforce Effect]] — review／current
-7. [[TASK-0037 Implement Bandit Intent Planning and Execution]] — blocked by TASK-0036
+6. [[TASK-0036 Implement Starter Reinforce Effect]] — done
+7. [[TASK-0037 Implement Bandit Intent Planning and Execution]] — review／current
 8. [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — blocked by TASK-0037 and [[DECISION-0006 Resolve M2 Starter Deck and Facility Scope]]
 9. [[TASK-0039 Integrate Headless Core Duel and Replay]] — blocked by TASK-0038
 10. [[TASK-0040 Implement Core Duel Preview Queries]] — blocked by TASK-0039
 11. [[TASK-0041 Build Playable Godot Core Duel Graybox]] — blocked by TASK-0040
 12. [[TASK-0042 Validate M2 Core Duel Graybox]] — blocked by TASK-0041
 
-DECISION-0006 does not block TASK-0032 or a generic injected-recipe deck kernel. It must be resolved before TASK-0038 writes the default starting recipe, changes Accepted M2／M3 scope, or connects Development. No meta progression or broad relic content enters Gate 2.
+DECISION-0009 resolved Option 1 for TASK-0037 multi-group capture targeting. DECISION-0010 resolved Option 1 for zero-real-liberty advance ranking; TASK-0037 must implement and verify that fallback before closeout. DECISION-0006 separately must be resolved before TASK-0038 writes the default starting recipe, changes Accepted M2／M3 scope, or connects Development. No meta progression or broad relic content enters Gate 2.
 
 ## Gate 3 — Acceleration Lab
 

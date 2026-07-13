@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace Igorogue.Domain.Content;
 
@@ -230,6 +231,8 @@ public sealed class EnemyIntentDefinition
 
 public sealed class EnemyContentDefinition
 {
+    public const string EncodingVersion = "enemy-content-definition-v1";
+
     private readonly ReadOnlyCollection<EnemyPlacementMode> placementPermissionView;
     private readonly ReadOnlyCollection<EnemyIntentKind> mandatoryOverrideView;
     private readonly ReadOnlyCollection<EnemyIntentKind> planPriorityView;
@@ -283,6 +286,48 @@ public sealed class EnemyContentDefinition
     public IReadOnlyList<EnemyIntentDefinition> Intents => intentView;
 
     public EnemyTieBreak TieBreak { get; }
+
+    public string ToCanonicalText()
+    {
+        var lines = new List<string>
+        {
+            EncodingVersion,
+            $"id={Id}",
+            $"behavior_spec={BehaviorSpec}",
+            $"behavior_version={BehaviorVersion}",
+            $"normal_actions={ActionBudget.NormalActions.ToString(CultureInfo.InvariantCulture)}",
+            $"counterattack_bonus_actions={ActionBudget.CounterattackBonusActions.ToString(CultureInfo.InvariantCulture)}",
+            $"max_actions_per_enemy_turn={ActionBudget.MaxActionsPerEnemyTurn.ToString(CultureInfo.InvariantCulture)}",
+            $"defense_threshold={Parameters.DefenseThreshold.ToString(CultureInfo.InvariantCulture)}",
+            $"opportunistic_capture_min_stones={Parameters.OpportunisticCaptureMinStones.ToString(CultureInfo.InvariantCulture)}",
+            $"tie_break={TieBreakId(TieBreak)}",
+            $"placement_permission_count={placementPermissionView.Count.ToString(CultureInfo.InvariantCulture)}",
+        };
+        lines.AddRange(placementPermissionView.Select(mode =>
+            $"placement_permission={PlacementModeId(mode)}"));
+        AppendIntentReferences(lines, "mandatory_override", mandatoryOverrideView);
+        AppendIntentReferences(lines, "plan_priority", planPriorityView);
+        AppendIntentReferences(lines, "counterattack_priority", counterattackPriorityView);
+        lines.Add($"intent_count={intentView.Count.ToString(CultureInfo.InvariantCulture)}");
+        for (var index = 0; index < intentView.Count; index++)
+        {
+            var intent = intentView[index];
+            lines.Add($"intent_index={index.ToString(CultureInfo.InvariantCulture)}");
+            lines.Add($"intent_id={IntentId(intent.Kind)}");
+            lines.Add($"candidate_rule={IntentId(intent.CandidateRule)}");
+            lines.Add($"score_profile={ScoreProfileId(intent.ScoreProfile)}");
+            lines.Add(
+                $"placement_mode_count={intent.PlacementModes.Count.ToString(CultureInfo.InvariantCulture)}");
+            lines.AddRange(intent.PlacementModes.Select(mode =>
+                $"placement_mode={PlacementModeId(mode)}"));
+            lines.Add(
+                $"fallback_count={intent.Fallback.Count.ToString(CultureInfo.InvariantCulture)}");
+            lines.AddRange(intent.Fallback.Select(fallback =>
+                $"fallback={IntentId(fallback)}"));
+        }
+
+        return string.Join('\n', lines);
+    }
 
     public static EnemyContentDefinition Create(
         string id,
@@ -488,4 +533,52 @@ public sealed class EnemyContentDefinition
             completed.Add(kind);
         }
     }
+
+    private static void AppendIntentReferences(
+        ICollection<string> lines,
+        string label,
+        IReadOnlyCollection<EnemyIntentKind> intents)
+    {
+        lines.Add($"{label}_count={intents.Count.ToString(CultureInfo.InvariantCulture)}");
+        foreach (var intent in intents)
+        {
+            lines.Add($"{label}={IntentId(intent)}");
+        }
+    }
+
+    private static string PlacementModeId(EnemyPlacementMode mode) => mode switch
+    {
+        EnemyPlacementMode.WhiteContact => "white_contact",
+        EnemyPlacementMode.WhiteFacilityInvasion => "white_facility_invasion",
+        EnemyPlacementMode.WhiteFrontline => "white_frontline",
+        EnemyPlacementMode.WhiteInvasion => "white_invasion",
+        EnemyPlacementMode.WhiteTerminal => "white_terminal",
+        _ => throw new InvalidOperationException("Enemy definition contains an unknown placement mode."),
+    };
+
+    private static string IntentId(EnemyIntentKind intent) => intent switch
+    {
+        EnemyIntentKind.AdvanceTowardBlackKing => "advance_toward_black_king",
+        EnemyIntentKind.CaptureBlackKing => "capture_black_king",
+        EnemyIntentKind.CaptureNonKing => "capture_non_king",
+        EnemyIntentKind.DefendWhiteKing => "defend_white_king",
+        EnemyIntentKind.PressureBlackKing => "pressure_black_king",
+        _ => throw new InvalidOperationException("Enemy definition contains an unknown intent."),
+    };
+
+    private static string ScoreProfileId(EnemyScoreProfile profile) => profile switch
+    {
+        EnemyScoreProfile.CaptureValue => "capture_value",
+        EnemyScoreProfile.KingAdvance => "king_advance",
+        EnemyScoreProfile.KingDefense => "king_defense",
+        EnemyScoreProfile.KingExecution => "king_execution",
+        EnemyScoreProfile.KingPressure => "king_pressure",
+        _ => throw new InvalidOperationException("Enemy definition contains an unknown score profile."),
+    };
+
+    private static string TieBreakId(EnemyTieBreak tieBreak) => tieBreak switch
+    {
+        EnemyTieBreak.CanonicalYThenX => "canonical_y_then_x",
+        _ => throw new InvalidOperationException("Enemy definition contains an unknown tie break."),
+    };
 }

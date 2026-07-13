@@ -3,7 +3,7 @@ type: spec-fixture
 status: active
 project: Igorogue
 feature: FEAT-009
-updated: 2026-07-12
+updated: 2026-07-13
 ---
 # FEAT-009 Enemy Decision Fixtures
 
@@ -49,10 +49,14 @@ updated: 2026-07-12
 
 強制上書き条件なし。候補生成結果を次とする。
 
+本caseは完全な盤面をbindしないpre-ranked E1 comparator fixtureである。第2keyは[[DECISION-0009 Resolve Bandit Multi-Group Capture Target Reference]] Option 1のstone-to-stone最小Manhattan距離に整合する値へ置換したが、実盤面由来E3 evidenceとは扱わない。TASK-0037は別の到達可能な盤面でcandidate generationとscoreをproduction kernelから導くE3 testを持つ。
+
+両`capture_non_king`候補はそれぞれ単一の非王石groupを捕獲するcomparator inputとし、当該groupがprimary targetである。sort keyは`[-捕獲黒石総数, primary targetから黒王石groupまでのstone-to-stone最小Manhattan距離, -配置後白group有効呼吸点, y, x]`。
+
 | intent | point | sort key（小さいほど優先） |
 |---|---|---|
-| `capture_non_king` | (4,3) | [-2, 1, -3, 3, 4] |
-| `capture_non_king` | (5,4) | [-1, 0, -4, 4, 5] |
+| `capture_non_king` | (4,3) | [-2, 3, -3, 3, 4] |
+| `capture_non_king` | (5,4) | [-1, 2, -4, 4, 5] |
 | `pressure_black_king` | (3,2) | [2, -4, -1, 2, 3] |
 
 **Expected**: 優先意図`capture_non_king`、着点`(4,3)`。2石捕獲を1石捕獲より優先する。

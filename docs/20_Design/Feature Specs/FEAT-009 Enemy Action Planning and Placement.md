@@ -3,8 +3,8 @@ type: feature-spec
 id: FEAT-009
 status: accepted
 project: Igorogue
-updated: 2026-07-10
-version: 1.0.3
+updated: 2026-07-13
+version: 1.0.5
 supersedes: FEAT-007
 ---
 # FEAT-009 Enemy Action Planning and Placement
@@ -132,6 +132,7 @@ UI表現は次の通り。
 - 第1候補点: 実線ハイライト
 - 代替候補点: 点線ハイライト、最大2点
 - 対象: グループ／領地の輪郭
+- `capture_non_king`が複数グループを同時捕獲する場合の対象: primary target groupだけの輪郭
 - 再選択可能: 循環矢印アイコン
 - 強制上書き: 赤い処刑アイコンまたは青い防衛アイコン
 
@@ -209,10 +210,18 @@ function execute_enemy_action(state, enemy, planned_intent):
 
 **Modes**: `white_terminal`, `white_frontline`, `white_contact`。
 
+一手で複数の非王石黒グループを同時捕獲する候補では、次の辞書式順で単一のprimary target groupを決める。
+
+1. そのグループの捕獲石数が多い
+2. 黒王石グループまでのstone-to-stone最小Manhattan距離が短い
+3. そのグループのanchorがCanonical point orderで早い
+
+group間のstone-to-stone最小Manhattan距離は、両グループから1石ずつ選ぶ全組合せの座標Manhattan距離の最小値とする。`target_ref`はprimary target groupのanchorを保持し、UIはprimary groupだけをtarget outlineする。
+
 **Candidate order**:
 
 1. 捕獲する黒石総数が多い
-2. 捕獲対象と黒王石グループとの最小マンハッタン距離が短い
+2. primary target groupと黒王石グループとのstone-to-stone最小Manhattan距離が短い
 3. 配置後の白配置グループ有効呼吸点が多い
 4. Canonical point order
 
@@ -237,10 +246,12 @@ function execute_enemy_action(state, enemy, planned_intent):
 
 **Candidate order**:
 
-1. 配置点から黒王石グループの実呼吸点までの最小マンハッタン距離が短い
+1. 黒王石グループの実呼吸点が1点以上なら、配置点からその実呼吸点集合までの最小マンハッタン距離が短い。実呼吸点が0点で有効呼吸点が1以上なら、配置点から黒王石グループに属する石までの最小マンハッタン距離が短い
 2. 配置後の白配置グループ有効呼吸点が多い
 3. 盤中央 `(4,4)` までのマンハッタン距離が短い
 4. Canonical point order
+
+第1scoreのfallbackは実呼吸点集合が空のときだけ使う。実呼吸点が1点以上ある場合は、黒王石グループの石までの距離を候補rankingに混ぜない。
 
 ## Enemy table: 山賊棋士
 
@@ -474,12 +485,15 @@ M3では追加で以下を集計する。
 2. **複数の王石捕獲点**: `capture_black_king`の候補順で1点を選ぶ。
 3. **計画対象グループの合流**: アンカー石を含む現在グループを対象とする。
 4. **計画対象グループの消滅**: 同意図で全対象を再検索する。
-5. **施設が計画後に破壊済み**: `trample_facility`を同意図で再選択し、候補なしならfallback。
-6. **侵入領地が計画後に中立化**: 同じ黒領地ではないため対象消失。別黒領地へ再選択する。
-7. **遠隔侵入直後の反攻**: 同じ敵ターンでは2回目の遠隔侵入を禁止し、`escape_active_invasion`以下へ進む。
-8. **白王石防衛候補なし**: 強制防衛を諦め、計画意図を実行する。敗北可能性を隠さない。
-9. **候補完全枯渇**: パスし、`EnemyPassed`を発行する。
-10. **黒王石捕獲と白王石危機が同時**: 黒王石捕獲を優先し即勝利する。
+5. **複数非王石グループの同時捕獲**: 捕獲石数、黒王石グループまでのstone-to-stone距離、group anchorの順でprimary targetを1つ決める。
+6. **`capture_non_king` primary targetの消失**: primary anchorが対象条件を失ったら、当初同時捕獲される別グループが残っていてもplanned targetは消失したものとし、same-intent retargetへ進む。
+7. **黒王石の実呼吸点0／有効呼吸点正**: `advance_toward_black_king`の第1scoreは黒王石groupに属する石までの最小Manhattan距離へfallbackし、候補をpassに置き換えない。
+8. **施設が計画後に破壊済み**: `trample_facility`を同意図で再選択し、候補なしならfallback。
+9. **侵入領地が計画後に中立化**: 同じ黒領地ではないため対象消失。別黒領地へ再選択する。
+10. **遠隔侵入直後の反攻**: 同じ敵ターンでは2回目の遠隔侵入を禁止し、`escape_active_invasion`以下へ進む。
+11. **白王石防衛候補なし**: 強制防衛を諦め、計画意図を実行する。敗北可能性を隠さない。
+12. **候補完全枯渇**: パスし、`EnemyPassed`を発行する。
+13. **黒王石捕獲と白王石危機が同時**: 黒王石捕獲を優先し即勝利する。
 
 ## Acceptance criteria
 

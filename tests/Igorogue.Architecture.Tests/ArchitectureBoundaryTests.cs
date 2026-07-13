@@ -10,6 +10,7 @@ using Igorogue.Domain.Cards;
 using Igorogue.Domain.Combat;
 using Igorogue.Domain.Content;
 using Igorogue.Domain.Determinism;
+using Igorogue.Domain.Enemies;
 using Igorogue.Domain.Facilities;
 
 namespace Igorogue.Architecture.Tests;
@@ -212,6 +213,10 @@ public sealed class ArchitectureBoundaryTests
             typeof(CounterattackPendingPrimedFact),
             typeof(CounterattackPendingConsumedFact),
             typeof(CaptureBatchResolvedFact),
+            typeof(EnemyIntentPlannedFact),
+            typeof(EnemyIntentRetargetedFact),
+            typeof(EnemyActionStartedFact),
+            typeof(EnemyActionResolvedFact),
         };
 
         Assert.All(factTypes, type =>
@@ -709,6 +714,77 @@ public sealed class ArchitectureBoundaryTests
                 typeName,
                 existingBattleAndReplaySourceText,
                 StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Task0037BanditUsesAHighLevelDetachedCommandWithoutChangingReplayV2()
+    {
+        var start = RequirePublicStaticMethod(
+            typeof(BanditEnemyTurnStateMachine),
+            nameof(BanditEnemyTurnStateMachine.Start),
+            typeof(BattleAuthoritativeInitialSnapshot),
+            typeof(EnemyContentDefinition),
+            typeof(ReplayMetadata));
+        var execute = RequirePublicStaticMethod(
+            typeof(BanditEnemyTurnStateMachine),
+            nameof(BanditEnemyTurnStateMachine.Execute),
+            typeof(BanditEnemyTurnSession),
+            typeof(IBattleCommand));
+
+        Assert.Equal(typeof(BanditEnemyTurnStartResult), start.ReturnType);
+        Assert.Equal(typeof(BanditEnemyTurnResult), execute.ReturnType);
+        Assert.True(typeof(IBattleCommand).IsAssignableFrom(
+            typeof(ResolveBanditEnemyActionCommand)));
+        Assert.DoesNotContain(
+            typeof(ResolveBanditEnemyActionCommand).GetProperties(
+                BindingFlags.Public | BindingFlags.Instance),
+            property => property.PropertyType == typeof(CanonicalPoint) ||
+                property.PropertyType == typeof(StoneColor) ||
+                property.PropertyType == typeof(PlacementAccessMode));
+        Assert.Empty(typeof(BanditEnemyTurnState).GetConstructors());
+        Assert.Empty(typeof(BanditEnemyTurnSession).GetConstructors());
+        Assert.Empty(typeof(BanditEnemyTurnResult).GetConstructors());
+
+        var replaySurface = typeof(BattleReplayDocumentV2).Assembly
+            .GetExportedTypes()
+            .Where(type => type.Namespace == typeof(BattleReplayDocumentV2).Namespace)
+            .SelectMany(PublicSurfaceTypes)
+            .SelectMany(ExpandSignatureType)
+            .ToArray();
+        Assert.DoesNotContain(typeof(BanditEnemyTurnState), replaySurface);
+        Assert.DoesNotContain(typeof(PlannedEnemyIntent), replaySurface);
+        Assert.DoesNotContain(
+            typeof(BattleState).GetProperties(
+                BindingFlags.Public | BindingFlags.Instance),
+            property => property.PropertyType == typeof(BanditEnemyTurnState) ||
+                property.PropertyType == typeof(PlannedEnemyIntent));
+        Assert.Equal("headless-battle-state-v2", BattleState.AuthoritativeEncodingVersion);
+        Assert.Equal(2, BattleReplaySerializerV2.SchemaVersion);
+    }
+
+    [Fact]
+    public void Task0037EnemyKernelFactsStayInPureDomain()
+    {
+        Assert.All(
+            new[]
+            {
+                typeof(EnemyIntentPlannedFact),
+                typeof(EnemyIntentRetargetedFact),
+                typeof(EnemyActionStartedFact),
+                typeof(EnemyActionResolvedFact),
+            },
+            type => Assert.True(typeof(IBattleFact).IsAssignableFrom(type)));
+
+        var domainReferences = typeof(BanditIntentPlanner).Assembly
+            .GetReferencedAssemblies()
+            .Select(reference => reference.Name ?? string.Empty)
+            .ToArray();
+        Assert.DoesNotContain(
+            domainReferences,
+            name => name.StartsWith("Igorogue.Application", StringComparison.Ordinal));
+        Assert.DoesNotContain(
+            domainReferences,
+            name => name.StartsWith("Godot", StringComparison.Ordinal));
     }
 
     [Fact]
