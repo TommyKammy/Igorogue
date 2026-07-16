@@ -2,7 +2,7 @@
 type: dashboard
 status: active
 project: Igorogue
-updated: 2026-07-16
+updated: 2026-07-17
 ---
 # Project Dashboard
 
@@ -23,11 +23,11 @@ Prepare the merged playable Godot Core Duel graybox for explicit M2 technical／
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
 | UX | Yellow | TASK-0041 visual approved; TASK-0042 interaction UAT pending, future visual changes deferred |
-| Validation | Yellow | TASK-0042 ready／not started; TASK-0012 human evidence not retained; owner waiver permits Gate 2 |
+| Validation | Yellow | TASK-0042 in progress; technical exit and fresh interaction UAT not yet judged |
 
 ## Blockers
 
-- TASK-0041 is done through PR #31 source `a653edf6e86acbea334fe30925e4c174abf62317`、main merge `4a2745ca30990689789d60ef79e4721579b82bbe`、post-merge CI run `29292101348` all 3 jobs success、and 2026-07-16 Project owner visual approval. TASK-0042 has no dependency blocker and is `ready`／not started.
+- TASK-0042 has no dependency blocker and is `in_progress` on fixed main HEAD `ebec9dbdf249cb1db8e13910996022877abdb617`; PR #32 CI run `29507033877` and merge-HEAD dispatch CI run `29537645016` are green. The M2 result remains unjudged until technical evidence and fresh human UAT are complete.
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] human evidence remains unverified, with Gate 2 progression separately authorized by DECISION-0007.
 
 ## Current evidence
@@ -84,6 +84,6 @@ Prepare the merged playable Godot Core Duel graybox for explicit M2 technical／
 
 ## Next
 
-1. Select and start [[TASK-0042 Validate M2 Core Duel Graybox]]; it is `ready` but not started
-2. Record fresh Bandit win／loss、restart、replay、coordinate／intent／focus UAT separately from TASK-0041 visual approval
-3. Keep future visual changes outside TASK-0042 unless validation produces a bounded defect; do not claim final presentation or fun validation from graybox approval
+1. Complete [[TASK-0042 Validate M2 Core Duel Graybox]] technical evidence for starter coverage、Bandit win／loss、restart、and replay parity
+2. Run fresh coordinate／intent／atari／capture／territory／mouse-focus conversational UAT separately from TASK-0041 visual approval
+3. Record `PASS`／`NOT PASSED`／`DECISION NEEDED` without implementing production fixes or claiming final presentation／fun from automated evidence

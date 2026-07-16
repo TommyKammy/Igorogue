@@ -2,7 +2,7 @@
 type: status
 status: active
 project: Igorogue
-updated: 2026-07-16
+updated: 2026-07-17
 ---
 # Current Development State
 
@@ -36,7 +36,7 @@ updated: 2026-07-16
 
 ## Current gate
 
-[[TASK-0041 Build Playable Godot Core Duel Graybox]] is `done`: PR #31 source HEAD `a653edf6e86acbea334fe30925e4c174abf62317` was human-merged at main commit `4a2745ca30990689789d60ef79e4721579b82bbe`、post-merge CI run `29292101348` passed all 3 jobs、and the Project owner approved the current graybox visual on 2026-07-16 while deferring future visual changes. No implementation task is currently in progress. [[TASK-0042 Validate M2 Core Duel Graybox]] is `ready`／not started. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified.
+[[TASK-0042 Validate M2 Core Duel Graybox]] is the current `in_progress` task on fixed main HEAD `ebec9dbdf249cb1db8e13910996022877abdb617`. PR #32 source `0ad575d56e353312d24f32f007ac7c324eddad07` was human-merged to that commit; PR CI run `29507033877` and merge-HEAD workflow-dispatch CI run `29537645016` passed all 3 jobs. Technical evidence、fresh human win／loss／restart／replay UAT、and the M2 exit matrix remain under evaluation. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified.
 
 ## Next development sequence
 
@@ -70,7 +70,7 @@ updated: 2026-07-16
 28. TASK-0039 headless Core Duel／replay integration — done
 29. TASK-0040 Core Duel preview queries — done; PR #30 merged／post-merge CI green
 30. TASK-0041 playable Godot Core Duel graybox — done; PR #31 merged／post-merge CI green／owner visual approved
-31. TASK-0042 M2 Core Duel graybox validation — ready／not started
+31. TASK-0042 M2 Core Duel graybox validation — in_progress／current; no result yet
 
 ## Human-only evidence waiver
 

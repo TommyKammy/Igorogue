@@ -2,14 +2,14 @@
 type: dashboard
 status: active
 project: Igorogue
-updated: 2026-07-16
+updated: 2026-07-17
 cssclasses:
   - igorogue-dashboard
 ---
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0041 Build Playable Godot Core Duel Graybox]]はPR #31 source `a653edf6e86acbea334fe30925e4c174abf62317`からmain `4a2745ca30990689789d60ef79e4721579b82bbe`へmergeされ、post-merge CI run `29292101348`全3 job green、2026-07-16 owner visual approvalを得て`done`。簡素さはcurrent grayboxの味わいとして受容し、final visual変更は延期する。[[TASK-0042 Validate M2 Core Duel Graybox]]は`ready`／not started。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
+> [[TASK-0042 Validate M2 Core Duel Graybox]]をfixed main HEAD `ebec9dbdf249cb1db8e13910996022877abdb617`で開始した。PR #32 CI run `29507033877`とmerge-HEAD dispatch CI run `29537645016`は全3 job green。technical M2 exitとfresh human win／loss／restart／replay UATは未判定であり、TASK-0041 visual approvalを代用しない。TASK-0012 human evidenceは未確認のままDECISION-0007 waiverで進行する。
 
 > [!success] 実装ゲート
 > Gate 1は完了。Gate 2はTASK-0031の計画closeout後、typed contentからGodot graybox／UATまでを依存順に進める。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -101,7 +101,7 @@ cssclasses:
 - [[TASK-0039 Integrate Headless Core Duel and Replay]] — done
 - [[TASK-0040 Implement Core Duel Preview Queries]] — done; PR #30 merged／post-merge CI green
 - [[TASK-0041 Build Playable Godot Core Duel Graybox]] — done; PR #31 merged／post-merge CI green／owner visual approved
-- [[TASK-0042 Validate M2 Core Duel Graybox]] — ready／not started
+- [[TASK-0042 Validate M2 Core Duel Graybox]] — in_progress／current; technical／human evidence under evaluation
 
 ## Latest design repairs
 
