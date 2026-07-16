@@ -1,12 +1,12 @@
 ---
 type: task
 id: TASK-0041
-status: in_progress
+status: done
 project: Igorogue
 milestone: M2
 priority: critical
 dependencies: [TASK-0040]
-updated: 2026-07-14
+updated: 2026-07-16
 ---
 # TASK-0041 Build Playable Godot Core Duel Graybox
 
@@ -51,7 +51,7 @@ Battle Screen、Interaction、graybox scopeは`proposed`のvisual／interaction 
 
 ## Known issues
 
-visible scopeはgrayboxでありfinal presentationではない。Codex visual QAでinitial／selected-hoverの480×270 captureを確認したが、Project ownerによるhuman visual reviewは未完了。並列検証中、複数のGodot editor-build processが存在する時点で一度のGUI起動がネイティブ`EXC_BAD_ACCESS`で終了した。添付crash reportは原因を特定しておらず、並列build競合との因果関係は未確定。全process停止後のserial build→GUI capture、headless smoke、Windows exportでは再現していない。
+visible scopeはgrayboxでありfinal presentationではない。Project ownerは2026-07-16に、簡素さが現段階では味わいになっているとしてcurrent graybox visualを承認し、将来のvisual変更検討は別scopeへ延期した。並列検証中、複数のGodot editor-build processが存在する時点で一度のGUI起動がネイティブ`EXC_BAD_ACCESS`で終了した。添付crash reportは原因を特定しておらず、並列build競合との因果関係は未確定。全process停止後のserial build→GUI capture、headless smoke、Windows exportでは再現していない。
 
 ## Execution log
 
@@ -73,6 +73,10 @@ visible scopeはgrayboxでありfinal presentationではない。Codex visual QA
 
 2026-07-14 — Draft PR #31を作成し、HEAD `34e42d05d62b0fcdb588251a4e4518145fa5226d`に対するCI run `29289620374`でgovernance、pure .NET build／tests／sim smoke、Godot headless smoke／Windows exportの全3 job successを確認した。Project owner human visual reviewだけを残るacceptance gateとして維持する。
 
+2026-07-16 — PR #31 source HEAD `a653edf6e86acbea334fe30925e4c174abf62317`が2026-07-14にmain commit `4a2745ca30990689789d60ef79e4721579b82bbe`へhuman merge済みであることを確認した。post-merge main CI run `29292101348`はgovernance、pure .NET build／tests／sim smoke、Godot headless smoke／Windows exportの全3 job success。mergeはProject owner visual sign-offより先に行われており、この時点ではTASK closeout gateを未完了として扱う。
+
+2026-07-16 — Project ownerがinitial／selected-hover captureを含むcurrent graybox visualを承認した。簡素さは現段階の味わいとして受容し、final visualの変更検討は本TASKの完了条件にせず別scopeへ延期した。これにより全acceptance gateを満たしたためTASKを`done`へ遷移し、TASK-0042を`ready`／not startedへ解除した。
+
 ## Evidence
 
 - PR #30 merge／post-merge main CI evidenceによりTASK-0040 dependency完了。
@@ -80,8 +84,9 @@ visible scopeはgrayboxでありfinal presentationではない。Codex visual QA
 - `tools/dev/test` — Domain 368／Application 193／Architecture 92＝653 tests success、build 0 warning／0 error。
 - `tools/dev/sim-smoke` — exit 0、bootstrap checksum `36ca153c20b82b2220c82b787c229d22f255fee7c42fed9c5ce7753ae0ff7bf1`。
 - `tools/dev/godot-smoke` — Godot 4.7 .NET headless parse／build／scene run exit 0、full terminal／restart graybox checksum `7692094b4154966821fe7251d4fde59c73fcd16c09c8527579885dade55b9cf6`。
-- Graphical capture — Compatibility renderer／Apple M4でinitialとselected-hoverを480×270 PNGへ保存。左下`(1,1)`、右上`(7,7)`方向、black王石左下／white王石右上、intent primary／alternate、selected focus、legal target／hover previewをCodex visual QAで確認。Project owner human reviewはpending。
+- Graphical capture — Compatibility renderer／Apple M4でinitialとselected-hoverを480×270 PNGへ保存。左下`(1,1)`、右上`(7,7)`方向、black王石左下／white王石右上、intent primary／alternate、selected focus、legal target／hover previewをCodex visual QAで確認。2026-07-16 Project owner human visual review approved。
 - `tools/dev/export-windows` — exit 0、Windows debug executable SHA-256 `311d17928384c219430f96a9959a2eebcd1bb8a649163fe8bd9cc5ae8b33977d`。
 - Godot crash follow-up — 原因未確定。全editor-build process停止後のserial editor build、GUI capture、headless smoke／exportがすべてexit 0で再現なし、残存Godot process 0。
-- Independent fixed-HEAD review — startup seam／Godot runtimeは`APPROVE`、governanceのcrash表現／private path findingsは解消済み。Project owner human visual reviewはpending。
+- Independent fixed-HEAD review — startup seam／Godot runtimeは`APPROVE`、governanceのcrash表現／private path findingsは解消済み。
 - Draft PR #31 CI — run `29289620374`、HEAD `34e42d05d62b0fcdb588251a4e4518145fa5226d`、全3 job success。
+- PR #31 human merge／post-merge main CI — source HEAD `a653edf6e86acbea334fe30925e4c174abf62317`、merge commit `4a2745ca30990689789d60ef79e4721579b82bbe`、run `29292101348`、全3 job success。

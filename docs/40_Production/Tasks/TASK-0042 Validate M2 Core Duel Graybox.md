@@ -1,12 +1,12 @@
 ---
 type: task
 id: TASK-0042
-status: blocked
+status: ready
 project: Igorogue
 milestone: M2
 priority: critical
 dependencies: [TASK-0041]
-updated: 2026-07-12
+updated: 2026-07-16
 ---
 # TASK-0042 Validate M2 Core Duel Graybox
 
@@ -42,4 +42,8 @@ M2 Core Duelをfresh startからBandit win／loss、restart、replayまで人間
 
 ## Known issues
 
-TASK-0041 human mergeまで`blocked`。
+TASK-0041は完了した。TASK-0042は`ready`だが、technical validation／conversational UATは未開始。TASK-0041のCodex captureやowner visual approvalを、TASK-0042で要求するfresh win／loss human操作とreplay evidenceの代替にしない。
+
+## Execution log
+
+2026-07-16 — TASK-0041はPR #31 source HEAD `a653edf6e86acbea334fe30925e4c174abf62317`、main merge `4a2745ca30990689789d60ef79e4721579b82bbe`、post-merge CI run `29292101348`全3 job success、Project owner human visual approvalを満たして`done`へ遷移した。dependencyを解除し、本TASKを`ready`／not startedとした。
