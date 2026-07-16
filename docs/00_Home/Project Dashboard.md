@@ -2,7 +2,7 @@
 type: dashboard
 status: active
 project: Igorogue
-updated: 2026-07-14
+updated: 2026-07-16
 ---
 # Project Dashboard
 
@@ -12,7 +12,7 @@ updated: 2026-07-14
 
 ## Sprint goal
 
-Build a minimal playable Godot Core Duel graybox on the merged Application command／query surface without duplicating rules or runtime values in presentation code.
+Prepare the merged playable Godot Core Duel graybox for explicit M2 technical／human validation without treating approved graybox simplicity as final presentation.
 
 ## Health
 
@@ -22,12 +22,12 @@ Build a minimal playable Godot Core Duel graybox on the merged Application comma
 | Rules | Green | DECISION-0006／0009／0010 are resolved; starter catalog display is synchronized with machine-readable content |
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
-| UX | Yellow | TASK-0041 playable graybox implementation in progress; visual evidence pending |
-| Validation | Yellow | M1 technical exit `PASS`; TASK-0012 human evidence not retained; owner waiver permits Gate 2 |
+| UX | Yellow | TASK-0041 visual approved; TASK-0042 interaction UAT pending, future visual changes deferred |
+| Validation | Yellow | TASK-0042 ready／not started; TASK-0012 human evidence not retained; owner waiver permits Gate 2 |
 
 ## Blockers
 
-- TASK-0041 has no dependency blocker after PR #30 merged at main commit `d8ccc08cf7fa3cc1a43046d128b2804b50b9d073` and post-merge CI run `29285926156` passed all 3 jobs. Its start audit found no production standard initial snapshot factory; the 2026-07-14 Project owner approval permits only the bounded pure typed Domain／Content／Application startup seam and corresponding tests, without rule／runtime-value changes. TASK-0042 remains blocked by TASK-0041.
+- TASK-0041 is done through PR #31 source `a653edf6e86acbea334fe30925e4c174abf62317`、main merge `4a2745ca30990689789d60ef79e4721579b82bbe`、post-merge CI run `29292101348` all 3 jobs success、and 2026-07-16 Project owner visual approval. TASK-0042 has no dependency blocker and is `ready`／not started.
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] human evidence remains unverified, with Gate 2 progression separately authorized by DECISION-0007.
 
 ## Current evidence
@@ -80,9 +80,10 @@ Build a minimal playable Godot Core Duel graybox on the merged Application comma
 - [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — done; PR #28 merge `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge CI run `29247035946` green
 - [[TASK-0039 Integrate Headless Core Duel and Replay]] — done; PR #29 merge `60d8cc5958e38768f4077ee2f4d686526d5b25fe`／post-merge CI run `29252298693` green
 - [[TASK-0040 Implement Core Duel Preview Queries]] — done; immutable speculative command reuse、625 tests、all wrappers、fixed source HEAD review approved、PR #30 source `eaa62531615eef7a10cfe1d16fe92318d45143c8` merged at `d8ccc08cf7fa3cc1a43046d128b2804b50b9d073`、post-merge CI run `29285926156` green
+- [[TASK-0041 Build Playable Godot Core Duel Graybox]] — done; 653 tests、Godot smoke／Windows export、fixed-HEAD review、PR #31 merge `4a2745ca30990689789d60ef79e4721579b82bbe`、post-merge CI run `29292101348` green、Project owner visual approved
 
 ## Next
 
-1. Implement [[TASK-0041 Build Playable Godot Core Duel Graybox]] through Application commands／queries and the approved bounded startup seam
-2. Complete Godot smoke／Windows export、human visual review、and fixed-HEAD independent review without claiming final presentation or fun validation
-3. Advance [[TASK-0042 Validate M2 Core Duel Graybox]] only after TASK-0041 human merge
+1. Select and start [[TASK-0042 Validate M2 Core Duel Graybox]]; it is `ready` but not started
+2. Record fresh Bandit win／loss、restart、replay、coordinate／intent／focus UAT separately from TASK-0041 visual approval
+3. Keep future visual changes outside TASK-0042 unless validation produces a bounded defect; do not claim final presentation or fun validation from graybox approval

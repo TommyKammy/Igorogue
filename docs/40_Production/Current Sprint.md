@@ -2,24 +2,22 @@
 type: sprint
 status: active
 project: Igorogue
-updated: 2026-07-14
+updated: 2026-07-16
 sprint: S0
 ---
 # Current Sprint
 
 ## Goal
 
-Build the minimal playable Godot 4.7 .NET Core Duel graybox on Application commands／queries without duplicating rules or runtime values in presentation code.
+Prepare the merged playable Godot 4.7 .NET Core Duel graybox for explicit TASK-0042 technical／human validation without claiming final presentation or fun validation.
 
 ## In progress
 
-- [[TASK-0041 Build Playable Godot Core Duel Graybox]]
-  - dependency TASK-0040 is done through PR #30 source HEAD `eaa62531615eef7a10cfe1d16fe92318d45143c8`／main merge `d8ccc08cf7fa3cc1a43046d128b2804b50b9d073`／post-merge CI run `29285926156` all 3 jobs success
-  - 7×7 board、hand、qi、turn／result、Bandit intent、card target、End Turn、restartをApplication command／queryだけへ接続する
-  - start auditでproduction標準初期snapshot factoryの欠落を確認し、2026-07-14 Project ownerがpure typed Domain／Content／Application startup seamと対応testを限定承認
-  - startup seamは既存Accepted ruleと`game_data/`を使用し、player-visible rule／runtime valueを変更しない
-  - typed startup、query-only rendering、command-only input、terminal／restart smokeを実装済み、653 tests、sim／Godot smoke、Windows exportは成功
-  - independent fixed-HEAD reviewは完了済み。PR #31 CI run `29289620374`は全3 job success。initial／selected-hoverの480×270 Codex visual QAも実施済みで、Project owner human visual reviewだけが未完了
+なし。
+
+## Ready
+
+- [[TASK-0042 Validate M2 Core Duel Graybox]] — dependency TASK-0041はPR #31 merge `4a2745ca30990689789d60ef79e4721579b82bbe`、post-merge CI run `29292101348`全3 job success、2026-07-16 Project owner visual approvalで完了。TASK-0042は未開始。
 
 ## Open human evidence
 
@@ -62,16 +60,16 @@ Build the minimal playable Godot 4.7 .NET Core Duel graybox on Application comma
 - [[TASK-0038 Apply Resolved M2 Starter Deck and Facility Scope]] — PR #28 merged at `6f84adcbc0b1deb70944e82648009eb53e1429a4`／post-merge CI green
 - [[TASK-0039 Integrate Headless Core Duel and Replay]] — PR #29 merged at `60d8cc5958e38768f4077ee2f4d686526d5b25fe`／post-merge CI green
 - [[TASK-0040 Implement Core Duel Preview Queries]] — PR #30 source `eaa62531615eef7a10cfe1d16fe92318d45143c8` merged at `d8ccc08cf7fa3cc1a43046d128b2804b50b9d073`／post-merge CI run `29285926156` green
+- [[TASK-0041 Build Playable Godot Core Duel Graybox]] — PR #31 source `a653edf6e86acbea334fe30925e4c174abf62317` merged at `4a2745ca30990689789d60ef79e4721579b82bbe`／post-merge CI run `29292101348` green／Project owner visual approved
 
 ## Next
 
-- Complete [[TASK-0041 Build Playable Godot Core Duel Graybox]] implementation、runtime／visual validation、independent review、and human merge.
-- [[TASK-0042 Validate M2 Core Duel Graybox]] remains blocked and advances only after TASK-0041 human merge.
+- Select and start [[TASK-0042 Validate M2 Core Duel Graybox]]; it is `ready` but not started.
+- Keep TASK-0041 visual approval separate from TASK-0042 fresh win／loss、restart、replay、and UAT evidence.
 
-## Implementation review questions
+## Validation review questions
 
-- Does startup obtain the standard authoritative initial snapshot through the bounded production factory without copying board／policy／runtime values into Godot?
-- Does Godot render only query projections and mutate battle state only through accepted Application commands?
-- Is canonical orientation left-bottom `(1,1)`／right-top `(7,7)` preserved for drawing、hover、and confirm input?
-- Are hand、qi、turn／result、Bandit primary／alternate intent、legality、capture、liberty／atari、and danger states visible at 480×270 integer-scaled layout?
-- Do headless parse／build、bootstrap smoke、Windows export、human visual review、and fixed-HEAD independent review all pass without expanding final-art or full-counterattack scope?
+- Can a human complete fresh Bandit win／loss、terminal、restart、and replay paths with seed／content hash evidence?
+- Do coordinate orientation、intent、atari／capture／territory、and mouse focus remain understandable during actual play rather than capture-only review?
+- Does the M2 exit matrix trace every resolved starter card／facility scope item without expanding content or treating graybox approval as final presentation?
+- Are technical pass、E4 fun claim、and any bounded defect follow-up recorded separately?
