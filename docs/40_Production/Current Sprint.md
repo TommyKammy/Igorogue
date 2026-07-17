@@ -11,7 +11,7 @@ sprint: S0
 
 Restore reproducible Replay V3 evidence for the actual Godot human run before repeating incomplete M2 UAT or starting Gate 3.
 
-## In progress
+## Ready
 
 - [[TASK-0043 Capture and Verify Godot Human Run Replay V3]]
   - status `ready`; dependency TASK-0042 audit is done
