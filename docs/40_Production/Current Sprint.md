@@ -11,10 +11,10 @@ sprint: S0
 
 Restore reproducible Replay V3 evidence for the actual Godot human run before repeating incomplete M2 UAT or starting Gate 3.
 
-## Ready
+## In progress
 
 - [[TASK-0043 Capture and Verify Godot Human Run Replay V3]]
-  - status `ready`; dependency TASK-0042 audit is done
+  - status `in_progress`; dependency TASK-0042 audit is done
   - retain exact initial session and ordered Application command results from the Godot human run
   - save canonical Replay V3 before restart, read it back, replay from fresh startup, and prove terminal／state／log parity
   - do not mix gameplay、balance、content、fun changes、or Replay schema changes

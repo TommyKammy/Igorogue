@@ -28,7 +28,7 @@ Repair the Godot human-run Replay V3 evidence path, then repeat the incomplete M
 ## Blockers
 
 - TASK-0042 confirmed that Godot discards the initial session／command-result chain and exposes no Replay V3 save／load route for the actual human run. M2 technical／E4 human／fun are `NOT PASSED` and Gate 3 is blocked.
-- [[TASK-0043 Capture and Verify Godot Human Run Replay V3]] is `ready` to add the bounded evidence path without changing Rules、content、balance、or Replay schema.
+- [[TASK-0043 Capture and Verify Godot Human Run Replay V3]] is `in_progress` to add the bounded evidence path without changing Rules、content、balance、or Replay schema.
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] human evidence remains unverified, with Gate 2 progression separately authorized by DECISION-0007.
 
 ## Current evidence
@@ -83,6 +83,7 @@ Repair the Godot human-run Replay V3 evidence path, then repeat the incomplete M
 - [[TASK-0040 Implement Core Duel Preview Queries]] — done; immutable speculative command reuse、625 tests、all wrappers、fixed source HEAD review approved、PR #30 source `eaa62531615eef7a10cfe1d16fe92318d45143c8` merged at `d8ccc08cf7fa3cc1a43046d128b2804b50b9d073`、post-merge CI run `29285926156` green
 - [[TASK-0041 Build Playable Godot Core Duel Graybox]] — done; 653 tests、Godot smoke／Windows export、fixed-HEAD review、PR #31 merge `4a2745ca30990689789d60ef79e4721579b82bbe`、post-merge CI run `29292101348` green、Project owner visual approved
 - [[TASK-0042 Validate M2 Core Duel Graybox]] — audit done; Test 1 four interaction checks PASS、M2 technical／E4 human／fun NOT PASSED、Gate 3 blocked; PR #33 merge `1d6b7c2e2ede5671e7d4736548e6728908fb7bf9`／post-merge CI run `29613756684` green
+- PR #34 closed the TASK-0042 audit follow-up at source `9e684d71925057e120d240058bfa23da05abb4f1`／main merge `6a9c7dee394399bc499438f74c55e041c26e4be5`; PR CI run `29614924069` and post-merge main CI run `29620281041` passed all 3 jobs
 
 ## Next
 

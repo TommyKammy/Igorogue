@@ -7,3 +7,46 @@ GODOT_BIN=${GODOT_BIN:?Set GODOT_BIN to the Godot 4.7 stable .NET executable.}
 export GODOT_BIN
 "$GODOT_BIN" --headless --path game/Igorogue.Godot --editor --build-solutions --quit
 "$GODOT_BIN" --headless --path game/Igorogue.Godot --quit-after 120
+
+replay_temp_dir=$(mktemp -d "${TMPDIR:-/tmp}/igorogue-replay-smoke.XXXXXX")
+cleanup_replay_temp_dir() {
+    rm -rf "$replay_temp_dir"
+}
+trap cleanup_replay_temp_dir EXIT HUP INT TERM
+
+"$GODOT_BIN" --headless --path game/Igorogue.Godot --quit-after 120 -- \
+    "--graybox-replay-out=$replay_temp_dir/loss.json" \
+    "--graybox-replay-scenario=loss"
+"$GODOT_BIN" --headless --path game/Igorogue.Godot --quit-after 120 -- \
+    "--graybox-replay-out=$replay_temp_dir/win.json" \
+    "--graybox-replay-scenario=win"
+"$GODOT_BIN" --headless --path game/Igorogue.Godot --quit-after 120 -- \
+    "--graybox-replay-out=$replay_temp_dir/loss-repeat.json" \
+    "--graybox-replay-scenario=loss"
+"$GODOT_BIN" --headless --path game/Igorogue.Godot --quit-after 120 -- \
+    "--graybox-replay-out=$replay_temp_dir/win-repeat.json" \
+    "--graybox-replay-scenario=win"
+
+test -s "$replay_temp_dir/loss.json"
+test -s "$replay_temp_dir/win.json"
+cmp "$replay_temp_dir/loss.json" "$replay_temp_dir/loss-repeat.json"
+cmp "$replay_temp_dir/win.json" "$replay_temp_dir/win-repeat.json"
+
+printf '%s\n' 'do-not-overwrite' > "$replay_temp_dir/existing.expected"
+failure_log="$replay_temp_dir/existing-race.log"
+if "$GODOT_BIN" --headless --path game/Igorogue.Godot --quit-after 120 -- \
+    "--graybox-replay-out=$replay_temp_dir/existing-race.json" \
+    "--graybox-replay-scenario=existing-target-race" \
+    >"$failure_log" 2>&1; then
+    echo "Godot replay smoke unexpectedly overwrote an existing artifact." >&2
+    exit 1
+fi
+cat "$failure_log"
+grep -Fq '"verified":false' "$failure_log"
+grep -Fq '"reason":"artifact_io_failure"' "$failure_log"
+cmp "$replay_temp_dir/existing.expected" "$replay_temp_dir/existing-race.json"
+if find "$replay_temp_dir" -maxdepth 1 -name '.igorogue-replay-*.tmp' -print -quit |
+    grep -q .; then
+    echo "Godot replay smoke leaked an owned temporary artifact." >&2
+    exit 1
+fi
