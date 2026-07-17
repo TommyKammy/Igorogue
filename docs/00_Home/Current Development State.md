@@ -2,7 +2,7 @@
 type: status
 status: active
 project: Igorogue
-updated: 2026-07-17
+updated: 2026-07-18
 ---
 # Current Development State
 
@@ -21,7 +21,7 @@ updated: 2026-07-17
 | Product Rules Kernel | M1 technical exit `PASS` | TASK-0027〜0030 done; PR #20 merged／CI green |
 | Formal board simulation | not implemented | M1 onward |
 | Abstract proxy | reproducible but not valid product evidence | E2 only |
-| Human fun validation | not started | M3 required |
+| Human fun validation | initial E4 result: not yet fun | PT-0001 Project owner response; M3 validation still required |
 
 ## Accepted design repairs
 
@@ -36,7 +36,7 @@ updated: 2026-07-17
 
 ## Current gate
 
-[[TASK-0042 Validate M2 Core Duel Graybox]] is the current `in_progress` task on fixed main HEAD `ebec9dbdf249cb1db8e13910996022877abdb617`. PR #32 source `0ad575d56e353312d24f32f007ac7c324eddad07` was human-merged to that commit; PR CI run `29507033877` and merge-HEAD workflow-dispatch CI run `29537645016` passed all 3 jobs. Technical evidence、fresh human win／loss／restart／replay UAT、and the M2 exit matrix remain under evaluation. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified.
+[[TASK-0042 Validate M2 Core Duel Graybox]] is the current `in_progress` task. Its validation record was merged by PR #33 at main HEAD `1d6b7c2e2ede5671e7d4736548e6728908fb7bf9`; PR CI run `29539092195` and post-merge main CI run `29613756684` passed all 3 jobs. Fresh Test 1のplayer／Bandit識別、canonical orientation、intent読解、selection clearはProject owner合格。Project ownerは「まだゲームを楽しむレベルではない」と評価した。Human-run Replay V3採取導線、fresh win／loss／restart、全starter effect coverageは未達で、M2 resultは未判定のまま。Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified.
 
 ## Next development sequence
 
