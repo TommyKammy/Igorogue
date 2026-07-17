@@ -2,7 +2,7 @@
 type: backlog
 status: active
 project: Igorogue
-updated: 2026-07-17
+updated: 2026-07-18
 ---
 # Backlog
 
@@ -60,6 +60,7 @@ See [[Codex Task Queue]] for gate order and concurrency rules.
 - [[TASK-0039 Integrate Headless Core Duel and Replay]] — done; PR #29 merge／post-merge CI green
 - [[TASK-0040 Implement Core Duel Preview Queries]] — done; PR #30 merged／post-merge CI green
 - [[TASK-0041 Build Playable Godot Core Duel Graybox]] — done; PR #31 merged／post-merge CI green／Project owner visual approved
-- [[TASK-0042 Validate M2 Core Duel Graybox]] — in_progress／current; technical／human evidence under evaluation
+- [[TASK-0042 Validate M2 Core Duel Graybox]] — done／M2 technical・E4 human・fun NOT PASSED; Gate 3 blocked
+- [[TASK-0043 Capture and Verify Godot Human Run Replay V3]] — ready／current
 
 Do not expand the full card／relic／meta content before Core Duel and Acceleration Lab validation.

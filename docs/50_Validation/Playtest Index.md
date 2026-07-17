@@ -2,13 +2,13 @@
 type: playtest-index
 status: active
 project: Igorogue
-updated: 2026-07-17
+updated: 2026-07-18
 ---
 # Playtest Index
 
-## In progress
+## Completed
 
-- [[PT-0001 呼吸点と捕獲の理解]] — TASK-0042 fresh Core Duel UAT
+- [[PT-0001 呼吸点と捕獲の理解]] — NOT PASSED; Test 1 four checks PASS、Replay BLOCKED、fun not yet achieved
 
 ## Planned
 

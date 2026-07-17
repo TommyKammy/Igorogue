@@ -2,7 +2,7 @@
 type: dashboard
 status: active
 project: Igorogue
-updated: 2026-07-17
+updated: 2026-07-18
 ---
 # Project Dashboard
 
@@ -12,7 +12,7 @@ updated: 2026-07-17
 
 ## Sprint goal
 
-Prepare the merged playable Godot Core Duel graybox for explicit M2 technical／human validation without treating approved graybox simplicity as final presentation.
+Repair the Godot human-run Replay V3 evidence path, then repeat the incomplete M2 graybox UAT without treating Test 1 readability as gameplay-fun validation.
 
 ## Health
 
@@ -22,12 +22,13 @@ Prepare the merged playable Godot Core Duel graybox for explicit M2 technical／
 | Rules | Green | DECISION-0006／0009／0010 are resolved; starter catalog display is synchronized with machine-readable content |
 | Technical | Green | Repository bootstrap and runtime/export evidence complete |
 | Content | Yellow | v0.2 candidates unvalidated |
-| UX | Yellow | TASK-0041 visual approved; TASK-0042 interaction UAT pending, future visual changes deferred |
-| Validation | Yellow | TASK-0042 in progress; technical exit and fresh interaction UAT not yet judged |
+| UX | Yellow | Test 1 side／orientation／intent／selection clear passed; Project owner reports the game is not yet enjoyable |
+| Validation | Red | TASK-0042 result NOT PASSED; human-run replay and most fresh UAT paths missing |
 
 ## Blockers
 
-- TASK-0042 has no dependency blocker and is `in_progress` on fixed main HEAD `ebec9dbdf249cb1db8e13910996022877abdb617`; PR #32 CI run `29507033877` and merge-HEAD dispatch CI run `29537645016` are green. The M2 result remains unjudged until technical evidence and fresh human UAT are complete.
+- TASK-0042 confirmed that Godot discards the initial session／command-result chain and exposes no Replay V3 save／load route for the actual human run. M2 technical／E4 human／fun are `NOT PASSED` and Gate 3 is blocked.
+- [[TASK-0043 Capture and Verify Godot Human Run Replay V3]] is `ready` to add the bounded evidence path without changing Rules、content、balance、or Replay schema.
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] human evidence remains unverified, with Gate 2 progression separately authorized by DECISION-0007.
 
 ## Current evidence
@@ -81,9 +82,10 @@ Prepare the merged playable Godot Core Duel graybox for explicit M2 technical／
 - [[TASK-0039 Integrate Headless Core Duel and Replay]] — done; PR #29 merge `60d8cc5958e38768f4077ee2f4d686526d5b25fe`／post-merge CI run `29252298693` green
 - [[TASK-0040 Implement Core Duel Preview Queries]] — done; immutable speculative command reuse、625 tests、all wrappers、fixed source HEAD review approved、PR #30 source `eaa62531615eef7a10cfe1d16fe92318d45143c8` merged at `d8ccc08cf7fa3cc1a43046d128b2804b50b9d073`、post-merge CI run `29285926156` green
 - [[TASK-0041 Build Playable Godot Core Duel Graybox]] — done; 653 tests、Godot smoke／Windows export、fixed-HEAD review、PR #31 merge `4a2745ca30990689789d60ef79e4721579b82bbe`、post-merge CI run `29292101348` green、Project owner visual approved
+- [[TASK-0042 Validate M2 Core Duel Graybox]] — audit done; Test 1 four interaction checks PASS、M2 technical／E4 human／fun NOT PASSED、Gate 3 blocked; PR #33 merge `1d6b7c2e2ede5671e7d4736548e6728908fb7bf9`／post-merge CI run `29613756684` green
 
 ## Next
 
-1. Complete [[TASK-0042 Validate M2 Core Duel Graybox]] technical evidence for starter coverage、Bandit win／loss、restart、and replay parity
-2. Run fresh coordinate／intent／atari／capture／territory／mouse-focus conversational UAT separately from TASK-0041 visual approval
-3. Record `PASS`／`NOT PASSED`／`DECISION NEEDED` without implementing production fixes or claiming final presentation／fun from automated evidence
+1. Implement [[TASK-0043 Capture and Verify Godot Human Run Replay V3]].
+2. Save／read back／fresh-replay human-shaped win and loss artifacts with full seed／content／state／log／artifact checksums.
+3. On the merged fixed HEAD, rerun starter six effects、atari／capture／territory、win／loss／restart／replay UAT and diagnose why gameplay is not yet enjoyable before Gate 3.
