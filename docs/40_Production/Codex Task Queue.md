@@ -2,7 +2,7 @@
 type: roadmap
 status: active
 project: Igorogue
-updated: 2026-07-16
+updated: 2026-07-17
 ---
 # Codex Task Queue
 
@@ -56,7 +56,7 @@ The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DEC
 
 Entry is owner-authorized open because M1 exit evidence including TLE-01〜15 E3 migration is complete and DECISION-0007 explicitly waives the unverified TASK-0012 human-evidence prerequisite.
 
-Current: no task is `in_progress`. [[TASK-0041 Build Playable Godot Core Duel Graybox]] is done through PR #31 source HEAD `a653edf6e86acbea334fe30925e4c174abf62317`、main merge `4a2745ca30990689789d60ef79e4721579b82bbe`、post-merge CI run `29292101348` all 3 jobs success、and 2026-07-16 Project owner visual approval. [[TASK-0042 Validate M2 Core Duel Graybox]] is the next `ready` task but has not started.
+Current: [[TASK-0042 Validate M2 Core Duel Graybox]] is `in_progress` on fixed main HEAD `ebec9dbdf249cb1db8e13910996022877abdb617`. PR #32 source HEAD `0ad575d56e353312d24f32f007ac7c324eddad07` was human-merged、PR CI run `29507033877` and merge-HEAD workflow-dispatch CI run `29537645016` passed all 3 jobs. No M2 result is claimed before technical evidence and fresh human UAT close.
 
 1. [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
 2. [[TASK-0032 Implement Typed Core Duel Content Catalog]] — done
@@ -69,7 +69,7 @@ Current: no task is `in_progress`. [[TASK-0041 Build Playable Godot Core Duel Gr
 9. [[TASK-0039 Integrate Headless Core Duel and Replay]] — done
 10. [[TASK-0040 Implement Core Duel Preview Queries]] — done; PR #30 merged／post-merge CI green
 11. [[TASK-0041 Build Playable Godot Core Duel Graybox]] — done; PR #31 merged／post-merge CI green／owner visual approved
-12. [[TASK-0042 Validate M2 Core Duel Graybox]] — ready／not started
+12. [[TASK-0042 Validate M2 Core Duel Graybox]] — in_progress／current; no result yet
 
 DECISION-0009／0010 Option 1 are implemented and TASK-0037 is done. DECISION-0006 resolved Option 1: TASK-0038 writes the starter 6-type／12-card default recipe, records Development as the only M2 facility exception, and preserves broad facility expansion for M3. No meta progression or broad relic／facility content enters Gate 2.
 

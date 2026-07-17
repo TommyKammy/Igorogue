@@ -2,7 +2,7 @@
 type: sprint
 status: active
 project: Igorogue
-updated: 2026-07-16
+updated: 2026-07-17
 sprint: S0
 ---
 # Current Sprint
@@ -13,11 +13,11 @@ Prepare the merged playable Godot 4.7 .NET Core Duel graybox for explicit TASK-0
 
 ## In progress
 
-なし。
-
-## Ready
-
-- [[TASK-0042 Validate M2 Core Duel Graybox]] — dependency TASK-0041はPR #31 merge `4a2745ca30990689789d60ef79e4721579b82bbe`、post-merge CI run `29292101348`全3 job success、2026-07-16 Project owner visual approvalで完了。TASK-0042は未開始。
+- [[TASK-0042 Validate M2 Core Duel Graybox]]
+  - fixed main HEAD `ebec9dbdf249cb1db8e13910996022877abdb617`
+  - PR #32 CI run `29507033877`／merge-HEAD dispatch CI run `29537645016` all 3 jobs success
+  - M2 exit matrix、starter 6 ID human coverage、Bandit win／loss、terminal／restart、replay parityをtechnical evidenceとhuman UATへ分離して検証中
+  - TASK-0041 visual approvalをfresh TASK-0042 UAT、M2 technical result、E4 fun claimへ流用しない
 
 ## Open human evidence
 
@@ -64,7 +64,7 @@ Prepare the merged playable Godot 4.7 .NET Core Duel graybox for explicit TASK-0
 
 ## Next
 
-- Select and start [[TASK-0042 Validate M2 Core Duel Graybox]]; it is `ready` but not started.
+- Complete [[TASK-0042 Validate M2 Core Duel Graybox]] technical and human evidence before assigning an M2 result.
 - Keep TASK-0041 visual approval separate from TASK-0042 fresh win／loss、restart、replay、and UAT evidence.
 
 ## Validation review questions

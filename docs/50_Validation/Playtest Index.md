@@ -2,13 +2,16 @@
 type: playtest-index
 status: active
 project: Igorogue
-updated: 2026-07-10
+updated: 2026-07-17
 ---
 # Playtest Index
 
+## In progress
+
+- [[PT-0001 呼吸点と捕獲の理解]] — TASK-0042 fresh Core Duel UAT
+
 ## Planned
 
-- PT-0001 呼吸点と捕獲の理解
 - PT-0002 領地収入の気持ちよさ
 - PT-0003 余勢による切替
 - PT-0004 爆発後の反攻判断
