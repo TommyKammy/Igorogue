@@ -84,10 +84,10 @@ Repair the Godot human-run Replay V3 evidence path, then repeat the incomplete M
 - [[TASK-0041 Build Playable Godot Core Duel Graybox]] — done; 653 tests、Godot smoke／Windows export、fixed-HEAD review、PR #31 merge `4a2745ca30990689789d60ef79e4721579b82bbe`、post-merge CI run `29292101348` green、Project owner visual approved
 - [[TASK-0042 Validate M2 Core Duel Graybox]] — audit done; Test 1 four interaction checks PASS、M2 technical／E4 human／fun NOT PASSED、Gate 3 blocked; PR #33 merge `1d6b7c2e2ede5671e7d4736548e6728908fb7bf9`／post-merge CI run `29613756684` green
 - PR #34 closed the TASK-0042 audit follow-up at source `9e684d71925057e120d240058bfa23da05abb4f1`／main merge `6a9c7dee394399bc499438f74c55e041c26e4be5`; PR CI run `29614924069` and post-merge main CI run `29620281041` passed all 3 jobs
-- [[TASK-0043 Capture and Verify Godot Human Run Replay V3]] — code-bearing fixed HEAD `eaca6e5a7f97a8d0b4db168abd6ffa131a1032a3`; automated loss／win／repeat／save-race evidence and all repository wrappers passed、independent review `APPROVE WITH FOLLOW-UP`; graphical human UAT remains open
+- [[TASK-0043 Capture and Verify Godot Human Run Replay V3]] — code-bearing fixed HEAD `eaca6e5a7f97a8d0b4db168abd6ffa131a1032a3`、CI correction `a693505d0f82eeafde40182e1e4a1d13bcf64828`; automated loss／win／repeat／save-race evidence、all repository wrappers、PR #35 CI run `29622768204` passed、independent reviews approved; graphical human UAT remains open
 
 ## Next
 
 1. Complete graphical human loss／win UAT and terminal Replay V3 overlay review for [[TASK-0043 Capture and Verify Godot Human Run Replay V3]].
-2. Confirm draft PR CI and obtain human merge judgment.
+2. Obtain human visual sign-off and merge judgment for Draft PR #35.
 3. On the merged fixed HEAD, rerun starter six effects、atari／capture／territory、win／loss／restart／replay UAT and diagnose why gameplay is not yet enjoyable before Gate 3.
