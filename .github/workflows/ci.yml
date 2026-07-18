@@ -82,13 +82,8 @@ jobs:
         run: |
           python3 tools/content_sync.py --write
           dotnet restore Igorogue.sln --use-lock-file --force-evaluate
-      - name: Build Godot C# solution headlessly
-        run: >-
-          "$GODOT_BIN" --headless --path game/Igorogue.Godot
-          --editor --build-solutions --quit
-      - name: Run Godot bootstrap smoke scene
-        run: |
-          "$GODOT_BIN" --headless --path game/Igorogue.Godot --quit-after 120
+      - name: Run Godot build and Replay V3 smoke wrapper
+        run: tools/dev/godot-smoke
       - name: Export Windows debug build
         run: |
           rm -rf build/exports/windows

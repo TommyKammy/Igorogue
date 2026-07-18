@@ -9,7 +9,7 @@ cssclasses:
 # Igorogue Project Hub
 
 > [!abstract] 現在の目的
-> [[TASK-0042 Validate M2 Core Duel Graybox]]はTest 1の4項目だけをfresh human PASSとしたが、human-run Replay V3導線と残るUATが未達のためM2 technical／E4 human／funを`NOT PASSED`、Gate 3を`BLOCKED`と判定した。現在は[[TASK-0043 Capture and Verify Godot Human Run Replay V3]]を`ready`とし、再現可能なhuman evidence経路を先に修復する。
+> [[TASK-0042 Validate M2 Core Duel Graybox]]はTest 1の4項目だけをfresh human PASSとしたが、human-run Replay V3導線と残るUATが未達のためM2 technical／E4 human／funを`NOT PASSED`、Gate 3を`BLOCKED`と判定した。現在は[[TASK-0043 Capture and Verify Godot Human Run Replay V3]]を`review`とし、automated evidenceはgreen、graphical human win／loss UATは未完了のまま維持する。
 
 > [!success] 実装ゲート
 > Gate 1は完了。Gate 2 implementationはgrayboxまで到達したがM2 exitは`NOT PASSED`。TASK-0043とfresh revalidationが完了するまでGate 3へ進めない。[[Current Development State]]と[[Codex Task Queue]]を参照。
@@ -102,7 +102,7 @@ cssclasses:
 - [[TASK-0040 Implement Core Duel Preview Queries]] — done; PR #30 merged／post-merge CI green
 - [[TASK-0041 Build Playable Godot Core Duel Graybox]] — done; PR #31 merged／post-merge CI green／owner visual approved
 - [[TASK-0042 Validate M2 Core Duel Graybox]] — done／M2 technical・E4 human・fun `NOT PASSED`; Gate 3 blocked
-- [[TASK-0043 Capture and Verify Godot Human Run Replay V3]] — ready／current
+- [[TASK-0043 Capture and Verify Godot Human Run Replay V3]] — review／current
 
 ## Latest design repairs
 

@@ -41,6 +41,7 @@ public partial class CoreDuelGraybox : Control
     private CoreDuelGameHost? host;
     private CanonicalPoint? hoveredPoint;
     private int framesUntilCapture = -1;
+    private bool replayEvidencePrinted;
 
     public string? CapturePath { get; set; }
 
@@ -510,7 +511,7 @@ public partial class CoreDuelGraybox : Control
             Text);
         DrawText(
             ActionButton.Position + new Vector2(17.0f, 44.0f),
-            terminal ? "click to replay" : "or press SPACE",
+            terminal ? "click to restart" : "or press SPACE",
             8,
             Muted);
     }
@@ -523,11 +524,29 @@ public partial class CoreDuelGraybox : Control
             return;
         }
 
-        var rect = new Rect2(144.0f, 79.0f, 120.0f, 55.0f);
+        var rect = new Rect2(139.0f, 72.0f, 130.0f, 72.0f);
         DrawRect(rect, new Color(0.05f, 0.08f, 0.11f, 0.94f));
         DrawRect(rect, Warning, false, 2.0f);
         DrawText(rect.Position + new Vector2(15.0f, 22.0f), ReadableId(battle.OutcomeId ?? "ended"), 13, Text);
         DrawText(rect.Position + new Vector2(10.0f, 41.0f), ReadableId(battle.EndReasonId ?? "unknown"), 8, Muted);
+        var evidenceStatus = Host.ReplayEvidenceStatus;
+        DrawText(
+            rect.Position + new Vector2(10.0f, 58.0f),
+            $"REPLAY V3 {evidenceStatus}",
+            8,
+            StringComparer.Ordinal.Equals(evidenceStatus, "VERIFIED")
+                ? Accent
+                : StringComparer.Ordinal.Equals(evidenceStatus, "FAILED")
+                    ? Warning
+                    : Muted);
+        if (Host.ReplayEvidence?.ArtifactSha256 is { Length: >= 10 } hash)
+        {
+            DrawText(
+                rect.Position + new Vector2(10.0f, 68.0f),
+                hash[..10],
+                7,
+                Muted);
+        }
     }
 
     private void HandlePrimaryClick(Vector2 position)
@@ -549,9 +568,14 @@ public partial class CoreDuelGraybox : Control
         }
 
         var point = ScreenToPoint(position);
-        if (point is not null && Host.TryPlaySelectedCard(point))
+        if (point is not null)
         {
-            hoveredPoint = null;
+            if (Host.TryPlaySelectedCard(point))
+            {
+                hoveredPoint = null;
+            }
+
+            EmitReplayEvidenceIfReady();
         }
 
         QueueRedraw();
@@ -582,15 +606,28 @@ public partial class CoreDuelGraybox : Control
     {
         if (Host.Battle.IsTerminal)
         {
+            EmitReplayEvidenceIfReady();
             Host.Restart();
         }
         else if (StringComparer.Ordinal.Equals(Host.Battle.PhaseId, "player_action"))
         {
             Host.EndTurnAndResolveEnemy();
+            EmitReplayEvidenceIfReady();
         }
 
         hoveredPoint = null;
         QueueRedraw();
+    }
+
+    private void EmitReplayEvidenceIfReady()
+    {
+        if (replayEvidencePrinted || Host.ReplayEvidence is not { } evidence)
+        {
+            return;
+        }
+
+        replayEvidencePrinted = true;
+        GD.Print(evidence.ToConsoleLine());
     }
 
     private void UpdateHover(Vector2 position)

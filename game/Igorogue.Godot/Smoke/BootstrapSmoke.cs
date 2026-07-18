@@ -37,17 +37,36 @@ public partial class BootstrapSmoke : Node
                 var grayboxChecksum = CoreDuelGameHost.RunHeadlessSmoke(
                     manifestPath,
                     options.GameVersion,
-                    options.Seed);
+                    options.Seed,
+                    options.ReplayOutputPath,
+                    options.ReplayScenario ?? "loss");
+                if (grayboxChecksum.ReplayEvidence is { } evidence)
+                {
+                    GD.Print(evidence.ToConsoleLine());
+                    if (!evidence.Verified)
+                    {
+                        throw new InvalidOperationException(
+                            $"Replay evidence failed closed: {evidence.ReasonId}.");
+                    }
+                }
+
                 GD.Print(
-                    $"IGOROGUE_GRAYBOX_SMOKE checksum={grayboxChecksum} seed={options.Seed.ToString(CultureInfo.InvariantCulture)}");
+                    $"IGOROGUE_GRAYBOX_SMOKE checksum={grayboxChecksum.Checksum} seed={options.Seed.ToString(CultureInfo.InvariantCulture)}");
                 GetTree().Quit(0);
                 return;
+            }
+
+            if (options.ReplayScenario is not null)
+            {
+                throw new ArgumentException(
+                    "The graybox replay scenario option is headless-smoke only.");
             }
 
             var host = CoreDuelGameHost.Create(
                 manifestPath,
                 options.GameVersion,
-                options.Seed);
+                options.Seed,
+                options.ReplayOutputPath);
             var graybox = new CoreDuelGraybox
             {
                 Name = "CoreDuelGraybox",
@@ -72,7 +91,9 @@ public partial class BootstrapSmoke : Node
         string GameVersion,
         long Seed,
         string? CapturePath,
-        bool CaptureSelected)
+        bool CaptureSelected,
+        string? ReplayOutputPath,
+        string? ReplayScenario)
     {
         public static GrayboxLaunchOptions Parse(IEnumerable<string> arguments)
         {
@@ -80,6 +101,10 @@ public partial class BootstrapSmoke : Node
             var seed = DefaultGrayboxSeed;
             string? capturePath = null;
             var captureSelected = false;
+            string? replayOutputPath = null;
+            var replayOutputSeen = false;
+            string? replayScenario = null;
+            var replayScenarioSeen = false;
             foreach (var argument in arguments)
             {
                 if (argument.StartsWith("--graybox-version=", StringComparison.Ordinal))
@@ -110,6 +135,42 @@ public partial class BootstrapSmoke : Node
                 {
                     captureSelected = true;
                 }
+                else if (argument.StartsWith(
+                             "--graybox-replay-out=",
+                             StringComparison.Ordinal))
+                {
+                    if (replayOutputSeen)
+                    {
+                        throw new ArgumentException(
+                            "The graybox replay output option may be supplied only once.",
+                            nameof(arguments));
+                    }
+
+                    replayOutputSeen = true;
+                    replayOutputPath = CoreDuelReplayEvidenceRecorder.ValidateOutputPath(
+                        argument["--graybox-replay-out=".Length..]);
+                }
+                else if (argument.StartsWith(
+                             "--graybox-replay-scenario=",
+                             StringComparison.Ordinal))
+                {
+                    if (replayScenarioSeen)
+                    {
+                        throw new ArgumentException(
+                            "The graybox replay scenario option may be supplied only once.",
+                            nameof(arguments));
+                    }
+
+                    replayScenarioSeen = true;
+                    replayScenario = argument["--graybox-replay-scenario=".Length..];
+                    if (replayScenario is not "loss" and not "win" and
+                        not "existing-target-race")
+                    {
+                        throw new ArgumentException(
+                            "The graybox replay scenario must be 'loss', 'win', or 'existing-target-race'.",
+                            nameof(arguments));
+                    }
+                }
             }
 
             ArgumentException.ThrowIfNullOrWhiteSpace(gameVersion);
@@ -118,11 +179,27 @@ public partial class BootstrapSmoke : Node
                 ArgumentException.ThrowIfNullOrWhiteSpace(capturePath);
             }
 
+            if (capturePath is not null && replayOutputPath is not null)
+            {
+                throw new ArgumentException(
+                    "Screenshot capture and terminal Replay V3 capture cannot share one launch.",
+                    nameof(arguments));
+            }
+
+            if (replayScenario is not null && replayOutputPath is null)
+            {
+                throw new ArgumentException(
+                    "The graybox replay scenario requires an explicit replay output path.",
+                    nameof(arguments));
+            }
+
             return new GrayboxLaunchOptions(
                 gameVersion,
                 seed,
                 capturePath,
-                captureSelected);
+                captureSelected,
+                replayOutputPath,
+                replayScenario);
         }
     }
 }
