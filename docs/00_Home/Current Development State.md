@@ -36,7 +36,7 @@ updated: 2026-07-18
 
 ## Current gate
 
-[[TASK-0042 Validate M2 Core Duel Graybox]] completed its audit with `M2 TECHNICAL EXIT: NOT PASSED`、`E4 HUMAN UAT: NOT PASSED`、`E4 FUN CLAIM: NOT PASSED`、`GATE 3 ENTRY: BLOCKED`。PR #33 merged the validation record at main HEAD `1d6b7c2e2ede5671e7d4736548e6728908fb7bf9`; PR CI run `29539092195` and post-merge main CI run `29613756684` passed all 3 jobs. Fresh Test 1のplayer／Bandit識別、canonical orientation、intent読解、selection clearはProject owner合格だが、human-run Replay V3採取導線、win／loss／restart、全starter effect coverageは未達。[[TASK-0043 Capture and Verify Godot Human Run Replay V3]] is the current `review` task; automated host evidence and Draft PR #35 CI run `29622768204` are green while graphical human win／loss UAT remains open. Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified.
+[[TASK-0042 Validate M2 Core Duel Graybox]] completed its audit with `M2 TECHNICAL EXIT: NOT PASSED`、`E4 HUMAN UAT: NOT PASSED`、`E4 FUN CLAIM: NOT PASSED`、`GATE 3 ENTRY: BLOCKED`。PR #33 merged the validation record at main HEAD `1d6b7c2e2ede5671e7d4736548e6728908fb7bf9`; PR CI run `29539092195` and post-merge main CI run `29613756684` passed all 3 jobs. Fresh Test 1のplayer／Bandit識別、canonical orientation、intent読解、selection clearはProject owner合格だが、win／loss／restart、全starter effect coverageは未達。PR #35でhuman-run Replay V3 pathはmain `adf894dafe7096b977343fd6bdd2737e41a74809`へmergeされ、post-merge CI run `29625979222`とautomated host evidenceはgreen。[[TASK-0043 Capture and Verify Godot Human Run Replay V3]]はgraphical human win／loss UAT待ちの`review`、[[TASK-0044 Revalidate M2 Core Duel Graybox on Merged Replay Head]]はそのdependencyを待つ`blocked`である。Gate 2 entry remains owner-authorized through [[DECISION-0007 Authorize Gate 2 Without Retained TASK-0012 Human Evidence]], while TASK-0012 human evidence remains unverified.
 
 ## Next development sequence
 
@@ -72,6 +72,7 @@ updated: 2026-07-18
 30. TASK-0041 playable Godot Core Duel graybox — done; PR #31 merged／post-merge CI green／owner visual approved
 31. TASK-0042 M2 Core Duel graybox validation — done／M2 technical and E4 human `NOT PASSED`; Gate 3 blocked
 32. TASK-0043 Godot human-run Replay V3 capture／verification — review／current
+33. TASK-0044 M2 graybox merged-head revalidation — blocked／next
 
 ## Human-only evidence waiver
 

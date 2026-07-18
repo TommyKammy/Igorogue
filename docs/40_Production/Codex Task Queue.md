@@ -56,7 +56,7 @@ The reachability audit inserted TASK-0024 between TASK-0010 and TASK-0009. [[DEC
 
 Entry is owner-authorized open because M1 exit evidence including TLE-01〜15 E3 migration is complete and DECISION-0007 explicitly waives the unverified TASK-0012 human-evidence prerequisite.
 
-Current: [[TASK-0042 Validate M2 Core Duel Graybox]] closed its audit as M2 technical／E4 human／fun `NOT PASSED` with Gate 3 `BLOCKED`. Test 1 side／orientation／intent／selection clear passed, but the remaining UAT was not run. [[TASK-0043 Capture and Verify Godot Human Run Replay V3]] is in `review`: automated host replay evidence is green and graphical human win／loss UAT remains open.
+Current: [[TASK-0042 Validate M2 Core Duel Graybox]] closed its audit as M2 technical／E4 human／fun `NOT PASSED` with Gate 3 `BLOCKED`. Test 1 side／orientation／intent／selection clear passed, but the remaining UAT was not run. PR #35 merged the Replay V3 evidence path at main `adf894dafe7096b977343fd6bdd2737e41a74809`; [[TASK-0043 Capture and Verify Godot Human Run Replay V3]] remains in `review` until graphical human win／loss closes, and [[TASK-0044 Revalidate M2 Core Duel Graybox on Merged Replay Head]] is `blocked` on TASK-0043.
 
 1. [[TASK-0031 Plan Gate 2 Core Duel Implementation]] — done
 2. [[TASK-0032 Implement Typed Core Duel Content Catalog]] — done
@@ -71,6 +71,7 @@ Current: [[TASK-0042 Validate M2 Core Duel Graybox]] closed its audit as M2 tech
 11. [[TASK-0041 Build Playable Godot Core Duel Graybox]] — done; PR #31 merged／post-merge CI green／owner visual approved
 12. [[TASK-0042 Validate M2 Core Duel Graybox]] — done／NOT PASSED
 13. [[TASK-0043 Capture and Verify Godot Human Run Replay V3]] — review／current
+14. [[TASK-0044 Revalidate M2 Core Duel Graybox on Merged Replay Head]] — blocked／next
 
 DECISION-0009／0010 Option 1 are implemented and TASK-0037 is done. DECISION-0006 resolved Option 1: TASK-0038 writes the starter 6-type／12-card default recipe, records Development as the only M2 facility exception, and preserves broad facility expansion for M3. No meta progression or broad relic／facility content enters Gate 2.
 
