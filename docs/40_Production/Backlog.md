@@ -62,5 +62,6 @@ See [[Codex Task Queue]] for gate order and concurrency rules.
 - [[TASK-0041 Build Playable Godot Core Duel Graybox]] — done; PR #31 merged／post-merge CI green／Project owner visual approved
 - [[TASK-0042 Validate M2 Core Duel Graybox]] — done／M2 technical・E4 human・fun NOT PASSED; Gate 3 blocked
 - [[TASK-0043 Capture and Verify Godot Human Run Replay V3]] — review／current
+- [[TASK-0044 Revalidate M2 Core Duel Graybox on Merged Replay Head]] — blocked／next
 
 Do not expand the full card／relic／meta content before Core Duel and Acceleration Lab validation.

@@ -19,6 +19,13 @@ Restore reproducible Replay V3 evidence for the actual Godot human run before re
   - save canonical Replay V3 before restart, read it back, replay from fresh startup, and prove terminal／state／log parity
   - do not mix gameplay、balance、content、fun changes、or Replay schema changes
 
+## Blocked
+
+- [[TASK-0044 Revalidate M2 Core Duel Graybox on Merged Replay Head]]
+  - dependency `TASK-0043`; do not start until graphical human loss／win UAT closes TASK-0043
+  - use merged main `adf894dafe7096b977343fd6bdd2737e41a74809` as the immutable fresh revalidation baseline
+  - keep technical、human UAT、fun、Gate 3 disposition separate
+
 ## Open human evidence
 
 - [[TASK-0012 Implement FEAT-009 Enemy Behavior Specification]] — `review`; worksheets／identities／results not retained
@@ -65,8 +72,8 @@ Restore reproducible Replay V3 evidence for the actual Godot human run before re
 
 ## Next
 
-- Implement and merge [[TASK-0043 Capture and Verify Godot Human Run Replay V3]].
-- Start a fresh revalidation task on the merged HEAD for starter six effects、atari／capture／territory、win／loss／restart／replay and gameplay-fun diagnosis.
+- Complete graphical human loss／win／restart Replay V3 evidence on merged main for [[TASK-0043 Capture and Verify Godot Human Run Replay V3]].
+- Then move TASK-0043 to `done` and [[TASK-0044 Revalidate M2 Core Duel Graybox on Merged Replay Head]] to `in_progress`.
 
 ## Validation review questions
 
